@@ -8,7 +8,7 @@ from joystick import Joystick
 from scenario import Scenario
 
 import xplane as xp
-from overhead_panel import OverheadPanel
+from overhead_panel import OverheadPanel, run_udp_server_for_hardware_overhead_buttons_task
 import util
 
 
@@ -63,7 +63,11 @@ async def main_loop():
 
 
 async def main():
-    await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    # await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+
+    await run_udp_server_for_hardware_overhead_buttons_task()
+    while True:
+        await asyncio.sleep(0.1)
 
     await main_loop()   
 
