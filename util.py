@@ -29,3 +29,14 @@ async def subscribe_to_all_data():
         await xp.subscribe_to_param(f)
 
     await ACState.wait_until_param_available("sim/time/total_running_time_sec")
+
+
+async def request_all_data():
+    """ получить актуальное значения всех параметров """
+    for p in xp.Params:
+        await xp.subscribe_to_param(p)
+
+    for f in xp.Failures:
+        await xp.subscribe_to_param(f)
+
+    await ACState.wait_until_param_available("sim/time/total_running_time_sec")

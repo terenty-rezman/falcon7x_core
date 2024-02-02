@@ -23,7 +23,8 @@ Params = Enum('XplaneParams', [
     "sim/joystick/yoke_heading_ratio",
     "sim/flightmodel/position/elevation",
     "sim/weapons/warhead_type",
-    "sim/cockpit2/engine/actuators/fire_extinguisher_on"
+    "sim/cockpit2/engine/actuators/fire_extinguisher_on",
+    "sim/cockpit2/annunciators/engine_fires"
 ])
 Params.__str__ = to_str
 
@@ -65,6 +66,11 @@ async def subscribe_to_param(param: Params):
 
 async def set_param(param: Params, value):
     await send_string(xp_writer, f"set {param} {value}")
+
+
+async def get_param(param: Params):
+    """ получить актуальное значения параметра """
+    await send_string(xp_writer, f"upd {param}")
 
 
 async def load_sit(name):

@@ -49,7 +49,7 @@ class ACState:
     
     @classmethod
     def param_available(cls, param_name: str) -> bool:
-        return param_name in cls.curr_xplane_state
+        return str(param_name) in cls.curr_xplane_state
     
     @classmethod
     async def wait_until_param_available(cls, param_name: str):

@@ -8,7 +8,8 @@ from joystick import Joystick
 from scenario import Scenario
 
 import xplane as xp
-from overhead_panel import OverheadPanel, run_udp_server_for_hardware_overhead_buttons_task
+from overhead_panel import OverheadPanel
+import overhead_panel as op
 import util
 
 
@@ -45,13 +46,15 @@ async def main_loop():
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
 
-    await load_default_sit()
+    # await load_default_sit()
     await Scenario.clear_all()
     ACState.clear_all()
 
     await OverheadPanel.reset_to_default_state()
 
-    await Scenario.run_scenario_task("test_scenario_1", ACState)
+    await util.request_all_data()
+
+    # await Scenario.run_scenario_task("test_scenario_1", ACState)
 
     while True:
         x, y, z, rz = joystick.get_axes_values()
@@ -63,11 +66,10 @@ async def main_loop():
 
 
 async def main():
-    # await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
 
-    await run_udp_server_for_hardware_overhead_buttons_task()
-    while True:
-        await asyncio.sleep(0.1)
+    await op.run_receive_state_task()
+    await op.run_send_state_task()
 
     await main_loop()   
 
