@@ -7,7 +7,7 @@ import json
 
 from enum import Enum 
 
-from aircraft import ACState
+from xp_aircraft_state import ACState
 
 
 def to_str(self):
@@ -24,7 +24,9 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/position/elevation",
     "sim/weapons/warhead_type",
     "sim/cockpit2/engine/actuators/fire_extinguisher_on",
-    "sim/cockpit2/annunciators/engine_fires"
+    "sim/cockpit2/annunciators/engine_fires",
+    "sim/operation/failures/rel_apu_fire",
+    "sim/weapons/mis_thrust3"
 ])
 Params.__str__ = to_str
 

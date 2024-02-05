@@ -1,4 +1,4 @@
-from aircraft import ACState
+from xp_aircraft_state import ACState
 import xplane as xp
 
 

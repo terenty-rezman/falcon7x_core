@@ -3,7 +3,7 @@ import asyncio
 from collections import OrderedDict
 
 import xplane as xp
-import aircraft as ac
+import xp_aircraft_state as ac
 from aioudp import open_local_endpoint, open_remote_endpoint
 
 
@@ -105,6 +105,28 @@ class disch_11(TwoStateButton):
 disch_12 = disch_11
 overhead_button("disch_12")(disch_12)
 
+@overhead_button("fire_apu_indicator")
+class fire_apu_indicator(Indicator):
+    @classmethod
+    def get_state(cls):
+        if ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
+            return ac.ACState.curr_xplane_state["sim/operation/failures/rel_apu_fire"]
+
+@overhead_button("apu_disch")
+class apu_disch(TwoStateButton):
+    @classmethod
+    async def on_enabled(cls):
+        await xp.set_param(xp.Params["sim/weapons/mis_thrust3"], "[,,,,1]" )
+
+    @classmethod
+    async def on_disabled(cls):
+        await xp.set_param(xp.Params["sim/weapons/mis_thrust3"], "[,,,,0]" )
+
+    @classmethod
+    def get_state(cls):
+        if ac.ACState.param_available(xp.Params["sim/weapons/mis_thrust3"]):
+            return ac.ACState.curr_xplane_state["sim/weapons/mis_thrust3"][4]
+
 
 receive_task = None
 send_task = None
@@ -113,24 +135,26 @@ send_state_port = 1999
 
 hardware_panel_items_receive = OrderedDict(
     firebutton_1=0,
-    firebutton_2=0,
-    firebutton_3=0,
-    fireapu=0,
-    firerearcomp=0,
-    firebagcomp=0,
-    disch_11=0,
-    disch_12=0,
-    disch_21=0,
-    disch_22=0,
-    disch_31=0,
-    disch_32=0
+    firebutton_2=1,
+    firebutton_3=2,
+    apu_disch=3,
+    firerearcomp=4,
+    firebagcomp=5,
+    disch_11=6,
+    disch_12=7,
+    disch_21=8,
+    disch_22=9,
+    disch_31=10,
+    disch_32=11
 )
 
 hardware_panel_items_send = OrderedDict(
     firebutton_1=0,
     fireindicator_1=1,
     disch_11=2,
-    disch_12=2
+    disch_12=3,
+    apu_disch=4,
+    fire_apu_indicator=5,
 )
 
 button_names = list(hardware_panel_items_receive.keys())

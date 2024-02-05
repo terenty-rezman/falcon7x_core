@@ -2,7 +2,8 @@ import asyncio
 from enum import Enum 
 import traceback
 
-from aircraft import ACState
+from xp_aircraft_state import ACState
+from aicrcaft_systems import Systems as ACSystems
 
 from joystick import Joystick
 from scenario import Scenario
@@ -48,6 +49,7 @@ async def main_loop():
 
     # await load_default_sit()
     await Scenario.clear_all()
+    await ACSystems.reset()
     ACState.clear_all()
 
     await OverheadPanel.reset_to_default_state()
@@ -62,7 +64,11 @@ async def main_loop():
         await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
         await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
 
+        # NOTE: maybe run in separate task?
+        await ACSystems.update()
+
         await asyncio.sleep(0.1)
+
 
 
 async def main():

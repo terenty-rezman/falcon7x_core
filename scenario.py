@@ -1,6 +1,6 @@
 import asyncio
 
-import aircraft as ac
+import xp_aircraft_state as ac
 import xplane as xp
 from overhead_panel import OverheadPanel
 
@@ -21,6 +21,7 @@ class Scenario:
                 await cls.current_scenario_task
             except asyncio.CancelledError:
                 print(f"stoped task {cls.current_scenario_task.__name__}")
+                cls.current_scenario_task = None
 
     @classmethod
     async def run_scenario_task(cls, task_name, ac_state: ac.ACState):
