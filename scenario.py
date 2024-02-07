@@ -1,8 +1,9 @@
 import asyncio
 
-import xp_aircraft_state as ac
+import xp_aircraft_state as xp_ac
 import xplane as xp
 from overhead_panel import OverheadPanel
+import sane_tasks
 
 
 scenarios = {}
@@ -24,22 +25,22 @@ class Scenario:
                 cls.current_scenario_task = None
 
     @classmethod
-    async def run_scenario_task(cls, task_name, ac_state: ac.ACState):
+    async def run_scenario_task(cls, task_name, ac_state: xp_ac.ACState):
         await cls.clear_all()
         
-        task = asyncio.get_event_loop().create_task(scenarios[task_name](ac_state))
+        task = sane_tasks.spawn(scenarios[task_name](ac_state))
         cls.current_scenario_task = task
         print(f"run task {task_name}")
 
 
 @scenario
-async def test_scenario_1(ac_state: ac.ACState):
-    def fly_height_200m(ac_state: ac.ACState):
+async def test_scenario_1(ac_state: xp_ac.ACState):
+    def fly_height_200m(ac_state: xp_ac.ACState):
         elevation = "sim/flightmodel/position/elevation"
         if not ac_state.param_available(elevation):
             return False
 
-        if ac_state.curr_xplane_state[elevation] - ac_state.initial_xplane_state[elevation] > 200:
+        if ac_state.curr_params[elevation] - ac_state.initial_params[elevation] > 200:
             return True
     
     await ac_state.data_condition(fly_height_200m)

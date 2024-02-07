@@ -1,24 +1,33 @@
 from dataclasses import dataclass
 from asyncio import Future
+from typing import Callable
+
+import xplane as xp
 
 
 @dataclass
 class DataCallback:
-    callback: callable
+    callback: Callable[["ACState"], None]
     future: Future
 
 
 class ACState:
-    curr_xplane_state = {}
-    initial_xplane_state = {}
+    # initial values of xplane params
+    initial_params = {}
+
+    # current values of xplane params
+    curr_params = {}
 
     _data_callbacks: list[DataCallback] = []
 
     @classmethod
     def clear_all(cls):
-        cls.curr_xplane_state = {}
-        cls.initial_xplane_state = {}
+        cls.curr_params = {}
+        cls.initial_params = {}
         cls._data_callbacks = []
+
+
+    # TODO: add reset method to cancel all pending tasks !!! 
 
 
     @classmethod
@@ -38,7 +47,7 @@ class ACState:
             
 
     @classmethod
-    def data_condition(cls, callback):
+    def data_condition(cls, callback: Callable[["ACState"], bool]):
         f = Future()
         cls._data_callbacks.append(
             DataCallback(
@@ -48,16 +57,28 @@ class ACState:
         return f
     
     @classmethod
-    def param_available(cls, param_name: str) -> bool:
-        return str(param_name) in cls.curr_xplane_state
-    
-    @classmethod
-    async def wait_until_param_available(cls, param_name: str):
-        def param_available(ac_state: ACState):
-            if ac_state.param_available("sim/time/total_running_time_sec"):
+    def wait_until_parameter_condition(cls, xp_param: xp.Params, condition: Callable[["ACState"], bool]):
+        def param_condition(ac_state: ACState):
+            if not ac_state.param_available(xp_param):
+                return False
+
+            if condition(ac_state.curr_params[xp_param]):
                 return True
         
-        await cls.data_condition(param_available)
+        return cls.data_condition(param_condition)
+
+    
+    @classmethod
+    def param_available(cls, xp_param: xp.Params) -> bool:
+        return xp_param in cls.curr_params
+    
+    @classmethod
+    async def wait_until_param_available(cls, xp_param: xp.Params):
+        def param_available(ac_state: ACState):
+            if ac_state.param_available(xp_param):
+                return True
+        
+        return cls.data_condition(param_available)
 
 
 

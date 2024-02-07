@@ -3,8 +3,10 @@ import asyncio
 from collections import OrderedDict
 
 import xplane as xp
-import xp_aircraft_state as ac
+import xp_aircraft_state as xp_ac
 from aioudp import open_local_endpoint, open_remote_endpoint
+
+import sane_tasks
 
 
 def overhead_button(name):
@@ -75,16 +77,16 @@ class firebutton_1(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if ac.ACState.param_available("sim/weapons/warhead_type"):
-            return ac.ACState.curr_xplane_state["sim/weapons/warhead_type"][4]
+        if xp_ac.ACState.param_available(xp.Params["sim/weapons/warhead_type"]):
+            return xp_ac.ACState.curr_params[xp.Params["sim/weapons/warhead_type"]][4]
 
 
 @overhead_button("fireindicator_1")
 class fireindicator_1(Indicator):
     @classmethod
     def get_state(cls):
-        if ac.ACState.param_available(xp.Params["sim/cockpit2/annunciators/engine_fires"]):
-            return ac.ACState.curr_xplane_state["sim/cockpit2/annunciators/engine_fires"][0]
+        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/annunciators/engine_fires"]):
+            return xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/annunciators/engine_fires"]][0]
 
 
 @overhead_button("disch_11")
@@ -99,8 +101,8 @@ class disch_11(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if ac.ACState.param_available(xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"]):
-            return ac.ACState.curr_xplane_state["sim/cockpit2/engine/actuators/fire_extinguisher_on"][0]
+        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"]):
+            return xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"]][0]
 
 disch_12 = disch_11
 overhead_button("disch_12")(disch_12)
@@ -109,8 +111,8 @@ overhead_button("disch_12")(disch_12)
 class fire_apu_indicator(Indicator):
     @classmethod
     def get_state(cls):
-        if ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
-            return ac.ACState.curr_xplane_state["sim/operation/failures/rel_apu_fire"]
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
+            return xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]]
 
 @overhead_button("apu_disch")
 class apu_disch(TwoStateButton):
@@ -124,8 +126,8 @@ class apu_disch(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if ac.ACState.param_available(xp.Params["sim/weapons/mis_thrust3"]):
-            return ac.ACState.curr_xplane_state["sim/weapons/mis_thrust3"][4]
+        if xp_ac.ACState.param_available(xp.Params["sim/weapons/mis_thrust3"]):
+            return xp_ac.ACState.curr_params[xp.Params["sim/weapons/mis_thrust3"]][4]
 
 
 receive_task = None
@@ -198,7 +200,7 @@ async def run_receive_state_task():
     print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
 
     global receive_task
-    receive_task = asyncio.create_task(receive_state_task(endpoint))    
+    receive_task = sane_tasks.spawn(receive_state_task(endpoint))    
 
 
 async def send_state_task(remote):
@@ -222,4 +224,4 @@ async def run_send_state_task():
     remote = await open_remote_endpoint("127.0.0.1", port=send_state_port)
 
     global send_task
-    send_task = asyncio.create_task(send_state_task(remote))    
+    send_task = sane_tasks.spawn(send_state_task(remote))    

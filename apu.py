@@ -1,6 +1,8 @@
 import asyncio
 
-from xp_aircraft_state import ACState as xpACState
+import xp_aircraft_state as xp_ac
+import xplane as xp
+import sane_tasks
 
 
 class System:
@@ -17,12 +19,13 @@ class System:
 
     @classmethod
     async def update(cls):
-        if await cls.start_condition():
-            cls.logic_task = asyncio.create_task(cls.system_logic_task())    
-            cls.logic_task.add_done_callback(cls.on_task_done)
+        if cls.logic_task is None:
+            if await cls.start_condition():
+                cls.logic_task = sane_tasks.spawn(cls.system_logic_task())    
+                cls.logic_task.add_done_callback(cls.on_task_done)
     
     @classmethod
-    def on_task_done(cls):
+    def on_task_done(cls, task_future):
         cls.logic_task = None
     
     @classmethod
@@ -39,8 +42,29 @@ class System:
 class APUFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        return False
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
+            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]] == 6:
+                return True
 
     @classmethod
     async def system_logic_task(cls):
-        pass
+        await asyncio.sleep(1)
+
+        # Apu fire protection system automatically closes apu fsov
+        await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 1)
+
+        def apu_disch_pressed(ac_state: xp_ac.ACState):
+            dish_pressed = xp_ac.ACState.curr_params[xp.Params["sim/weapons/mis_thrust3"]][4]
+            if dish_pressed:
+                return True
+
+        # wait until user presses apu extinguisher button 
+        # await xp_ac.ACState.data_condition(apu_disch_pressed)
+
+        # wait until user presses apu extinguisher button 
+        await xp_ac.ACState.wait_until_parameter_condition(xp.Params["sim/weapons/mis_thrust3"], lambda p: p[4] == 1)
+
+        # fire has been succesfully extinguished
+        failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+        await xp.set_param(failure, 0)
+        await xp_ac.ACState.wait_until_parameter_condition(failure, lambda p: p == 0)

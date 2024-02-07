@@ -23,12 +23,14 @@ joystick.run_in_thread()
 
 
 def on_new_xp_data(type, dataref, value):
+    dataref = xp.Params[dataref]
+
     # запомнить стартовое состояния ЛА
-    if dataref not in ACState.initial_xplane_state:
-        ACState.initial_xplane_state[dataref] = value
+    if dataref not in ACState.initial_params:
+        ACState.initial_params[dataref] = value
 
     # запомнить текущее состояние ЛА
-    ACState.curr_xplane_state[dataref] = value
+    ACState.curr_params[dataref] = value
 
     ACState.update_data_callbacks()
 
@@ -70,7 +72,6 @@ async def main_loop():
         await asyncio.sleep(0.1)
 
 
-
 async def main():
     await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
 
@@ -83,3 +84,5 @@ async def main():
 
 
 asyncio.run(main())
+
+

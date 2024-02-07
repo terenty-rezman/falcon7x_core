@@ -7,7 +7,7 @@ import json
 
 from enum import Enum 
 
-from xp_aircraft_state import ACState
+import sane_tasks
 
 
 def to_str(self):
@@ -25,17 +25,15 @@ Params = Enum('XplaneParams', [
     "sim/weapons/warhead_type",
     "sim/cockpit2/engine/actuators/fire_extinguisher_on",
     "sim/cockpit2/annunciators/engine_fires",
-    "sim/operation/failures/rel_apu_fire",
-    "sim/weapons/mis_thrust3"
-])
-Params.__str__ = to_str
+    "sim/weapons/mis_thrust3",
+    "sim/cockpit/engine/APU_switch",
 
-
-Failures = Enum('XplaneFailures', [
+    # Failures
     "sim/operation/failures/rel_engfir0",
     "sim/operation/failures/rel_engfla0",
+    "sim/operation/failures/rel_apu_fire",
 ])
-Failures.__str__ = to_str
+Params.__str__ = to_str
 
 
 Commands = Enum('XplaneCommands', [
@@ -153,4 +151,4 @@ async def connect_to_xplane(server_address, server_port, on_new_data_callback, o
     on_new_xp_data_exception_callback = on_data_exception_callback
     xp_reader, xp_writer = await asyncio.open_connection(server_address, server_port)
 
-    xp_reader_task = asyncio.create_task(handle_read())    
+    xp_reader_task = sane_tasks.spawn(handle_read())    
