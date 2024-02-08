@@ -58,6 +58,8 @@ class TwoStateButton:
         elif state == 1:
             await cls.set_enabled(False)
 
+        
+
 
 class Indicator:
     @classmethod

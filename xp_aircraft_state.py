@@ -26,9 +26,8 @@ class ACState:
         cls.initial_params = {}
         cls._data_callbacks = []
 
-
     # TODO: add reset method to cancel all pending tasks !!! 
-
+    # or do i need to clear _data_callbacks only?
 
     @classmethod
     def update_data_callbacks(cls):

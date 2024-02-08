@@ -53,14 +53,6 @@ class APUFireProtection(System):
         # Apu fire protection system automatically closes apu fsov
         await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 1)
 
-        def apu_disch_pressed(ac_state: xp_ac.ACState):
-            dish_pressed = xp_ac.ACState.curr_params[xp.Params["sim/weapons/mis_thrust3"]][4]
-            if dish_pressed:
-                return True
-
-        # wait until user presses apu extinguisher button 
-        # await xp_ac.ACState.data_condition(apu_disch_pressed)
-
         # wait until user presses apu extinguisher button 
         await xp_ac.ACState.wait_until_parameter_condition(xp.Params["sim/weapons/mis_thrust3"], lambda p: p[4] == 1)
 
