@@ -31,13 +31,18 @@ class OverheadPanel(metaclass=Custom):
 
 
 class TwoStateButton:
+    dataref: xp.Params = None
+    index: int = None
+    enabled_val = "1"
+    disabled_val = "0"
+
     @classmethod
     async def on_enabled(cls):
-        pass
+        await xp.set_param(cls.dataref, cls.enabled_val)
 
     @classmethod
     async def on_disabled(cls):
-        pass
+        await xp.set_param(cls.dataref, cls.disabled_val)
     
     @classmethod
     async def set_enabled(cls, on=True):
@@ -48,7 +53,23 @@ class TwoStateButton:
 
     @classmethod
     def get_state(cls):
-        pass
+        if xp_ac.ACState.param_available(cls.dataref):
+            val = xp_ac.ACState.curr_params[cls.dataref]
+            if cls.index is not None:
+                return val[cls.index]
+            else:
+                return val
+    
+    @classmethod
+    async def wait_state(cls, val):
+        def condition(param_val):
+            if cls.index is None:
+                return param_val == val
+            else:
+                return param_val[cls.index] == val
+
+        await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
+
 
     @classmethod
     async def click(cls):
@@ -58,79 +79,114 @@ class TwoStateButton:
         elif state == 1:
             await cls.set_enabled(False)
 
-        
-
 
 class Indicator:
+    dataref: xp.Params = None
+    index = None
+
     @classmethod
     def get_state(cls):
-        pass
+        if xp_ac.ACState.param_available(cls.dataref):
+            val = xp_ac.ACState.curr_params[cls.dataref]
+            if cls.index is not None:
+                return val[cls.index]
+            else:
+                return val
 
 
 @overhead_button("firebutton_1")
 class firebutton_1(TwoStateButton):
-    @classmethod
-    async def on_enabled(cls):
-        await xp.set_param(xp.Params["sim/weapons/warhead_type"], "[,,,,1]" )
-
-    @classmethod
-    async def on_disabled(cls):
-        await xp.set_param(xp.Params["sim/weapons/warhead_type"], "[,,,,0]" )
-
-    @classmethod
-    def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/weapons/warhead_type"]):
-            return xp_ac.ACState.curr_params[xp.Params["sim/weapons/warhead_type"]][4]
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    index = 4
+    enabled_val = "[,,,,1]"
+    disabled_val = "[,,,,0]"
 
 
 @overhead_button("fireindicator_1")
 class fireindicator_1(Indicator):
-    @classmethod
-    def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/annunciators/engine_fires"]):
-            return xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/annunciators/engine_fires"]][0]
+    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
+    index = 0
 
 
 @overhead_button("disch_11")
 class disch_11(TwoStateButton):
-    @classmethod
-    async def on_enabled(cls):
-        await xp.set_param(xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"], "[1]" )
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 0
+    enabled_val = "[1]"
+    disabled_val = "[0]"
 
-    @classmethod
-    async def on_disabled(cls):
-        await xp.set_param(xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"], "[0]" )
-
-    @classmethod
-    def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"]):
-            return xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"]][0]
 
 disch_12 = disch_11
 overhead_button("disch_12")(disch_12)
 
 @overhead_button("fire_apu_indicator")
 class fire_apu_indicator(Indicator):
-    @classmethod
-    def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
-            return xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]]
+    dataref: xp.Params = xp.Params["sim/operation/failures/rel_apu_fire"]
+
 
 @overhead_button("apu_disch")
 class apu_disch(TwoStateButton):
-    @classmethod
-    async def on_enabled(cls):
-        await xp.set_param(xp.Params["sim/weapons/mis_thrust3"], "[,,,,1]" )
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 4
+    enabled_val = "[,,,,1]"
+    disabled_val = "[,,,,0]"
 
-    @classmethod
-    async def on_disabled(cls):
-        await xp.set_param(xp.Params["sim/weapons/mis_thrust3"], "[,,,,0]" )
 
-    @classmethod
-    def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/weapons/mis_thrust3"]):
-            return xp_ac.ACState.curr_params[xp.Params["sim/weapons/mis_thrust3"]][4]
+@overhead_button("fire_apu_closed_indicator")
+class fire_apu_closed_indicator(Indicator):
+    dataref: xp.Params = xp.Params["sim/cockpit/engine/APU_switch"]
 
+
+@overhead_button("firebutton_2")
+class firebutton_2(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    index = 5
+    enabled_val = "[,,,,,1]"
+    disabled_val = "[,,,,,0]"
+
+
+@overhead_button("fireindicator_2")
+class fireindicator_2(Indicator):
+    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
+    index = 1
+
+
+@overhead_button("disch_21")
+class disch_21(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 1
+    enabled_val = "[,1]"
+    disabled_val = "[,0]"
+
+
+disch_22 = disch_21
+overhead_button("disch_22")(disch_22)
+
+
+@overhead_button("firebutton_3")
+class firebutton_3(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    index = 6
+    enabled_val = "[,,,,,,1]"
+    disabled_val = "[,,,,,,0]"
+
+
+@overhead_button("fireindicator_3")
+class fireindicator_3(Indicator):
+    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
+    index = 2
+
+
+@overhead_button("disch_31")
+class disch_31(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 2
+    enabled_val = "[,,1]"
+    disabled_val = "[,,0]"
+
+
+disch_32 = disch_31
+overhead_button("disch_32")(disch_32)
 
 receive_task = None
 send_task = None
@@ -159,6 +215,15 @@ hardware_panel_items_send = OrderedDict(
     disch_12=3,
     apu_disch=4,
     fire_apu_indicator=5,
+    fire_apu_closed_indicator=6,
+    firebutton_2=7,
+    fireindicator_2=8,
+    disch_21=9,
+    disch_22=10,
+    firebutton_3=11,
+    fireindicator_3=12,
+    disch_31=13,
+    disch_32=14
 )
 
 button_names = list(hardware_panel_items_receive.keys())

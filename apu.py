@@ -3,6 +3,7 @@ import asyncio
 import xp_aircraft_state as xp_ac
 import xplane as xp
 import sane_tasks
+import overhead_panel as op
 
 
 class System:
@@ -48,13 +49,15 @@ class APUFireProtection(System):
 
     @classmethod
     async def system_logic_task(cls):
-        await asyncio.sleep(1)
+        await asyncio.sleep(2)
 
         # Apu fire protection system automatically closes apu fsov
         await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 1)
 
         # wait until user presses apu extinguisher button 
-        await xp_ac.ACState.wait_until_parameter_condition(xp.Params["sim/weapons/mis_thrust3"], lambda p: p[4] == 1)
+        await op.apu_disch.wait_state(1)
+
+        await asyncio.sleep(2)
 
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
