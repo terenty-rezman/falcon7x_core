@@ -1,0 +1,73 @@
+import asyncio
+
+import xp_aircraft_state as xp_ac
+import xplane as xp
+import sane_tasks
+import overhead_panel.fire_panel_items as fp 
+
+from aircraft_systems.system_base import System
+
+
+class APUFireProtection(System):
+    @classmethod
+    async def start_condition(cls):
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
+            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]] == 6:
+                return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        await asyncio.sleep(2)
+
+        # Apu fire protection system automatically closes apu fsov
+        await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 1)
+
+        # wait until user presses apu extinguisher button 
+        await fp.apu_disch.wait_state(1)
+
+        await asyncio.sleep(2)
+
+        # fire has been succesfully extinguished
+        failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+        await xp.set_param(failure, 0)
+        await xp_ac.ACState.wait_until_parameter_condition(failure, lambda p: p == 0)
+
+
+class RearCompFireProtection(System):
+    @classmethod
+    async def start_condition(cls):
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_engfir3"]):
+            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_engfir3"]] == 6:
+                return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        # wait until user presses apu extinguisher button 
+        await fp.firerearcomp_button.wait_state(1)
+
+        await asyncio.sleep(2)
+
+        # fire has been succesfully extinguished
+        failure = xp.Params["sim/operation/failures/rel_engfir3"]
+        await xp.set_param(failure, 0)
+        await xp_ac.ACState.wait_until_parameter_condition(failure, lambda p: p == 0)
+
+
+class BagCompFireProtection(System):
+    @classmethod
+    async def start_condition(cls):
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_engfir4"]):
+            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_engfir4"]] == 6:
+                return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        # wait until user presses apu extinguisher button 
+        await fp.firebagcomp_button.wait_state(1)
+
+        await asyncio.sleep(2)
+
+        # fire has been succesfully extinguished
+        failure = xp.Params["sim/operation/failures/rel_engfir4"]
+        await xp.set_param(failure, 0)
+        await xp_ac.ACState.wait_until_parameter_condition(failure, lambda p: p == 0)

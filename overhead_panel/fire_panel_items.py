@@ -1,5 +1,6 @@
 from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
 import xplane as xp
+import xp_aircraft_state as xp_ac
 
 
 @add_to_overhead_panel("firebutton_1")
@@ -95,3 +96,41 @@ class disch_31(TwoStateButton):
 
 disch_32 = disch_31
 add_to_overhead_panel("disch_32")(disch_32)
+
+
+@add_to_overhead_panel("firerearcomp_button")
+class firerearcomp_button(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
+    index = 7
+    enabled_val = "[,,,,,,,1]"
+    disabled_val = "[,,,,,,,0]"
+
+
+@add_to_overhead_panel("firerearcomp_indicator")
+class firerearcomp_indicator(Indicator):
+    dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir3"]
+
+    @classmethod
+    def get_state(cls):
+        if xp_ac.ACState.param_available(cls.dataref):
+            val = xp_ac.ACState.curr_params[cls.dataref]
+            return 1 if val == 6 else 0
+
+
+@add_to_overhead_panel("firebagcomp_button")
+class firebagcomp_button(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
+    index = 6
+    enabled_val = "[,,,,,,1]"
+    disabled_val = "[,,,,,,0]"
+
+
+@add_to_overhead_panel("firebagcomp_indicator")
+class firebagcomp_indicator(Indicator):
+    dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir4"]
+
+    @classmethod
+    def get_state(cls):
+        if xp_ac.ACState.param_available(cls.dataref):
+            val = xp_ac.ACState.curr_params[cls.dataref]
+            return 1 if val == 6 else 0

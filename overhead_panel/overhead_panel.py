@@ -105,8 +105,8 @@ hardware_panel_items_receive = OrderedDict(
     firebutton_2=1,
     firebutton_3=2,
     apu_disch=3,
-    firerearcomp=4,
-    firebagcomp=5,
+    firerearcomp_button=4,
+    firebagcomp_button=5,
     disch_11=6,
     disch_12=7,
     disch_21=8,
@@ -130,7 +130,11 @@ hardware_panel_items_send = OrderedDict(
     firebutton_3=11,
     fireindicator_3=12,
     disch_31=13,
-    disch_32=14
+    disch_32=14,
+    firerearcomp_button=16,
+    firerearcomp_indicator=17,
+    firebagcomp_button=19,
+    firebagcomp_indicator=18,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
@@ -201,4 +205,4 @@ async def run_send_state_task():
     send_task = sane_tasks.spawn(send_state_task(remote))    
 
 
-from overhead_panel import fire_panel
+from overhead_panel import fire_panel_items

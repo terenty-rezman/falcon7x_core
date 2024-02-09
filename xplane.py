@@ -25,13 +25,17 @@ Params = Enum('XplaneParams', [
     "sim/weapons/warhead_type",
     "sim/cockpit2/engine/actuators/fire_extinguisher_on",
     "sim/cockpit2/annunciators/engine_fires",
-    "sim/weapons/mis_thrust3",
+    "sim/weapons/mis_thrust2",
     "sim/cockpit/engine/APU_switch",
 
     # Failures
-    "sim/operation/failures/rel_engfir0",
+    "sim/operation/failures/rel_engfir0", # engine 1 fire
+
+    "sim/operation/failures/rel_engfir3", # fire rear comp
+    "sim/operation/failures/rel_engfir4", # fire bag comp
+
     "sim/operation/failures/rel_engfla0",
-    "sim/operation/failures/rel_apu_fire",
+    "sim/operation/failures/rel_apu_fire", # apu fire
 ])
 Params.__str__ = to_str
 

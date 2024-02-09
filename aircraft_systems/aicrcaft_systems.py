@@ -1,9 +1,11 @@
-from apu import APUFireProtection
+from aircraft_systems.fire_protection import APUFireProtection, RearCompFireProtection, BagCompFireProtection
 
 
 class Systems:
     all_systems = [
-        APUFireProtection
+        APUFireProtection,
+        RearCompFireProtection,
+        BagCompFireProtection
     ]
 
     @classmethod
