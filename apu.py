@@ -3,7 +3,7 @@ import asyncio
 import xp_aircraft_state as xp_ac
 import xplane as xp
 import sane_tasks
-import overhead_panel as op
+import overhead_panel.overhead_panel as op
 
 
 class System:

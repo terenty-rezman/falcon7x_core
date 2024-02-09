@@ -9,8 +9,8 @@ from joystick import Joystick
 from scenario import Scenario
 
 import xplane as xp
-from overhead_panel import OverheadPanel
-import overhead_panel as op
+from overhead_panel.overhead_panel import OverheadPanel
+import overhead_panel.overhead_panel as op
 import util
 
 

@@ -9,7 +9,7 @@ from aioudp import open_local_endpoint, open_remote_endpoint
 import sane_tasks
 
 
-def overhead_button(name):
+def add_to_overhead_panel(name):
     def add_button(cls):
         OverheadPanel.buttons.setdefault(name, cls)
         return cls
@@ -56,7 +56,8 @@ class TwoStateButton:
         if xp_ac.ACState.param_available(cls.dataref):
             val = xp_ac.ACState.curr_params[cls.dataref]
             if cls.index is not None:
-                return val[cls.index]
+                if len(val):
+                    return val[cls.index]
             else:
                 return val
     
@@ -93,100 +94,6 @@ class Indicator:
             else:
                 return val
 
-
-@overhead_button("firebutton_1")
-class firebutton_1(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
-    index = 4
-    enabled_val = "[,,,,1]"
-    disabled_val = "[,,,,0]"
-
-
-@overhead_button("fireindicator_1")
-class fireindicator_1(Indicator):
-    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
-    index = 0
-
-
-@overhead_button("disch_11")
-class disch_11(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
-    index = 0
-    enabled_val = "[1]"
-    disabled_val = "[0]"
-
-
-disch_12 = disch_11
-overhead_button("disch_12")(disch_12)
-
-@overhead_button("fire_apu_indicator")
-class fire_apu_indicator(Indicator):
-    dataref: xp.Params = xp.Params["sim/operation/failures/rel_apu_fire"]
-
-
-@overhead_button("apu_disch")
-class apu_disch(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
-    index = 4
-    enabled_val = "[,,,,1]"
-    disabled_val = "[,,,,0]"
-
-
-@overhead_button("fire_apu_closed_indicator")
-class fire_apu_closed_indicator(Indicator):
-    dataref: xp.Params = xp.Params["sim/cockpit/engine/APU_switch"]
-
-
-@overhead_button("firebutton_2")
-class firebutton_2(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
-    index = 5
-    enabled_val = "[,,,,,1]"
-    disabled_val = "[,,,,,0]"
-
-
-@overhead_button("fireindicator_2")
-class fireindicator_2(Indicator):
-    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
-    index = 1
-
-
-@overhead_button("disch_21")
-class disch_21(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
-    index = 1
-    enabled_val = "[,1]"
-    disabled_val = "[,0]"
-
-
-disch_22 = disch_21
-overhead_button("disch_22")(disch_22)
-
-
-@overhead_button("firebutton_3")
-class firebutton_3(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
-    index = 6
-    enabled_val = "[,,,,,,1]"
-    disabled_val = "[,,,,,,0]"
-
-
-@overhead_button("fireindicator_3")
-class fireindicator_3(Indicator):
-    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
-    index = 2
-
-
-@overhead_button("disch_31")
-class disch_31(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
-    index = 2
-    enabled_val = "[,,1]"
-    disabled_val = "[,,0]"
-
-
-disch_32 = disch_31
-overhead_button("disch_32")(disch_32)
 
 receive_task = None
 send_task = None
@@ -229,7 +136,7 @@ hardware_panel_items_send = OrderedDict(
 button_names = list(hardware_panel_items_receive.keys())
 buttons_state_received_bytes = bytes(len(button_names))
 
-panel_state_send_bytes = array.array('B', [0] * len(OverheadPanel.buttons))
+panel_state_send_bytes = array.array('B', [0] * len(hardware_panel_items_send))
 
 
 async def pressed_calback(button_id, state):
@@ -292,3 +199,6 @@ async def run_send_state_task():
 
     global send_task
     send_task = sane_tasks.spawn(send_state_task(remote))    
+
+
+from overhead_panel import fire_panel
