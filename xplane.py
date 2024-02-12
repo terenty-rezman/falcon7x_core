@@ -28,6 +28,15 @@ Params = Enum('XplaneParams', [
     "sim/weapons/mis_thrust2",
     "sim/cockpit/engine/APU_switch",
 
+    "sim/cockpit2/controls/speedbrake_ratio", # flight control - airbrake auto
+    "sim/cockpit2/switches/artificial_stability_on", # fcs engage norm
+    "sim/cockpit2/switches/yaw_damper_on", # fcs engage stby
+    "sim/cockpit2/controls/nosewheel_steer_on", # fcs steering
+
+    "sim/cockpit2/electrical/APU_generator_on", # apu master
+    "sim/cockpit2/electrical/APU_N1_percent", # apu start stop
+    "sim/cockpit2/electrical/APU_starter_switch", # apu start stop
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 
@@ -44,7 +53,9 @@ Commands = Enum('XplaneCommands', [
     "sim/operation/toggle_main_menu",
     "sim/view/forward_with_nothing", # 1st person camera with nothing
     "sim/operation/reload_aircraft",
-    "sim/operation/fix_all_systems"
+    "sim/operation/fix_all_systems",
+    "sim/electrical/APU_start",
+    "sim/electrical/APU_off",
 ])
 Commands.__str__ = to_str
 
@@ -84,6 +95,11 @@ async def load_sit(name):
 async def run_command_once(cmd):
     await send_string(xp_writer, f"cmd once {cmd}")
 
+async def begin_command(cmd):
+    await send_string(xp_writer, f"cmd begin {cmd}")
+
+async def end_command(cmd):
+    await send_string(xp_writer, f"cmd end {cmd}")
 
 async def read_line(reader) -> str:
     return await reader.readline()

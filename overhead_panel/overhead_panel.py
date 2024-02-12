@@ -112,7 +112,13 @@ hardware_panel_items_receive = OrderedDict(
     disch_21=8,
     disch_22=9,
     disch_31=10,
-    disch_32=11
+    disch_32=11,
+    airbrake_auto=12,
+    fcs_engage_norm=13,
+    fcs_engage_stby=14,
+    fcs_steering=15,
+    apu_master=16,
+    apu_start_stop=17,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -133,8 +139,14 @@ hardware_panel_items_send = OrderedDict(
     disch_32=14,
     firerearcomp_button=16,
     firerearcomp_indicator=17,
-    firebagcomp_button=19,
-    firebagcomp_indicator=18,
+    firebagcomp_button=18,
+    firebagcomp_indicator=19,
+    airbrake_auto=20,
+    fcs_engage_norm=21,
+    fcs_engage_stby=22,
+    fcs_steering=23,
+    apu_master=24,
+    apu_start_stop=25,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
@@ -206,3 +218,5 @@ async def run_send_state_task():
 
 
 from overhead_panel import fire_panel_items
+from overhead_panel import flight_control_items
+from overhead_panel import engines_apu
