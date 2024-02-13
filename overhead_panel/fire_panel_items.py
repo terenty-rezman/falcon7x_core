@@ -1,6 +1,7 @@
 from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
 import xplane as xp
 import xp_aircraft_state as xp_ac
+import util
 
 
 @add_to_overhead_panel("firebutton_1")
@@ -44,6 +45,21 @@ class apu_disch(TwoStateButton):
 @add_to_overhead_panel("fire_apu_closed_indicator")
 class fire_apu_closed_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit/engine/APU_switch"]
+    blink = util.blink_anim(0.7)
+
+    @classmethod
+    def get_indication(cls):
+        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
+            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]]:
+                if xp_ac.ACState.param_available(cls.dataref):
+                    if xp_ac.ACState.curr_params[cls.dataref] == 0:
+                        return next(cls.blink)
+                    else:
+                        return 1
+            return 0
+
+
+
 
 
 @add_to_overhead_panel("firebutton_2")

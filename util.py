@@ -1,3 +1,5 @@
+import time
+
 from xp_aircraft_state import ACState
 import xplane as xp
 
@@ -40,3 +42,15 @@ async def request_all_data():
         await xp.subscribe_to_param(f)
 
     await ACState.wait_until_param_available("sim/time/total_running_time_sec")
+
+
+def blink_anim(every_period_sec: float):
+    start = time.time()
+    on = True
+    while True:
+        end = time.time()
+        if end - start >= every_period_sec:
+            start = time.time()
+            on = not on
+        
+        yield on

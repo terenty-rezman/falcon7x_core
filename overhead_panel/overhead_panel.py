@@ -62,6 +62,13 @@ class TwoStateButton:
                 return val
     
     @classmethod
+    def get_indication(cls):
+        """ для зажигания статусов на hardware панели """
+        """ 1 - light indication; 0 - dont light indication """
+        return cls.get_state()
+
+    
+    @classmethod
     async def wait_state(cls, val):
         def condition(param_val):
             if cls.index is None:
@@ -93,6 +100,12 @@ class Indicator:
                 return val[cls.index]
             else:
                 return val
+
+    @classmethod
+    def get_indication(cls):
+        """ для зажигания статусов на hardware панели """
+        """ 1 - light indication; 0 - dont light indication """
+        return cls.get_state()
 
 
 receive_task = None
@@ -199,7 +212,7 @@ async def send_state_task(remote):
         for i, id in enumerate(hardware_panel_items_send.keys()):
             btn = OverheadPanel.buttons.get(id)
             if btn:
-                state = btn.get_state()
+                state = btn.get_indication()
                 if state is not None:
                     panel_state_send_bytes[i] = state
                     updated = True

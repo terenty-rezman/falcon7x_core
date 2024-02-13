@@ -17,7 +17,7 @@ class APUFireProtection(System):
 
     @classmethod
     async def system_logic_task(cls):
-        await asyncio.sleep(2)
+        await asyncio.sleep(3)
 
         # Apu fire protection system automatically closes apu fsov
         await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 1)

@@ -1,9 +1,13 @@
 import asyncio
+import time
 
 from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
 import xplane as xp
 import xp_aircraft_state as xp_ac
+import util
 
+
+        
 
 @add_to_overhead_panel("apu_master")
 class apu_master(TwoStateButton):
@@ -12,6 +16,8 @@ class apu_master(TwoStateButton):
 
 @add_to_overhead_panel("apu_start_stop")
 class apu_start_stop(TwoStateButton):
+    blink = util.blink_anim(0.7)
+
     @classmethod
     async def on_enabled(cls):
         if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
@@ -25,16 +31,13 @@ class apu_start_stop(TwoStateButton):
         await xp.run_command_once(xp.Commands["sim/electrical/APU_off"])
 
     @classmethod
-    async def click(cls):
+    def get_state(cls):
         if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/electrical/APU_starter_switch"]):
             val = xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/electrical/APU_starter_switch"]]
-            if val == 0:
-                await cls.set_enabled(True) 
-            elif val == 1:
-                await cls.set_enabled(False)
+            return val
 
     @classmethod
-    def get_state(cls):
+    def get_indication(cls):
         param = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
         if xp_ac.ACState.param_available(param):
@@ -42,10 +45,10 @@ class apu_start_stop(TwoStateButton):
 
             if val < 5:
                 return 0 
-            elif val > 90:
+            elif val > 98:
                 return 1
             # blink animation
-            elif (val // 10) % 2 == 0:
-                return 0
-            else: 
+            elif next(cls.blink):
                 return 1
+            else: 
+                return 0
