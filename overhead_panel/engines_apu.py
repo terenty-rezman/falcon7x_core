@@ -20,11 +20,10 @@ class apu_start_stop(TwoStateButton):
 
     @classmethod
     async def on_enabled(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
-            if xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/electrical/APU_generator_on"]]:
-                await xp.begin_command(xp.Commands["sim/electrical/APU_start"])
-                await asyncio.sleep(0.1)
-                await xp.end_command(xp.Commands["sim/electrical/APU_start"])
+        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
+            await xp.begin_command(xp.Commands["sim/electrical/APU_start"])
+            await asyncio.sleep(0.1)
+            await xp.end_command(xp.Commands["sim/electrical/APU_start"])
 
     @classmethod
     async def on_disabled(cls):
@@ -32,23 +31,21 @@ class apu_start_stop(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/cockpit2/electrical/APU_starter_switch"]):
-            val = xp_ac.ACState.curr_params[xp.Params["sim/cockpit2/electrical/APU_starter_switch"]]
-            return val
+        return xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
 
     @classmethod
     def get_indication(cls):
         param = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
-        if xp_ac.ACState.param_available(param):
-            val = xp_ac.ACState.curr_params[param]
+        if (val := xp_ac.ACState.get_curr_param_if_available(param)) is None:
+            return
 
-            if val < 5:
-                return 0 
-            elif val > 98:
-                return 1
-            # blink animation
-            elif next(cls.blink):
-                return 1
-            else: 
-                return 0
+        if val < 5:
+            return 0 
+        elif val > 98:
+            return 1
+        # blink animation
+        elif next(cls.blink):
+            return 1
+        else: 
+            return 0

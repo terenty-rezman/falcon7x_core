@@ -11,9 +11,8 @@ from aircraft_systems.system_base import System
 class APUFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
-            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]] == 6:
-                return True
+        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
+            return True
 
     @classmethod
     async def system_logic_task(cls):
@@ -36,9 +35,8 @@ class APUFireProtection(System):
 class RearCompFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_engfir3"]):
-            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_engfir3"]] == 6:
-                return True
+        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_engfir3"]) == 6:
+            return True
 
     @classmethod
     async def system_logic_task(cls):
@@ -56,9 +54,8 @@ class RearCompFireProtection(System):
 class BagCompFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_engfir4"]):
-            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_engfir4"]] == 6:
-                return True
+        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_engfir4"]) == 6:
+            return True
 
     @classmethod
     async def system_logic_task(cls):

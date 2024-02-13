@@ -12,10 +12,8 @@ class airbrake_auto(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is not None:
             return 1 if val == 0 else 0
-
 
 
 @add_to_overhead_panel("fcs_engage_norm")
@@ -27,9 +25,9 @@ class fcs_engage_norm(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            return 1 if val == 0 else 0
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+        return 1 if val == 0 else 0
 
 
 @add_to_overhead_panel("fcs_engage_stby")
@@ -41,9 +39,9 @@ class fcs_engage_stby(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            return 1 if val == 0 else 0
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+        return 1 if val == 0 else 0
 
 
 @add_to_overhead_panel("fcs_steering")
@@ -55,6 +53,6 @@ class fcs_steering(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            return 1 if val == 0 else 0
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+        return 1 if val == 0 else 0

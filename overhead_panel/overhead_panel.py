@@ -53,13 +53,14 @@ class TwoStateButton:
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            if cls.index is not None:
-                if len(val):
-                    return val[cls.index]
-            else:
-                return val
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+
+        if cls.index is not None:
+            if len(val):
+                return val[cls.index]
+        else:
+            return val
     
     @classmethod
     def get_indication(cls):
@@ -94,12 +95,13 @@ class Indicator:
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            if cls.index is not None:
-                return val[cls.index]
-            else:
-                return val
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+
+        if cls.index is not None:
+            return val[cls.index]
+        else:
+            return val
 
     @classmethod
     def get_indication(cls):

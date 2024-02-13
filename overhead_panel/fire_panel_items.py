@@ -49,17 +49,13 @@ class fire_apu_closed_indicator(Indicator):
 
     @classmethod
     def get_indication(cls):
-        if xp_ac.ACState.param_available(xp.Params["sim/operation/failures/rel_apu_fire"]):
-            if xp_ac.ACState.curr_params[xp.Params["sim/operation/failures/rel_apu_fire"]]:
-                if xp_ac.ACState.param_available(cls.dataref):
-                    if xp_ac.ACState.curr_params[cls.dataref] == 0:
-                        return next(cls.blink)
-                    else:
-                        return 1
-            return 0
-
-
-
+        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
+            if xp_ac.ACState.get_curr_param_if_available(cls.dataref) == 0:
+                # blink animation
+                return next(cls.blink)
+            else:
+                return 1
+        return 0
 
 
 @add_to_overhead_panel("firebutton_2")
@@ -128,9 +124,9 @@ class firerearcomp_indicator(Indicator):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            return 1 if val == 6 else 0
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+        return 1 if val == 6 else 0
 
 
 @add_to_overhead_panel("firebagcomp_button")
@@ -147,6 +143,6 @@ class firebagcomp_indicator(Indicator):
 
     @classmethod
     def get_state(cls):
-        if xp_ac.ACState.param_available(cls.dataref):
-            val = xp_ac.ACState.curr_params[cls.dataref]
-            return 1 if val == 6 else 0
+        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+            return
+        return 1 if val == 6 else 0
