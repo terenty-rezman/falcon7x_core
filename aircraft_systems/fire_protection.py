@@ -3,7 +3,7 @@ import asyncio
 import xp_aircraft_state as xp_ac
 import xplane as xp
 import sane_tasks
-import overhead_panel.fire_panel_items as fp 
+import overhead_panel.fire_panel as fp 
 
 from aircraft_systems.system_base import System
 

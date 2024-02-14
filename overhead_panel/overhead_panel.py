@@ -135,6 +135,7 @@ hardware_panel_items_receive = OrderedDict(
     apu_master=16,
     apu_start_stop=17,
     shutoff_a1=18,
+    shutoff_a2=19,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -164,6 +165,7 @@ hardware_panel_items_send = OrderedDict(
     apu_master=24,
     apu_start_stop=25,
     shutoff_a1=26,
+    shutoff_a2=27,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
@@ -234,7 +236,7 @@ async def run_send_state_task():
     send_task = sane_tasks.spawn(send_state_task(remote))    
 
 
-from overhead_panel import fire_panel_items
-from overhead_panel import flight_control_items
+from overhead_panel import fire_panel
+from overhead_panel import flight_control
 from overhead_panel import engines_apu
 from overhead_panel import hydraulics
