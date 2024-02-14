@@ -9,12 +9,12 @@ import util
 
         
 
-@add_to_overhead_panel("apu_master")
+@add_to_overhead_panel
 class apu_master(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/APU_generator_on"]
 
 
-@add_to_overhead_panel("apu_start_stop")
+@add_to_overhead_panel
 class apu_start_stop(TwoStateButton):
     blink = util.blink_anim(0.7)
 

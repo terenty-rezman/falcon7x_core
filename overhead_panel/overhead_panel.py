@@ -9,11 +9,9 @@ from aioudp import open_local_endpoint, open_remote_endpoint
 import sane_tasks
 
 
-def add_to_overhead_panel(name):
-    def add_button(cls):
-        OverheadPanel.buttons.setdefault(name, cls)
-        return cls
-    return add_button
+def add_to_overhead_panel(cls):
+    OverheadPanel.buttons.setdefault(cls.__name__, cls)
+    return cls
 
 
 class Custom(type):
@@ -28,6 +26,10 @@ class OverheadPanel(metaclass=Custom):
     async def reset_to_default_state(cls):
         await cls["firebutton_1"].set_enabled(False)
         await OverheadPanel["disch_11"].set_enabled(False)
+    
+
+def array_str(index, val):
+    return f"[{',' * index}{val}]"
 
 
 class TwoStateButton:
@@ -67,7 +69,6 @@ class TwoStateButton:
         """ для зажигания статусов на hardware панели """
         """ 1 - light indication; 0 - dont light indication """
         return cls.get_state()
-
     
     @classmethod
     async def wait_state(cls, val):
@@ -78,7 +79,6 @@ class TwoStateButton:
                 return param_val[cls.index] == val
 
         await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
-
 
     @classmethod
     async def click(cls):
@@ -134,6 +134,7 @@ hardware_panel_items_receive = OrderedDict(
     fcs_steering=15,
     apu_master=16,
     apu_start_stop=17,
+    shutoff_a1=18,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -162,6 +163,7 @@ hardware_panel_items_send = OrderedDict(
     fcs_steering=23,
     apu_master=24,
     apu_start_stop=25,
+    shutoff_a1=26,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
@@ -235,3 +237,4 @@ async def run_send_state_task():
 from overhead_panel import fire_panel_items
 from overhead_panel import flight_control_items
 from overhead_panel import engines_apu
+from overhead_panel import hydraulics

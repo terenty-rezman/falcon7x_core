@@ -1,48 +1,49 @@
-from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
+from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator, array_str
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
 
 
-@add_to_overhead_panel("firebutton_1")
+@add_to_overhead_panel
 class firebutton_1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 4
-    enabled_val = "[,,,,1]"
-    disabled_val = "[,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("fireindicator_1")
+@add_to_overhead_panel
 class fireindicator_1(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 0
 
 
-@add_to_overhead_panel("disch_11")
+@add_to_overhead_panel
 class disch_11(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 0
-    enabled_val = "[1]"
-    disabled_val = "[0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-disch_12 = disch_11
-add_to_overhead_panel("disch_12")(disch_12)
+@add_to_overhead_panel
+class disch_12(disch_11):
+    pass
 
-@add_to_overhead_panel("fire_apu_indicator")
+@add_to_overhead_panel
 class fire_apu_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_apu_fire"]
 
 
-@add_to_overhead_panel("apu_disch")
+@add_to_overhead_panel
 class apu_disch(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 4
-    enabled_val = "[,,,,1]"
-    disabled_val = "[,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("fire_apu_closed_indicator")
+@add_to_overhead_panel
 class fire_apu_closed_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit/engine/APU_switch"]
     blink = util.blink_anim(0.7)
@@ -58,67 +59,69 @@ class fire_apu_closed_indicator(Indicator):
         return 0
 
 
-@add_to_overhead_panel("firebutton_2")
+@add_to_overhead_panel
 class firebutton_2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 5
-    enabled_val = "[,,,,,1]"
-    disabled_val = "[,,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("fireindicator_2")
+@add_to_overhead_panel
 class fireindicator_2(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 1
 
 
-@add_to_overhead_panel("disch_21")
+@add_to_overhead_panel
 class disch_21(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 1
-    enabled_val = "[,1]"
-    disabled_val = "[,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-disch_22 = disch_21
-add_to_overhead_panel("disch_22")(disch_22)
+@add_to_overhead_panel
+class disch_22(disch_21):
+    pass
 
 
-@add_to_overhead_panel("firebutton_3")
+@add_to_overhead_panel
 class firebutton_3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 6
-    enabled_val = "[,,,,,,1]"
-    disabled_val = "[,,,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("fireindicator_3")
+@add_to_overhead_panel
 class fireindicator_3(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 2
 
 
-@add_to_overhead_panel("disch_31")
+@add_to_overhead_panel
 class disch_31(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 2
-    enabled_val = "[,,1]"
-    disabled_val = "[,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-disch_32 = disch_31
-add_to_overhead_panel("disch_32")(disch_32)
+@add_to_overhead_panel
+class disch_32(disch_31):
+    pass
 
 
-@add_to_overhead_panel("firerearcomp_button")
+@add_to_overhead_panel
 class firerearcomp_button(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
     index = 7
-    enabled_val = "[,,,,,,,1]"
-    disabled_val = "[,,,,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("firerearcomp_indicator")
+@add_to_overhead_panel
 class firerearcomp_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir3"]
 
@@ -129,15 +132,15 @@ class firerearcomp_indicator(Indicator):
         return 1 if val == 6 else 0
 
 
-@add_to_overhead_panel("firebagcomp_button")
+@add_to_overhead_panel
 class firebagcomp_button(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
     index = 6
-    enabled_val = "[,,,,,,1]"
-    disabled_val = "[,,,,,,0]"
+    enabled_val = array_str(index, "1")
+    disabled_val = array_str(index, "0")
 
 
-@add_to_overhead_panel("firebagcomp_indicator")
+@add_to_overhead_panel
 class firebagcomp_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir4"]
 

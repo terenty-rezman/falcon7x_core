@@ -3,7 +3,7 @@ import xplane as xp
 import xp_aircraft_state as xp_ac
 
 
-@add_to_overhead_panel("airbrake_auto")
+@add_to_overhead_panel
 class airbrake_auto(TwoStateButton):
     # vol 2 27-66
     dataref: xp.Params = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
@@ -16,7 +16,7 @@ class airbrake_auto(TwoStateButton):
             return 1 if val == 0 else 0
 
 
-@add_to_overhead_panel("fcs_engage_norm")
+@add_to_overhead_panel
 class fcs_engage_norm(TwoStateButton):
     # vol 2 27-16
     dataref: xp.Params = xp.Params["sim/cockpit2/switches/artificial_stability_on"]
@@ -30,7 +30,7 @@ class fcs_engage_norm(TwoStateButton):
         return 1 if val == 0 else 0
 
 
-@add_to_overhead_panel("fcs_engage_stby")
+@add_to_overhead_panel
 class fcs_engage_stby(TwoStateButton):
     # vol 2 27-16
     dataref: xp.Params = xp.Params["sim/cockpit2/switches/yaw_damper_on"]
@@ -44,7 +44,7 @@ class fcs_engage_stby(TwoStateButton):
         return 1 if val == 0 else 0
 
 
-@add_to_overhead_panel("fcs_steering")
+@add_to_overhead_panel
 class fcs_steering(TwoStateButton):
     # vol 2 hz gde
     dataref: xp.Params = xp.Params["sim/cockpit2/controls/nosewheel_steer_on"]
