@@ -55,7 +55,7 @@ class TwoStateButton:
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
 
         if cls.index is not None:
@@ -95,7 +95,7 @@ class Indicator:
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
 
         if cls.index is not None:

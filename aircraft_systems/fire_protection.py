@@ -11,7 +11,8 @@ from aircraft_systems.system_base import System
 class APUFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
+        # apu fire failure
+        if xp_ac.ACState.get_curr_param(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
             return True
 
     @classmethod
@@ -35,7 +36,7 @@ class APUFireProtection(System):
 class RearCompFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_engfir3"]) == 6:
+        if xp_ac.ACState.get_curr_param(xp.Params["sim/operation/failures/rel_engfir3"]) == 6:
             return True
 
     @classmethod
@@ -54,7 +55,7 @@ class RearCompFireProtection(System):
 class BagCompFireProtection(System):
     @classmethod
     async def start_condition(cls):
-        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/operation/failures/rel_engfir4"]) == 6:
+        if xp_ac.ACState.get_curr_param(xp.Params["sim/operation/failures/rel_engfir4"]) == 6:
             return True
 
     @classmethod

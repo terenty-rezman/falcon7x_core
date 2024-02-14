@@ -18,7 +18,7 @@ class apu_start_stop(TwoStateButton):
 
     @classmethod
     async def on_enabled(cls):
-        if xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
+        if xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
             await xp.begin_command(xp.Commands["sim/electrical/APU_start"])
             await asyncio.sleep(0.1)
             await xp.end_command(xp.Commands["sim/electrical/APU_start"])
@@ -29,13 +29,13 @@ class apu_start_stop(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        return xp_ac.ACState.get_curr_param_if_available(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
+        return xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
 
     @classmethod
     def get_indication(cls):
         param = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
-        if (val := xp_ac.ACState.get_curr_param_if_available(param)) is None:
+        if (val := xp_ac.ACState.get_curr_param(param)) is None:
             return
 
         if val < 5:

@@ -12,7 +12,7 @@ class airbrake_auto(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is not None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is not None:
             return 1 if val == 0 else 0
 
 
@@ -25,7 +25,7 @@ class fcs_engage_norm(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
         return 1 if val == 0 else 0
 
@@ -39,7 +39,7 @@ class fcs_engage_stby(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
         return 1 if val == 0 else 0
 
@@ -53,6 +53,6 @@ class fcs_steering(TwoStateButton):
 
     @classmethod
     def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param_if_available(cls.dataref)) is None:
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
         return 1 if val == 0 else 0
