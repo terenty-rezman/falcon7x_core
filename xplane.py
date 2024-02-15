@@ -26,6 +26,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/actuators/fire_extinguisher_on",
     "sim/cockpit2/annunciators/engine_fires",
     "sim/weapons/mis_thrust2",
+    "sim/weapons/mis_thrust3",
     "sim/cockpit/engine/APU_switch",
 
     "sim/cockpit2/controls/speedbrake_ratio", # flight control - airbrake auto
@@ -36,6 +37,8 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/electrical/APU_generator_on", # apu master
     "sim/cockpit2/electrical/APU_N1_percent", # apu start stop
     "sim/cockpit2/electrical/APU_starter_switch", # apu start stop
+
+    "sim/custom/7x/selecthyd", # backup pump hydraulics
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire

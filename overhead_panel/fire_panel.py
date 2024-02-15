@@ -25,6 +25,24 @@ class disch_11(TwoStateButton):
     enabled_val = array_str(index, "1")
     disabled_val = array_str(index, "0")
 
+    @classmethod
+    def get_indication(cls):
+        val = cls.get_state()
+
+        if val is None:
+            return val
+
+        if firebutton_1.get_state() == 1:
+            if val == 0:
+                return 1
+            else:
+                return 2
+        else:
+            if val == 0:
+                return 0
+            else:
+                return 2 
+
 
 @add_to_overhead_panel
 class disch_12(disch_11):
@@ -80,6 +98,24 @@ class disch_21(TwoStateButton):
     enabled_val = array_str(index, "1")
     disabled_val = array_str(index, "0")
 
+    @classmethod
+    def get_indication(cls):
+        val = cls.get_state()
+
+        if val is None:
+            return val
+
+        if firebutton_2.get_state() == 1:
+            if val == 0:
+                return 1
+            else:
+                return 2
+        else:
+            if val == 0:
+                return 0
+            else:
+                return 2 
+
 
 @add_to_overhead_panel
 class disch_22(disch_21):
@@ -106,6 +142,24 @@ class disch_31(TwoStateButton):
     index = 2
     enabled_val = array_str(index, "1")
     disabled_val = array_str(index, "0")
+
+    @classmethod
+    def get_indication(cls):
+        val = cls.get_state()
+
+        if val is None:
+            return val
+
+        if firebutton_3.get_state() == 1:
+            if val == 0:
+                return 1
+            else:
+                return 2
+        else:
+            if val == 0:
+                return 0
+            else:
+                return 2 
 
 
 @add_to_overhead_panel

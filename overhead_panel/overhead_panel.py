@@ -24,34 +24,17 @@ class OverheadPanel(metaclass=Custom):
 
     @classmethod
     async def reset_to_default_state(cls):
-        await cls["firebutton_1"].set_enabled(False)
-        await OverheadPanel["disch_11"].set_enabled(False)
+        await cls["firebutton_1"].set_state(0)
+        await OverheadPanel["disch_11"].set_state(0)
     
 
 def array_str(index, val):
     return f"[{',' * index}{val}]"
 
 
-class TwoStateButton:
+class Button:
     dataref: xp.Params = None
     index: int = None
-    enabled_val = "1"
-    disabled_val = "0"
-
-    @classmethod
-    async def on_enabled(cls):
-        await xp.set_param(cls.dataref, cls.enabled_val)
-
-    @classmethod
-    async def on_disabled(cls):
-        await xp.set_param(cls.dataref, cls.disabled_val)
-    
-    @classmethod
-    async def set_enabled(cls, on=True):
-        if on:
-            await cls.on_enabled()
-        else:
-            await cls.on_disabled()
 
     @classmethod
     def get_state(cls):
@@ -82,11 +65,64 @@ class TwoStateButton:
 
     @classmethod
     async def click(cls):
+        pass
+
+
+class TwoStateButton(Button):
+    disabled_val = 0
+    enabled_val = 1
+
+    @classmethod
+    async def on_enabled(cls):
+        await xp.set_param(cls.dataref, cls.enabled_val)
+
+    @classmethod
+    async def on_disabled(cls):
+        await xp.set_param(cls.dataref, cls.disabled_val)
+    
+    @classmethod
+    async def set_state(cls, state):
+        if state:
+            await cls.on_enabled()
+        else:
+            await cls.on_disabled()
+
+    @classmethod
+    async def click(cls):
         state = cls.get_state()
         if state == 0:
-            await cls.set_enabled(True) 
+            await cls.set_state(1) 
         elif state == 1:
-            await cls.set_enabled(False)
+            await cls.set_state(0)
+
+
+class ThreeStateButton(Button):
+    state1_val = 0
+    state2_val = 1
+    state3_val = 3
+
+    @classmethod
+    async def on_state(cls, state):
+        if state == 0:
+            await xp.set_param(cls.dataref, cls.state1_val)
+        elif state == 1:
+            await xp.set_param(cls.dataref, cls.state2_val)
+        elif state == 2:
+            await xp.set_param(cls.dataref, cls.state3_val)
+    
+    @classmethod
+    async def set_state(cls, state):
+        await cls.on_state(state)
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state == 0:
+            await cls.set_state(1) 
+        elif state == 1:
+            await cls.set_state(2)
+        else:
+            await cls.set_state(0)
 
 
 class Indicator:
@@ -136,6 +172,10 @@ hardware_panel_items_receive = OrderedDict(
     apu_start_stop=17,
     shutoff_a1=18,
     shutoff_a2=19,
+    backup_pump=20,
+    shutoff_b2=21,
+    shutoff_b3=22,
+    shutoff_c2=23,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -166,6 +206,10 @@ hardware_panel_items_send = OrderedDict(
     apu_start_stop=25,
     shutoff_a1=26,
     shutoff_a2=27,
+    backup_pump=28,
+    shutoff_b2=29,
+    shutoff_b3=30,
+    shutoff_c2=31,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
