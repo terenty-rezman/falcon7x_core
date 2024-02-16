@@ -30,16 +30,6 @@ class backup_pump(ThreeStateButton):
     state2_val = 2
     state3_val = 0
 
-    @classmethod
-    def get_state(cls):
-        val = super().get_state()
-        if val == 1:
-            return 0 
-        elif val == 2:
-            return 1
-        if val == 0:
-            return 2
-
 
 @add_to_overhead_panel
 class shutoff_b2(TwoStateButton):

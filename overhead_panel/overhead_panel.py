@@ -103,26 +103,52 @@ class ThreeStateButton(Button):
 
     @classmethod
     async def on_state(cls, state):
+        val = 0
+
         if state == 0:
-            await xp.set_param(cls.dataref, cls.state1_val)
+            val = cls.state1_val
         elif state == 1:
-            await xp.set_param(cls.dataref, cls.state2_val)
+            val = cls.state2_val
         elif state == 2:
-            await xp.set_param(cls.dataref, cls.state3_val)
+            val = cls.state3_val
+
+        if cls.index is not None:
+            val = array_str(cls.index, state)
+        else:
+            val = state
+
+        await xp.set_param(cls.dataref, val)
     
     @classmethod
     async def set_state(cls, state):
         await cls.on_state(state)
+    
+    @classmethod 
+    def get_state(cls):
+        state = xp_ac.ACState.get_curr_param(cls.dataref)
+        if state is None or state == []:
+            return
+
+        if cls.index is not None:
+            state = state[cls.index]
+
+        if state == cls.state1_val:
+            return 0
+        elif state == cls.state2_val:
+            return 1
+        elif state == cls.state3_val:
+            return 2
 
     @classmethod
     async def click(cls):
         state = cls.get_state()
-        if state == 0:
-            await cls.set_state(1) 
-        elif state == 1:
-            await cls.set_state(2)
+        if state is None:
+            return
+
+        if state == 2:
+            await cls.set_state(0) 
         else:
-            await cls.set_state(0)
+            await cls.set_state(state + 1)
 
 
 class Indicator:
@@ -176,6 +202,7 @@ hardware_panel_items_receive = OrderedDict(
     shutoff_b2=21,
     shutoff_b3=22,
     shutoff_c2=23,
+    galley_master=24,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -210,6 +237,7 @@ hardware_panel_items_send = OrderedDict(
     shutoff_b2=29,
     shutoff_b3=30,
     shutoff_c2=31,
+    galley_master=32,
 )
 
 button_names = list(hardware_panel_items_receive.keys())
@@ -284,3 +312,4 @@ from overhead_panel import fire_panel
 from overhead_panel import flight_control
 from overhead_panel import engines_apu
 from overhead_panel import hydraulics
+from overhead_panel import dc_supply
