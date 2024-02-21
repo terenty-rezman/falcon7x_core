@@ -17,19 +17,22 @@ class apu_start_stop(TwoStateButton):
     blink = util.blink_anim(0.7)
 
     @classmethod
-    async def on_enabled(cls):
-        if xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
-            await xp.begin_command(xp.Commands["sim/electrical/APU_start"])
-            await asyncio.sleep(0.1)
-            await xp.end_command(xp.Commands["sim/electrical/APU_start"])
-
-    @classmethod
-    async def on_disabled(cls):
-        await xp.run_command_once(xp.Commands["sim/electrical/APU_off"])
+    async def set_state(cls, state):
+        if state == 1:
+            if xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_generator_on"]):
+                await xp.begin_command(xp.Commands["sim/electrical/APU_start"])
+                await asyncio.sleep(0.1)
+                await xp.end_command(xp.Commands["sim/electrical/APU_start"])
+        elif state == 0:
+            await xp.run_command_once(xp.Commands["sim/electrical/APU_off"])
 
     @classmethod
     def get_state(cls):
-        return xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
+        state = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
+        if state == 0:
+            return 0
+        else:
+            return 1
 
     @classmethod
     def get_indication(cls):

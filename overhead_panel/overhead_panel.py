@@ -31,113 +31,37 @@ class OverheadPanel(metaclass=Custom):
 def array_str(index, val):
     return f"[{',' * index}{val}]"
 
+class NStateButton:
+    dataref = None
+    states = []
+    index = None
 
-class Button:
-    dataref: xp.Params = None
-    index: int = None
-
-    @classmethod
-    def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
-            return
-
-        if cls.index is not None:
-            if len(val):
-                return val[cls.index]
-        else:
-            return val
-    
-    @classmethod
-    def get_indication(cls):
-        """ для зажигания статусов на hardware панели """
-        """ 1 - light indication; 0 - dont light indication """
-        return cls.get_state()
-    
-    @classmethod
-    async def wait_state(cls, val):
-        def condition(param_val):
-            if cls.index is None:
-                return param_val == val
-            else:
-                return param_val[cls.index] == val
-
-        await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
-
-    @classmethod
-    async def click(cls):
-        pass
-
-
-class TwoStateButton(Button):
-    disabled_val = 0
-    enabled_val = 1
-
-    @classmethod
-    async def on_enabled(cls):
-        await xp.set_param(cls.dataref, cls.enabled_val)
-
-    @classmethod
-    async def on_disabled(cls):
-        await xp.set_param(cls.dataref, cls.disabled_val)
-    
     @classmethod
     async def set_state(cls, state):
-        if state:
-            await cls.on_enabled()
-        else:
-            await cls.on_disabled()
-
-    @classmethod
-    async def click(cls):
-        state = cls.get_state()
-        if state == 0:
-            await cls.set_state(1) 
-        elif state == 1:
-            await cls.set_state(0)
-
-
-class ThreeStateButton(Button):
-    state1_val = 0
-    state2_val = 1
-    state3_val = 3
-
-    @classmethod
-    async def on_state(cls, state):
-        val = 0
-
-        if state == 0:
-            val = cls.state1_val
-        elif state == 1:
-            val = cls.state2_val
-        elif state == 2:
-            val = cls.state3_val
+        val = cls.states[state]
 
         if cls.index is not None:
-            val = array_str(cls.index, state)
+            val = array_str(cls.index, val)
         else:
-            val = state
+            val = val
 
         await xp.set_param(cls.dataref, val)
     
-    @classmethod
-    async def set_state(cls, state):
-        await cls.on_state(state)
-    
     @classmethod 
     def get_state(cls):
-        state = xp_ac.ACState.get_curr_param(cls.dataref)
-        if state is None or state == []:
+        val = xp_ac.ACState.get_curr_param(cls.dataref)
+        if val is None or val == []:
             return
 
         if cls.index is not None:
-            state = state[cls.index]
+            val = val[cls.index]
 
-        if state == cls.state1_val:
-            return 0
-        elif state == cls.state2_val:
-            return 1
-        elif state == cls.state3_val:
-            return 2
+        state = cls.states.index(val)
+        return state
+    
+    @classmethod
+    def get_indication(cls):
+        return cls.get_state()
 
     @classmethod
     async def click(cls):
@@ -145,31 +69,36 @@ class ThreeStateButton(Button):
         if state is None:
             return
 
-        if state == 2:
+        if state == len(cls.states) - 1:
             await cls.set_state(0) 
         else:
             await cls.set_state(state + 1)
 
+    @classmethod
+    async def wait_state(cls, state):
+        def condition(param_val):
+            curr_state = cls.get_state() 
+            return curr_state == state
 
-class Indicator:
-    dataref: xp.Params = None
-    index = None
+        await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
+
+
+class TwoStateButton(NStateButton):
+    states = [0, 1]
+
+
+class ThreeStateButton(NStateButton):
+    states = [0, 1, 2]
+
+
+class Indicator(TwoStateButton):
+    @classmethod
+    async def set_state(cls, state):
+        pass
 
     @classmethod
-    def get_state(cls):
-        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
-            return
-
-        if cls.index is not None:
-            return val[cls.index]
-        else:
-            return val
-
-    @classmethod
-    def get_indication(cls):
-        """ для зажигания статусов на hardware панели """
-        """ 1 - light indication; 0 - dont light indication """
-        return cls.get_state()
+    async def click(cls, state):
+        pass
 
 
 receive_task = None
@@ -203,6 +132,21 @@ hardware_panel_items_receive = OrderedDict(
     shutoff_b3=22,
     shutoff_c2=23,
     galley_master=24,
+    lh_master=25,
+    lh_init=26,
+    bus_tie=27,
+    rh_init=28,
+    rh_master=29,
+    cabin_master=30,
+    ext_power=31,
+    gen1=32,
+    lh_isol=33,
+    rat_reset=34,
+    rh_isol=35,
+    gen2=36,
+    gen3=37,
+    bat1=38,
+    bat2=39,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -238,6 +182,21 @@ hardware_panel_items_send = OrderedDict(
     shutoff_b3=30,
     shutoff_c2=31,
     galley_master=32,
+    lh_master=33,
+    lh_init=34,
+    bus_tie=35,
+    rh_init=36,
+    rh_master=37,
+    cabin_master=38,
+    ext_power=39,
+    gen1=40,
+    lh_isol=41,
+    rat_reset=42,
+    rh_isol=43,
+    gen2=44,
+    gen3=45,
+    bat1=46,
+    bat2=47,
 )
 
 button_names = list(hardware_panel_items_receive.keys())

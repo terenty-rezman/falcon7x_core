@@ -40,6 +40,18 @@ Params = Enum('XplaneParams', [
 
     "sim/custom/7x/selecthyd", # backup pump hydraulics
 
+    "sim/custom/7x/lhmaster", # dc supply - lh_master
+    "sim/custom/7x/lhinit", # dc supply - lh init
+    "sim/cockpit2/electrical/cross_tie", # dc supply - bus tie
+    "sim/custom/7x/rhinit", # dc supply - rh init
+    "sim/custom/7x/rhmaster", # dc supply - rh_master
+    "sim/cockpit/electrical/gpu_on", # dc supply - ext power
+    "sim/cockpit2/electrical/generator_on", # dc supply - gen 1
+    "sim/custom/7x/lhisol", # dc supply - lh isol
+    "sim/cockpit2/switches/ram_air_turbine_on", # dc supply - rat reset
+    "sim/custom/7x/rhisol", # dc supply - rh isol
+    "sim/cockpit2/electrical/battery_on", # dc supply - bat 1
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

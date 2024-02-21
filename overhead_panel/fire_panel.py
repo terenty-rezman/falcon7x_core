@@ -8,8 +8,7 @@ import util
 class firebutton_1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 4
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
+    states = [0, 1]
 
 
 @add_to_overhead_panel
@@ -22,8 +21,6 @@ class fireindicator_1(Indicator):
 class disch_11(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 0
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
     @classmethod
     def get_indication(cls):
@@ -57,8 +54,6 @@ class fire_apu_indicator(Indicator):
 class apu_disch(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 4
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
 
 @add_to_overhead_panel
@@ -81,8 +76,6 @@ class fire_apu_closed_indicator(Indicator):
 class firebutton_2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 5
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
 
 @add_to_overhead_panel
@@ -95,8 +88,6 @@ class fireindicator_2(Indicator):
 class disch_21(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 1
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
     @classmethod
     def get_indication(cls):
@@ -126,8 +117,6 @@ class disch_22(disch_21):
 class firebutton_3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 6
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
 
 @add_to_overhead_panel
@@ -140,8 +129,6 @@ class fireindicator_3(Indicator):
 class disch_31(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 2
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
     @classmethod
     def get_indication(cls):
@@ -171,8 +158,6 @@ class disch_32(disch_31):
 class firerearcomp_button(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
     index = 7
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
 
 @add_to_overhead_panel
@@ -190,8 +175,6 @@ class firerearcomp_indicator(Indicator):
 class firebagcomp_button(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
     index = 6
-    enabled_val = array_str(index, "1")
-    disabled_val = array_str(index, "0")
 
 
 @add_to_overhead_panel
