@@ -32,14 +32,19 @@ def array_str(index, val):
     return f"[{',' * index}{val}]"
 
 class NStateButton:
+    """ N states are logical states: 0, 1, 2, 3, ..., N """
+
     dataref = None
-    states = []
+    states = [] # this values are sent to x plane dref;
     index = None
 
     @classmethod
     async def set_state(cls, state):
+        """ set logical state """
+
         val = cls.states[state]
 
+        # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
         if cls.index is not None:
             val = array_str(cls.index, val)
         else:
@@ -49,6 +54,8 @@ class NStateButton:
     
     @classmethod 
     def get_state(cls):
+        """ get logical state """
+
         val = xp_ac.ACState.get_curr_param(cls.dataref)
         if val is None or val == []:
             return
@@ -76,6 +83,8 @@ class NStateButton:
 
     @classmethod
     async def wait_state(cls, state):
+        """ wait on logical state """
+
         def condition(param_val):
             curr_state = cls.get_state() 
             return curr_state == state
@@ -99,6 +108,54 @@ class Indicator(TwoStateButton):
     @classmethod
     async def click(cls, state):
         pass
+
+
+class FloatSwitch(NStateButton):
+    """ swith with continious float state """
+    """ logical state actually is int in range of [0 255] """
+    """ xp state is float in range of [float_left_most_value float_right_most_value] """
+
+    states = [i for i in range(256)] # these states are not sent to xplane
+    float_left_most_value = -1 # float value between left most and right most edge values are sent to xplane
+    float_right_most_value = 1
+
+    @classmethod
+    async def set_state(cls, state):
+        """ set logical state """
+        byte_val = cls.states[state]
+
+        # map int [0 255] to float [0.0 1.0]
+        float_val = byte_val / 255 
+
+        # map float [0.0 1.0] to [float_left_most_value float_right_most_value]
+        xp_val = (cls.float_right_most_value - cls.float_left_most_value) * float_val + cls.float_left_most_value
+
+        # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
+        if cls.index is not None:
+            xp_val = array_str(cls.index, xp_val)
+        else:
+            xp_val = xp_val
+
+        await xp.set_param(cls.dataref, xp_val)
+
+    @classmethod 
+    def get_state(cls):
+        """ get logical state """
+
+        xp_val = xp_ac.ACState.get_curr_param(cls.dataref)
+        if xp_val is None or xp_val == []:
+            return
+
+        if cls.index is not None:
+            xp_val = xp_val[cls.index]
+        
+        # map xp_val to float val [0.0 1.0]
+        float_val = (xp_val - cls.float_left_most_value) / (cls.float_right_most_value - cls.float_left_most_value)
+        # map float_val [0.0 1.0] to logical state int [0 255] 
+        byte_val = int(float_val * 255)
+        
+        logical_state = byte_val
+        return logical_state
 
 
 receive_task = None
@@ -147,6 +204,9 @@ hardware_panel_items_receive = OrderedDict(
     gen3=37,
     bat1=38,
     bat2=39,
+    aft_temp=40,
+    fwd_temp=41,
+    fwd_temp_push=42,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -197,7 +257,11 @@ hardware_panel_items_send = OrderedDict(
     gen3=45,
     bat1=46,
     bat2=47,
+    aft_temp=48,
+    fwd_temp=49,
+    fwd_temp_push=50,
 )
+
 
 button_names = list(hardware_panel_items_receive.keys())
 buttons_state_received_bytes = bytes(len(button_names))
@@ -205,15 +269,21 @@ buttons_state_received_bytes = bytes(len(button_names))
 panel_state_send_bytes = array.array('B', [0] * len(hardware_panel_items_send))
 
 
-async def pressed_calback(button_id, state):
-    print(button_id, "pressed")
-    button = OverheadPanel.buttons.get(button_id)
-    if button:
-        await button.click()
-            
+async def handle_button_state(button_id, state):
+    item = OverheadPanel.buttons.get(button_id)
 
-async def released_callback(button_id, state):
-    print(button_id, "released")
+    if item:
+        # special case for switches
+        if issubclass(item, FloatSwitch):
+            print(state)
+            await item.set_state(state)
+        else:
+            # default case - button
+            if state:
+                print(button_id, "pressed")
+                await item.click()
+            else:
+                print(button_id, "released")
 
 
 async def receive_state_task(udp_endpoint):
@@ -227,10 +297,7 @@ async def receive_state_task(udp_endpoint):
         for i, (o, n) in enumerate(zip(buttons_state_received_bytes, new_state)):
             if n != o:
                 button_id = button_names[i]
-                if n != 0:
-                    await pressed_calback(button_id, n)
-                else:
-                    await released_callback(button_id, n)
+                await handle_button_state(button_id, n)
 
         buttons_state_received_bytes = new_state
 
@@ -272,3 +339,4 @@ from overhead_panel import flight_control
 from overhead_panel import engines_apu
 from overhead_panel import hydraulics
 from overhead_panel import dc_supply
+from overhead_panel import air_conditioning

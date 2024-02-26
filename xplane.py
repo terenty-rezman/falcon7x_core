@@ -1,5 +1,7 @@
 """
 Xplane parameters, failures & commands
+
+ExtPlane plugin is used to communicate with xplane https://github.com/vranki/ExtPlane
 """
 
 import asyncio
@@ -174,6 +176,8 @@ async def disconnect():
 
 
 async def connect_to_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback):
+    """ connect to ExtPlane plugin """
+
     global xp_writer
     global xp_reader
     global xp_reader_task

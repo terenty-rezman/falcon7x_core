@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from .overhead_panel import add_to_overhead_panel, TwoStateButton, ThreeStateButton, array_str
+from .overhead_panel import add_to_overhead_panel, TwoStateButton, ThreeStateButton
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util

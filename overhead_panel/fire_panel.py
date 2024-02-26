@@ -1,4 +1,4 @@
-from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator, array_str
+from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
