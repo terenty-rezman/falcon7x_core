@@ -207,6 +207,9 @@ hardware_panel_items_receive = OrderedDict(
     aft_temp=40,
     fwd_temp=41,
     fwd_temp_push=42,
+    crew_temp=43,
+    crew_temp_push=44,
+    crew_ratio=45,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -260,6 +263,9 @@ hardware_panel_items_send = OrderedDict(
     aft_temp=48,
     fwd_temp=49,
     fwd_temp_push=50,
+    crew_temp=51,
+    crew_temp_push=52,
+    crew_ratio=53,
 )
 
 
