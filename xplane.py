@@ -54,6 +54,8 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/rhisol", # dc supply - rh isol
     "sim/cockpit2/electrical/battery_on", # dc supply - bat 1
 
+    "sim/weapons/target_index", # air condition - pack
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

@@ -110,6 +110,10 @@ class Indicator(TwoStateButton):
         pass
 
 
+class DiscreteSwitch(NStateButton):
+    pass
+
+
 class FloatSwitch(NStateButton):
     """ swith with continious float state """
     """ logical state actually is int in range of [0 255] """
@@ -210,6 +214,10 @@ hardware_panel_items_receive = OrderedDict(
     crew_temp=43,
     crew_temp_push=44,
     crew_ratio=45,
+    gnd_vent=46,
+    pack=47,
+    bag_isol=48,
+    xbleed_ecs=49,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -266,6 +274,9 @@ hardware_panel_items_send = OrderedDict(
     crew_temp=51,
     crew_temp_push=52,
     crew_ratio=53,
+    gnd_vent=54,
+    bag_isol=55,
+    xbleed_ecs=56,
 )
 
 
@@ -280,7 +291,7 @@ async def handle_button_state(button_id, state):
 
     if item:
         # special case for switches
-        if issubclass(item, FloatSwitch):
+        if issubclass(item, (FloatSwitch, DiscreteSwitch)):
             print(state)
             await item.set_state(state)
         else:
