@@ -55,6 +55,16 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/electrical/battery_on", # dc supply - bat 1
 
     "sim/weapons/target_index", # air condition - pack
+    "sim/custom/7x/fpump0", # fuel - boost1
+    "sim/7x/bt1f3", # fuel - xtk 1
+    "sim/7x/bt3f1", # fuel - xtk 2
+    "sim/custom/7x/fpump2", # fuel - boost 3
+    "sim/7x/bt1f2", # fuel - xtk 3
+    "sim/7x/bt3f2", # fuel - xtk 4
+    "sim/7x/bk13", # fuel - backup 1_3
+    "sim/7x/bt2f1", # fuel - xtk 5
+    "sim/custom/7x/fpump1", # fuel - boost2 
+    "sim/7x/bt2f3", # fuel - xtk 6
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
