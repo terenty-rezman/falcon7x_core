@@ -66,6 +66,10 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/fpump1", # fuel - boost2 
     "sim/7x/bt2f3", # fuel - xtk 6
 
+    "sim/custom/7x/AIwingsel", # anti ice - wings
+    "sim/cockpit2/ice/ice_inlet_heat_on_per_engine", # anti ice - eng 1
+    "sim/custom/7x/AIengcentre", # anti ice - eng 2
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

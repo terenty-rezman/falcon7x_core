@@ -231,6 +231,11 @@ hardware_panel_items_receive = OrderedDict(
     xbp_12=60,
     xbp_13=61,
     xbp_23=62,
+    wings=63,
+    ice_brake=64,
+    ice_eng1=65,
+    ice_eng2=66,
+    ice_eng3=67,
 )
 
 hardware_panel_items_send = OrderedDict(
@@ -299,10 +304,15 @@ hardware_panel_items_send = OrderedDict(
     xtk_4=63,
     xtk_5=64,
     boost2=65,
-    xtk_6=65,
-    xbp_12=66,
-    xbp_13=67,
-    xbp_23=68,
+    xtk_6=66,
+    xbp_12=67,
+    xbp_13=68,
+    xbp_23=69,
+    wings=70,
+    ice_brake=71,
+    ice_eng1=72,
+    ice_eng2=73,
+    ice_eng3=74,
 )
 
 
@@ -384,3 +394,4 @@ from overhead_panel import hydraulics
 from overhead_panel import dc_supply
 from overhead_panel import air_conditioning
 from overhead_panel import fuel
+from overhead_panel import anti_ice
