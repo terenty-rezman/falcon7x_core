@@ -242,6 +242,8 @@ hardware_panel_items_receive = [
     "bleed13",
     "bleed_apu",
     "bleed3",
+    "dump",
+    "bag_vent",
 ]
 
 hardware_panel_items_send = [ 
@@ -325,6 +327,8 @@ hardware_panel_items_send = [
     "bleed13",
     "bleed_apu",
     "bleed3",
+    "dump",
+    "bag_vent",
 ]
 
 
@@ -408,3 +412,4 @@ from overhead_panel import air_conditioning
 from overhead_panel import fuel
 from overhead_panel import anti_ice
 from overhead_panel import bleed
+from overhead_panel import pressurization

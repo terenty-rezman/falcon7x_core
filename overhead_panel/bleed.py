@@ -35,7 +35,6 @@ class bleed2(ThreeStateButton):
         await xp.run_command_once(xp.Commands["sim/bleed_air/bleed_air_auto"])
 
 
-
 @add_to_overhead_panel
 class bleed13(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
