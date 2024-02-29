@@ -70,6 +70,8 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/ice/ice_inlet_heat_on_per_engine", # anti ice - eng 1
     "sim/custom/7x/AIengcentre", # anti ice - eng 2
 
+    "sim/custom/7x/overAPUaction", # bleed - bleed apu
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 
@@ -89,6 +91,9 @@ Commands = Enum('XplaneCommands', [
     "sim/operation/fix_all_systems",
     "sim/electrical/APU_start",
     "sim/electrical/APU_off",
+    "sim/bleed_air/bleed_air_left", # bleed - bleed 1
+    "sim/bleed_air/bleed_air_auto", # bleed - bleed 2
+    "sim/bleed_air/bleed_air_right", # bleed - bleed 3
 ])
 Commands.__str__ = to_str
 

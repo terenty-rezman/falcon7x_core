@@ -236,6 +236,12 @@ hardware_panel_items_receive = [
     "ice_eng1",
     "ice_eng2",
     "ice_eng3",
+    "bleed1",
+    "bleed12",
+    "bleed2",
+    "bleed13",
+    "bleed_apu",
+    "bleed3",
 ]
 
 hardware_panel_items_send = [ 
@@ -313,6 +319,12 @@ hardware_panel_items_send = [
     "ice_eng1",
     "ice_eng2",
     "ice_eng3",
+    "bleed1",
+    "bleed12",
+    "bleed2",
+    "bleed13",
+    "bleed_apu",
+    "bleed3",
 ]
 
 
@@ -395,3 +407,4 @@ from overhead_panel import dc_supply
 from overhead_panel import air_conditioning
 from overhead_panel import fuel
 from overhead_panel import anti_ice
+from overhead_panel import bleed
