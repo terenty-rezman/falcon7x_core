@@ -73,6 +73,10 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/overAPUaction", # bleed - bleed apu
     "sim/cockpit2/pressurization/actuators/dump_to_altitude_on", 
 
+    "sim/cockpit2/ice/ice_pitot_heat_on_pilot", # pitot heat - probe 12 
+    "sim/cockpit2/ice/ice_pitot_heat_on_copilot", # pitot heat - probe 3
+    "sim/cockpit2/ice/ice_AOA_heat_on", # pitot heat - probe 4
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

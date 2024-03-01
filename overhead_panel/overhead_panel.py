@@ -246,6 +246,9 @@ hardware_panel_items_receive = [
     "bag_vent",
     "cabin_alt",
     "pressu_man",
+    "probe_12",
+    "probe_3",
+    "probe_4",
 ]
 
 hardware_panel_items_send = [ 
@@ -332,6 +335,9 @@ hardware_panel_items_send = [
     "dump",
     "bag_vent",
     "pressu_man",
+    "probe_12",
+    "probe_3",
+    "probe_4",
 ]
 
 
@@ -416,3 +422,4 @@ from overhead_panel import fuel
 from overhead_panel import anti_ice
 from overhead_panel import bleed
 from overhead_panel import pressurization
+from overhead_panel import pitot_heat
