@@ -252,6 +252,7 @@ hardware_panel_items_receive = [
     "windshield_lh",
     "windshield_rh",
     "windshield_backup",
+    "pax_oxygen",
 ]
 
 hardware_panel_items_send = [ 
@@ -430,3 +431,4 @@ from overhead_panel import bleed
 from overhead_panel import pressurization
 from overhead_panel import pitot_heat
 from overhead_panel import windshield_heat
+from overhead_panel import pax_oxygen
