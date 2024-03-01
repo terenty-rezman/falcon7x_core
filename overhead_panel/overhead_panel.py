@@ -249,6 +249,9 @@ hardware_panel_items_receive = [
     "probe_12",
     "probe_3",
     "probe_4",
+    "windshield_lh",
+    "windshield_rh",
+    "windshield_backup",
 ]
 
 hardware_panel_items_send = [ 
@@ -338,6 +341,9 @@ hardware_panel_items_send = [
     "probe_12",
     "probe_3",
     "probe_4",
+    "windshield_lh",
+    "windshield_rh",
+    "windshield_backup",
 ]
 
 
@@ -423,3 +429,4 @@ from overhead_panel import anti_ice
 from overhead_panel import bleed
 from overhead_panel import pressurization
 from overhead_panel import pitot_heat
+from overhead_panel import windshield_heat

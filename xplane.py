@@ -76,6 +76,9 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/ice/ice_pitot_heat_on_pilot", # pitot heat - probe 12 
     "sim/cockpit2/ice/ice_pitot_heat_on_copilot", # pitot heat - probe 3
     "sim/cockpit2/ice/ice_AOA_heat_on", # pitot heat - probe 4
+    "sim/cockpit2/ice/ice_AOA_heat_on_copilot", # windshield heat - lh
+    "sim/cockpit2/ice/ice_window_heat_on", # windshield heat - rh
+    "sim/cockpit2/ice/ice_auto_ignite_on", # windshield heat - backup
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
