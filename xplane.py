@@ -95,6 +95,8 @@ Commands = Enum('XplaneCommands', [
     "sim/bleed_air/bleed_air_left", # bleed - bleed 1
     "sim/bleed_air/bleed_air_auto", # bleed - bleed 2
     "sim/bleed_air/bleed_air_right", # bleed - bleed 3
+    "sim/pressurization/vvi_down", # pressurization - cabin alt
+    "sim/pressurization/vvi_up", # pressurization - cabin alt
 ])
 Commands.__str__ = to_str
 

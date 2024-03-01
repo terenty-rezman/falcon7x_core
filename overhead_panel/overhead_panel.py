@@ -244,6 +244,8 @@ hardware_panel_items_receive = [
     "bleed3",
     "dump",
     "bag_vent",
+    "cabin_alt",
+    "pressu_man",
 ]
 
 hardware_panel_items_send = [ 
@@ -329,6 +331,7 @@ hardware_panel_items_send = [
     "bleed3",
     "dump",
     "bag_vent",
+    "pressu_man",
 ]
 
 
