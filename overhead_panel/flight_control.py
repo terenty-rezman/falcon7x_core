@@ -7,7 +7,30 @@ import xp_aircraft_state as xp_ac
 class airbrake_auto(TwoStateButton):
     # vol 2 27-66
     dataref: xp.Params = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
-    states = [-0.5, 0]
+    states = [-0.5, 0, 0.5, 1.0]
+
+    @classmethod
+    def get_state(cls):
+        state = super().get_state()
+
+        if state is None:
+            return
+
+        if state > 0:
+            return 1
+        return 0
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state != 0:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(1)
+
 
 
 @add_to_overhead_panel

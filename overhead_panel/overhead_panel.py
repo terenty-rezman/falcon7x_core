@@ -31,6 +31,13 @@ class OverheadPanel(metaclass=Custom):
 def array_str(index, val):
     return f"[{',' * index}{val}]"
 
+
+class PushButton:
+    @classmethod
+    async def click(cls):
+        pass
+
+
 class NStateButton:
     """ N states are logical states: 0, 1, 2, 3, ..., N """
 
@@ -253,6 +260,11 @@ hardware_panel_items_receive = [
     "windshield_rh",
     "windshield_backup",
     "pax_oxygen",
+    "rain_rplint_lh",
+    "el_nav",
+    "el_anticol",
+    "el_wing",
+    "el_landing_lh",
 ]
 
 hardware_panel_items_send = [ 
@@ -345,6 +357,10 @@ hardware_panel_items_send = [
     "windshield_lh",
     "windshield_rh",
     "windshield_backup",
+    "el_nav",
+    "el_anticol",
+    "el_wing",
+    "el_landing_lh",
 ]
 
 
@@ -432,3 +448,4 @@ from overhead_panel import pressurization
 from overhead_panel import pitot_heat
 from overhead_panel import windshield_heat
 from overhead_panel import pax_oxygen
+from overhead_panel import exterior_lights

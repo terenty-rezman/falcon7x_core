@@ -80,6 +80,11 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/ice/ice_window_heat_on", # windshield heat - rh
     "sim/cockpit2/ice/ice_auto_ignite_on", # windshield heat - backup
 
+    "sim/custom/7x/lum1", # exterior lights - nav
+    "sim/custom/7x/lum2", # exterior lights - anticol
+    "sim/cockpit2/switches/spot_light_on", # exterior lights - wing
+    "sim/cockpit2/switches/landing_lights_switch", # exterior lights - langing lh
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 
