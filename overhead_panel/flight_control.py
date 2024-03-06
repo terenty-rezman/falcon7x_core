@@ -32,7 +32,6 @@ class airbrake_auto(TwoStateButton):
             await cls.set_state(1)
 
 
-
 @add_to_overhead_panel
 class fcs_engage_norm(TwoStateButton):
     # vol 2 27-16

@@ -84,6 +84,7 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/lum2", # exterior lights - anticol
     "sim/cockpit2/switches/spot_light_on", # exterior lights - wing
     "sim/cockpit2/switches/landing_lights_switch", # exterior lights - langing lh
+    "sim/cockpit/electrical/taxi_light_on", # exterior lights - taxi
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire

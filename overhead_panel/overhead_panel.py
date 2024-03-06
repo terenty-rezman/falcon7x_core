@@ -265,6 +265,8 @@ hardware_panel_items_receive = [
     "el_anticol",
     "el_wing",
     "el_landing_lh",
+    "el_landing_rh",
+    "el_taxi",
 ]
 
 hardware_panel_items_send = [ 
@@ -361,6 +363,8 @@ hardware_panel_items_send = [
     "el_anticol",
     "el_wing",
     "el_landing_lh",
+    "el_landing_rh",
+    "el_taxi",
 ]
 
 

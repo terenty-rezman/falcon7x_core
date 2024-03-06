@@ -38,7 +38,7 @@ class el_landing_lh(DiscreteSwitch):
     states = [2, 1, 0, 3]
     index = 11
 
-    blink = util.blink_anim(0.7)
+    blink = util.blink_anim(0.5)
 
     @classmethod
     def get_state(cls):
@@ -71,6 +71,16 @@ class el_landing_lh(DiscreteSwitch):
         if state == 0:
             return 1
         elif state == 1:
-            return next(cls.blink)
-        else:
-            return 0
+            if el_anticol.get_state() == 0:
+                return next(cls.blink)
+        return 0
+
+
+@add_to_overhead_panel
+class el_landing_rh(el_landing_lh):
+    index = 10
+
+
+@add_to_overhead_panel
+class el_taxi(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit/electrical/taxi_light_on"]
