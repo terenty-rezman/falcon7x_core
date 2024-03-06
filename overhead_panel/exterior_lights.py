@@ -35,10 +35,33 @@ class el_wing(TwoStateButton):
 @add_to_overhead_panel
 class el_landing_lh(DiscreteSwitch):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
-    states = [2, 1, 0]
+    states = [2, 1, 0, 3]
     index = 11
 
     blink = util.blink_anim(0.7)
+
+    @classmethod
+    def get_state(cls):
+        state = super().get_state()
+
+        if state is None:
+            return
+
+        if state > 2:
+            return 2
+
+        return state
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state > 2:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(state)
 
     @classmethod
     def get_indication(cls):
