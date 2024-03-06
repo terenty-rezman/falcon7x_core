@@ -267,6 +267,10 @@ hardware_panel_items_receive = [
     "el_landing_lh",
     "el_landing_rh",
     "el_taxi",
+    "cl_overhead",
+    "cl_panel",
+    "cl_dim",
+    "cl_shield",
 ]
 
 hardware_panel_items_send = [ 
@@ -453,3 +457,4 @@ from overhead_panel import pitot_heat
 from overhead_panel import windshield_heat
 from overhead_panel import pax_oxygen
 from overhead_panel import exterior_lights
+from overhead_panel import cockpit_lights
