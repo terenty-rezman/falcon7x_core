@@ -1,11 +1,32 @@
 import asyncio
 import time
 
-from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator
+from .overhead_panel import add_to_overhead_panel, TwoStateButton, Indicator, PushButton
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
         
+
+@add_to_overhead_panel
+class eng_1(PushButton):
+    @classmethod
+    async def click(cls):
+        pass
+
+
+@add_to_overhead_panel
+class eng_2(PushButton):
+    @classmethod
+    async def click(cls):
+        pass
+
+
+@add_to_overhead_panel
+class eng_3(PushButton):
+    @classmethod
+    async def click(cls):
+        pass
+
 
 @add_to_overhead_panel
 class apu_master(TwoStateButton):
