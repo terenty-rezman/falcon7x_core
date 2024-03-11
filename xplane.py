@@ -88,6 +88,11 @@ Params = Enum('XplaneParams', [
 
     "sim/cockpit2/switches/instrument_brightness_ratio", # exterior lights - overhead
 
+    "sim/cockpit2/switches/generic_lights_switch", # interiorl lights - emerge lights
+    "sim/cockpit2/switches/fasten_seat_belts", # interior lights - fasten belts
+    "sim/cockpit2/switches/no_smoking", # interior lights - no smoking
+    "sim/custom/7x/paxlum", # interior lights - cabin
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

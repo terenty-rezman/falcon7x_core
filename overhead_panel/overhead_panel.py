@@ -271,6 +271,11 @@ hardware_panel_items_receive = [
     "cl_panel",
     "cl_dim",
     "cl_shield",
+    "il_emerge_lights",
+    "il_fasten",
+    "il_smoking",
+    "il_cabin",
+    "rain_rplint_rh",
 ]
 
 hardware_panel_items_send = [ 
@@ -369,8 +374,11 @@ hardware_panel_items_send = [
     "el_landing_lh",
     "el_landing_rh",
     "el_taxi",
+    "il_emerge_lights",
+    "il_fasten",
+    "il_smoking",
+    "il_cabin",
 ]
-
 
 button_names = list(hardware_panel_items_receive)
 buttons_state_received_bytes = bytes(len(button_names))
@@ -458,3 +466,4 @@ from overhead_panel import windshield_heat
 from overhead_panel import pax_oxygen
 from overhead_panel import exterior_lights
 from overhead_panel import cockpit_lights
+from overhead_panel import interior_lights
