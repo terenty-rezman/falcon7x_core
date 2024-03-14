@@ -93,6 +93,9 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/switches/no_smoking", # interior lights - no smoking
     "sim/custom/7x/paxlum", # interior lights - cabin
 
+    "sim/cockpit2/annunciators/master_warning", # front panel - master warning
+    "sim/cockpit2/annunciators/plugin_master_warning", # front panel - master warning
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 
@@ -117,6 +120,7 @@ Commands = Enum('XplaneCommands', [
     "sim/bleed_air/bleed_air_right", # bleed - bleed 3
     "sim/pressurization/vvi_down", # pressurization - cabin alt
     "sim/pressurization/vvi_up", # pressurization - cabin alt
+    "sim/annunciator/clear_master_warning",
 ])
 Commands.__str__ = to_str
 

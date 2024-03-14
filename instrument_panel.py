@@ -279,6 +279,7 @@ hardware_panel_items_receive = [
     "il_smoking",
     "il_cabin",
     "rain_rplint_rh",
+    "master_warning",
 ]
 
 hardware_panel_items_send = [ 
@@ -381,6 +382,8 @@ hardware_panel_items_send = [
     "il_fasten",
     "il_smoking",
     "il_cabin",
+    "pty_lh",
+    "master_warning",
 ]
 
 button_names = list(hardware_panel_items_receive)
@@ -470,3 +473,4 @@ from overhead_panel import pax_oxygen
 from overhead_panel import exterior_lights
 from overhead_panel import cockpit_lights
 from overhead_panel import interior_lights
+from front_panel import warning
