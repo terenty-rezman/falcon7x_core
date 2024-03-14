@@ -9,8 +9,8 @@ from aioudp import open_local_endpoint, open_remote_endpoint
 import sane_tasks
 
 
-def add_to_overhead_panel(cls):
-    OverheadPanel.buttons.setdefault(cls.__name__, cls)
+def add_to_panel(cls):
+    CockpitPanel.buttons.setdefault(cls.__name__, cls)
     return cls
 
 
@@ -19,13 +19,13 @@ class Custom(type):
        return self.buttons[button_name] 
 
 
-class OverheadPanel(metaclass=Custom):
+class CockpitPanel(metaclass=Custom):
     buttons = {}
 
     @classmethod
     async def reset_to_default_state(cls):
         await cls["firebutton_1"].set_state(0)
-        await OverheadPanel["disch_11"].set_state(0)
+        await CockpitPanel["disch_11"].set_state(0)
     
 
 def array_str(index, val):
@@ -390,7 +390,7 @@ panel_state_send_bytes = array.array('B', [0] * len(hardware_panel_items_send))
 
 
 async def handle_button_state(button_id, state):
-    item = OverheadPanel.buttons.get(button_id)
+    item = CockpitPanel.buttons.get(button_id)
 
     if item:
         # special case for switches
@@ -434,7 +434,7 @@ async def send_state_task(remote):
     while True:
         updated = False
         for i, id in enumerate(hardware_panel_items_send):
-            btn = OverheadPanel.buttons.get(id)
+            btn = CockpitPanel.buttons.get(id)
             if btn:
                 state = btn.get_indication()
                 if state is not None:

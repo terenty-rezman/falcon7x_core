@@ -1,8 +1,8 @@
-from .overhead_panel import add_to_overhead_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
+from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
 import xplane as xp
 
 
-@add_to_overhead_panel
+@add_to_panel
 class probe_12(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_pitot_heat_on_pilot"]
 
@@ -11,7 +11,7 @@ class probe_12(TwoStateButton):
         return not super().get_indication()
 
 
-@add_to_overhead_panel
+@add_to_panel
 class probe_3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_pitot_heat_on_copilot"]
 
@@ -20,7 +20,7 @@ class probe_3(TwoStateButton):
         return not super().get_indication()
 
 
-@add_to_overhead_panel
+@add_to_panel
 class probe_4(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_AOA_heat_on"]
 

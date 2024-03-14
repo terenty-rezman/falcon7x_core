@@ -9,8 +9,8 @@ from joystick import Joystick
 from scenario import Scenario
 
 import xplane as xp
-from overhead_panel.overhead_panel import OverheadPanel
-import overhead_panel.overhead_panel as op
+from instrument_panel import CockpitPanel
+import instrument_panel as op
 import util
 
 
@@ -54,7 +54,7 @@ async def main_loop():
     await ACSystems.reset()
     ACState.clear_all()
 
-    await OverheadPanel.reset_to_default_state()
+    await CockpitPanel.reset_to_default_state()
 
     await util.request_all_data()
 

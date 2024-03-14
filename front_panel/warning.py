@@ -1,39 +1,39 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton
+from instrument_panel import add_to_overhead_panel, TwoStateButton, Indicator, PushButton
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
         
 
-@add_to_panel
+@add_to_overhead_panel
 class eng_1(PushButton):
     @classmethod
     async def click(cls):
         pass
 
 
-@add_to_panel
+@add_to_overhead_panel
 class eng_2(PushButton):
     @classmethod
     async def click(cls):
         pass
 
 
-@add_to_panel
+@add_to_overhead_panel
 class eng_3(PushButton):
     @classmethod
     async def click(cls):
         pass
 
 
-@add_to_panel
+@add_to_overhead_panel
 class apu_master(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/APU_generator_on"]
 
 
-@add_to_panel
+@add_to_overhead_panel
 class apu_start_stop(TwoStateButton):
     blink = util.blink_anim(0.7)
 
