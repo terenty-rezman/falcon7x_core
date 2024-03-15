@@ -38,6 +38,38 @@ class PushButton:
         pass
 
 
+class NLocalStateButton:
+    """ button that has local state and no state in xplane aircraft """
+
+    states = []
+
+    @classmethod
+    async def set_state(cls, state):
+        if state in cls.states:
+            cls.state = state
+        else:
+            raise Exception("No such state")
+    
+    @classmethod 
+    def get_state(cls):
+        return cls.state
+    
+    @classmethod
+    def get_indication(cls):
+        return cls.get_state()
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state == len(cls.states) - 1:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(state + 1)
+
+
 class NStateButton:
     """ N states are logical states: 0, 1, 2, 3, ..., N """
 
@@ -279,7 +311,11 @@ hardware_panel_items_receive = [
     "il_smoking",
     "il_cabin",
     "rain_rplint_rh",
-    "master_warning",
+    "master_warning_lh",
+    "master_caution_lh",
+    "sil_aural_alarm_lh",
+    "fms_msg_lh",
+    "event_lh",
 ]
 
 hardware_panel_items_send = [ 
@@ -383,7 +419,10 @@ hardware_panel_items_send = [
     "il_smoking",
     "il_cabin",
     "pty_lh",
-    "master_warning",
+    "master_warning_lh",
+    "master_caution_lh",
+    "fms_msg_lh",
+    "event_lh",
 ]
 
 button_names = list(hardware_panel_items_receive)
