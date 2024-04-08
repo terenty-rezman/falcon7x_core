@@ -58,7 +58,7 @@ async def main_loop():
 
     await util.request_all_data()
 
-    # await Scenario.run_scenario_task("test_scenario_1", ACState)
+    # await Scenario.run_scenario_task("eng1_oil_too_low_press", ACState)
 
     while True:
         x, y, z, rz = joystick.get_axes_values()

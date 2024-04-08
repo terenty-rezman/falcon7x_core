@@ -59,3 +59,24 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
     # roll control, left control column jammed
     # await xp.set_param(xp.Failures["sim/operation/failures/rel_ail_L_jam"], 6)
 
+
+@scenario
+async def eng1_oil_too_low_press(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # RED CAS message + sound: 54 ENG 1 OIL TOO LOW PRESS
+    print("54 ENG 1 OIL TOO LOW PRESS")
+
+    # PDU automatically shows ENG TRM
+    await xp.set_param(xp.Params["sim/7x/choixtcas"], 1)
+
+    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 1)
+    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press"], 0)
+
+    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent"]
+    await xp_ac.ACState.wait_until_parameter_condition(N2, lambda p: p[0] < 10)
+
+    # hide CAS msg ?
+    
+    # restore original oil pressure
+    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 0)
