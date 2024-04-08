@@ -87,4 +87,48 @@ class event_lh(NLocalStateButton):
     async def click(cls):
         await super().click()
 
+
+@add_to_panel
+class event_rh(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
+
+@add_to_panel
+class fms_msg_rh(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
+
+@add_to_panel
+class sil_aural_alarm_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        pass
+
+
+@add_to_panel
+class master_caution_rh(master_caution_lh):
+    pass
+
+
+@add_to_panel
+class master_warning_rh(TwoStateButton):
+    pass
+
+
+@add_to_panel
+class pty_rh(Indicator):
+    @classmethod
+    async def click(cls):
+        pass
+
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot

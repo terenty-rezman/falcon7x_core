@@ -316,6 +316,11 @@ hardware_panel_items_receive = [
     "sil_aural_alarm_lh",
     "fms_msg_lh",
     "event_lh",
+    "event_rh",
+    "fms_msg_rh",
+    "sil_aural_alarm_rh",
+    "master_caution_rh",
+    "master_warning_rh",
 ]
 
 hardware_panel_items_send = [ 
@@ -423,6 +428,11 @@ hardware_panel_items_send = [
     "master_caution_lh",
     "fms_msg_lh",
     "event_lh",
+    "event_rh",
+    "fms_msg_rh",
+    "master_caution_rh",
+    "master_warning_rh",
+    "pty_rh",
 ]
 
 button_names = list(hardware_panel_items_receive)
