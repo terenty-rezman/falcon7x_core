@@ -80,3 +80,35 @@ async def eng1_oil_too_low_press(ac_state: xp_ac.ACState):
     
     # restore original oil pressure
     await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 0)
+
+
+import overhead_panel.flight_control as fc 
+@scenario
+async def fcs_direct_laws_active_1(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # RED CAS message: FCS: DIRECT LAWS ACTIVE
+    print("FCS: DIRECT LAWS ACTIVE")
+
+    await fc.airbrake_auto.wait_state(1)
+
+    # YELLOW CAS message: FCS: MFCC FAULT
+    print("FCS: MFCC FAULT")
+
+    await fc.fcs_engage_stby.wait_state(1)
+
+    # hide RED CAS message: FCS: DIRECT LAWS ACTIVE
+    print("HIDE FCS: DIRECT LAWS ACTIVE")
+
+
+@scenario
+async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # RED CAS message: FCS: DIRECT LAWS ACTIVE
+    print("FCS: BOTH AILERONS FAIL")
+
+    await fc.airbrake_auto.wait_state(1)
+
+    # YELLOW CAS message: FCS: BOTH AILERONS FAIL
+    print("FCS: BOTH AILERONS FAIL")
