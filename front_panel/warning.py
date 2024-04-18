@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton
+from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
@@ -126,9 +126,8 @@ class master_warning_rh(TwoStateButton):
 
 
 @add_to_panel
-class pty_rh(Indicator):
-    @classmethod
-    async def click(cls):
-        pass
+class pty_rh(LocalStateIndicator):
+    states = [0, 1]
+    state = 0
 
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot

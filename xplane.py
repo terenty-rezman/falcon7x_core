@@ -98,6 +98,10 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/annunciators/master_caution",
     "sim/cockpit2/annunciators/plugin_master_caution",
 
+    "sim/cockpit2/radios/actuators/com1_standby_frequency_hz_833", # front panel - vhf control lh
+    "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_pilot", # front panel - baro
+    "sim/custom/7x/flydir", # front panel - FD/TD
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

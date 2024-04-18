@@ -149,6 +149,12 @@ class Indicator(TwoStateButton):
         pass
 
 
+class LocalStateIndicator(NLocalStateButton):
+    @classmethod
+    async def click(cls, state):
+        pass
+
+
 class DiscreteSwitch(NStateButton):
     pass
 
@@ -199,6 +205,69 @@ class FloatSwitch(NStateButton):
         
         logical_state = byte_val
         return logical_state
+
+
+class FloatStepper():
+    """ logic value is in range [0 - 1] """
+    dataref = None
+
+    left_most_value = 0 
+    right_most_value = 1
+    index = None
+
+    state = 0
+    step = 0.1
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        """ set logical state """
+
+        state = min(max(0, state), 1)
+
+        cls.state = state
+
+        # map logic state [0.0 1.0] to [float_left_most_value float_right_most_value]
+        xp_val = (cls.right_most_value - cls.left_most_value) * state + cls.left_most_value
+
+        # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
+        if cls.index is not None:
+            xp_val = array_str(cls.index, xp_val)
+        else:
+            xp_val = xp_val
+
+        if cls.dataref is not None:
+            await xp.set_param(cls.dataref, cls.val_type(xp_val))
+
+    @classmethod 
+    def get_state(cls):
+        """ get logical state """
+
+        if cls.dataref is not None:
+            xp_val = xp_ac.ACState.get_curr_param(cls.dataref)
+            if xp_val is None or xp_val == []:
+                return
+
+            if cls.index is not None:
+                xp_val = xp_val[cls.index]
+        
+            # map xp_val to float val [0.0 1.0]
+            state = (xp_val - cls.left_most_value) / (cls.right_most_value - cls.left_most_value)
+            cls.state = state
+
+        return cls.state 
+    
+    @classmethod
+    async def inc(cls):
+        state = cls.get_state()
+        await cls.set_state(state + cls.step)
+
+    @classmethod
+    async def dec(cls):
+        state = cls.get_state()
+        await cls.set_state(state - cls.step)
+
 
 
 receive_task = None
@@ -321,6 +390,11 @@ hardware_panel_items_receive = [
     "sil_aural_alarm_rh",
     "master_caution_rh",
     "master_warning_rh",
+    "swap_lh",
+    "vhf_control_lh",
+    "baro_rot_lh",
+    "baro_push_lh",
+    "fdtd_lh",
 ]
 
 hardware_panel_items_send = [ 
@@ -433,6 +507,7 @@ hardware_panel_items_send = [
     "master_caution_rh",
     "master_warning_rh",
     "pty_rh",
+    "fdtd_lh",
 ]
 
 button_names = list(hardware_panel_items_receive)
@@ -449,6 +524,11 @@ async def handle_button_state(button_id, state):
         if issubclass(item, (FloatSwitch, DiscreteSwitch)):
             print(state)
             await item.set_state(state)
+        elif issubclass(item, FloatStepper):
+            if state == 1:
+                await item.inc()
+            elif state == 2:
+                await item.dec()
         else:
             # default case - button
             if state:
@@ -523,3 +603,4 @@ from overhead_panel import exterior_lights
 from overhead_panel import cockpit_lights
 from overhead_panel import interior_lights
 from front_panel import warning
+from front_panel import autopilot
