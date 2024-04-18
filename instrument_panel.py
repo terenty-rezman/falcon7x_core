@@ -9,6 +9,9 @@ from aioudp import open_local_endpoint, open_remote_endpoint
 import sane_tasks
 
 
+BUTTON_PACKET_SIZE = 'H' # see https://docs.python.org/3/library/array.html
+
+
 def add_to_panel(cls):
     CockpitPanel.buttons.setdefault(cls.__name__, cls)
     return cls
@@ -513,7 +516,7 @@ hardware_panel_items_send = [
 button_names = list(hardware_panel_items_receive)
 buttons_state_received_bytes = bytes(len(button_names))
 
-panel_state_send_bytes = array.array('B', [0] * len(hardware_panel_items_send))
+panel_state_send_bytes = array.array(BUTTON_PACKET_SIZE, [0] * len(hardware_panel_items_send))
 
 
 async def handle_button_state(button_id, state):
@@ -544,7 +547,7 @@ async def receive_state_task(udp_endpoint):
     while True:
         new_state, (host, port) = await udp_endpoint.receive()
 
-        new_state = array.array('B', new_state)
+        new_state = array.array(BUTTON_PACKET_SIZE, new_state)
 
         for i, (o, n) in enumerate(zip(buttons_state_received_bytes, new_state)):
             if n != o:
