@@ -114,6 +114,9 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/indicators/N2_percent", # eng N2
     "sim/7x/choixtcas", # PDU show ENG TRM
 
+    "sim/cockpit2/autopilot/airspeed_dial_kts_mach", # front panel - airspeed val
+    "sim/cockpit/autopilot/airspeed_is_mach", # front panel - airspeed kts or mach
+
     # our custom datarefs
     "sim/custom/7x/z_eng1_oil_press_override", # custom eng1 oil pressure
     "sim/custom/7x/z_eng1_oil_press", # custom eng1 oil pressure
@@ -135,6 +138,7 @@ Commands = Enum('XplaneCommands', [
     "sim/pressurization/vvi_up", # pressurization - cabin alt
     "sim/annunciator/clear_master_warning", # front panel - master warning
     "sim/annunciator/clear_master_caution", # front panel - master caution
+    "sim/autopilot/knots_mach_toggle", # front panel - speed mach or kts 
 ])
 Commands.__str__ = to_str
 

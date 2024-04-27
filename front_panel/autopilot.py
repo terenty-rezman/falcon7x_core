@@ -51,4 +51,64 @@ class fdtd_lh(ThreeStateButton):
     states = [0, 1, 2]
 
 
+@add_to_panel
+class fp_speed_is_mach_push(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit/autopilot/airspeed_is_mach"]
+    states = [0, 1]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/knots_mach_toggle"])
+        await super().click()
+
+@add_to_panel
+class fp_speed_kts_mach(FloatStepper):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"]
+
+    is_mach_dref = xp.Params["sim/cockpit/autopilot/airspeed_is_mach"]
+
+    left_most_kts = 95
+    right_most_kts = 370
+    step_kts = 1.0
+
+    left_most_mach = 0.0
+    right_most_mach = 1.0
+    step_mach = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        is_mach = xp_ac.ACState.get_curr_param(cls.is_mach_dref)
+        if is_mach is None:
+            return
+        
+        if is_mach:
+            cls.left_most_value = cls.left_most_mach
+            cls.right_most_value = cls.right_most_mach
+            cls.step = cls.step_mach
+        else:
+            cls.left_most_value = cls.left_most_kts
+            cls.right_most_value = cls.right_most_kts
+            cls.step = cls.step_kts
+        
+        await super().set_state(state)
+    
+    @classmethod 
+    def get_state(cls):
+        is_mach = xp_ac.ACState.get_curr_param(cls.is_mach_dref)
+        if is_mach is None:
+            return
+        
+        if is_mach:
+            cls.left_most_value = cls.left_most_mach
+            cls.right_most_value = cls.right_most_mach
+            cls.step = cls.step_mach
+        else:
+            cls.left_most_value = cls.left_most_kts
+            cls.right_most_value = cls.right_most_kts
+            cls.step = cls.step_kts
+
+        return super().get_state()
+
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot

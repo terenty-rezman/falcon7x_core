@@ -12,6 +12,10 @@ import sane_tasks
 BUTTON_PACKET_SIZE = 'H' # see https://docs.python.org/3/library/array.html
 
 
+def max_packet_item_value():
+    return 2 ** (panel_state_send_bytes.itemsize * 8) - 1
+
+
 def add_to_panel(cls):
     CockpitPanel.buttons.setdefault(cls.__name__, cls)
     return cls
@@ -260,17 +264,35 @@ class FloatStepper():
             cls.state = state
 
         return cls.state 
+
+    @classmethod 
+    def get_indication(cls):
+        "get float value as int to be packed for send"
+
+        state = cls.get_state()
+
+        if state is None:
+            return
+
+        max_value = max_packet_item_value()
+
+        # map float val [0.0 1.0] to int
+        int_val = state * max_value 
+
+        return int(int_val)
+
     
     @classmethod
     async def inc(cls):
         state = cls.get_state()
-        await cls.set_state(state + cls.step)
+        logic_step = cls.step / (cls.right_most_value - cls.left_most_value)
+        await cls.set_state(state + logic_step)
 
     @classmethod
     async def dec(cls):
         state = cls.get_state()
-        await cls.set_state(state - cls.step)
-
+        logic_step = cls.step / (cls.right_most_value - cls.left_most_value)
+        await cls.set_state(state - logic_step)
 
 
 receive_task = None
@@ -398,6 +420,8 @@ hardware_panel_items_receive = [
     "baro_rot_lh",
     "baro_push_lh",
     "fdtd_lh",
+    "fp_speed_is_mach_push",
+    "fp_speed_kts_mach",
 ]
 
 hardware_panel_items_send = [ 
@@ -511,6 +535,8 @@ hardware_panel_items_send = [
     "master_warning_rh",
     "pty_rh",
     "fdtd_lh",
+    "fp_speed_is_mach_push",
+    "fp_speed_kts_mach",
 ]
 
 button_names = list(hardware_panel_items_receive)
