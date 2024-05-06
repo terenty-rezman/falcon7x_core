@@ -116,6 +116,11 @@ Params = Enum('XplaneParams', [
 
     "sim/cockpit2/autopilot/airspeed_dial_kts_mach", # front panel - airspeed val
     "sim/cockpit/autopilot/airspeed_is_mach", # front panel - airspeed kts or mach
+    "sim/cockpit2/autopilot/autothrottle_enabled", # front panel - AT auto throttle
+    "sim/cockpit2/autopilot/approach_status", # front panel - approach
+    "sim/cockpit2/autopilot/nav_status", # front panel - lnav  
+    "sim/cockpit/autopilot/heading_mag", # fron panel - hdg/trk
+    "sim/cockpit2/autopilot/heading_mode", # front panel - hdg/trk mode
 
     # our custom datarefs
     "sim/custom/7x/z_eng1_oil_press_override", # custom eng1 oil pressure
@@ -139,6 +144,11 @@ Commands = Enum('XplaneCommands', [
     "sim/annunciator/clear_master_warning", # front panel - master warning
     "sim/annunciator/clear_master_caution", # front panel - master caution
     "sim/autopilot/knots_mach_toggle", # front panel - speed mach or kts 
+    "sim/autopilot/autothrottle_toggle", # front panel - auto throttle
+    "sim/autopilot/approach", # front panel - change approach mode
+    "sim/autopilot/NAV", # front panel - lnav
+    "sim/autopilot/heading_sync", # front panel - hdg trk sync
+    "sim/autopilot/heading", # front panel - hdg trk mode
 ])
 Commands.__str__ = to_str
 

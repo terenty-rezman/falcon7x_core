@@ -422,6 +422,12 @@ hardware_panel_items_receive = [
     "fdtd_lh",
     "fp_speed_is_mach_push",
     "fp_speed_kts_mach",
+    "fp_autothrottle",
+    "fp_approach",
+    "fp_lnav",
+    "fp_hdg_trk",
+    "fp_hdg_trk_push",
+    "fp_hdg_trk_mode",
 ]
 
 hardware_panel_items_send = [ 
@@ -537,6 +543,11 @@ hardware_panel_items_send = [
     "fdtd_lh",
     "fp_speed_is_mach_push",
     "fp_speed_kts_mach",
+    "fp_autothrottle",
+    "fp_approach",
+    "fp_lnav",
+    "fp_hdg_trk",
+    "fp_hdg_trk_mode",
 ]
 
 button_names = list(hardware_panel_items_receive)
@@ -594,12 +605,13 @@ async def run_receive_state_task():
 async def send_state_task(remote):
     while True:
         updated = False
+        max_val = max_packet_item_value()
         for i, id in enumerate(hardware_panel_items_send):
             btn = CockpitPanel.buttons.get(id)
             if btn:
                 state = btn.get_indication()
                 if state is not None:
-                    panel_state_send_bytes[i] = state
+                    panel_state_send_bytes[i] = min(max(state, 0), max_val) 
                     updated = True
         
         if updated:

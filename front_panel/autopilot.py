@@ -61,6 +61,7 @@ class fp_speed_is_mach_push(TwoStateButton):
         await xp.run_command_once(xp.Commands["sim/autopilot/knots_mach_toggle"])
         await super().click()
 
+
 @add_to_panel
 class fp_speed_kts_mach(FloatStepper):
     dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"]
@@ -110,5 +111,70 @@ class fp_speed_kts_mach(FloatStepper):
             cls.step = cls.step_kts
 
         return super().get_state()
+
+
+@add_to_panel
+class fp_autothrottle(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/autothrottle_enabled"]
+    states = [0, 1]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/autothrottle_toggle"])
+        await super().click()
+
+
+@add_to_panel
+class fp_approach(ThreeStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/approach_status"]
+    states = [0, 1, 2]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/approach"])
+
+
+@add_to_panel
+class fp_lnav(ThreeStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/nav_status"]
+    states = [0, 1, 2]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/NAV"])
+
+
+@add_to_panel
+class fp_hdg_trk(FloatStepper):
+    dataref: xp.Params = xp.Params["sim/cockpit/autopilot/heading_mag"]
+
+    left_most_value = 0
+    right_most_value = 360
+    step = 1
+
+    val_type = float
+
+
+@add_to_panel
+class fp_hdg_trk_push(PushButton):
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/heading_sync"])
+
+
+@add_to_panel
+class fp_hdg_trk_mode(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/heading_mode"]
+    states = [0, 1, 2]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/heading"])
+    
+    @classmethod
+    def get_indication(cls):
+        status = super().get_indication()
+        return 0 if status == 2 else status
+
 
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot
