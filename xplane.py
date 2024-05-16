@@ -101,6 +101,12 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/radios/actuators/com1_standby_frequency_hz_833", # front panel - vhf control lh
     "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_pilot", # front panel - baro
     "sim/custom/7x/flydir", # front panel - FD/TD
+    "sim/cockpit/radios/ap_src", # front panel - pilot side
+    "sim/cockpit/autopilot/autopilot_mode", # front panel - autopilot on/off
+    "sim/weapons/targ_h", # front panel - vs path
+    "sim/cockpit2/autopilot/vvi_status", # front panel - vs mode
+    "sim/cockpit2/autopilot/fms_vnav", #  front panel - vnav
+    "sim/cockpit2/autopilot/altitude_dial_ft", # front panel - asel
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
@@ -149,7 +155,10 @@ Commands = Enum('XplaneCommands', [
     "sim/autopilot/NAV", # front panel - lnav
     "sim/autopilot/heading_sync", # front panel - hdg trk sync
     "sim/autopilot/heading", # front panel - hdg trk mode
+    "sim/autopilot/vertical_speed", # front panel - vs mode
+    "sim/autopilot/FMS", # front panel - vs mode
 ])
+
 Commands.__str__ = to_str
 
 

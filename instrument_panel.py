@@ -162,6 +162,10 @@ class LocalStateIndicator(NLocalStateButton):
         pass
 
 
+class LocalStateDiscreteSwitch(NLocalStateButton):
+    pass
+
+
 class DiscreteSwitch(NStateButton):
     pass
 
@@ -240,12 +244,13 @@ class FloatStepper():
 
         # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
         if cls.index is not None:
+            xp_val = cls.val_type(xp_val)
             xp_val = array_str(cls.index, xp_val)
         else:
-            xp_val = xp_val
+            xp_val = cls.val_type(xp_val)
 
         if cls.dataref is not None:
-            await xp.set_param(cls.dataref, cls.val_type(xp_val))
+            await xp.set_param(cls.dataref, xp_val)
 
     @classmethod 
     def get_state(cls):
@@ -421,13 +426,23 @@ hardware_panel_items_receive = [
     "baro_push_lh",
     "fdtd_lh",
     "fp_speed_is_mach_push",
+    "fp_speed_mach_man_fms",
     "fp_speed_kts_mach",
     "fp_autothrottle",
     "fp_approach",
     "fp_lnav",
+    "fp_hdg_trk_switch",
     "fp_hdg_trk",
     "fp_hdg_trk_push",
     "fp_hdg_trk_mode",
+    "fp_pilot_side",
+    "fp_autopilot",
+    "fp_vs_path",
+    "fp_clb",
+    "fp_vs",
+    "fp_vnav",
+    "fp_asel",
+    "fp_asel_ft",
 ]
 
 hardware_panel_items_send = [ 
@@ -548,6 +563,12 @@ hardware_panel_items_send = [
     "fp_lnav",
     "fp_hdg_trk",
     "fp_hdg_trk_mode",
+    "fp_pilot_side",
+    "fp_autopilot",
+    "fp_clb",
+    "fp_vs",
+    "fp_vnav",
+    "fp_asel",
 ]
 
 button_names = list(hardware_panel_items_receive)

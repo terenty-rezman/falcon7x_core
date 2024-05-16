@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper, ThreeStateButton
+from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton,FloatStepper, ThreeStateButton, LocalStateDiscreteSwitch
 import xplane as xp
 import xp_aircraft_state as xp_ac
 import util
@@ -52,6 +52,16 @@ class fdtd_lh(ThreeStateButton):
 
 
 @add_to_panel
+class fp_speed_mach_man_fms(LocalStateDiscreteSwitch):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
+
+@add_to_panel
 class fp_speed_is_mach_push(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit/autopilot/airspeed_is_mach"]
     states = [0, 1]
@@ -83,7 +93,7 @@ class fp_speed_kts_mach(FloatStepper):
         is_mach = xp_ac.ACState.get_curr_param(cls.is_mach_dref)
         if is_mach is None:
             return
-        
+       
         if is_mach:
             cls.left_most_value = cls.left_most_mach
             cls.right_most_value = cls.right_most_mach
@@ -145,6 +155,16 @@ class fp_lnav(ThreeStateButton):
 
 
 @add_to_panel
+class fp_hdg_trk_switch(LocalStateDiscreteSwitch):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
+
+@add_to_panel
 class fp_hdg_trk(FloatStepper):
     dataref: xp.Params = xp.Params["sim/cockpit/autopilot/heading_mag"]
 
@@ -175,6 +195,94 @@ class fp_hdg_trk_mode(TwoStateButton):
     def get_indication(cls):
         status = super().get_indication()
         return 0 if status == 2 else status
+
+
+@add_to_panel
+class fp_pilot_side(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit/radios/ap_src"]
+    states = [0, 1]
+
+
+@add_to_panel
+class fp_autopilot(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit/autopilot/autopilot_mode"]
+    states = [1, 2, 0]
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state == 1:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(1)
+
+
+@add_to_panel
+class fp_vs_path(FloatStepper):
+    dataref: xp.Params = xp.Params["sim/weapons/targ_h"]
+    index = 0
+
+    left_most_value = -30
+    right_most_value = 30
+    step = 0.6
+
+    val_type = float
+
+
+@add_to_panel
+class fp_clb(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
+
+@add_to_panel
+class fp_vs(ThreeStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/vvi_status"]
+    states = [0, 1, 2]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/vertical_speed"])
+
+
+@add_to_panel
+class fp_vnav(ThreeStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/fms_vnav"]
+    states = [0, 1, 2]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/FMS"])
+
+
+
+@add_to_panel
+class fp_asel(FloatStepper):
+    dataref = xp.Params["sim/cockpit2/autopilot/altitude_dial_ft"]
+
+    left_most_value = 0
+    right_most_value = 51000
+    step = 100
+
+    val_type = float
+
+
+@add_to_panel
+class fp_asel_ft(LocalStateDiscreteSwitch):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
+
 
 
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot
