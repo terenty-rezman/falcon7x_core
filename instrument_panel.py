@@ -443,6 +443,12 @@ hardware_panel_items_receive = [
     "fp_vnav",
     "fp_asel",
     "fp_asel_ft",
+    "fp_alt",
+    "baro_rot_rh",
+    "baro_push_rh",
+    "fdtd_rh",
+    "swap_rh",
+    "vhf_control_rh",
 ]
 
 hardware_panel_items_send = [ 
@@ -569,6 +575,8 @@ hardware_panel_items_send = [
     "fp_vs",
     "fp_vnav",
     "fp_asel",
+    "fp_alt",
+    "fdtd_rh",
 ]
 
 button_names = list(hardware_panel_items_receive)
@@ -582,7 +590,7 @@ async def handle_button_state(button_id, state):
 
     if item:
         # special case for switches
-        if issubclass(item, (FloatSwitch, DiscreteSwitch)):
+        if issubclass(item, (FloatSwitch, DiscreteSwitch, LocalStateDiscreteSwitch)):
             print(state)
             await item.set_state(state)
         elif issubclass(item, FloatStepper):

@@ -107,6 +107,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/autopilot/vvi_status", # front panel - vs mode
     "sim/cockpit2/autopilot/fms_vnav", #  front panel - vnav
     "sim/cockpit2/autopilot/altitude_dial_ft", # front panel - asel
+    "sim/cockpit2/autopilot/altitude_hold_armed", # front panel - alt
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
@@ -157,6 +158,7 @@ Commands = Enum('XplaneCommands', [
     "sim/autopilot/heading", # front panel - hdg trk mode
     "sim/autopilot/vertical_speed", # front panel - vs mode
     "sim/autopilot/FMS", # front panel - vs mode
+    "sim/autopilot/altitude_hold", # front panel - alt
 ])
 
 Commands.__str__ = to_str

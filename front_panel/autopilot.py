@@ -56,10 +56,6 @@ class fp_speed_mach_man_fms(LocalStateDiscreteSwitch):
     states = [0, 1]
     state = 0
 
-    @classmethod
-    async def click(cls):
-        await super().click()
-
 
 @add_to_panel
 class fp_speed_is_mach_push(TwoStateButton):
@@ -158,10 +154,6 @@ class fp_lnav(ThreeStateButton):
 class fp_hdg_trk_switch(LocalStateDiscreteSwitch):
     states = [0, 1]
     state = 0
-
-    @classmethod
-    async def click(cls):
-        await super().click()
 
 
 @add_to_panel
@@ -280,9 +272,48 @@ class fp_asel_ft(LocalStateDiscreteSwitch):
     state = 0
 
     @classmethod
-    async def click(cls):
-        await super().click()
+    async def set_state(cls, state):
+        if state == 0:
+            fp_asel.step = 100
+        else:
+            fp_asel.step = 1000
 
+        return await super().set_state(state)
+
+
+@add_to_panel
+class fp_alt(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/altitude_hold_armed"]
+    states = [1, 0]
+
+    @classmethod
+    async def click(cls):
+        await xp.run_command_once(xp.Commands["sim/autopilot/altitude_hold"])
+
+
+@add_to_panel
+class baro_push_rh(baro_push_lh):
+    pass
+
+
+@add_to_panel
+class baro_rot_rh(baro_rot_lh):
+    pass
+
+
+@add_to_panel
+class fdtd_rh(fdtd_lh):
+    pass
+
+
+@add_to_panel
+class swap_rh(swap_lh):
+    pass
+
+
+@add_to_panel
+class vhf_control_rh(vhf_control_lh):
+    pass
 
 
 # F7X_SDD_Avionics_Vol1 22-21 front panel autopilot
