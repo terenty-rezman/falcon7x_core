@@ -73,14 +73,17 @@ async def main_loop():
 
 
 async def main():
-    await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    await op.run_test_receive_uso_task()
+    await asyncio.sleep(10000)
 
-    await op.run_receive_state_task()
-    await op.run_send_state_task()
+    # await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
 
-    await main_loop()   
+    # await op.run_receive_state_task()
+    # await op.run_send_state_task()
 
-    await xp.disconnect()
+    # await main_loop()   
+
+    # await xp.disconnect()
 
 
 asyncio.run(main())

@@ -656,6 +656,34 @@ async def run_send_state_task():
     send_task = sane_tasks.spawn(send_state_task(remote))    
 
 
+async def run_test_receive_uso_task():
+    endpoint = await open_local_endpoint(port=2001)
+    print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
+
+    global receive_task
+    receive_task = sane_tasks.spawn(test_receive_uso_task(endpoint))    
+
+
+import numpy as np
+import uso
+
+async def test_receive_uso_task(udp_endpoint):
+
+    while True:
+        new_state, (host, port) = await udp_endpoint.receive()
+
+        new_state = uso.unpack_packet(new_state)
+
+        return;
+
+        for i, (o, n) in enumerate(zip(buttons_state_received_bytes, new_state)):
+            if n != o:
+                button_id = button_names[i]
+                await handle_button_state(button_id, n)
+
+        buttons_state_received_bytes = new_state
+
+
 from overhead_panel import fire_panel
 from overhead_panel import flight_control
 from overhead_panel import engines_apu
