@@ -691,7 +691,7 @@ async def run_test_receive_uso_task():
 
 
 import numpy as np
-import uso
+import uso.uso as uso
 
 async def test_receive_uso_task(udp_endpoint):
 
