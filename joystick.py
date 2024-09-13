@@ -5,7 +5,7 @@ from threading import Lock, Thread
 from time import sleep
 import math
 
-from inputs import get_gamepad
+from inputs import get_gamepad, UnpluggedError
 
 
 def normalize_axis_value_16bit(val) -> float:
@@ -33,7 +33,13 @@ class Joystick:
     def get_axes_values(self):
         with self.lock:
             return [self.axis_X, self.axis_Y, self.axis_Z, self.axis_RZ]
-
+    
+    def is_plugged(self):
+        try:
+            events = get_gamepad()
+            return True
+        except UnpluggedError:
+            return False
 
     def run_in_thread(self):
         def poll_events():

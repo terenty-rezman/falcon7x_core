@@ -19,7 +19,10 @@ SERVER_PORT = 51000
 
 
 joystick = Joystick()
-joystick.run_in_thread()
+if joystick.is_plugged():
+    joystick.run_in_thread()
+else:
+    print("No joystick connected!")
 
 
 def on_new_xp_data(type, dataref, value):
@@ -62,9 +65,10 @@ async def main_loop():
 
     while True:
         x, y, z, rz = joystick.get_axes_values()
-        await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
-        await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
-        await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
+        if joystick.is_plugged():
+            await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
+            await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
+            await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
 
         # NOTE: maybe run in separate task?
         await ACSystems.update()
@@ -74,16 +78,18 @@ async def main_loop():
 
 async def main():
     await op.run_test_receive_uso_task()
-    await asyncio.sleep(10000)
 
-    # await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    try:
+        await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    except ConnectionRefusedError:
+        print(f"Could not connect to xplane: {SERVER_ADDRESS}:{SERVER_PORT} !")
 
-    # await op.run_receive_state_task()
-    # await op.run_send_state_task()
+    await op.run_receive_state_task()
+    await op.run_send_state_task()
 
-    # await main_loop()   
+    await main_loop()   
 
-    # await xp.disconnect()
+    await xp.disconnect()
 
 
 asyncio.run(main())

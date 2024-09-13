@@ -10,6 +10,7 @@ uso_dtype = np.dtype(
             'pDataReady'
 
         ], 
+        # https://numpy.org/doc/stable/reference/arrays.dtypes.html
         'formats': [
             'f4', 'f4', 'f4', 'f4', 'f4', 'f4', 'f4', 'f4', 'f4',  
             ('B', (20,)),

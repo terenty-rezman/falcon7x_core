@@ -173,6 +173,10 @@ terminate_reader_task = False
 
 
 async def send_string(writer, msg: str):
+    if not writer:
+        print("not connected to xplane!")
+        return 
+
     msg += "\n"
     writer.write(msg.encode())
     await writer.drain()
