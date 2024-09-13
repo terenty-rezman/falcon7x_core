@@ -449,6 +449,19 @@ hardware_panel_items_receive = [
     "fdtd_rh",
     "swap_rh",
     "vhf_control_rh",
+    "audio_vhf1_lh",
+    "audio_vhf2_lh",
+    "audio_vhf3_lh",
+    "audio_hf1_lh",
+    "audio_hf2_lh",
+    "audio_sat_lh",
+    "audio_pa_lh",
+    "audio_nav1_lh",
+    "audio_nav2_lh",
+    "audio_adf1_lh",
+    "audio_adf2_lh",
+    "audio_vce_lh",
+    "audio_fone_lh",
 ]
 
 hardware_panel_items_send = [ 
@@ -577,6 +590,19 @@ hardware_panel_items_send = [
     "fp_asel",
     "fp_alt",
     "fdtd_rh",
+    "audio_vhf1_lh",
+    "audio_vhf2_lh",
+    "audio_vhf3_lh",
+    "audio_hf1_lh",
+    "audio_hf2_lh",
+    "audio_sat_lh",
+    "audio_pa_lh",
+    "audio_nav1_lh",
+    "audio_nav2_lh",
+    "audio_adf1_lh",
+    "audio_adf2_lh",
+    "audio_vce_lh",
+    "audio_fone_lh",
 ]
 
 button_names = list(hardware_panel_items_receive)
@@ -702,3 +728,4 @@ from overhead_panel import cockpit_lights
 from overhead_panel import interior_lights
 from front_panel import warning
 from front_panel import autopilot
+from audio_mkb import audio
