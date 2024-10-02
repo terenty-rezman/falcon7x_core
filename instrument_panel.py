@@ -653,6 +653,13 @@ async def handle_uso_button_state(button_id, state):
             print(button_id, "released")
 
 
+async def handle_uso_switch_state(switch_id, state):
+    item = CockpitPanel.buttons.get(switch_id)
+    if item:
+        await item.set_state(state)
+        print(switch_id, "state", state)
+
+
 async def receive_state_task(udp_endpoint):
     global buttons_state_received_bytes
 
@@ -730,6 +737,12 @@ async def receive_uso_task(udp_endpoint):
             if new_state != old_state:
                 await handle_uso_button_state(button_id, new_state)
 
+        for switch_id, bit_idx in uso.uso_switches_receive_map.items():
+            old_state = uso_bits_state[bit_idx]
+            new_state = new_bit_state[bit_idx]
+            if new_state != old_state:
+                await handle_uso_switch_state(switch_id, new_state)
+
         uso_bits_state = new_bit_state
 
 
@@ -752,6 +765,9 @@ from overhead_panel import interior_lights
 from front_panel import warning
 from front_panel import autopilot
 from front_panel import secondary_flight_display
-from audio_mkb import audio
-from audio_mkb import emergency
+from middle_pedestal import audio
+from middle_pedestal import emergency
+from middle_pedestal import checklist_control
+from middle_pedestal import wings_config
+from middle_pedestal import trackball
 from stub_button import stub_button

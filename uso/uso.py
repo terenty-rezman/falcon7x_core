@@ -51,9 +51,49 @@ uso_buttons_receive_map = {
     "master_warning_rh": "I06_c28",
     "sfd_menu": "I06_b05",
     "sfd_std": "I06_b06",
+    "clc_undo_lh": "I03_c19",
+    "clc_ent_lh": "I03_c20",
+    "clc_next_lh": "I03_c21",
+    "clc_prev_lh": "I03_c22",
+    "clc_cl_lh": "I03_c23",
+    "clc_undo_rh": "I04_a20",
+    "clc_ent_rh": "I04_a21",
+    "clc_next_rh": "I04_a22",
+    "clc_prev_rh": "I04_a23",
+    "clc_cl_rh": "I04_a24",
+    "wc_backup_slats": "I03_b02",
+    #
+    "tb_mic_rh": "I04_a26",
+    "tb_disp_left_rh": "I04_a27",
+    "tb_disp_right_rh": "I04_a28",
+    "tb_disp_up_rh": "I04_a29",
+    "tb_disp_down_rh": "I04_a30",
+    "tb_menu_rh": "I04_a25",
+    "tb_mic_lh": "I03_c25",
+    "tb_disp_left_lh": "I03_c26",
+    "tb_disp_right_lh": "I03_c27",
+    "tb_disp_up_lh": "I03_c28",
+    "tb_disp_down_lh": "I03_c29",
+    "tb_menu_rl": "I03_c24",
 }
+
+
+uso_switches_receive_map = {
+    "wc_sf_0": "I03_a30",
+    "wc_sf_1": "I03_a31",
+    "wc_sf_2": "I03_a32",
+    "wc_sf_3": "I03_b01",
+    "wc_ab_0": "I03_b03",
+    "wc_ab_1": "I03_b04",
+    "wc_ab_2": "I03_b05",
+}
+
 
 # replace buttons bit ids with indecies
 for button_id, bit_id in uso_buttons_receive_map.items():
     idx = uso_bitfield_names.index(bit_id)
     uso_buttons_receive_map[button_id] = idx
+
+for button_id, bit_id in uso_switches_receive_map.items():
+    idx = uso_bitfield_names.index(bit_id)
+    uso_switches_receive_map[button_id] = idx

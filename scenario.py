@@ -86,7 +86,7 @@ async def eng1_oil_too_low_press(ac_state: xp_ac.ACState):
 import overhead_panel.flight_control as fc 
 import overhead_panel.dc_supply as elec
 import overhead_panel.windshield_heat as windshield
-import audio_mkb.emergency as emergency
+import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights
 
 @scenario
