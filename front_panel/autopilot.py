@@ -28,6 +28,13 @@ class vhf_control_lh(FloatStepper):
 
 
 @add_to_panel
+class vhf_push_lh(PushButton):
+    @classmethod
+    async def click(cls):
+        pass
+
+
+@add_to_panel
 class baro_push_lh(PushButton):
     @classmethod
     async def click(cls):
@@ -254,7 +261,6 @@ class fp_vnav(ThreeStateButton):
         await xp.run_command_once(xp.Commands["sim/autopilot/FMS"])
 
 
-
 @add_to_panel
 class fp_asel(FloatStepper):
     dataref = xp.Params["sim/cockpit2/autopilot/altitude_dial_ft"]
@@ -308,6 +314,11 @@ class fdtd_rh(fdtd_lh):
 
 @add_to_panel
 class swap_rh(swap_lh):
+    pass
+
+
+@add_to_panel
+class vhf_push_rh(vhf_push_lh):
     pass
 
 

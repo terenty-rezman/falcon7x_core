@@ -4,6 +4,7 @@ import xp_aircraft_state as xp_ac
 import xplane as xp
 from instrument_panel import CockpitPanel
 import sane_tasks
+import cas
 
 
 scenarios = {}
@@ -65,7 +66,7 @@ async def eng1_oil_too_low_press(ac_state: xp_ac.ACState):
     await asyncio.sleep(5)
 
     # RED CAS message + sound: 54 ENG 1 OIL TOO LOW PRESS
-    print("54 ENG 1 OIL TOO LOW PRESS")
+    cas.show_message_alarm("54 ENG 1 OIL TOO LOW PRESS")
 
     # PDU automatically shows ENG TRM
     await xp.set_param(xp.Params["sim/7x/choixtcas"], 1)
@@ -83,6 +84,11 @@ async def eng1_oil_too_low_press(ac_state: xp_ac.ACState):
 
 
 import overhead_panel.flight_control as fc 
+import overhead_panel.dc_supply as elec
+import overhead_panel.windshield_heat as windshield
+import audio_mkb.emergency as emergency
+import overhead_panel.exterior_lights as exterior_lights
+
 @scenario
 async def fcs_direct_laws_active_1(ac_state: xp_ac.ACState):
     await asyncio.sleep(5)
@@ -112,3 +118,77 @@ async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
 
     # YELLOW CAS message: FCS: BOTH AILERONS FAIL
     print("FCS: BOTH AILERONS FAIL")
+
+
+@scenario
+async def elec_gen_2_fault(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # YELLOW CAS message
+    cas.show_message_alarm("ELECT: GEN 2 FAULT")
+
+    # light gen2 off
+    await elec.gen2.set_state(1)
+
+    # wait gen2 on
+    await elec.gen2.wait_state(0)
+
+    # light gen2 on unsuccessfull - light gen2 off again
+    await elec.gen2.set_state(1)
+
+    await elec.bus_tie.wait_state(1)
+
+    # wind shield AUTO
+    await windshield.windshield_lh.wait_state(0)
+    await windshield.windshield_rh.wait_state(0)
+
+
+@scenario
+async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # RED CAS message + sound
+    cas.show_message_alarm("36 ELEC: LH+RH ESS PWR LO")
+
+    # set elec rh + lh to isol
+    await elec.lh_isol.set_state(1)
+    await elec.rh_isol.set_state(1)
+    # light gen2 off
+    await elec.gen2.set_state(1)
+
+    # wait for rh + lh TIED
+    await elec.lh_isol.wait_state(0)
+    await elec.rh_isol.wait_state(0)
+
+    # wait gen2 on
+    await elec.gen2.wait_state(0)
+
+    cas.hide_message("36 ELEC: LH+RH ESS PWR LO")
+
+
+@scenario
+async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
+    await asyncio.sleep(5)
+
+    # RED CAS message + sound
+    cas.show_message_alarm("26 ELEC: AFT DIST BOX OVHT")
+
+    await emergency.elec_rh_ess.wait_state(1)
+
+    await elec.bus_tie.wait_state(0)
+
+    await elec.rh_isol.wait_state(1)
+
+    await elec.cabin_master.wait_state(1)
+
+    # OFF
+    await exterior_lights.el_landing_lh.wait_state(0)
+    await exterior_lights.el_landing_rh.wait_state(0)
+
+    # OFF
+    await exterior_lights.el_taxi.wait_state(0)
+    await exterior_lights.el_wing.wait_state(0)
+
+    # OFF
+    await windshield.windshield_lh.wait_state(1)
+    await windshield.windshield_rh.wait_state(1)

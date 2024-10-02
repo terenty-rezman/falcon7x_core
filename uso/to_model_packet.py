@@ -1,57 +1,9 @@
+import math
+
 import numpy as np
 
-uso_dtype = np.dtype(
-    {
-        'names': [
-            "A001",	
-            "A002",	
-            "A003",	
-            "A004",	
-            "A005",
-            "A006",	
-            "A007",	
-            "A008",	
-            "A009",	
-            "A010",	
-            "A011",	
-            "A012",	
-            "A013",
-            "A014",	
-            "A015",	
-            "A016",	
-            "A017",	
-            "A018",	
-            "A019",	
-            "A020",	
-            "A021",	
-            "A022",	
-            "A023",	
-            "A024",	
-            "A025",	
-            "A026",	
-            "A027",	
-            "A028",	
-            "A029",	
-            "A030",	
-            "A031",	
-            "A032",	
-            "A033",	
 
-            'bitfield',
-            'arinc', 
-            'pDataReady'
-        ], 
-        # https:#numpy.org/doc/stable/reference/arrays.dtypes.html
-        'formats': [
-            *['f4'] * 33,
-            ('B', (20,)),
-            ('i', (46,)),
-            'b'
-        ]
-    }
-)
-
-uso_field_names = [
+uso_float_field_names = [
 # [0] : Левая БРУ
 	"A001",	# Левая БРУ крен
 	"A002",	# Левая БРУ тангаж
@@ -99,7 +51,9 @@ uso_field_names = [
 	"A031",	# DISPLAY ADC=
 	"A032",	# VIDEO CONTRAST ADC 1
 	"A033",	# VIDEO CONTRAST ADC 2
+]
 
+uso_bitfield_names = [
 # ---------------- Сигналы из УСО ----------------------
 	"I03_a01",	# AP/PTY [K1 Левый горизонтальный пульт] [Левый горизонтальный пульт] [Левая БРУ]
 	"I03_a02",	# TCS [K1 Левый горизонтальный пульт] [Левый горизонтальный пульт] [Левая БРУ]
@@ -592,7 +546,31 @@ uso_field_names = [
 	"I08_a10",	# SWITCH ON [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"I08_a11",	# RH [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"I07_a10",	# DISPLAY MAN/AUTO G [K4 Верхний пульт] [Индикация на лобовом стекле HUD] [21 Управление изображением HUD]
-    
-	"fromARINC",   # Слова ARINC
-    "pDataReady",  # Готовность данных (shared memory)
 ]
+    
+uso_dtype = np.dtype(
+    {
+        'names': [
+            *uso_float_field_names,
+
+            'bitfield',
+
+            "fromARINC",   # Слова ARINC
+            "pDataReady",  # Готовность данных (shared memory)
+        ], 
+        # https:#numpy.org/doc/stable/reference/arrays.dtypes.html
+        'formats': [
+            # float fields in uso packet
+            *['f4'] * len(uso_float_field_names),
+
+            # bytes occupied by bitfield in uso packet
+            ('B', (math.ceil(len(uso_bitfield_names) / 8),)),
+
+            # unsigned int fromARINC[46];
+            ('i', (46,)),
+
+            # char pDataReady
+            'b'
+        ]
+    }
+)

@@ -108,6 +108,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/autopilot/fms_vnav", #  front panel - vnav
     "sim/cockpit2/autopilot/altitude_dial_ft", # front panel - asel
     "sim/cockpit2/autopilot/altitude_hold_armed", # front panel - alt
+    "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot", # secondary flight display - std
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire

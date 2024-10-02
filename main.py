@@ -77,10 +77,11 @@ async def main_loop():
 
 
 async def main():
-    await op.run_test_receive_uso_task()
+    await op.run_receive_uso_task()
 
     try:
         await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+        print(f"connected to xplane: {SERVER_ADDRESS}:{SERVER_PORT} !")
     except ConnectionRefusedError:
         print(f"Could not connect to xplane: {SERVER_ADDRESS}:{SERVER_PORT} !")
 

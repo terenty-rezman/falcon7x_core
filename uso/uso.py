@@ -1,55 +1,59 @@
 import numpy as np
 
-from uso.to_model_packet import uso_dtype, uso_field_names
-
-
-def bitfield_get(byte_array, bit_idx: int):
-    byte_idx = bit_idx # 8
-    bit_offset = bit_idx % 8
-
-    val = byte_array[byte_idx]
-    val = int(val)
-
-    if bit_offset:
-        val = val  & (1 << bit_offset)
-
-    return 1 if val else 0
+from uso.to_model_packet import uso_dtype, uso_float_field_names, uso_bitfield_names
 
 
 def unpack_packet(uso_udp_packet):
     uso_packet = np.frombuffer(uso_udp_packet, uso_dtype)    
 
     unpacked = {}
-
-    unpacked["A001"] = float(uso_packet["A001"][0])
-    unpacked["A002"] = float(uso_packet["A002"][0])
-    unpacked["A003"] = float(uso_packet["A003"][0])
-    unpacked["A004"] = float(uso_packet["A004"][0])
-    unpacked["A005"] = float(uso_packet["A005"][0])
-    unpacked["A006"] = float(uso_packet["A006"][0])
-    unpacked["A007"] = float(uso_packet["A007"][0])
-    unpacked["A008"] = float(uso_packet["A008"][0])
-    unpacked["A009"] = float(uso_packet["A009"][0])
+    
+    for name in uso_float_field_names:
+        unpacked[name] = float(uso_packet[name][0])
 
     # unpack bitfield
-    name_i = uso_field_names.index("I03_a01")
-    last_name_i = uso_field_names.index("I03_a30")
-
-    bit_field_count = last_name_i - name_i + 1
-
-    for b in uso_packet["bitfield"][0]:
-        byte_val = int(b)
-
-        for offset in range(0, 8):
-            val = byte_val  & (1 << offset)
-        
-            name = uso_field_names[name_i]
-            name_i += 1
-            
-            unpacked[name] = 1 if val else 0 
-            bit_field_count -= 1
-
-            if bit_field_count == 0:
-                break
+    bits = np.unpackbits(uso_packet["bitfield"][0], count=len(uso_bitfield_names), bitorder='little')
+    unpacked["bits"] = bits
 
     return unpacked
+
+
+uso_buttons_receive_map = {
+    "swap_lh": "I06_b26",
+    "fdtd_lh": "I06_b27",
+    "vhf_push_lh": "I06_b32",
+    "baro_push_lh": "I06_c03",
+    "fp_autothrottle": "I06_c04",
+    "fp_speed_is_mach_push": "I06_c05",
+    "fp_approach": "I06_c08",
+    "fp_lnav": "I06_c09",
+    "fp_hdg_trk_mode": "I06_c10",
+    "fp_hdg_trk_push": "I06_c11",
+    "fp_pilot_side": "I06_c14",
+    "fp_autopilot": "I06_c15",
+    "fp_clb": "I06_c18",
+    "fp_vs": "I06_c19",
+    "fp_vnav": "I06_c20",
+    "fp_alt": "I06_c21",
+    "swap_rh": "I06_b16",
+    "fdtd_rh": "I06_b17",
+    "vhf_push_rh": "I06_b22",
+    "baro_push_rh": "I06_b25",
+    "event_lh": "I06_b11",
+    "fms_msg_lh": "I06_b12",
+    "master_caution_lh": "I06_b13",
+    "master_warning_lh": "I06_b14",
+    "sil_aural_alarm_lh": "I06_b15",
+    "event_rh": "I06_c24",
+    "fms_msg_rh": "I06_c25",
+    "sil_aural_alarm_rh": "I06_c26",
+    "master_caution_rh": "I06_c27",
+    "master_warning_rh": "I06_c28",
+    "sfd_menu": "I06_b05",
+    "sfd_std": "I06_b06",
+}
+
+# replace buttons bit ids with indecies
+for button_id, bit_id in uso_buttons_receive_map.items():
+    idx = uso_bitfield_names.index(bit_id)
+    uso_buttons_receive_map[button_id] = idx

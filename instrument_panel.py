@@ -76,6 +76,16 @@ class NLocalStateButton:
         else:
             await cls.set_state(state + 1)
 
+    @classmethod
+    async def wait_state(cls, state):
+        """ wait on logical state """
+
+        def condition(param_val):
+            curr_state = cls.get_state() 
+            return curr_state == state
+
+        await xp_ac.ACState.data_condition(condition)
+
 
 class NStateButton:
     """ N states are logical states: 0, 1, 2, 3, ..., N """
@@ -633,6 +643,16 @@ async def handle_button_state(button_id, state):
                 print(button_id, "released")
 
 
+async def handle_uso_button_state(button_id, state):
+    item = CockpitPanel.buttons.get(button_id)
+    if item:
+        if state:
+            print(button_id, "pressed")
+            await item.click()
+        else:
+            print(button_id, "released")
+
+
 async def receive_state_task(udp_endpoint):
     global buttons_state_received_bytes
 
@@ -682,32 +702,35 @@ async def run_send_state_task():
     send_task = sane_tasks.spawn(send_state_task(remote))    
 
 
-async def run_test_receive_uso_task():
+async def run_receive_uso_task():
     endpoint = await open_local_endpoint(port=2001)
     print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
 
     global receive_task
-    receive_task = sane_tasks.spawn(test_receive_uso_task(endpoint))    
+    receive_task = sane_tasks.spawn(receive_uso_task(endpoint))    
 
 
 import numpy as np
 import uso.uso as uso
 
-async def test_receive_uso_task(udp_endpoint):
+uso_bits_state = [0] * len(uso.uso_bitfield_names)
+
+async def receive_uso_task(udp_endpoint):
+    global uso_bits_state
 
     while True:
         new_state, (host, port) = await udp_endpoint.receive()
 
         new_state = uso.unpack_packet(new_state)
+        new_bit_state = new_state["bits"]
 
-        return;
+        for button_id, bit_idx in uso.uso_buttons_receive_map.items():
+            old_state = uso_bits_state[bit_idx]
+            new_state = new_bit_state[bit_idx]
+            if new_state != old_state:
+                await handle_uso_button_state(button_id, new_state)
 
-        for i, (o, n) in enumerate(zip(buttons_state_received_bytes, new_state)):
-            if n != o:
-                button_id = button_names[i]
-                await handle_button_state(button_id, n)
-
-        buttons_state_received_bytes = new_state
+        uso_bits_state = new_bit_state
 
 
 from overhead_panel import fire_panel
@@ -728,4 +751,7 @@ from overhead_panel import cockpit_lights
 from overhead_panel import interior_lights
 from front_panel import warning
 from front_panel import autopilot
+from front_panel import secondary_flight_display
 from audio_mkb import audio
+from audio_mkb import emergency
+from stub_button import stub_button
