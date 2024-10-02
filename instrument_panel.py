@@ -731,7 +731,7 @@ async def receive_uso_task(udp_endpoint):
         new_state = uso.unpack_packet(new_state)
         new_bit_state = new_state["bits"]
 
-        for button_id, bit_idx in uso.uso_buttons_receive_map.items():
+        for button_id, bit_idx in uso.uso_pushbuttons_receive_map.items():
             old_state = uso_bits_state[bit_idx]
             new_state = new_bit_state[bit_idx]
             if new_state != old_state:
@@ -770,4 +770,5 @@ from middle_pedestal import emergency
 from middle_pedestal import checklist_control
 from middle_pedestal import wings_config
 from middle_pedestal import trackball
+from middle_pedestal import engine
 from stub_button import stub_button

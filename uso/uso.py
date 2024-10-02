@@ -18,7 +18,7 @@ def unpack_packet(uso_udp_packet):
     return unpacked
 
 
-uso_buttons_receive_map = {
+uso_pushbuttons_receive_map = {
     "swap_lh": "I06_b26",
     "fdtd_lh": "I06_b27",
     "vhf_push_lh": "I06_b32",
@@ -75,6 +75,18 @@ uso_buttons_receive_map = {
     "tb_disp_up_lh": "I03_c28",
     "tb_disp_down_lh": "I03_c29",
     "tb_menu_rl": "I03_c24",
+    "wc_trim_pitch_up_lh": "I03_b06",
+    "wc_trim_pitch_down_lh": "I03_b07",
+    "wc_trim_pitch_up_rh": "I03_b08",
+    "wc_trim_pitch_down_rh": "I03_b09",
+    "wc_trim_roll_right_lh": "I03_b10",
+    "wc_trim_roll_left_lh": "I03_b11",
+    "wc_trim_roll_right_rh": "I03_b12",
+    "wc_trim_roll_left_rh": "I03_b13",
+    "wc_trim_yaw_right_lh": "I03_b14",
+    "wc_trim_yaw_left_lh": "I03_b15",
+    "wc_trim_yaw_right_rh": "I03_b16",
+    "wc_trim_yaw_left_rh": "I03_b17",
 }
 
 
@@ -86,13 +98,17 @@ uso_switches_receive_map = {
     "wc_ab_0": "I03_b03",
     "wc_ab_1": "I03_b04",
     "wc_ab_2": "I03_b05",
+    "en_motor": "I03_c09",
+    "en_ign": "I03_c10",
+    "en_normal": "I03_c11",
+    "en_start": "I03_c12"
 }
 
 
 # replace buttons bit ids with indecies
-for button_id, bit_id in uso_buttons_receive_map.items():
+for button_id, bit_id in uso_pushbuttons_receive_map.items():
     idx = uso_bitfield_names.index(bit_id)
-    uso_buttons_receive_map[button_id] = idx
+    uso_pushbuttons_receive_map[button_id] = idx
 
 for button_id, bit_id in uso_switches_receive_map.items():
     idx = uso_bitfield_names.index(bit_id)
