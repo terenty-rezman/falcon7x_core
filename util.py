@@ -20,6 +20,8 @@ async def load_sit(sit_name: str):
     
     # await run_command_once(writer, xp.Commands["sim/operation/toggle_main_menu"])
     await xp.run_command_once(xp.Commands["sim/operation/fix_all_systems"])
+
+    # set view
     await xp.run_command_once(xp.Commands["sim/view/forward_with_nothing"])
 
 

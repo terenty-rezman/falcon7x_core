@@ -173,7 +173,7 @@ async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
     # RED CAS message + sound
     cas.show_message_alarm("26 ELEC: AFT DIST BOX OVHT")
 
-    await emergency.elec_rh_ess.wait_state(1)
+    await emergency.ep_elec_rh_ess.wait_state(1)
 
     await elec.bus_tie.wait_state(0)
 
