@@ -34,6 +34,22 @@ class cabin_alt(DiscreteSwitch):
 
 
 @add_to_panel
+class cabin_alt_climb(cabin_alt):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(1)
+
+
+@add_to_panel
+class cabin_alt_descent(cabin_alt):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(2)
+
+
+@add_to_panel
 class pressu_man(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 16

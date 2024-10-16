@@ -63,6 +63,45 @@ class pack(DiscreteSwitch):
     index = 0
     states = [1, 2, 3, 4, 0]
 
+@add_to_panel
+class pack_crew_off(pack):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            return await super().set_state(1)
+
+
+@add_to_panel
+class pack_normal(pack):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            return await super().set_state(0)
+
+
+@add_to_panel
+class pack_backup(pack):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            return await super().set_state(2)
+
+
+@add_to_panel
+class pack_emerg(pack):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            return await super().set_state(3)
+
+
+@add_to_panel
+class pack_pax_off(pack):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            return await super().set_state(4)
+
 
 @add_to_panel
 class bag_isol(TwoStateButton):

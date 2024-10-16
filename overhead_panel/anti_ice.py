@@ -6,7 +6,7 @@ import xplane as xp
 
 
 @add_to_panel
-class wings(ThreeStateButton):
+class ice_wings(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/AIwingsel"]
 
 

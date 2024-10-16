@@ -14,7 +14,7 @@ class shutoff_a1(TwoStateButton):
 
 
 @add_to_panel
-class shutoff_a2(TwoStateButton):
+class shutoff_a3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 23
 

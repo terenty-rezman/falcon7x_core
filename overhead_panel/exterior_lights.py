@@ -52,6 +52,15 @@ class el_landing_lh(DiscreteSwitch):
 
         return state
 
+
+    @classmethod
+    async def set_state(cls, state):
+        if state > 2:
+            await super().set_state(0)
+        else:
+            await super().set_state(state)
+
+
     @classmethod
     async def click(cls):
         state = cls.get_state()
@@ -77,8 +86,56 @@ class el_landing_lh(DiscreteSwitch):
 
 
 @add_to_panel
+class el_landing_lh_off(el_landing_lh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(2)
+
+
+@add_to_panel
+class el_landing_lh_on(el_landing_lh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(0)
+
+
+@add_to_panel
+class el_landing_lh_pulse(el_landing_lh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(1)
+
+
+@add_to_panel
 class el_landing_rh(el_landing_lh):
     index = 10
+
+
+@add_to_panel
+class el_landing_rh_off(el_landing_rh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(2)
+
+
+@add_to_panel
+class el_landing_rh_on(el_landing_rh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(0)
+
+
+@add_to_panel
+class el_landing_rh_pulse(el_landing_rh):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(1)
 
 
 @add_to_panel

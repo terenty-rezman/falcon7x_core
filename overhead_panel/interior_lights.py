@@ -26,6 +26,13 @@ class il_emerge_lights(DiscreteSwitch):
         return state
 
     @classmethod
+    async def set_state(cls, state):
+        if state > 2:
+            await super().set_state(0)
+        else:
+            await super().set_state(state)
+
+    @classmethod
     async def click(cls):
         state = cls.get_state()
         if state is None:
@@ -44,6 +51,30 @@ class il_emerge_lights(DiscreteSwitch):
         
         param = param[0]
         return param
+
+
+@add_to_panel
+class il_emerge_lights_arm(il_emerge_lights):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(0)
+
+
+@add_to_panel
+class il_emerge_lights_off(il_emerge_lights):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(2)
+
+
+@add_to_panel
+class il_emerge_lights_on(il_emerge_lights):
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            await super().set_state(1)
 
 
 @add_to_panel

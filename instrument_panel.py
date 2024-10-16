@@ -12,6 +12,32 @@ import sane_tasks
 BUTTON_PACKET_SIZE = 'H' # see https://docs.python.org/3/library/array.html
 
 
+def is_rotate_right(new_state, old_state):
+    next_state = {
+        (0, 0): (0, 1),
+        (0, 1): (1, 1),
+        (1, 1): (1, 0),
+        (1, 0): (0, 0)
+    }
+    if next_state[old_state] == new_state:
+        return True
+
+    return False
+
+
+def is_rotate_left(new_state, old_state):
+    next_state = {
+        (0, 0): (1, 0),
+        (1, 0): (1, 1),
+        (1, 1): (0, 1),
+        (0, 1): (0, 0)
+    }
+    if next_state[old_state] == new_state:
+        return True
+
+    return False
+
+
 def max_packet_item_value():
     return 2 ** (panel_state_send_bytes.itemsize * 8) - 1
 
@@ -338,7 +364,7 @@ hardware_panel_items_receive = [
     "apu_master",
     "apu_start_stop",
     "shutoff_a1",
-    "shutoff_a2",
+    "shutoff_a3",
     "backup_pump",
     "shutoff_b2",
     "shutoff_b3",
@@ -370,19 +396,19 @@ hardware_panel_items_receive = [
     "bag_isol",
     "xbleed_ecs",
     "boost1",
-    "xtk_1",
-    "xtk_2",
+    "xtk_left",
+    "xtk_right",
     "boost3",
-    "xtk_3",
+    "xtk_up_1",
     "backup_13",
-    "xtk_4",
-    "xtk_5",
+    "xtk_up_2",
+    "xtk_down_1",
     "boost2",
-    "xtk_6",
+    "xtk_down_2",
     "xbp_12",
     "xbp_13",
     "xbp_23",
-    "wings",
+    "ice_wings",
     "ice_brake",
     "ice_eng1",
     "ice_eng2",
@@ -532,19 +558,19 @@ hardware_panel_items_send = [
     "bag_isol",
     "xbleed_ecs",
     "boost1",
-    "xtk_1",
-    "xtk_2",
+    "xtk_left",
+    "xtk_right",
     "boost3",
-    "xtk_3",
+    "xtk_up_1",
     "backup_13",
-    "xtk_4",
-    "xtk_5",
+    "xtk_up_2",
+    "xtk_down_1",
     "boost2",
-    "xtk_6",
+    "xtk_down_2",
     "xbp_12",
     "xbp_13",
     "xbp_23",
-    "wings",
+    "ice_wings",
     "ice_brake",
     "ice_eng1",
     "ice_eng2",
@@ -660,6 +686,20 @@ async def handle_uso_switch_state(switch_id, state):
         print(switch_id, "state", state)
 
 
+async def handle_uso_rotate_switch_state(rotate_id, new_state, old_state):
+    item = CockpitPanel.buttons.get(rotate_id)
+    if item:
+        right = is_rotate_right(new_state, old_state)
+        left = is_rotate_left(new_state, old_state)
+
+        if right:
+            await item.inc()
+            print(rotate_id, "inc")
+        elif left:
+            await item.dec()
+            print(rotate_id, "dec")
+
+
 async def receive_state_task(udp_endpoint):
     global buttons_state_received_bytes
 
@@ -731,17 +771,34 @@ async def receive_uso_task(udp_endpoint):
         new_state = uso.unpack_packet(new_state)
         new_bit_state = new_state["bits"]
 
+        # push buttons
         for button_id, bit_idx in uso.uso_pushbuttons_receive_map.items():
             old_state = uso_bits_state[bit_idx]
             new_state = new_bit_state[bit_idx]
             if new_state != old_state:
                 await handle_uso_button_state(button_id, new_state)
 
+        # switches 
         for switch_id, bit_idx in uso.uso_switches_receive_map.items():
             old_state = uso_bits_state[bit_idx]
             new_state = new_bit_state[bit_idx]
             if new_state != old_state:
                 await handle_uso_switch_state(switch_id, new_state)
+
+        # rotate switches
+        for rotate_id, bit_idx in uso.uso_rotate_switch_receive_map.items():
+            first_idx = bit_idx
+            second_idx = bit_idx + 1
+
+            old_state = (
+                uso_bits_state[first_idx], uso_bits_state[second_idx]
+            )
+            new_state = (
+                new_bit_state[first_idx], new_bit_state[second_idx]
+            )
+
+            if new_state != old_state:
+                await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
 
         uso_bits_state = new_bit_state
 

@@ -12,12 +12,12 @@ class boost1(ThreeStateButton):
 
 
 @add_to_panel
-class xtk_1(TwoStateButton):
+class xtk_left(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt1f3"]
 
 
 @add_to_panel
-class xtk_2(TwoStateButton):
+class xtk_right(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt3f1"]
 
 
@@ -28,7 +28,7 @@ class boost3(ThreeStateButton):
 
 
 @add_to_panel
-class xtk_3(TwoStateButton):
+class xtk_up_1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt1f2"]
 
 
@@ -38,12 +38,12 @@ class backup_13(TwoStateButton):
 
 
 @add_to_panel
-class xtk_4(TwoStateButton):
+class xtk_up_2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt3f2"]
 
 
 @add_to_panel
-class xtk_5(TwoStateButton):
+class xtk_down_1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt2f1"]
 
 
@@ -54,7 +54,7 @@ class boost2(ThreeStateButton):
 
 
 @add_to_panel
-class xtk_6(TwoStateButton):
+class xtk_down_2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt2f3"]
 
 
