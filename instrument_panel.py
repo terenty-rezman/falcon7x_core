@@ -799,6 +799,9 @@ async def receive_uso_task(udp_endpoint):
 
             if new_state != old_state:
                 await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
+        
+        # floats fields
+        # do do do floats
 
         uso_bits_state = new_bit_state
 
@@ -829,3 +832,4 @@ from middle_pedestal import wings_config
 from middle_pedestal import trackball
 from middle_pedestal import engine
 from stub_button import stub_button
+import plane_control

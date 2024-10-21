@@ -251,6 +251,7 @@ async def handle_read():
             if on_new_xp_data_callback:
                 on_new_xp_data_callback(type, dataref, value) 
     except Exception as ex:
+        print(data)
         on_new_xp_data_exception_callback(ex)
 
 
@@ -266,6 +267,26 @@ async def disconnect():
         terminate_reader_task = True
         await xp_reader_task
         terminate_reader_task = False
+    
+
+async def connect_to_xplane_until_success(server_address, server_port, on_new_data_callback, on_data_exception_callback):
+    while True:
+        try:
+            await connect_to_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback)
+            print(f"connected to xplane: {server_address}:{server_port} !")
+            break
+        except ConnectionRefusedError:
+            print(f"Could not connect to xplane: {server_address}:{server_port} !")
+            print(f"retrying...")
+            asyncio.sleep(0.5)
+
+
+async def connect_to_xplane_once(server_address, server_port, on_new_data_callback, on_data_exception_callback):
+    try:
+        await connect_to_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback)
+        print(f"connected to xplane: {server_address}:{server_port} !")
+    except ConnectionRefusedError:
+        print(f"Could not connect to xplane: {server_address}:{server_port} !")
 
 
 async def connect_to_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback):

@@ -7,9 +7,12 @@ def unpack_packet(uso_udp_packet):
     uso_packet = np.frombuffer(uso_udp_packet, uso_dtype)    
 
     unpacked = {}
-    
+    floats = {}    
+
     for name in uso_float_field_names:
-        unpacked[name] = float(uso_packet[name][0])
+        floats[name] = float(uso_packet[name][0])
+
+    unpacked["floats"] = floats
 
     # unpack bitfield
     bits = np.unpackbits(uso_packet["bitfield"][0], count=len(uso_bitfield_names), bitorder='little')
@@ -237,6 +240,10 @@ uso_rotate_switch_receive_map = {
     "vhf_control_rh": "I06_b18",
     "baro_rot_rh": "I06_b23",
     "sfd_set": "I06_b03", 
+}
+
+uso_floats_receive_map = {
+   "pc_bank_lh": "A001",
 }
 
 # replace buttons bit ids with indecies

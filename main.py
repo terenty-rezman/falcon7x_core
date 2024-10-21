@@ -48,11 +48,13 @@ async def load_default_sit():
 
 async def main_loop():
     ACState.clear_all()
+
+    await load_default_sit()
+
     await util.subscribe_to_all_data()
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
 
-    # await load_default_sit()
     await Scenario.clear_all()
     await ACSystems.reset()
     ACState.clear_all()
@@ -79,11 +81,7 @@ async def main_loop():
 async def main():
     await op.run_receive_uso_task()
 
-    try:
-        await xp.connect_to_xplane(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
-        print(f"connected to xplane: {SERVER_ADDRESS}:{SERVER_PORT} !")
-    except ConnectionRefusedError:
-        print(f"Could not connect to xplane: {SERVER_ADDRESS}:{SERVER_PORT} !")
+    await xp.connect_to_xplane_until_success(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
 
     await op.run_receive_state_task()
     await op.run_send_state_task()

@@ -76,7 +76,7 @@ class ACState:
         return cls.curr_params.get(xp_param)
     
     @classmethod
-    async def wait_until_param_available(cls, xp_param: xp.Params):
+    def wait_until_param_available(cls, xp_param: xp.Params):
         def param_available(ac_state: ACState):
             if ac_state.param_available(xp_param):
                 return True
