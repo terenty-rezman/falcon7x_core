@@ -7,7 +7,6 @@ import xplane as xp
 
 async def load_sit(sit_name: str):
     time_param_sec = xp.Params["sim/time/total_running_time_sec"]
-    await subscribe_to_time_param() # we need time param to load situation correctly 
 
     await xp.load_sit(sit_name)
     await asyncio.sleep(3)

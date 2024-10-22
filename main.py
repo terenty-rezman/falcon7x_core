@@ -12,10 +12,16 @@ import xplane as xp
 from instrument_panel import CockpitPanel
 import instrument_panel as op
 import util
+import web_interface
 
 
-SERVER_ADDRESS = "127.0.0.1"
-SERVER_PORT = 51000
+# connect to xplane plugin
+XP_SERVER_HOST = "127.0.0.1"
+XP_SERVER_PORT = 51000
+
+# web interface listens on this address:
+WEB_INTERFACE_HOST = "127.0.0.1"
+WB_INTERFACE_PORT = 6070
 
 
 joystick = Joystick()
@@ -49,6 +55,8 @@ async def load_default_sit():
 async def main_loop():
     ACState.clear_all()
 
+    await util.subscribe_to_time_param() # we need time param to load situation correctly 
+
     await load_default_sit()
 
     await util.subscribe_to_all_data()
@@ -81,10 +89,12 @@ async def main_loop():
 async def main():
     await op.run_receive_uso_task()
 
-    await xp.connect_to_xplane_until_success(SERVER_ADDRESS, SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.connect_to_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
     await op.run_receive_state_task()
     await op.run_send_state_task()
+
+    await web_interface.run_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
 
