@@ -94,7 +94,7 @@ async def main():
     await op.run_receive_state_task()
     await op.run_send_state_task()
 
-    await web_interface.run_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
+    await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
 

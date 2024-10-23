@@ -41,7 +41,7 @@ async def load_situation(data: LoadSit):
     return {"result": "ok"}
 
 
-async def run_task(listen_host, listen_port):
+async def run_server_task(listen_host, listen_port):
     global quart_task
 
     quart_task = app.run_task(host=listen_host, port=listen_port)
