@@ -780,10 +780,10 @@ async def run_receive_uso_task():
 
 
 import numpy as np
-import uso.uso as uso
+import uso.uso_receive as uso_receive
 
-uso_bits_state = [0] * len(uso.uso_bitfield_names)
-uso_floats_state = [0] * len(uso.uso_float_field_names)
+uso_bits_state = [0] * len(uso_receive.uso_bitfield_names)
+uso_floats_state = [0] * len(uso_receive.uso_float_field_names)
 
 async def receive_uso_task(udp_endpoint):
     global uso_bits_state
@@ -792,26 +792,26 @@ async def receive_uso_task(udp_endpoint):
     while True:
         new_state, (host, port) = await udp_endpoint.receive()
 
-        new_state = uso.unpack_packet(new_state)
+        new_state = uso_receive.unpack_packet(new_state)
         new_bit_state = new_state["bits"]
         new_floats_state = new_state["floats"]
 
         # push buttons
-        for button_id, bit_idx in uso.uso_pushbuttons_receive_map.items():
+        for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
             old_state = uso_bits_state[bit_idx]
             new_state = new_bit_state[bit_idx]
             if new_state != old_state:
                 await handle_uso_button_state(button_id, new_state)
 
         # switches 
-        for switch_id, bit_idx in uso.uso_switches_receive_map.items():
+        for switch_id, bit_idx in uso_receive.uso_switches_receive_map.items():
             old_state = uso_bits_state[bit_idx]
             new_state = new_bit_state[bit_idx]
             if new_state != old_state:
                 await handle_uso_switch_state(switch_id, new_state)
 
         # rotate switches
-        for rotate_id, bit_idx in uso.uso_rotate_switch_receive_map.items():
+        for rotate_id, bit_idx in uso_receive.uso_rotate_switch_receive_map.items():
             first_idx = bit_idx
             second_idx = bit_idx + 1
 
@@ -826,7 +826,7 @@ async def receive_uso_task(udp_endpoint):
                 await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
         
         # floats fields
-        for float_id, bit_idx in uso.uso_floats_receive_map.items():
+        for float_id, bit_idx in uso_receive.uso_floats_receive_map.items():
             old_state = uso_floats_state[bit_idx]
             new_state = new_floats_state[bit_idx]
             if not math.isclose(old_state, new_state, abs_tol=0.0001):

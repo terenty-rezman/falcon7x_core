@@ -2,6 +2,7 @@ import math
 
 import numpy as np
 
+# TO MODEL PACKET
 
 uso_float_field_names = [
 # -------------------- АЦП --------------------

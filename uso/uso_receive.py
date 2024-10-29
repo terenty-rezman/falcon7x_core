@@ -1,6 +1,6 @@
 import numpy as np
 
-from uso.to_model_packet import uso_dtype, uso_float_field_names, uso_bitfield_names
+from uso.received_packet import uso_dtype, uso_float_field_names, uso_bitfield_names
 
 
 def unpack_packet(uso_udp_packet):
