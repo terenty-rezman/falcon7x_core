@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import sane_tasks
 import util
+import xplane as xp
 
 
 quart_task = None
@@ -38,6 +39,29 @@ class LoadSit:
 @validate_request(LoadSit)
 async def load_situation(data: LoadSit):
     await util.load_sit(f"Output/situations/{data.file_name}")
+    return {"result": "ok"}
+
+
+@app.post("/api/synoptic")
+async def load_situation():
+    pages = {
+        "STAT": 0,
+        "ENG": 1,
+        "ELEC": 2,
+        "FUEL": 3,
+        "HYD": 4,
+        "ECS": 5, 
+        "BLD": 6,
+        "FCS": 7,
+        "TEST": 8
+    }
+    page_name = "fff"
+    page = pages.get(page_name)
+    if not page:
+        return {"result": "error", "string": "wrong synoptic page name"}
+
+    await xp.set_param(xp.Params["sim/cockpit/weapons/firing_rate"], page)
+
     return {"result": "ok"}
 
 

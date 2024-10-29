@@ -131,6 +131,12 @@ Params = Enum('XplaneParams', [
     "sim/cockpit/autopilot/heading_mag", # fron panel - hdg/trk
     "sim/cockpit2/autopilot/heading_mode", # front panel - hdg/trk mode
 
+    "sim/cockpit2/controls/left_brake_ratio", # pedal brake left
+    "sim/cockpit2/controls/right_brake_ratio", # pedal brake right
+    "sim/cockpit2/engine/actuators/throttle_ratio", # throttle
+
+    "sim/cockpit/weapons/firing_rate", # synoptic page
+
     # our custom datarefs
     "sim/custom/7x/z_eng1_oil_press_override", # custom eng1 oil pressure
     "sim/custom/7x/z_eng1_oil_press", # custom eng1 oil pressure

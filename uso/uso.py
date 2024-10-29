@@ -7,10 +7,10 @@ def unpack_packet(uso_udp_packet):
     uso_packet = np.frombuffer(uso_udp_packet, uso_dtype)    
 
     unpacked = {}
-    floats = {}    
+    floats = [0] * len(uso_float_field_names) 
 
-    for name in uso_float_field_names:
-        floats[name] = float(uso_packet[name][0])
+    for i, name in enumerate(uso_float_field_names):
+        floats[i] = float(uso_packet[name][0])
 
     unpacked["floats"] = floats
 
@@ -139,23 +139,13 @@ uso_pushbuttons_receive_map = {
 
 
 uso_switches_receive_map = {
-    "wc_sf_0": "I03_a30",
-    "wc_sf_1": "I03_a31",
-    "wc_sf_2": "I03_a32",
-    "wc_sf_3": "I03_b01",
-    "wc_ab_0": "I03_b03",
-    "wc_ab_1": "I03_b04",
-    "wc_ab_2": "I03_b05",
     "en_motor": "I03_c09",
     "en_ign": "I03_c10",
     "en_normal": "I03_c11",
     "en_start": "I03_c12",
-    "en_fuel_off_1": "I03_c13",
-    "en_fuel_off_2": "I03_c14",
-    "en_fuel_off_3": "I03_c15",
-    "en_fuel_on_1": "I03_c16",
-    "en_fuel_on_2": "I03_c17",
-    "en_fuel_on_3": "I03_c18",
+    "en_fuel_1": "I03_c16",
+    "en_fuel_2": "I03_c17",
+    "en_fuel_3": "I03_c18",
     "ep_aural_warn_1": "I03_a22",
     "ep_aural_warn_2": "I03_a23",
     "ep_bag_fan": "I03_a24",
@@ -244,6 +234,22 @@ uso_rotate_switch_receive_map = {
 
 uso_floats_receive_map = {
    "pc_bank_lh": "A001",
+   "pc_pitch_lh": "A002",
+   "pc_right_brake_lh": "A003",
+   "pc_left_brake_lh": "A004",
+   "pc_heading_lh": "A005",
+   "pc_right_brake_rh": "A006",
+   "pc_left_brake_rh": "A007",
+   "pc_heading_rh": "A008",
+   "pc_throttle_1": "A012",
+   "pc_throttle_2": "A013",
+   "pc_throttle_3": "A015",
+   "wc_sf": "A016",
+   "wc_ab": "A017",
+   "aft_temp": "A028",
+   "fwd_temp": "A029",
+   "crew_temp": "A030",
+   "crew_ratio": "A031"
 }
 
 # replace buttons bit ids with indecies
@@ -258,3 +264,7 @@ for button_id, bit_id in uso_switches_receive_map.items():
 for button_id, bit_id in uso_rotate_switch_receive_map.items():
     idx = uso_bitfield_names.index(bit_id)
     uso_rotate_switch_receive_map[button_id] = idx
+
+for float_id, bit_id in uso_floats_receive_map.items():
+    idx = uso_float_field_names.index(bit_id)
+    uso_floats_receive_map[float_id] = idx

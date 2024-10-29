@@ -1,6 +1,7 @@
 import array
 import asyncio
 from collections import OrderedDict
+import math
 
 import xplane as xp
 import xp_aircraft_state as xp_ac
@@ -255,7 +256,10 @@ class FloatSwitch(NStateButton):
 
 
 class FloatStepper():
-    """ logic value is in range [0 - 1] """
+    """ logic value is in range [logic_left - logic_right] """
+    logic_left = 0
+    logic_right = 1
+
     dataref = None
 
     left_most_value = 0 
@@ -271,12 +275,15 @@ class FloatStepper():
     async def set_state(cls, state: float):
         """ set logical state """
 
-        state = min(max(0, state), 1)
+        state = min(max(cls.logic_left, state), cls.logic_right)
 
         cls.state = state
 
+        # from [logic_left logic_right] to [0 1]
+        val_01 = (state - cls.logic_left) / (cls.logic_right - cls.logic_left)
+
         # map logic state [0.0 1.0] to [float_left_most_value float_right_most_value]
-        xp_val = (cls.right_most_value - cls.left_most_value) * state + cls.left_most_value
+        xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
 
         # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
         if cls.index is not None:
@@ -301,8 +308,11 @@ class FloatStepper():
                 xp_val = xp_val[cls.index]
         
             # map xp_val to float val [0.0 1.0]
-            state = (xp_val - cls.left_most_value) / (cls.right_most_value - cls.left_most_value)
-            cls.state = state
+            val_01 = (xp_val - cls.left_most_value) / (cls.right_most_value - cls.left_most_value)
+
+            # map to [logic_left logic_right]
+            val_logic = (cls.logic_right - cls.logic_left) * val_01 + cls.logic_left
+            cls.state = val_logic
 
         return cls.state 
 
@@ -326,12 +336,18 @@ class FloatStepper():
     @classmethod
     async def inc(cls):
         state = cls.get_state()
+        if not state:
+            return
+
         logic_step = cls.step / (cls.right_most_value - cls.left_most_value)
         await cls.set_state(state + logic_step)
 
     @classmethod
     async def dec(cls):
         state = cls.get_state()
+        if not state:
+            return
+
         logic_step = cls.step / (cls.right_most_value - cls.left_most_value)
         await cls.set_state(state - logic_step)
 
@@ -700,6 +716,12 @@ async def handle_uso_rotate_switch_state(rotate_id, new_state, old_state):
             print(rotate_id, "dec")
 
 
+async def handle_uso_float_state(float_id, new_state):
+    item = CockpitPanel.buttons.get(float_id)
+    if item:
+        await item.set_state(new_state)
+
+
 async def receive_state_task(udp_endpoint):
     global buttons_state_received_bytes
 
@@ -761,15 +783,18 @@ import numpy as np
 import uso.uso as uso
 
 uso_bits_state = [0] * len(uso.uso_bitfield_names)
+uso_floats_state = [0] * len(uso.uso_float_field_names)
 
 async def receive_uso_task(udp_endpoint):
     global uso_bits_state
+    global uso_floats_state
 
     while True:
         new_state, (host, port) = await udp_endpoint.receive()
 
         new_state = uso.unpack_packet(new_state)
         new_bit_state = new_state["bits"]
+        new_floats_state = new_state["floats"]
 
         # push buttons
         for button_id, bit_idx in uso.uso_pushbuttons_receive_map.items():
@@ -801,9 +826,14 @@ async def receive_uso_task(udp_endpoint):
                 await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
         
         # floats fields
-        # do do do floats
+        for float_id, bit_idx in uso.uso_floats_receive_map.items():
+            old_state = uso_floats_state[bit_idx]
+            new_state = new_floats_state[bit_idx]
+            if not math.isclose(old_state, new_state, abs_tol=0.0001):
+                await handle_uso_float_state(float_id, new_state)
 
         uso_bits_state = new_bit_state
+        uso_floats_state = new_floats_state
 
 
 from overhead_panel import fire_panel

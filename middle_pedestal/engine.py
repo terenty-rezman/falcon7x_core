@@ -39,40 +39,21 @@ class en_start(TwoStateButton):
 
 
 @add_to_panel
-class en_fuel_off_1(TwoStateButton):
-    idx = 0
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            val = array_str(cls.idx, 0) 
-            await xp.set_param(xp.Params["sim/weapons/warhead_type"], val)
+class en_fuel_1(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    states = [0, 1]
+    index = 0
 
 
 @add_to_panel
-class en_fuel_on_1(TwoStateButton):
-    idx = 0
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            val = array_str(cls.idx, 1) 
-            await xp.set_param(xp.Params["sim/weapons/warhead_type"], val)
+class en_fuel_2(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    states = [0, 1]
+    index = 1
 
 
 @add_to_panel
-class en_fuel_off_2(en_fuel_off_1):
-    idx = 1
-
-
-@add_to_panel
-class en_fuel_on_2(en_fuel_on_1):
-    idx = 1
-
-
-@add_to_panel
-class en_fuel_off_3(en_fuel_off_1):
-    idx = 2
-
-
-@add_to_panel
-class en_fuel_on_3(en_fuel_on_1):
-    idx = 2
+class en_fuel_3(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    states = [0, 1]
+    index = 2

@@ -7,30 +7,45 @@ import xp_aircraft_state as xp_ac
 import util
         
 
+# @add_to_panel
+# class wc_sf_0(TwoStateButton):
+#     flaps_val = 0
+
+#     @classmethod
+#     async def set_state(cls, state):
+#         if state == 1:
+#             val = array_str(0, cls.flaps_val) 
+#             await xp.set_param(xp.Params["sim/multiplayer/controls/flap_request"], val)
+
+# @add_to_panel
+# class wc_sf_1(wc_sf_0):
+#     flaps_val = 0.33
+
+
+# @add_to_panel
+# class wc_sf_2(wc_sf_0):
+#     flaps_val = 0.66
+
+
+# @add_to_panel
+# class wc_sf_3(wc_sf_0):
+#     flaps_val = 1.0
+
+
 @add_to_panel
-class wc_sf_0(TwoStateButton):
-    flaps_val = 0
+class wc_sf(FloatStepper):
+    dataref = xp.Params["sim/multiplayer/controls/flap_request"]
+    index = 0
 
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            val = array_str(0, cls.flaps_val) 
-            await xp.set_param(xp.Params["sim/multiplayer/controls/flap_request"], val)
+    logic_left = -1.0
+    logic_right = 1.0
 
+    left_most_value = 0
+    right_most_value = 1.0
 
-@add_to_panel
-class wc_sf_1(wc_sf_0):
-    flaps_val = 0.33
+    step = 0.01
 
-
-@add_to_panel
-class wc_sf_2(wc_sf_0):
-    flaps_val = 0.66
-
-
-@add_to_panel
-class wc_sf_3(wc_sf_0):
-    flaps_val = 1.0
+    val_type = float
 
 
 @add_to_panel
@@ -41,23 +56,39 @@ class wc_backup_slats(PushButton):
 
 
 @add_to_panel
-class wc_ab_0(TwoStateButton):
-    airbrake_val = 0
+class wc_ab(TwoStateButton):
+    dataref = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
+    index = 0
 
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            await xp.set_param(xp.Params["sim/cockpit2/controls/speedbrake_ratio"], cls.airbrake_val)
+    logic_left = -1.0
+    logic_right = 1.0
+
+    left_most_value = 0
+    right_most_value = 1.0
+
+    step = 0.01
+
+    val_type = float
 
 
-@add_to_panel
-class wc_ab_1(wc_ab_0):
-    airbrake_val = 0.5
+# @add_to_panel
+# class wc_ab_0(TwoStateButton):
+#     airbrake_val = 0
+
+#     @classmethod
+#     async def set_state(cls, state):
+#         if state == 1:
+#             await xp.set_param(xp.Params["sim/cockpit2/controls/speedbrake_ratio"], cls.airbrake_val)
 
 
-@add_to_panel
-class wc_ab_2(wc_ab_0):
-    airbrake_val = 1
+# @add_to_panel
+# class wc_ab_1(wc_ab_0):
+#     airbrake_val = 0.5
+
+
+# @add_to_panel
+# class wc_ab_2(wc_ab_0):
+#     airbrake_val = 1
 
 
 @add_to_panel

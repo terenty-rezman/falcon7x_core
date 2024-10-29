@@ -2,24 +2,42 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
+from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, FloatStepper
 import xplane as xp
 
 
 @add_to_panel
-class aft_temp(FloatSwitch):
+class aft_temp(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 9
-    float_left_most_value = 0
-    float_right_most_value = -3
+
+    logic_left = 0
+    logic_right = 1
+
+    left_most_value = 0 
+    right_most_value = -3 
+
+    state = 0
+    step = 0.01
+
+    val_type = float
 
 
 @add_to_panel
-class fwd_temp(FloatSwitch):
+class fwd_temp(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 10
+
+    logic_left = 0
+    logic_right = 1
+
     float_left_most_value = 0
     float_right_most_value = -3
+
+    state = 0
+    step = 0.01
+
+    val_type = float
 
 
 @add_to_panel
@@ -29,11 +47,20 @@ class fwd_temp_push(TwoStateButton):
 
 
 @add_to_panel
-class crew_temp(FloatSwitch):
+class crew_temp(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 11
+
     float_left_most_value = 0
     float_right_most_value = -3
+
+    logic_left = 0
+    logic_right = 1
+
+    state = 0
+    step = 0.01
+
+    val_type = float
 
 
 @add_to_panel
@@ -43,11 +70,19 @@ class crew_temp_push(TwoStateButton):
 
 
 @add_to_panel
-class crew_ratio(FloatSwitch):
+class crew_ratio(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust3"]
     index = 20
     float_left_most_value = 0
     float_right_most_value = -3
+
+    logic_left = 0
+    logic_right = 1
+
+    state = 0
+    step = 0.01
+
+    val_type = float
 
 
 @add_to_panel
