@@ -771,6 +771,13 @@ async def run_send_state_task():
     send_task = sane_tasks.spawn(send_state_task(remote))    
 
 
+async def run_send_uso_task():
+    remote = await open_remote_endpoint("127.0.0.1", port=send_state_port)
+
+    global send_task
+    send_task = sane_tasks.spawn(send_uso_task(remote))    
+
+
 async def run_receive_uso_task():
     endpoint = await open_local_endpoint(port=2001)
     print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
@@ -784,6 +791,7 @@ import uso.uso_receive as uso_receive
 
 uso_bits_state = [0] * len(uso_receive.uso_bitfield_names)
 uso_floats_state = [0] * len(uso_receive.uso_float_field_names)
+
 
 async def receive_uso_task(udp_endpoint):
     global uso_bits_state
@@ -834,6 +842,27 @@ async def receive_uso_task(udp_endpoint):
 
         uso_bits_state = new_bit_state
         uso_floats_state = new_floats_state
+
+
+import uso.uso_send as uso_send
+
+uso_send_lamps = [0] * len(uso_send.uso_bitfield_names)
+
+
+async def send_uso_task(remote):
+    while True:
+        for lamp_id, bit_idx in uso_send.uso_lamp_send_map.items():
+            item = CockpitPanel.buttons.get(lamp_id)
+            if item:
+                state = item.get_state() or 0
+                state = min(max(state, 0), 1) 
+                uso_send_lamps[bit_idx] = state
+
+        uso_packet = uso_send.create_packet(uso_send_lamps)
+
+        remote.send(uso_packet.tobytes())
+
+        await asyncio.sleep(0.3)
 
 
 from overhead_panel import fire_panel

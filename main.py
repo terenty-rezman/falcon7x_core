@@ -88,12 +88,13 @@ async def main_loop():
 
 async def main():
     await op.run_receive_uso_task()
+    await op.run_send_uso_task()
 
     # await xp.connect_to_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
     await xp.connect_to_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
-    await op.run_receive_state_task()
-    await op.run_send_state_task()
+    # await op.run_receive_state_task()
+    # await op.run_send_state_task()
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 

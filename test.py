@@ -1,6 +1,8 @@
 import asyncio
+import numpy as np
 
 from instrument_panel import FloatStepper
+import uso.uso_send as uso_send
 
 
 class test_float_tester(FloatStepper):
@@ -17,9 +19,9 @@ class test_float_tester(FloatStepper):
 
 
 async def main():
-    await test_float_tester.set_state(-50)
-    print(test_float_tester.get_state())
-    print("done")
+    uso_send.create_packet(None)
+    print("s")
+
 
 
 asyncio.run(main())

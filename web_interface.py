@@ -43,7 +43,7 @@ async def load_situation(data: LoadSit):
 
 
 @app.post("/api/synoptic")
-async def load_situation():
+async def synoptic():
     pages = {
         "STAT": 0,
         "ENG": 1,
