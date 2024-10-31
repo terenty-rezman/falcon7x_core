@@ -23,6 +23,11 @@ XP_SERVER_PORT = 51000
 WEB_INTERFACE_HOST = "127.0.0.1"
 WB_INTERFACE_PORT = 6070
 
+# uso udp ports
+USO_HOST = "127.0.0.1"
+USO_RECEIVE_PORT = 2001
+USO_SEND_PORT = 2002
+
 
 joystick = Joystick()
 if joystick.is_plugged():
@@ -87,14 +92,11 @@ async def main_loop():
 
 
 async def main():
-    await op.run_receive_uso_task()
-    await op.run_send_uso_task()
+    await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
+    await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
     # await xp.connect_to_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
     await xp.connect_to_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
-
-    # await op.run_receive_state_task()
-    # await op.run_send_state_task()
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 

@@ -10,9 +10,6 @@ from aioudp import open_local_endpoint, open_remote_endpoint
 import sane_tasks
 
 
-BUTTON_PACKET_SIZE = 'H' # see https://docs.python.org/3/library/array.html
-
-
 def is_rotate_right(new_state, old_state):
     next_state = {
         (0, 0): (0, 1),
@@ -37,10 +34,6 @@ def is_rotate_left(new_state, old_state):
         return True
 
     return False
-
-
-def max_packet_item_value():
-    return 2 ** (panel_state_send_bytes.itemsize * 8) - 1
 
 
 def add_to_panel(cls):
@@ -318,19 +311,12 @@ class FloatStepper():
 
     @classmethod 
     def get_indication(cls):
-        "get float value as int to be packed for send"
-
         state = cls.get_state()
 
         if state is None:
             return
 
-        max_value = max_packet_item_value()
-
-        # map float val [0.0 1.0] to int
-        int_val = state * max_value 
-
-        return int(int_val)
+        return int(state)
 
     
     @classmethod
@@ -354,335 +340,6 @@ class FloatStepper():
 
 receive_task = None
 send_task = None
-receive_state_port = 1998
-send_state_port = 1999
-
-hardware_panel_items_receive = [
-    "firebutton_1",
-    "firebutton_2",
-    "firebutton_3",
-    "apu_disch",
-    "firerearcomp_button",
-    "firebagcomp_button",
-    "disch_11",
-    "disch_12",
-    "disch_21",
-    "disch_22",
-    "disch_31",
-    "disch_32",
-    "airbrake_auto",
-    "fcs_engage_norm",
-    "fcs_engage_stby",
-    "fcs_steering",
-    "eng_1",
-    "eng_2",
-    "eng_3",
-    "apu_master",
-    "apu_start_stop",
-    "shutoff_a1",
-    "shutoff_a3",
-    "backup_pump",
-    "shutoff_b2",
-    "shutoff_b3",
-    "shutoff_c2",
-    "galley_master",
-    "lh_master",
-    "lh_init",
-    "bus_tie",
-    "rh_init",
-    "rh_master",
-    "cabin_master",
-    "ext_power",
-    "gen1",
-    "lh_isol",
-    "rat_reset",
-    "rh_isol",
-    "gen2",
-    "gen3",
-    "bat1",
-    "bat2",
-    "aft_temp",
-    "fwd_temp",
-    "fwd_temp_push",
-    "crew_temp",
-    "crew_temp_push",
-    "crew_ratio",
-    "gnd_vent",
-    "pack",
-    "bag_isol",
-    "xbleed_ecs",
-    "boost1",
-    "xtk_left",
-    "xtk_right",
-    "boost3",
-    "xtk_up_1",
-    "backup_13",
-    "xtk_up_2",
-    "xtk_down_1",
-    "boost2",
-    "xtk_down_2",
-    "xbp_12",
-    "xbp_13",
-    "xbp_23",
-    "ice_wings",
-    "ice_brake",
-    "ice_eng1",
-    "ice_eng2",
-    "ice_eng3",
-    "bleed1",
-    "bleed12",
-    "bleed2",
-    "bleed13",
-    "bleed_apu",
-    "bleed3",
-    "dump",
-    "bag_vent",
-    "cabin_alt",
-    "pressu_man",
-    "probe_12",
-    "probe_3",
-    "probe_4",
-    "windshield_lh",
-    "windshield_rh",
-    "windshield_backup",
-    "pax_oxygen",
-    "rain_rplint_lh",
-    "el_nav",
-    "el_anticol",
-    "el_wing",
-    "el_landing_lh",
-    "el_landing_rh",
-    "el_taxi",
-    "cl_overhead",
-    "cl_panel",
-    "cl_dim",
-    "cl_shield",
-    "il_emerge_lights",
-    "il_fasten",
-    "il_smoking",
-    "il_cabin",
-    "rain_rplint_rh",
-    "master_warning_lh",
-    "master_caution_lh",
-    "sil_aural_alarm_lh",
-    "fms_msg_lh",
-    "event_lh",
-    "event_rh",
-    "fms_msg_rh",
-    "sil_aural_alarm_rh",
-    "master_caution_rh",
-    "master_warning_rh",
-    "swap_lh",
-    "vhf_control_lh",
-    "baro_rot_lh",
-    "baro_push_lh",
-    "fdtd_lh",
-    "fp_speed_is_mach_push",
-    "fp_speed_mach_man_fms",
-    "fp_speed_kts_mach",
-    "fp_autothrottle",
-    "fp_approach",
-    "fp_lnav",
-    "fp_hdg_trk_switch",
-    "fp_hdg_trk",
-    "fp_hdg_trk_push",
-    "fp_hdg_trk_mode",
-    "fp_pilot_side",
-    "fp_autopilot",
-    "fp_vs_path",
-    "fp_clb",
-    "fp_vs",
-    "fp_vnav",
-    "fp_asel",
-    "fp_asel_ft",
-    "fp_alt",
-    "baro_rot_rh",
-    "baro_push_rh",
-    "fdtd_rh",
-    "swap_rh",
-    "vhf_control_rh",
-    "audio_vhf1_lh",
-    "audio_vhf2_lh",
-    "audio_vhf3_lh",
-    "audio_hf1_lh",
-    "audio_hf2_lh",
-    "audio_sat_lh",
-    "audio_pa_lh",
-    "audio_nav1_lh",
-    "audio_nav2_lh",
-    "audio_adf1_lh",
-    "audio_adf2_lh",
-    "audio_vce_lh",
-    "audio_fone_lh",
-]
-
-hardware_panel_items_send = [ 
-    "firebutton_1",
-    "fireindicator_1",
-    "disch_11",
-    "disch_12",
-    "apu_disch",
-    "fire_apu_indicator",
-    "fire_apu_closed_indicator",
-    "firebutton_2",
-    "fireindicator_2",
-    "disch_21",
-    "disch_22",
-    "firebutton_3",
-    "fireindicator_3",
-    "disch_31",
-    "disch_32",
-    "firerearcomp_button",
-    "firerearcomp_indicator",
-    "firebagcomp_button",
-    "firebagcomp_indicator",
-    "airbrake_auto",
-    "fcs_engage_norm",
-    "fcs_engage_stby",
-    "fcs_steering",
-    "apu_master",
-    "apu_start_stop",
-    "shutoff_a1",
-    "shutoff_a2",
-    "backup_pump",
-    "shutoff_b2",
-    "shutoff_b3",
-    "shutoff_c2",
-    "galley_master",
-    "lh_master",
-    "lh_init",
-    "bus_tie",
-    "rh_init",
-    "rh_master",
-    "cabin_master",
-    "ext_power",
-    "gen1",
-    "lh_isol",
-    "rat_reset",
-    "rh_isol",
-    "gen2",
-    "gen3",
-    "bat1",
-    "bat2",
-    "aft_temp",
-    "fwd_temp",
-    "fwd_temp_push",
-    "crew_temp",
-    "crew_temp_push",
-    "crew_ratio",
-    "gnd_vent",
-    "bag_isol",
-    "xbleed_ecs",
-    "boost1",
-    "xtk_left",
-    "xtk_right",
-    "boost3",
-    "xtk_up_1",
-    "backup_13",
-    "xtk_up_2",
-    "xtk_down_1",
-    "boost2",
-    "xtk_down_2",
-    "xbp_12",
-    "xbp_13",
-    "xbp_23",
-    "ice_wings",
-    "ice_brake",
-    "ice_eng1",
-    "ice_eng2",
-    "ice_eng3",
-    "bleed1",
-    "bleed12",
-    "bleed2",
-    "bleed13",
-    "bleed_apu",
-    "bleed3",
-    "dump",
-    "bag_vent",
-    "pressu_man",
-    "probe_12",
-    "probe_3",
-    "probe_4",
-    "windshield_lh",
-    "windshield_rh",
-    "windshield_backup",
-    "el_nav",
-    "el_anticol",
-    "el_wing",
-    "el_landing_lh",
-    "el_landing_rh",
-    "el_taxi",
-    "il_emerge_lights",
-    "il_fasten",
-    "il_smoking",
-    "il_cabin",
-    "pty_lh",
-    "master_warning_lh",
-    "master_caution_lh",
-    "fms_msg_lh",
-    "event_lh",
-    "event_rh",
-    "fms_msg_rh",
-    "master_caution_rh",
-    "master_warning_rh",
-    "pty_rh",
-    "fdtd_lh",
-    "fp_speed_is_mach_push",
-    "fp_speed_kts_mach",
-    "fp_autothrottle",
-    "fp_approach",
-    "fp_lnav",
-    "fp_hdg_trk",
-    "fp_hdg_trk_mode",
-    "fp_pilot_side",
-    "fp_autopilot",
-    "fp_clb",
-    "fp_vs",
-    "fp_vnav",
-    "fp_asel",
-    "fp_alt",
-    "fdtd_rh",
-    "audio_vhf1_lh",
-    "audio_vhf2_lh",
-    "audio_vhf3_lh",
-    "audio_hf1_lh",
-    "audio_hf2_lh",
-    "audio_sat_lh",
-    "audio_pa_lh",
-    "audio_nav1_lh",
-    "audio_nav2_lh",
-    "audio_adf1_lh",
-    "audio_adf2_lh",
-    "audio_vce_lh",
-    "audio_fone_lh",
-]
-
-button_names = list(hardware_panel_items_receive)
-buttons_state_received_bytes = bytes(len(button_names))
-
-panel_state_send_bytes = array.array(BUTTON_PACKET_SIZE, [0] * len(hardware_panel_items_send))
-
-
-async def handle_button_state(button_id, state):
-    item = CockpitPanel.buttons.get(button_id)
-
-    if item:
-        # special case for switches
-        if issubclass(item, (FloatSwitch, DiscreteSwitch, LocalStateDiscreteSwitch)):
-            print(state)
-            await item.set_state(state)
-        elif issubclass(item, FloatStepper):
-            if state == 1:
-                await item.inc()
-            elif state == 2:
-                await item.dec()
-        else:
-            # default case - button
-            if state:
-                print(button_id, "pressed")
-                await item.click()
-            else:
-                print(button_id, "released")
 
 
 async def handle_uso_button_state(button_id, state):
@@ -722,64 +379,15 @@ async def handle_uso_float_state(float_id, new_state):
         await item.set_state(new_state)
 
 
-async def receive_state_task(udp_endpoint):
-    global buttons_state_received_bytes
-
-    while True:
-        new_state, (host, port) = await udp_endpoint.receive()
-
-        new_state = array.array(BUTTON_PACKET_SIZE, new_state)
-
-        for i, (o, n) in enumerate(zip(buttons_state_received_bytes, new_state)):
-            if n != o:
-                button_id = button_names[i]
-                await handle_button_state(button_id, n)
-
-        buttons_state_received_bytes = new_state
-
-
-async def run_receive_state_task():
-    endpoint = await open_local_endpoint(port=receive_state_port)
-    print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
-
-    global receive_task
-    receive_task = sane_tasks.spawn(receive_state_task(endpoint))    
-
-
-async def send_state_task(remote):
-    while True:
-        updated = False
-        max_val = max_packet_item_value()
-        for i, id in enumerate(hardware_panel_items_send):
-            btn = CockpitPanel.buttons.get(id)
-            if btn:
-                state = btn.get_indication()
-                if state is not None:
-                    panel_state_send_bytes[i] = min(max(state, 0), max_val) 
-                    updated = True
-        
-        if updated:
-            remote.send(panel_state_send_bytes.tobytes())
-
-        await asyncio.sleep(0.1)
-        
-
-async def run_send_state_task():
-    remote = await open_remote_endpoint("127.0.0.1", port=send_state_port)
-
-    global send_task
-    send_task = sane_tasks.spawn(send_state_task(remote))    
-
-
-async def run_send_uso_task():
-    remote = await open_remote_endpoint("127.0.0.1", port=send_state_port)
+async def run_send_uso_task(uso_host, uso_send_port):
+    remote = await open_remote_endpoint(uso_host, port=uso_send_port)
 
     global send_task
     send_task = sane_tasks.spawn(send_uso_task(remote))    
 
 
-async def run_receive_uso_task():
-    endpoint = await open_local_endpoint(port=2001)
+async def run_receive_uso_task(uso_host, uso_receive_port):
+    endpoint = await open_local_endpoint(host=uso_host, port=uso_receive_port)
     print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
 
     global receive_task
@@ -854,7 +462,7 @@ async def send_uso_task(remote):
         for lamp_id, bit_idx in uso_send.uso_lamp_send_map.items():
             item = CockpitPanel.buttons.get(lamp_id)
             if item:
-                state = item.get_state() or 0
+                state = item.get_indication() or 0
                 state = min(max(state, 0), 1) 
                 uso_send_lamps[bit_idx] = state
 
@@ -890,5 +498,4 @@ from middle_pedestal import checklist_control
 from middle_pedestal import wings_config
 from middle_pedestal import trackball
 from middle_pedestal import engine
-from stub_button import stub_button
 import plane_control

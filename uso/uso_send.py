@@ -2,8 +2,6 @@ import numpy as np
 
 from uso.sent_packet import uso_dtype, uso_bitfield_names
 
-from instrument_panel import CockpitPanel
-
 
 def create_packet(lamps_state):
     uso_packet = np.zeros(1, dtype=uso_dtype)    
