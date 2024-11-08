@@ -98,6 +98,7 @@ class pack(DiscreteSwitch):
     index = 0
     states = [1, 2, 3, 4, 0]
 
+
 @add_to_panel
 class pack_crew_off(pack):
     @classmethod
@@ -159,3 +160,17 @@ class xbleed_ecs(ThreeStateButton):
             return 2
         if state == 2:
             return 1
+
+
+@add_to_panel
+class xbleed_ecs_on(xbleed_ecs):
+    @classmethod
+    def get_state(cls):
+        return xbleed_ecs.get_state() == 2
+
+
+@add_to_panel
+class xbleed_ecs_off(xbleed_ecs):
+    @classmethod
+    def get_state(cls):
+        return xbleed_ecs.get_state() == 1

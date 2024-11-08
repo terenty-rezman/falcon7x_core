@@ -46,6 +46,10 @@ def on_new_xp_data(type, dataref, value):
     # запомнить текущее состояние ЛА
     ACState.curr_params[dataref] = value
 
+    # NOTE!: maybe creating task for every param update is a bad idea
+    if dataref in xp.sync_params:
+        asyncio.create_task(xp.sync_param_to_slaves(dataref, value))
+
     ACState.update_data_callbacks()
 
 
@@ -96,9 +100,12 @@ async def main():
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
     # await xp.connect_to_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
-    await xp.connect_to_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.connect_to_master_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
+
+    await xp.connect_to_slave_xplane("192.168.32.252", XP_SERVER_PORT)
+    xp.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
 
     await main_loop()   
 

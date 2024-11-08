@@ -24,12 +24,12 @@ async def load_sit(sit_name: str):
 
 
 async def subscribe_to_time_param():
-    await xp.subscribe_to_param(xp.Params["sim/time/total_running_time_sec"])
+    await xp.subscribe_to_param(xp.xp_writer, xp.Params["sim/time/total_running_time_sec"])
 
 
 async def subscribe_to_all_data():
     for p in xp.Params:
-        await xp.subscribe_to_param(p)
+        await xp.subscribe_to_param(xp.xp_writer, p)
 
     await ACState.wait_until_param_available(xp.Params["sim/time/total_running_time_sec"])
 
@@ -37,10 +37,7 @@ async def subscribe_to_all_data():
 async def request_all_data():
     """ получить актуальное значения всех параметров """
     for p in xp.Params:
-        await xp.subscribe_to_param(p)
-
-    for f in xp.Params:
-        await xp.subscribe_to_param(f)
+        await xp.subscribe_to_param(xp.xp_writer, p)
 
     await ACState.wait_until_param_available("sim/time/total_running_time_sec")
 

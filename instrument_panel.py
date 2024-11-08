@@ -52,7 +52,6 @@ class CockpitPanel(metaclass=Custom):
     @classmethod
     async def reset_to_default_state(cls):
         await cls["firebutton_1"].set_state(0)
-        await CockpitPanel["disch_11"].set_state(0)
     
 
 def array_str(index, val):
@@ -461,10 +460,12 @@ async def send_uso_task(remote):
     while True:
         for lamp_id, bit_idx in uso_send.uso_lamp_send_map.items():
             item = CockpitPanel.buttons.get(lamp_id)
-            if item:
-                state = item.get_indication() or 0
-                state = min(max(state, 0), 1) 
-                uso_send_lamps[bit_idx] = state
+            if item is None:
+                print("X")
+
+            state = item.get_indication() or 0
+            state = min(max(state, 0), 1) 
+            uso_send_lamps[bit_idx] = state
 
         uso_packet = uso_send.create_packet(uso_send_lamps)
 

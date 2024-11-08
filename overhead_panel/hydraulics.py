@@ -26,6 +26,20 @@ class backup_pump(ThreeStateButton):
 
 
 @add_to_panel
+class backup_pump_on(backup_pump):
+    @classmethod 
+    def get_state(cls):
+        return backup_pump.get_state() == 1
+
+
+@add_to_panel
+class backup_pump_off(backup_pump):
+    @classmethod 
+    def get_state(cls):
+        return backup_pump.get_state() == 2
+
+
+@add_to_panel
 class shutoff_b2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 24

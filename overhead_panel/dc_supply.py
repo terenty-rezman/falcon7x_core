@@ -23,6 +23,20 @@ class galley_master(ThreeStateButton):
 
 
 @add_to_panel
+class galley_master_on(ThreeStateButton):
+    @classmethod
+    def get_state(cls):
+        return galley_master.get_state() == 2
+
+
+@add_to_panel
+class galley_master_off(ThreeStateButton):
+    @classmethod
+    def get_state(cls):
+        return galley_master.get_state() == 1
+
+
+@add_to_panel
 class lh_master(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/lhmaster"]
     states = [1, 0]
@@ -66,6 +80,20 @@ class cabin_master(ThreeStateButton):
             return 2
         if state == 2:
             return 1
+
+
+@add_to_panel
+class cabin_master_on(cabin_master):
+    @classmethod
+    def get_state(cls):
+        return cabin_master.get_state() == 2
+
+
+@add_to_panel
+class cabin_master_off(cabin_master):
+    @classmethod
+    def get_state(cls):
+        return cabin_master.get_state() == 1
 
 
 @add_to_panel

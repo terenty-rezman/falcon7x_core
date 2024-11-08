@@ -18,32 +18,33 @@ class fireindicator_1(Indicator):
 
 
 @add_to_panel
-class disch_11(TwoStateButton):
+class disch1_eng1(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 0
+
+
+@add_to_panel
+class disch1_eng1_1(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 0
 
     @classmethod
     def get_indication(cls):
-        val = cls.get_state()
-
-        if val is None:
-            return val
-
         if firebutton_1.get_state() == 1:
-            if val == 0:
-                return 1
-            else:
-                return 2
-        else:
-            if val == 0:
-                return 0
-            else:
-                return 2 
+            return 1
+
+        return 0
 
 
 @add_to_panel
-class disch_12(disch_11):
+class disch2_eng1(disch1_eng1):
     pass
+
+
+@add_to_panel
+class disch2_eng1_1(disch1_eng1_1):
+    pass
+
 
 @add_to_panel
 class fire_apu_indicator(Indicator):
@@ -85,31 +86,31 @@ class fireindicator_2(Indicator):
 
 
 @add_to_panel
-class disch_21(TwoStateButton):
+class disch1_eng2(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 1
+
+
+@add_to_panel
+class disch1_eng2_1(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 1
 
     @classmethod
     def get_indication(cls):
-        val = cls.get_state()
-
-        if val is None:
-            return val
-
         if firebutton_2.get_state() == 1:
-            if val == 0:
-                return 1
-            else:
-                return 2
-        else:
-            if val == 0:
-                return 0
-            else:
-                return 2 
+            return 1
+
+        return 0
 
 
 @add_to_panel
-class disch_22(disch_21):
+class disch2_eng2(disch1_eng2):
+    pass
+
+
+@add_to_panel
+class disch2_eng2_1(disch1_eng2_1):
     pass
 
 
@@ -126,31 +127,31 @@ class fireindicator_3(Indicator):
 
 
 @add_to_panel
-class disch_31(TwoStateButton):
+class disch1_eng3(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
+    index = 2
+
+
+@add_to_panel
+class disch1_eng3_1(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"] 
     index = 2
 
     @classmethod
     def get_indication(cls):
-        val = cls.get_state()
-
-        if val is None:
-            return val
-
         if firebutton_3.get_state() == 1:
-            if val == 0:
-                return 1
-            else:
-                return 2
-        else:
-            if val == 0:
-                return 0
-            else:
-                return 2 
+            return 1
+
+        return 0
 
 
 @add_to_panel
-class disch_32(disch_31):
+class disch2_eng3(disch1_eng3):
+    pass
+
+
+@add_to_panel
+class disch2_eng3_1(disch1_eng3_1):
     pass
 
 

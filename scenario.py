@@ -47,7 +47,7 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
     await ac_state.data_condition(fly_height_200m)
 
     print("fire the engine")
-    # await xp.set_param(xp.Failures["sim/operation/failures/rel_engfir0"], 6)
+    #await xp.set_param(xp.Failures["sim/operation/failures/rel_engfir0"], 6)
     # await xp.set_param(xp.Failures["sim/operation/failures/rel_engfla0"], 6)
 
     # await asyncio.sleep(10)

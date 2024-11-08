@@ -1,4 +1,4 @@
-from quart import Quart
+from quart import Quart, request
 from quart_schema import QuartSchema, validate_request, validate_response
 
 from dataclasses import dataclass
@@ -55,9 +55,10 @@ async def synoptic():
         "FCS": 7,
         "TEST": 8
     }
-    page_name = "fff"
+    data = await request.get_data(as_text=True)
+    page_name = data.partition("=")[2]
     page = pages.get(page_name)
-    if not page:
+    if page is None:
         return {"result": "error", "string": "wrong synoptic page name"}
 
     await xp.set_param(xp.Params["sim/cockpit/weapons/firing_rate"], page)
