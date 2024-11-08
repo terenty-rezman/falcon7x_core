@@ -129,3 +129,17 @@ class bleed3(ThreeStateButton):
         await super().set_state(state)
 
         await xp.run_command_once(xp.Commands["sim/bleed_air/bleed_air_right"])
+
+
+@add_to_panel
+class bleed3_off(bleed3):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
+
+
+@add_to_panel
+class bleed3_hpoff(bleed3):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1

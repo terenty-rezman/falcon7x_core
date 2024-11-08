@@ -12,6 +12,20 @@ class boost1(ThreeStateButton):
 
 
 @add_to_panel
+class boost1_off(boost1):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
+class boost1_stby(boost1):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
+
+
+@add_to_panel
 class xtk_left(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/7x/bt1f3"]
 
@@ -25,6 +39,20 @@ class xtk_right(TwoStateButton):
 class boost3(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump2"]
     states = [2, 0, 1]
+
+
+@add_to_panel
+class boost3_off(boost3):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
+class boost3_stby(boost3):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
 
 
 @add_to_panel
@@ -51,6 +79,20 @@ class xtk_down_1(TwoStateButton):
 class boost2(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump1"]
     states = [2, 0, 1]
+
+
+@add_to_panel
+class boost2_off(boost2):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
+class boost2_stby(boost2):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
 
 
 @add_to_panel

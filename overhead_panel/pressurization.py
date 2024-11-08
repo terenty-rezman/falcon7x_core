@@ -15,6 +15,20 @@ class bag_vent(ThreeStateButton):
 
 
 @add_to_panel
+class bag_vent_on(bag_vent):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
+
+
+@add_to_panel
+class bag_vent_off(bag_vent):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
 class cabin_alt(DiscreteSwitch):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     states = [0, 1, -1]

@@ -76,6 +76,14 @@ class il_emerge_lights_on(il_emerge_lights):
         if state == 1:
             await super().set_state(1)
 
+    @classmethod
+    def get_indication(cls):
+        state = super().get_state()
+        if state == 1:
+            return 1
+
+        return 0
+
 
 @add_to_panel
 class il_fasten(TwoStateButton):
@@ -91,6 +99,20 @@ class il_smoking(TwoStateButton):
 class il_cabin(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/paxlum"]
     states = [1, 2, 0]
+
+
+@add_to_panel
+class il_cabin_pax(il_cabin):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
+class il_cabin_off(il_cabin):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
 
 
 @add_to_panel

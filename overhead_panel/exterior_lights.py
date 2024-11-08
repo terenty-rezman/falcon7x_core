@@ -22,9 +22,37 @@ class el_nav(ThreeStateButton):
 
 
 @add_to_panel
+class el_nav_logo(el_nav):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
+
+
+@add_to_panel
+class el_nav_off(el_nav):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
+
+
+@add_to_panel
 class el_anticol(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/lum2"]
     states = [2, 0, 1]
+
+
+@add_to_panel
+class el_anticol_red(el_anticol):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 2
+
+
+@add_to_panel
+class el_anticol_off(el_anticol):
+    @classmethod
+    def get_state(cls):
+        return super().get_state() == 1
 
 
 @add_to_panel
