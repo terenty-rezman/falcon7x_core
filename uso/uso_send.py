@@ -146,6 +146,12 @@ uso_lamp_send_map = {
 	"il_smoking": "O11_b04",	# NO SMOKING <ON> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"il_cabin_off": "O11_b05",	# CABIN <OFF> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"il_emerge_lights_on": "O11_b06",	# SWITCH <EMERG LIGHTS> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+    "fireindicator_1": "O11_b07",	# engine 1 shut off FIRE <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"fire_apu_indicator": "O11_b08",	# FIRE APU <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"fireindicator_2": "O11_b09",	# engine 2 shut off FIRE 2 <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"firerearcomp_indicator": "O11_b10",	# FIRE REAR COMP DISCH <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"firebagcomp_indicator": "O11_b11",	# FIRE BAG COMP DISCH <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"fireindicator_3": "O11_b12",	# engine 3 shut off FIRE 3 <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 }
 
 
