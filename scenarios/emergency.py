@@ -165,3 +165,99 @@ async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
     # OFF
     await windshield.windshield_lh.wait_state(1)
     await windshield.windshield_rh.wait_state(1)
+
+
+@scenario("EMERGENCY", "BLEED", "09 BLEED: 2 OVHT")
+async def _09_bleed_2_ovht(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.BLEED_2_OVHT)
+
+
+@scenario("EMERGENCY", "ENGINE", "50 ENG 2 DUCT DOOR OPEN")
+async def _50_eng_2_duct_door_open(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.ENG_2_DUCT_DOOR_OPEN)
+
+
+@scenario("EMERGENCY", "AIR CONDITIONING", "15 COND: AFT FCS BOX OVHT")
+async def _15_cond_aft_fcs_box_ovht(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.COND_AFT_FCS_BOX_OVHT)
+
+
+@scenario("EMERGENCY", "DOORS", "18 DOOR: BAG")
+async def _18_door_bag(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.DOOR_PAX___BAG)
+
+
+@scenario("EMERGENCY", "ELECTRICAL POWER", "40 ELEC: RAT GEN FAULT")
+async def _40_elec_rat_gen_fault(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.ELEC_RAT_GEN_FAULT)
+
+
+@scenario("EMERGENCY", "ENGINES", "52 ENG 2: FAIL")
+async def _52_eng_2_fail(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.ENG_1_2_3_FAIL)
+
+
+@scenario("EMERGENCY", "FCS", "60 FCS: BACK-UP ACTIVE")
+async def _60_fcs_backup_active(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FCS_BACK_UP_ACTIVE)
+
+
+@scenario("EMERGENCY", "FCS", "69 FCS: THS PROT FAIL")
+async def _69_fcs_ths_prot_fail(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FCS_THS_PROT_FAIL)
+
+
+@scenario("EMERGENCY", "FIRE", "72 FIRE: APU")
+async def _72_fire_apu(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FIRE_APU)
+
+
+@scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
+async def _75_fire_eng_2(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FIRE_ENG_2)
+
+
+@scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")
+async def _78_fire_rear_comp(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FIRE_REAR_COMP)
+
+
+@scenario("EMERGENCY", "FIRE", "80 FIRE: LH WHEEL OVHT")
+async def _80_fire_lh_wheel_ovht(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FIRE_LH_RH_WHEEL_OVHT)
+
+
+@scenario("EMERGENCY", "HYDRAULIC", "84 HYD: A OVHT")
+async def _84_hyd_a_ovht(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.HYD_A_OVHT)
+
+
+@scenario("EMERGENCY", "PRESSURIZATION", "90 PRESS: CABIN ALT TOO HI")
+async def _90_press_cabin_alt_too_hi(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.PRESS_CABIN_ALT_TOO_HI)
+
+
+@scenario("EMERGENCY", "SPECIFIC EMERGENCY SITUATIONS", "AFCS: ADS1 MISCOMPARE AND AFCS: IRS2 MISCOMPARE")
+async def afcs_ads1_miscompare_and_afcs_is2_miscompare(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.AFCS_ADS_MISCOMPARE)
+
+
+@scenario("EMERGENCY", "OPERATING TECHNIQUES", "AIRBRAKE AUTO EXTEND FAIL")
+async def airbrake_auto_extend_fail(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FCS_A_B_AUTO_EXTEND_FAIL)
+
+
+@scenario("EMERGENCY", "OPERATING TECHNIQUES", "AIRBRAKE AUTO RETRACT FAIL")
+async def airbrake_auto_retract_fail(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.FCS_A_B_AUTO_RETRACT_FAIL)
+
+
+@scenario("EMERGENCY", "OPERATING TECHNIQUES", "DIRECT LAWS")
+async def direct_laws(ac_state: xp_ac.ACState):
+    # "DIRECT LAWS" voice warning 
+    pass
+
+
+@scenario("EMERGENCY", "OPERATING TECHNIQUES", "INCONSISTENT OR UNRELIABLE FLIGHT DATA IN IPFD AND/OR HUD")
+async def inconsistent_or_unrealiable_flight_data_in_ipfd_and_or_hud(ac_state: xp_ac.ACState):
+    pass

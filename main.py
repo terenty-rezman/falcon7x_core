@@ -15,6 +15,10 @@ import util
 import web_interface
 from cas import cas
 
+
+# mfi slave xplane
+MFI_SLAVE_HOST = "192.168.32.252"
+
 # cas display
 cas.CAS_HOST = "127.0.0.1"
 cas.CAS_PORT = 8881
@@ -100,18 +104,20 @@ async def main_loop():
 
 
 async def main():
-    await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
+    # await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
 
     await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
-    # await xp.connect_to_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
-    await xp.connect_to_master_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.connect_to_master_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    # await xp.connect_to_master_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
-    # await xp.connect_to_slave_xplane("192.168.32.252", XP_SERVER_PORT)
+    await xp.connect_to_slave_xplane(MFI_SLAVE_HOST, XP_SERVER_PORT)
     xp.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
+    xp.add_sync_param(xp.Params["sim/custom/7x/lhinit"])
+    xp.add_sync_param(xp.Params["sim/custom/7x/rhinit"])
 
     await main_loop()   
 
@@ -119,5 +125,3 @@ async def main():
 
 
 asyncio.run(main())
-
-
