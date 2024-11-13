@@ -13,7 +13,11 @@ from instrument_panel import CockpitPanel
 import instrument_panel as op
 import util
 import web_interface
+from cas import cas
 
+# cas display
+cas.CAS_HOST = "127.0.0.1"
+cas.CAS_PORT = 8881
 
 # connect to xplane plugin
 XP_SERVER_HOST = "127.0.0.1"
@@ -80,7 +84,7 @@ async def main_loop():
 
     await util.request_all_data()
 
-    # await Scenario.run_scenario_task("fcs_direct_laws_active_1", ACState)
+    # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
 
     while True:
         x, y, z, rz = joystick.get_axes_values()
@@ -96,6 +100,8 @@ async def main_loop():
 
 
 async def main():
+    await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
+
     await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
@@ -104,7 +110,7 @@ async def main():
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
-    await xp.connect_to_slave_xplane("192.168.32.252", XP_SERVER_PORT)
+    # await xp.connect_to_slave_xplane("192.168.32.252", XP_SERVER_PORT)
     xp.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
 
     await main_loop()   
