@@ -52,3 +52,9 @@ def blink_anim(every_period_sec: float):
             on = not on
         
         yield on
+
+
+def dont_await(async_f):
+    """ schedule an async function to run without awaiting for the result """
+    loop = asyncio.get_event_loop()
+    loop.create_task(async_f)

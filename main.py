@@ -17,11 +17,12 @@ from cas import cas
 
 
 # mfi slave xplane
-MFI_SLAVE_HOST = "192.168.32.252"
+MFI_XP_HOST = "192.168.32.252"
 
-# cas display
+# cas displays
 cas.CAS_HOST = "127.0.0.1"
-cas.CAS_PORT = 8881
+cas.CAS_PORT_LEFT = 8881
+cas.CAS_PORT_RIGHT = 8882
 
 # connect to xplane plugin
 XP_SERVER_HOST = "127.0.0.1"
@@ -114,10 +115,10 @@ async def main():
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
-    await xp.connect_to_slave_xplane(MFI_SLAVE_HOST, XP_SERVER_PORT)
-    xp.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
-    xp.add_sync_param(xp.Params["sim/custom/7x/lhinit"])
-    xp.add_sync_param(xp.Params["sim/custom/7x/rhinit"])
+    await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
+    xp.add_mfi_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
+    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/lhinit"])
+    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/rhinit"])
 
     await main_loop()   
 

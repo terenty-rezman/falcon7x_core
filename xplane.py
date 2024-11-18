@@ -313,34 +313,42 @@ async def connect_to_master_xplane(server_address, server_port, on_new_data_call
     xp_reader_task = sane_tasks.spawn(handle_read())    
 
 
-slave_xp_writer = None
+mfi_xp_writer = None
 sync_params = set()
 subsribed_params = set()
 
 
-def add_sync_param(param: Params):
+def add_mfi_sync_param(param: Params):
     sync_params.add(param)
 
 
-def remove_sync_param(param: Params):
+def remove_mfi_sync_param(param: Params):
     sync_params.remove(param)
 
 
-async def connect_to_slave_xplane(server_address, server_port):
-    global slave_xp_writer
+async def connect_to_mfi_xplane(server_address, server_port):
+    global mfi_xp_writer
 
     await disconnect_slave()
 
     xp_reader, xp_writer = await asyncio.open_connection(server_address, server_port)
-    slave_xp_writer = xp_writer
+    mfi_xp_writer = xp_writer
+
+
+async def connect_to_mfi_xplane_once(server_address, server_port):
+    try:
+        await connect_to_mfi_xplane(server_address, server_port)
+        print(f"connected to MFI xplane: {server_address}:{server_port} !")
+    except ConnectionRefusedError:
+        print(f"Could not connect to MFI xplane: {server_address}:{server_port} !")
 
 
 async def disconnect_slave():
-    global slave_xp_writer
+    global mfi_xp_writer
 
-    if slave_xp_writer:
-        slave_xp_writer.close()
-        await slave_xp_writer.wait_closed()
+    if mfi_xp_writer:
+        mfi_xp_writer.close()
+        await mfi_xp_writer.wait_closed()
 
 
 async def sync_param(slave_xp_writer, param: Params, value):
@@ -353,4 +361,4 @@ async def sync_param(slave_xp_writer, param: Params, value):
 
 
 async def sync_param_to_slaves(param: Params, value):
-    await sync_param(slave_xp_writer, param, value)
+    await sync_param(mfi_xp_writer, param, value)

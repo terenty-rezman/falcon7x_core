@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from quart import Quart, request
 from quart_schema import QuartSchema, validate_request, validate_response
 
@@ -7,6 +9,8 @@ from dataclasses import dataclass
 import sane_tasks
 import util
 import xplane as xp
+import scenario
+from xp_aircraft_state import ACState
 
 
 quart_task = None
@@ -66,8 +70,36 @@ async def synoptic():
     return {"result": "ok"}
 
 
+@dataclass
+class RunProcedure:
+    procedure_type: str
+    procedure_path: str
+    procedure_name: str
+
+
+@app.post("/api/run_procedure")
+@validate_request(RunProcedure)
+async def run_procedure(data: RunProcedure):
+    await scenario.Scenario.run_scenario_task((data.procedure_type, data.procedure_path, data.procedure_name), ACState)
+    return {"result": "ok"}
+
+
+@app.get("/api/procedure_list")
+async def procedure_list():
+    proc_list = []
+
+    for _type, path, name in scenario.scenarios:
+        proc_list.append({
+            "procedure_type": _type,
+            "procedure_path": path,
+            "procedure_name": name 
+        })
+
+    return proc_list
+
+
 async def run_server_task(listen_host, listen_port):
     global quart_task
 
     quart_task = app.run_task(host=listen_host, port=listen_port)
-    quart_task = sane_tasks.spawn(quart_task)    
+    quart_task = sane_tasks.spawn(quart_task)

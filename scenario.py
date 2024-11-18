@@ -29,7 +29,7 @@ class Scenario:
             try:
                 await cls.current_scenario_task
             except asyncio.CancelledError:
-                print(f"stoped task {cls.current_scenario_task.__name__}")
+                print(f"stoped task {cls.current_scenario_task}")
                 cls.current_scenario_task = None
 
     @classmethod
@@ -76,5 +76,4 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
 
 from scenarios import abnormal
 from scenarios import emergency
-
-print("ok")
+from scenarios import normal
