@@ -37,8 +37,13 @@ class Scenario:
         await cls.clear_all()
 
         task = sane_tasks.spawn(scenarios[task_name](ac_state))
+        task.add_done_callback(Scenario.on_scenario_done)
         cls.current_scenario_task = task
         print(f"run task {task_name}")
+    
+    @classmethod
+    def on_scenario_done(cls, task):
+        print(f"task finished {task}")
 
 
 @scenario("TEST", "TEST", "test_scenrio_1")

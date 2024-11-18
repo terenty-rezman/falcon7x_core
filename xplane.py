@@ -278,10 +278,11 @@ async def disconnect():
 async def connect_to_master_xplane_until_success(server_address, server_port, on_new_data_callback, on_data_exception_callback):
     while True:
         try:
+            print(f"connecting to xplane: {server_address}:{server_port}...")
             await connect_to_master_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback)
             print(f"connected to xplane: {server_address}:{server_port} !")
             break
-        except ConnectionRefusedError:
+        except (ConnectionRefusedError, OSError) as e:
             print(f"Could not connect to xplane: {server_address}:{server_port} !")
             print(f"retrying...")
             asyncio.sleep(0.5)
@@ -289,9 +290,10 @@ async def connect_to_master_xplane_until_success(server_address, server_port, on
 
 async def connect_to_master_xplane_once(server_address, server_port, on_new_data_callback, on_data_exception_callback):
     try:
+        print(f"connecting to xplane: {server_address}:{server_port}...")
         await connect_to_master_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback)
         print(f"connected to xplane: {server_address}:{server_port} !")
-    except ConnectionRefusedError:
+    except (ConnectionRefusedError, OSError) as e:
         print(f"Could not connect to xplane: {server_address}:{server_port} !")
 
 
@@ -337,9 +339,12 @@ async def connect_to_mfi_xplane(server_address, server_port):
 
 async def connect_to_mfi_xplane_once(server_address, server_port):
     try:
+        print(f"connecting to MFI xplane: {server_address}:{server_port}...")
         await connect_to_mfi_xplane(server_address, server_port)
         print(f"connected to MFI xplane: {server_address}:{server_port} !")
-    except ConnectionRefusedError:
+    except (ConnectionRefusedError, OSError) as e:
+    # NOTE: debugpy internal BUG, we have to catch basic Exception here, might get fixed in future
+    # except Exception as e:
         print(f"Could not connect to MFI xplane: {server_address}:{server_port} !")
 
 
