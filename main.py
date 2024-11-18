@@ -70,6 +70,12 @@ async def load_default_sit():
     await util.load_sit("Output/situations/1.sit")
 
 
+def add_mfi_sync_list():
+    xp.add_mfi_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
+    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/lhinit"])
+    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/rhinit"])
+
+
 async def main_loop():
     ACState.clear_all()
 
@@ -115,10 +121,8 @@ async def main():
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
-    await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
-    xp.add_mfi_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
-    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/lhinit"])
-    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/rhinit"])
+    # await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
+    add_mfi_sync_list()
 
     await main_loop()   
 

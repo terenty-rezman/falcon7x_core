@@ -336,6 +336,16 @@ class FloatStepper():
         logic_step = cls.step / (cls.right_most_value - cls.left_most_value)
         await cls.set_state(state - logic_step)
 
+    @classmethod
+    async def wait_state(cls, lambda_f):
+        """ wait on logical state """
+
+        def condition(param_val):
+            val = cls.get_state()
+            return lambda_f(val) 
+
+        await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
+
 
 receive_task = None
 send_task = None
