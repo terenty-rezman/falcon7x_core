@@ -11,6 +11,8 @@ import util
 import xplane as xp
 import scenario
 from xp_aircraft_state import ACState
+from mfi import mfi
+from aircraft_systems.synoptic_screen import SynopticScreen
 
 
 quart_task = None
@@ -48,24 +50,11 @@ async def load_situation(data: LoadSit):
 
 @app.post("/api/synoptic")
 async def synoptic():
-    pages = {
-        "STAT": 0,
-        "ENG": 1,
-        "ELEC": 2,
-        "FUEL": 3,
-        "HYD": 4,
-        "ECS": 5, 
-        "BLD": 6,
-        "FCS": 7,
-        "TEST": 8
-    }
     data = await request.get_data(as_text=True)
     page_name = data.partition("=")[2]
-    page = pages.get(page_name)
-    if page is None:
-        return {"result": "error", "string": "wrong synoptic page name"}
 
-    await xp.set_param(xp.Params["sim/cockpit/weapons/firing_rate"], page)
+    if SynopticScreen.set_active_page(page_name) == False:
+        return {"result": "error", "string": "wrong synoptic page name"}
 
     return {"result": "ok"}
 
@@ -96,6 +85,30 @@ async def procedure_list():
         })
 
     return proc_list
+
+
+@dataclass
+class MfiMouseClick:
+    x: int
+    y: int
+    w: int
+    h: int
+    window_name: str
+
+
+@app.post("/api/mfi_mouse_click")
+@validate_request(MfiMouseClick)
+async def mfi_mouse_click(data: MfiMouseClick):
+    print(data)
+    mfi.mfi_click(data.window_name, data.x, data.y, data.w, data.h)
+    return {"result": "ok"}
+
+
+# @app.post("/api/mfi_mouse_click")
+# async def mfi_mouse_click():
+#     data = await request.json
+#     print(data)
+#     return {"result": "ok"}
 
 
 async def run_server_task(listen_host, listen_port):

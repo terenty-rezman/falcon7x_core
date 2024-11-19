@@ -49,6 +49,13 @@ class disch2_eng1_1(disch1_eng1_1):
 @add_to_panel
 class fire_apu_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_apu_fire"]
+    states = [0, 1, 2, 3, 4, 5, 6]
+
+    @classmethod
+    def get_state(cls):
+        if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
+            return
+        return 1 if val == 6 else 0
 
 
 @add_to_panel
@@ -164,6 +171,7 @@ class firerearcomp_button(TwoStateButton):
 @add_to_panel
 class firerearcomp_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir3"]
+    states = [0, 1, 2, 3, 4, 5, 6]
 
     @classmethod
     def get_state(cls):
@@ -181,6 +189,7 @@ class firebagcomp_button(TwoStateButton):
 @add_to_panel
 class firebagcomp_indicator(Indicator):
     dataref: xp.Params = xp.Params["sim/operation/failures/rel_engfir4"]
+    states = [0, 1, 2, 3, 4, 5, 6]
 
     @classmethod
     def get_state(cls):

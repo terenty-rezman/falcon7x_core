@@ -81,7 +81,7 @@ async def main_loop():
 
     await util.subscribe_to_time_param() # we need time param to load situation correctly 
 
-    await load_default_sit()
+    # await load_default_sit()
 
     await util.subscribe_to_all_data()
 
@@ -121,7 +121,7 @@ async def main():
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
-    # await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
+    await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
     add_mfi_sync_list()
 
     await main_loop()   
