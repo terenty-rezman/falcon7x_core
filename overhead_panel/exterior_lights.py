@@ -2,7 +2,7 @@ import asyncio
 import time
 
 from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, PushButton
-import xplane as xp
+import xplane.master as xp
 import xp_aircraft_state as xp_ac
 import util
 

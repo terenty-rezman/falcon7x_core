@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from quart import Quart, request
 from quart_schema import QuartSchema, validate_request, validate_response
 
@@ -8,7 +6,6 @@ from dataclasses import dataclass
 
 import sane_tasks
 import util
-import xplane as xp
 import scenario
 from xp_aircraft_state import ACState
 from mfi import mfi

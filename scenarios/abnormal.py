@@ -2,7 +2,7 @@
 import asyncio
 import math
 
-import xplane as xp
+import xplane.master as xp
 import xp_aircraft_state as xp_ac
 from cas import cas
 from scenario import scenario

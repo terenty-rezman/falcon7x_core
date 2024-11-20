@@ -3,7 +3,7 @@ import asyncio
 from collections import OrderedDict
 import math
 
-import xplane as xp
+import xplane.master as xp
 import xp_aircraft_state as xp_ac
 from aioudp import open_local_endpoint, open_remote_endpoint
 

@@ -2,7 +2,8 @@ import asyncio
 import time
 
 from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator
-import xplane as xp
+import xplane.master as xp
+from xplane.params import Params, Commands
 import xp_aircraft_state as xp_ac
 import util
         
@@ -11,21 +12,21 @@ import util
 
 @add_to_panel
 class pty_lh(Indicator):
-    dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
+    dataref: Params = Params["sim/weapons/mis_thrust2"]
     index = 15
 
 
 @add_to_panel
 class master_warning_lh(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/master_warning"]
+    dataref: Params = Params["sim/cockpit2/annunciators/master_warning"]
     blink = util.blink_anim(0.5)
 
     @classmethod
     async def click(cls):
-        command = xp.Commands["sim/annunciator/clear_master_warning"]
+        command = Commands["sim/annunciator/clear_master_warning"]
         await xp.run_command_once(command)
 
-        param = xp.Params["sim/cockpit2/annunciators/plugin_master_warning"]
+        param = Params["sim/cockpit2/annunciators/plugin_master_warning"]
         await xp.set_param(param, 0)
 
     @classmethod
@@ -40,15 +41,15 @@ class master_warning_lh(TwoStateButton):
 
 @add_to_panel
 class master_caution_lh(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/master_caution"]
+    dataref: Params = Params["sim/cockpit2/annunciators/master_caution"]
     blink = util.blink_anim(0.5)
 
     @classmethod
     async def click(cls):
-        command = xp.Commands["sim/annunciator/clear_master_caution"]
+        command = Commands["sim/annunciator/clear_master_caution"]
         await xp.run_command_once(command)
 
-        param = xp.Params["sim/cockpit2/annunciators/plugin_master_caution"]
+        param = Params["sim/cockpit2/annunciators/plugin_master_caution"]
         await xp.set_param(param, 0)
 
     @classmethod

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from asyncio import Future
 from typing import Callable, Optional, Any
 
-# import xplane as xp
+from xplane.params import Params
 
 
 @dataclass
@@ -56,7 +56,7 @@ class ACState:
         return f
     
     @classmethod
-    def wait_until_parameter_condition(cls, xp_param, condition: Callable[["ACState"], bool]):
+    def wait_until_parameter_condition(cls, xp_param: Params, condition: Callable[["ACState"], bool]):
         def param_condition(ac_state: ACState):
             if not ac_state.param_available(xp_param):
                 return False
@@ -68,15 +68,15 @@ class ACState:
 
     
     @classmethod
-    def param_available(cls, xp_param) -> bool:
+    def param_available(cls, xp_param: Params) -> bool:
         return xp_param in cls.curr_params
     
     @classmethod 
-    def get_curr_param(cls, xp_param) -> Optional[Any]:
+    def get_curr_param(cls, xp_param: Params) -> Optional[Any]:
         return cls.curr_params.get(xp_param)
     
     @classmethod
-    def wait_until_param_available(cls, xp_param):
+    def wait_until_param_available(cls, xp_param: Params):
         def param_available(ac_state: ACState):
             if ac_state.param_available(xp_param):
                 return True

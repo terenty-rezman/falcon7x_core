@@ -8,7 +8,9 @@ from aircraft_systems.aicrcaft_systems import Systems as ACSystems
 from joystick import Joystick
 from scenario import Scenario
 
-import xplane as xp
+import xplane.master as xp
+import xplane.mfi as xp_mfi
+
 from instrument_panel import CockpitPanel
 import instrument_panel as op
 import util
@@ -56,8 +58,8 @@ def on_new_xp_data(type, dataref, value):
     ACState.curr_params[dataref] = value
 
     # NOTE!: maybe creating task for every param update is a bad idea
-    if dataref in xp.sync_params:
-        asyncio.create_task(xp.sync_param_to_slaves(dataref, value))
+    if dataref in xp_mfi.sync_params:
+        asyncio.create_task(xp_mfi.sync_param_to_slaves(dataref, value))
 
     ACState.update_data_callbacks()
 
@@ -71,9 +73,9 @@ async def load_default_sit():
 
 
 def add_mfi_sync_list():
-    xp.add_mfi_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
-    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/lhinit"])
-    xp.add_mfi_sync_param(xp.Params["sim/custom/7x/rhinit"])
+    xp_mfi.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
+    xp_mfi.add_sync_param(xp.Params["sim/custom/7x/lhinit"])
+    xp_mfi.add_sync_param(xp.Params["sim/custom/7x/rhinit"])
 
 
 async def main_loop():
@@ -116,17 +118,17 @@ async def main():
     await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
-    await xp.connect_to_master_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
-    # await xp.connect_to_master_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.xp_master.connect_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    # await xp.xp_master.connect(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
-    # await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
+    # await xp_mfi.xp_mfi.connect(MFI_XP_HOST, XP_SERVER_PORT)
     add_mfi_sync_list()
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
 
-    await xp.disconnect()
+    await xp.xp_master.disconnect()
 
 
 asyncio.run(main())

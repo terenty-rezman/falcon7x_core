@@ -1,10 +1,7 @@
 import asyncio
 
 import xp_aircraft_state as xp_ac
-import xplane as xp
-from instrument_panel import CockpitPanel
 import sane_tasks
-import cas
 
 
 scenarios = {}

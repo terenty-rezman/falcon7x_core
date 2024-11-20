@@ -1,4 +1,4 @@
-import xplane as xp
+import xplane.master as xp
 
 
 SynopcicPages = {

@@ -1,7 +1,7 @@
 import asyncio
 
 import xp_aircraft_state as xp_ac
-import xplane as xp
+import xplane.master as xp
 import sane_tasks
 import overhead_panel.fire_panel as fp 
 

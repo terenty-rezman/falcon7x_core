@@ -1,10 +1,5 @@
-import asyncio
-import time
-
 from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper, array_str
-import xplane as xp
-import xp_aircraft_state as xp_ac
-import util
+import xplane.master as xp
         
 
 # @add_to_panel

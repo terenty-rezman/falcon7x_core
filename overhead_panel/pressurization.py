@@ -1,5 +1,5 @@
 from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
-import xplane as xp
+import xplane.master as xp
 
 
 @add_to_panel
