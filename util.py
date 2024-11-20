@@ -27,13 +27,6 @@ async def subscribe_to_time_param():
     await xp.subscribe_to_param(xp.xp_writer, xp.Params["sim/time/total_running_time_sec"])
 
 
-async def subscribe_to_all_data():
-    for p in xp.Params:
-        await xp.subscribe_to_param(xp.xp_writer, p)
-
-    await ACState.wait_until_param_available(xp.Params["sim/time/total_running_time_sec"])
-
-
 async def request_all_data():
     """ получить актуальное значения всех параметров """
     for p in xp.Params:

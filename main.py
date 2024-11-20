@@ -83,7 +83,7 @@ async def main_loop():
 
     # await load_default_sit()
 
-    await util.subscribe_to_all_data()
+    await xp.subscribe_to_all_data()  
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
 
@@ -119,10 +119,10 @@ async def main():
     await xp.connect_to_master_xplane_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
     # await xp.connect_to_master_xplane_once(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
 
-    await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
-
-    await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
+    # await xp.connect_to_mfi_xplane_once(MFI_XP_HOST, XP_SERVER_PORT)
     add_mfi_sync_list()
+
+    await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
 

@@ -10,6 +10,7 @@ import json
 from enum import Enum 
 
 import sane_tasks
+from xp_aircraft_state import ACState
 
 
 def to_str(self):
@@ -179,11 +180,46 @@ on_new_xp_data_callback = None
 on_new_xp_data_exception_callback = None
 terminate_reader_task = False
 
+xp_writer_reconnecting = False
+xp_host = None
+xp_port = None
+
+
+def _is_reconnecting(writer):
+    global xp_writer_reconnecting
+    global mfi_xp_writer_reconnecting
+
+    if writer is xp_writer:
+        return xp_writer_reconnecting
+    
+    if writer is mfi_xp_writer:
+        return mfi_xp_writer_reconnecting
+
+
+def _internal_auto_reconnect(writer):
+    global xp_writer_reconnecting
+    global mfi_xp_writer_reconnecting
+
+    if writer is xp_writer:
+        xp_writer_reconnecting = True
+        asyncio.create_task(_auto_reconnect_xp_writer())
+    
+    if writer is mfi_xp_writer:
+        mfi_xp_writer_reconnecting = True
+        asyncio.create_task(_auto_reconnect_mfi_xp_writer())
+
 
 async def send_string(writer, msg: str):
     if not writer:
         print("not connected to xplane!")
         return 
+
+    if _is_reconnecting(writer):
+        print("reconnecting")
+        return  
+
+    if writer.is_closing():
+        _internal_auto_reconnect(writer)
 
     msg += "\n"
     writer.write(msg.encode())
@@ -222,16 +258,17 @@ async def read_line(reader) -> str:
 
 
 def parse_xplane_dataref(data_line: str):
+
     type, dataref, value = data_line.split()
-    type = type.decode()
-    dataref = dataref.decode()
+    # type = type.decode()
+    # dataref = dataref.decode()
 
     if type == "ui":
         value = int(value) 
     elif type in ["uf", "ud"]:
         value = float(value)
     elif type in ["uia", "ufa"]:
-        value = value.decode()
+        # value = value.decode()
         value = json.loads(value)
     else:
         print("Warning: dataref parse not INPLEMENTED!")
@@ -250,12 +287,29 @@ async def handle_read():
         l = await read_line(xp_reader)
         l = await read_line(xp_reader)
 
-        while not terminate_reader_task:
+        while not terminate_reader_task or xp_reader.at_eof():
             data = await read_line(xp_reader)
+            if not data:
+                # connection closed
+                break
+
+            data = data.decode()
+
+            # extplane warning received
+            if data.startswith("EXTP"):
+                print(data)
+                continue
+
+            # data received
             type, dataref, value = parse_xplane_dataref(data)
 
             if on_new_xp_data_callback:
                 on_new_xp_data_callback(type, dataref, value) 
+
+        # recursive reconnect
+        if _is_reconnecting(xp_writer) is False:
+            _internal_auto_reconnect(xp_writer)
+
     except Exception as ex:
         print(data)
         on_new_xp_data_exception_callback(ex)
@@ -286,6 +340,7 @@ async def connect_to_master_xplane_until_success(server_address, server_port, on
             print(f"Could not connect to xplane: {server_address}:{server_port} !")
             print(f"retrying...")
             asyncio.sleep(0.5)
+    
 
 
 async def connect_to_master_xplane_once(server_address, server_port, on_new_data_callback, on_data_exception_callback):
@@ -297,6 +352,25 @@ async def connect_to_master_xplane_once(server_address, server_port, on_new_data
         print(f"Could not connect to xplane: {server_address}:{server_port} !")
 
 
+async def _auto_reconnect_xp_writer():
+    global on_new_xp_data_callback
+    global on_new_xp_data_exception_callback 
+
+    global xp_host
+    global xp_port
+    global xp_writer_reconnecting 
+
+    await connect_to_master_xplane_until_success(xp_host, xp_port, on_new_xp_data_callback, on_new_xp_data_exception_callback)
+
+    xp_writer_reconnecting = False
+
+    # NOTE: we need to subscribe to all data again !
+    await subscribe_to_all_data()  
+    
+
+async def _auto_reconnect_mfi_xp_writer():
+    pass
+
 async def connect_to_master_xplane(server_address, server_port, on_new_data_callback, on_data_exception_callback):
     """ connect to ExtPlane plugin """
 
@@ -305,6 +379,13 @@ async def connect_to_master_xplane(server_address, server_port, on_new_data_call
     global xp_reader_task
     global on_new_xp_data_callback
     global on_new_xp_data_exception_callback 
+
+    global xp_host
+    global xp_port
+
+    # remember for reconnect
+    xp_host = server_address
+    xp_port = server_port
 
     await disconnect()
 
@@ -316,6 +397,8 @@ async def connect_to_master_xplane(server_address, server_port, on_new_data_call
 
 
 mfi_xp_writer = None
+mfi_xp_writer_reconnecting = False
+
 sync_params = set()
 subsribed_params = set()
 
@@ -367,3 +450,11 @@ async def sync_param(slave_xp_writer, param: Params, value):
 
 async def sync_param_to_slaves(param: Params, value):
     await sync_param(mfi_xp_writer, param, value)
+
+
+async def subscribe_to_all_data():
+    for p in Params:
+        await subscribe_to_param(xp_writer, p)
+
+    await ACState.wait_until_param_available(Params["sim/time/total_running_time_sec"])
+
