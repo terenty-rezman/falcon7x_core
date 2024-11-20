@@ -27,5 +27,5 @@ class ParamsSubscriber:
                     print(e)
 
                     # subscription failed put job back
-                    self.to_subscribe.put(param)
+                    await self.to_subscribe.put(param)
                     await asyncio.sleep(0.5)

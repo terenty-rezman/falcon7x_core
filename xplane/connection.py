@@ -64,7 +64,11 @@ class XPconnection():
     async def disconnect(self):
         if self.writer:
             self.writer.close()
-            await self.writer.wait_closed()
+            try:
+                await self.writer.wait_closed()
+            except ConnectionError as e:
+                print(e)
+
             self.writer = None
 
         if self.reader_task:
@@ -129,7 +133,7 @@ class XPconnection():
                 self._auto_reconnect()
 
         except Exception as ex:
-            if self.on_connected_callback:
+            if self.on_data_exception_callback:
                 self.on_data_exception_callback(ex)
 
     def _auto_reconnect(self):

@@ -20,11 +20,6 @@ app.config["QUART_SCHEMA_CONVERT_CASING"] = None
 app.config["QUART_SCHEMA_CONVERSION_PREFERENCE"] = None
 
 
-@app.route("/api")
-async def json():
-    return {"hello": "world"}
-
-
 @app.route("/api/situation_list")
 async def situation_list():
     return [

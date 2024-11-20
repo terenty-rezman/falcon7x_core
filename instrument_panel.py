@@ -397,7 +397,7 @@ async def run_send_uso_task(uso_host, uso_send_port):
 
 async def run_receive_uso_task(uso_host, uso_receive_port):
     endpoint = await open_local_endpoint(host=uso_host, port=uso_receive_port)
-    print(f"The UDP overhead panel server is running on port {endpoint.address[1]}...")
+    print(f"The UDP USO server is running on port {endpoint.address[1]}...")
 
     global receive_task
     receive_task = sane_tasks.spawn(receive_uso_task(endpoint))    
