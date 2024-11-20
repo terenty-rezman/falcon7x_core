@@ -72,10 +72,10 @@ async def load_default_sit():
     await util.load_sit("Output/situations/1.sit")
 
 
-def add_mfi_sync_list():
-    xp_mfi.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
-    xp_mfi.add_sync_param(xp.Params["sim/custom/7x/lhinit"])
-    xp_mfi.add_sync_param(xp.Params["sim/custom/7x/rhinit"])
+async def add_mfi_sync_list():
+    await xp_mfi.add_sync_param(xp.Params["sim/cockpit/weapons/firing_rate"])
+    await xp_mfi.add_sync_param(xp.Params["sim/custom/7x/lhinit"])
+    await xp_mfi.add_sync_param(xp.Params["sim/custom/7x/rhinit"])
 
 
 async def main_loop():
@@ -85,7 +85,7 @@ async def main_loop():
 
     # await load_default_sit()
 
-    await xp.subscribe_to_all_data()  
+    # await xp.subscribe_to_all_data()  
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
 
@@ -111,6 +111,11 @@ async def main_loop():
 
         await asyncio.sleep(0.1)
 
+    
+async def connect_to_mfi():
+    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_SERVER_PORT, None, None)
+    xp_mfi.param_subscriber.run_subsriber_task()
+
 
 async def main():
     # await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
@@ -119,10 +124,11 @@ async def main():
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
     await xp.xp_master.connect_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
-    # await xp.xp_master.connect(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    xp.param_subscriber.run_subsriber_task()
 
-    # await xp_mfi.xp_mfi.connect(MFI_XP_HOST, XP_SERVER_PORT)
-    add_mfi_sync_list()
+    # connection to mfi is optional
+    asyncio.create_task(connect_to_mfi())
+    await add_mfi_sync_list()
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 

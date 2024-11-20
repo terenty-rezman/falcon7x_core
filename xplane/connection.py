@@ -7,6 +7,7 @@ import asyncio
 import json
 
 import sane_tasks
+from xplane.params import Params
 
 
 def parse_xplane_dataref(data_line: str):
@@ -39,10 +40,12 @@ class XPconnection():
         self.reader = None
         self.reader_task = None
         self.terminate_reader_task = False
-        self._is_reconnecting = False
+        self._is_connecting = False
 
         self.on_new_data_callback = None 
         self.on_data_exception_callback = None
+        self.on_connected_callback = None
+        self.on_subscription_failed_callback = None
 
     async def connect(self, server_address, server_port, on_new_data_callback, on_data_exception_callback):
         """ connect to ExtPlane plugin """
@@ -66,7 +69,7 @@ class XPconnection():
 
         if self.reader_task:
             self.terminate_reader_task = True
-            await self.xp_reader_task
+            await self.reader_task
             self.terminate_reader_task = False
             self.reader_task = None
             self.reader = None
@@ -77,6 +80,12 @@ class XPconnection():
                 print(f"connecting to xplane: {server_address}:{server_port}...")
                 await self.connect(server_address, server_port, on_new_data_callback, on_data_exception_callback)
                 print(f"connected to xplane: {server_address}:{server_port} !")
+
+                self._is_connecting = False
+
+                if self.on_connected_callback:
+                    self.on_connected_callback()
+
                 break
             except (ConnectionRefusedError, OSError) as e:
                 print(f"Could not connect to xplane: {server_address}:{server_port} !")
@@ -91,7 +100,7 @@ class XPconnection():
             l = await self.reader.readline()
 
             while not self.terminate_reader_task or self.reader.at_eof():
-                data = await self.readline()
+                data = await self.reader.readline()
                 if not data:
                     # connection closed
                     break
@@ -101,6 +110,12 @@ class XPconnection():
                 # extplane warning received
                 if data.startswith("EXTP"):
                     print(data)
+
+                    if data.startswith("EXTPLANE-WARNING Can't find dataref "):
+                        dataref = data.split("EXTPLANE-WARNING Can't find dataref ")[1].rstrip()
+                        if self.on_subscription_failed_callback:
+                            await self.on_subscription_failed_callback(Params[dataref])
+
                     continue
 
                 # data received
@@ -110,25 +125,22 @@ class XPconnection():
                     self.on_new_data_callback(type, dataref, value) 
 
             # recursive reconnect
-            if self._is_reconnecting is False:
+            if self._is_connecting is False:
                 self._auto_reconnect()
 
         except Exception as ex:
-            print(data)
-            self.on_data_exception_callback(ex)
+            if self.on_connected_callback:
+                self.on_data_exception_callback(ex)
 
     def _auto_reconnect(self):
-        self._is_reconnecting = True
+        self._is_connecting = True
 
         async def _reconnect():
+            await self.disconnect()
+
             await self.connect_until_success(
                 self.host, self.port, self.on_new_data_callback, self.on_data_exception_callback
             )
-
-            self._is_reconnecting = False
-
-            # NOTE: we need to subscribe to all data again !
-            # await subscribe_to_all_data()  
         
         sane_tasks.spawn(_reconnect())
 
@@ -137,7 +149,7 @@ class XPconnection():
             print("not connected to xplane!")
             return 
 
-        if self._is_reconnecting:
+        if self._is_connecting:
             print("reconnecting")
             return  
 
