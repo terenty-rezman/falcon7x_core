@@ -28,3 +28,28 @@ async def a_i_stall_warning_offset(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: WINGS FAULT")
 async def a_i_wings_fault(ac_state: xp_ac.ACState):
     await cas.show_message(cas.A_I_WINGS_FAULT)
+
+
+@scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET")
+async def a_i_stall_warning_offset(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.A_I_STALL_WARNING_OFFSET)
+
+
+@scenario("ABNORMAL", "ENGINES", "ABNORMAL START")
+async def abnormal_start(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("ABNORMAL", "NAVIGATION", "ADS: 1 FAIL")
+async def ads_1_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ADS_1_FAIL)
+
+
+@scenario("ABNORMAL", "NAVIGATION", "ADS: 2 FAIL")
+async def ads_2_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ADS_2_FAIL)
+
+
+@scenario("ABNORMAL", "NAVIGATION", "ADS: 1 NO SLIP COMPL")
+async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ADS_1_NO_SLIP_COMP)

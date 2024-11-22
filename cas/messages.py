@@ -3598,6 +3598,27 @@ class ADS_1_2_3_4_FAIL(CASmssg):
     land = True
 
 @register
+class ADS_1_FAIL(CASmssg): 
+    isread = False
+    text = "ADS: 1 FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+
+@register
+class ADS_2_FAIL(CASmssg): 
+    isread = False
+    text = "ADS: 2 FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+@register
 class ADS_1_2_3_4_NO_SLIP_COMP(CASmssg): 
     isread = False
     text = "ADS: 1+2+3+4 NO SLIP COMP"
@@ -3608,6 +3629,16 @@ class ADS_1_2_3_4_NO_SLIP_COMP(CASmssg):
     TO = True
     land = True
 
+@register
+class ADS_1_NO_SLIP_COMP(CASmssg): 
+    isread = False
+    text = "ADS: 1 NO SLIP COMP"
+    color = "A"
+    park = False
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
 @register
 class ADS_X_X_X_PROBE_HEAT_OFF(CASmssg): 
     isread = False
