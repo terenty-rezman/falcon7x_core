@@ -26,9 +26,9 @@ cas.CAS_HOST = "127.0.0.1"
 cas.CAS_PORT_LEFT = 8881
 cas.CAS_PORT_RIGHT = 8882
 
-# connect to xplane plugin
-XP_SERVER_HOST = "127.0.0.1"
-XP_SERVER_PORT = 51000
+# connect to master xplane plugin
+XP_MASTER_HOST = "127.0.0.1"
+XP_MASTER_PORT = 51000
 
 # web interface listens on this address:
 WEB_INTERFACE_HOST = "127.0.0.1"
@@ -113,7 +113,7 @@ async def main_loop():
 
     
 async def connect_to_mfi():
-    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_SERVER_PORT, None, None)
+    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_MASTER_PORT, None, None)
     xp_mfi.param_subscriber.run_subsriber_task()
 
 
@@ -123,7 +123,7 @@ async def main():
     await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
-    await xp.xp_master.connect_until_success(XP_SERVER_HOST, XP_SERVER_PORT, on_new_xp_data, on_data_exception)
+    await xp.xp_master.connect_until_success(XP_MASTER_HOST, XP_MASTER_PORT, on_new_xp_data, on_data_exception)
     xp.param_subscriber.run_subsriber_task()
 
     # connection to mfi is optional
@@ -133,8 +133,6 @@ async def main():
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
-
-    await xp.xp_master.disconnect()
 
 
 asyncio.run(main())
