@@ -16,3 +16,63 @@ import middle_pedestal.wings_config as wc
 @scenario("NORMAL", None, "POWER ON")
 async def power_on(ac_state: xp_ac.ACState):
     pass
+
+
+@scenario("NORMAL", None, "AFTER LANDING")
+async def after_landing(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "AFTER START")
+async def after_start(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "AT_RAMP")
+async def at_ramp(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "BEFORE START")
+async def before_start(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "COCKPIT PREPARATION")
+async def cockpit_preparation(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "CRUISE")
+async def cruise(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "DESCENT")
+async def cruise(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "LANDING")
+async def landing(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "POWER OFF")
+async def power_off(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "START")
+async def start(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "TAKE-OFF")
+async def take_off(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "TAXI")
+async def taxi(ac_state: xp_ac.ACState):
+    pass
