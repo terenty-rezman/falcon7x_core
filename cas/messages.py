@@ -115,6 +115,16 @@ class AVC_DU_LH_UP_HI_TEMP(CASmssg):
     land = False
 
 @register
+class AVC_DU_LH_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: DU LH HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class AVC_DU_LW_RH_HI_TEMP(CASmssg): 
     isread = False
     text = "AVC: DU LW+RH HI TEMP"
@@ -125,6 +135,16 @@ class AVC_DU_LW_RH_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class AVC_DU_LW_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: DU LW HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class AVC_GEN_IO_1_2_3_4_5_FAIL(CASmssg): 
     isread = False
@@ -180,6 +200,37 @@ class AVC_MAU_1A_1B_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class AVC_MAU_1A_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1A HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class AVC_MAU_1A_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1A FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class AVC_MAU_1B_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1B FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class AVC_MAU_2A_2B_HI_TEMP(CASmssg): 
     isread = False
@@ -579,7 +630,7 @@ class AFCS_AP_FAIL(CASmssg):
     land = True
 
 @register
-class AFCS_IRS_ALL_MISCCOMPARE(CASmssg): 
+class AFCS_IRS_ALL_MISCOMPARE(CASmssg): 
     isread = False
     text = "AFCS: IRS ALL MISCCOMPARE"
     color = "A"
@@ -3662,6 +3713,16 @@ class ADS_X_X_X_PROBE_HEAT_FAIL(CASmssg):
     land = True
 
 @register
+class ADS_1_PROBE_HEAT_FAIL(CASmssg): 
+    isread = False
+    text = "ADS: 1 PROBE HEAT FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+@register
 class ADS_ALL_PROBE_HEAT_OFF(CASmssg): 
     isread = False
     text = "ADS: ALL PROBE HEAT OFF"
@@ -3837,6 +3898,16 @@ class BLEED_1_2_3_FAIL(CASmssg):
     TO = False
     land = False
 
+@register
+class BLEED_1_FAIL(CASmssg): 
+    isread = False
+    text = "BLEED: 1 FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class BLEED_HP_1_2_3_FAIL(CASmssg): 
     isread = False
