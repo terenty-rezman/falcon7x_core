@@ -519,6 +519,16 @@ class COM_VHF_1_2_3_HI_TEMP(CASmssg):
     land = False
 
 @register
+class COM_VHF_1_HI_TEMP(CASmssg): 
+    isread = False
+    text = "COM: VHF 1 HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class COM_XPDR_1_2_FAIL(CASmssg): 
     isread = False
     text = "COM: XPDR 1+2 FAIL"
@@ -1609,6 +1619,16 @@ class ELEC_GEN_1_2_3_FAULT(CASmssg):
     TO = True
     land = True
 
+@register
+class ELEC_GEN_2_FAULT(CASmssg): 
+    isread = False
+    text = "38 ELEC: GEN 2 FAULT"
+    color = "R"
+    park = False
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
 @register
 class ELEC_RAT_GEN_FAULT(CASmssg): 
     isread = False
@@ -3964,6 +3984,16 @@ class BLEED_1_2_3_HI_TEMP(CASmssg):
     land = False
 
 @register
+class BLEED_1_HI_TEMP(CASmssg): 
+    isread = False
+    text = "BLEED: 1 HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class BLEED_1_2_3_LO_TEMP(CASmssg): 
     isread = False
     text = "BLEED: 1+2+3 LO TEMP"
@@ -4380,6 +4410,16 @@ class ENG_OUT(CASmssg):
     cruise = True
     TO = False
     land = False
+@register
+class ENG_2_OUT(CASmssg): 
+    isread = False
+    text = "ENG 2: OUT"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 
 @register
 class ENG_1_2_3_AUTO_SHUTDOWN(CASmssg): 
@@ -4514,6 +4554,16 @@ class ENG_1_2_3_STARTER_FAIL(CASmssg):
     land = False
 
 @register
+class ENG_2_STARTER_FAIL(CASmssg): 
+    isread = False
+    text = "ENG 2: STARTER FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class ENG_1_2_3_STARTER_HI_TEMP(CASmssg): 
     isread = False
     text = "ENG 1+2+3 STARTER HI TEMP"
@@ -4557,6 +4607,26 @@ class ENG_MULTIPLE_START(CASmssg):
     TO = False
     land = False
 
+@register
+class ENGINE_1_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENGINE 1 SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class ENGINE_2_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENGINE 2 SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class THRUST_REVERSER_FAIL(CASmssg): 
     isread = False

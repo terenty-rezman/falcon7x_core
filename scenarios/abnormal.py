@@ -113,3 +113,88 @@ async def avc_mau_1a_hi_temp(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "BLEED AIR", "BLEED: 1 FAIL")
 async def bleed_1_fail(ac_state: xp_ac.ACState):
     await cas.show_message(cas.BLEED_1_FAIL)
+
+
+@scenario("ABNORMAL", "BLEED AIR", "BLEED: 1 HI TEMP")
+async def bleed_1_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.BLEED_1_HI_TEMP)
+
+
+@scenario("ABNORMAL", "BLEED AIR", "BLEED: XBLEED FAULT")
+async def bleed_xbleed_fault(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.BLEED_XBLEED_FAULT)
+
+
+@scenario("ABNORMAL", "BLEED AIR", "COM: AUDIO 1+2 FAIL")
+async def com_audio_1_2_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.COM_AUDIO_1_2_FAIL)
+
+
+@scenario("ABNORMAL", "COMMUNICATIONS", "COM: AUDIO 1+2 FAIL")
+async def com_audio_1_2_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.COM_AUDIO_1_2_FAIL)
+
+
+@scenario("ABNORMAL", "COMMUNICATIONS", "COM: VHF 1 HI TEMP")
+async def com_vhf_1_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.COM_VHF_1_HI_TEMP)
+
+
+@scenario("ABNORMAL", "AIR CONDITIONING AND PRESSURIZATION", "COND: BAG COMP HI TEMP")
+async def cond_bag_comp_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.COND_BAG_COMP_HI_TEMP)
+
+
+@scenario("ABNORMAL", "AIR CONDITIONING AND PRESSURIZATION", "COND: EMERG PACK HI TEMP")
+async def cond_emerg_pack_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.COND_EMERG_PACK_HI_TEMP)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: AFT DIST BOX HI TEMP")
+async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ELEC_AFT_DIST_BOX_HI_TEMP)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: GEN 2 FAULT")
+async def elec_gen_2_fault(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ELEC_GEN_2_FAULT)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH ESS PWR LO")
+async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ELEC_LH_ESS_PWR_LO)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH MAIN FAULT")
+async def elec_lh_main_fault(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ELEC_LH_MAIN_FAULT)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER RH SIDE", "ELEC: RH ESS PWR LO")
+async def elec_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ELEC_RH_ESS_PWR_LO)
+
+
+@scenario("ABNORMAL", "ENGINES", "ENG 2: OUT")
+async def eng_2_out(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ENG_2_OUT)
+
+
+@scenario("ABNORMAL", "ENGINES", "ENG 2: STARTER FAIL")
+async def eng_2_starter_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ENG_2_STARTER_FAIL)
+
+
+@scenario("ABNORMAL", "ENGINES", "ENGINE 1 SHUTDOWN")
+async def engine_1_shutdown(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ENGINE_1_SHUTDOWN)
+
+
+@scenario("ABNORMAL", "ENGINES", "ENGINE 2 SHUTDOWN")
+async def engine_2_shutdown(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.ENGINE_2_SHUTDOWN)
+
+
+@scenario("ABNORMAL", "ENGINES", "FCS: AILERON DEGRAD")
+async def fcs_aileron_degrad(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FCS_AILERON_DEGRAD)
