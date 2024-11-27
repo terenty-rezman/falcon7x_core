@@ -195,6 +195,88 @@ async def engine_2_shutdown(ac_state: xp_ac.ACState):
     await cas.show_message(cas.ENGINE_2_SHUTDOWN)
 
 
-@scenario("ABNORMAL", "ENGINES", "FCS: AILERON DEGRAD")
+@scenario("ABNORMAL", "FLIGHT CONTROL: AILERONS", "FCS: AILERON DEGRAD")
 async def fcs_aileron_degrad(ac_state: xp_ac.ACState):
     await cas.show_message(cas.FCS_AILERON_DEGRAD)
+
+
+@scenario("ABNORMAL", "FLIGHT CONTROL: FLAPS", "FCS: FLAP ASYM")
+async def fcs_flap_asym(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FCS_FLAP_ASYM)
+
+
+@scenario("ABNORMAL", "FLIGHT CONTROL: FLAPS", "FCS: FLAP FAIL")
+async def fcs_flap_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FCS_FLAP_FAIL)
+
+
+@scenario("ABNORMAL", "FLIGHT CONTROL: SLATS", "FCS: SLATS M+O EXTEND FAIL")
+async def fcs_slats_m_o_extend_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FCS_SLATS_M_O_EXTEND_FAIL)
+
+
+@scenario("ABNORMAL", "FUEL", "FUEL: ENG 2 LO PRESS")
+async def fcs_slats_m_o_extend_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FCS_SLATS_M_O_EXTEND_FAIL)
+
+
+@scenario("ABNORMAL", "FUEL", "FUEL: ENG 2 LO PRESS")
+async def fuel_eng_2_lo_press(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FUEL_ENG_2_LO_PRESS)
+
+
+@scenario("ABNORMAL", "FUEL", "FUEL: X-BP 1-3 FAULT")
+async def fuel_x_bp_1_3_fault(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FUEL_X_BP_1_3_FAULT)
+
+
+@scenario("ABNORMAL", "LANDING GEAR AND BRAKES", "GEAR: DOOR NOT CLOSED")
+async def gear_door_not_closed(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.GEAR_DOOR_NOT_CLOSED)
+
+
+@scenario("ABNORMAL", "HYDRAULIC", "HYD: B HI TEMP")
+async def hyd_b_hi_temp(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.HYD_B_HI_TEMP)
+
+
+@scenario("ABNORMAL", "HYDRAULIC", "HYD: B HI TEMP")
+async def hyd_b_lo_press(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.HYD_B_LO_PRESS)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "LH ESS BUS INOPERATIVE")
+async def some_function(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "LH MAIN + RH MAIN BUSES INOPERATIVE")
+async def avc_mau_1a_2b_fail(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.AVC_MAU_1A_2B_FAIL)
+async def fuel_eng_1_3_lo_press(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.FUEL_ENG_1_3_LO_PRESS)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "LH MAIN BUS INOPERATIVE")
+async def some_function(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("ABNORMAL", " AIR CONDITIONING AND PRESSURIZATION", "PRESS: BAG VENT LO")
+async def press_bag_vent_lo(ac_state: xp_ac.ACState):
+    await cas.show_message(cas.PRESS_BAG_VENT_LO)
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "RH ESS BUS INOPERATIVE")
+async def some_function(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "RH MAIN BUS INOPERATIVE")
+async def some_function(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("ABNORMAL", "ENGINES", "STARTER ASSISTED RELIGHT")
+async def some_function(ac_state: xp_ac.ACState):
+    pass

@@ -222,6 +222,16 @@ class AVC_MAU_1A_FAIL(CASmssg):
     land = False
 
 @register
+class AVC_MAU_1A_2B_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1B+2B FAIL "
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class AVC_MAU_1B_FAIL(CASmssg): 
     isread = False
     text = "AVC: MAU 1B FAIL"
@@ -2842,6 +2852,26 @@ class FUEL_ENG_1_2_3_LO_PRESS(CASmssg):
     land = False
 
 @register
+class FUEL_ENG_1_3_LO_PRESS(CASmssg): 
+    isread = False
+    text = "FUEL: ENG 1+3 LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class FUEL_ENG_2_LO_PRESS(CASmssg): 
+    isread = False
+    text = "FUEL: ENG 2 LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class FUEL_GAUGING_DEGRAD(CASmssg): 
     isread = False
     text = "FUEL: GAUGING DEGRAD"
@@ -3152,6 +3182,16 @@ class HYD_A_B_C_LO_PRESS(CASmssg):
     land = True
 
 @register
+class HYD_B_LO_PRESS(CASmssg): 
+    isread = False
+    text = "HYD: B LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+@register
 class HYD_A_B_C_LO_QTY(CASmssg): 
     isread = False
     text = "HYD: A+B+C LO QTY"
@@ -3173,6 +3213,16 @@ class HYD_A_B_C_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class HYD_B_HI_TEMP(CASmssg): 
+    isread = False
+    text = "HYD: B HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class HYD_BACKUP_PUMP_HI_TEMP(CASmssg): 
     isread = False
