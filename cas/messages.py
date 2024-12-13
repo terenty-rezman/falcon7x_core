@@ -115,6 +115,16 @@ class AVC_DU_LH_UP_HI_TEMP(CASmssg):
     land = False
 
 @register
+class AVC_DU_LH_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: DU LH HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class AVC_DU_LW_RH_HI_TEMP(CASmssg): 
     isread = False
     text = "AVC: DU LW+RH HI TEMP"
@@ -125,6 +135,16 @@ class AVC_DU_LW_RH_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class AVC_DU_LW_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: DU LW HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class AVC_GEN_IO_1_2_3_4_5_FAIL(CASmssg): 
     isread = False
@@ -180,6 +200,47 @@ class AVC_MAU_1A_1B_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class AVC_MAU_1A_HI_TEMP(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1A HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class AVC_MAU_1A_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1A FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class AVC_MAU_1A_2B_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1B+2B FAIL "
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class AVC_MAU_1B_FAIL(CASmssg): 
+    isread = False
+    text = "AVC: MAU 1B FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class AVC_MAU_2A_2B_HI_TEMP(CASmssg): 
     isread = False
@@ -468,6 +529,16 @@ class COM_VHF_1_2_3_HI_TEMP(CASmssg):
     land = False
 
 @register
+class COM_VHF_1_HI_TEMP(CASmssg): 
+    isread = False
+    text = "COM: VHF 1 HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class COM_XPDR_1_2_FAIL(CASmssg): 
     isread = False
     text = "COM: XPDR 1+2 FAIL"
@@ -579,7 +650,7 @@ class AFCS_AP_FAIL(CASmssg):
     land = True
 
 @register
-class AFCS_IRS_ALL_MISCCOMPARE(CASmssg): 
+class AFCS_IRS_ALL_MISCOMPARE(CASmssg): 
     isread = False
     text = "AFCS: IRS ALL MISCCOMPARE"
     color = "A"
@@ -1558,6 +1629,16 @@ class ELEC_GEN_1_2_3_FAULT(CASmssg):
     TO = True
     land = True
 
+@register
+class ELEC_GEN_2_FAULT(CASmssg): 
+    isread = False
+    text = "38 ELEC: GEN 2 FAULT"
+    color = "R"
+    park = False
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
 @register
 class ELEC_RAT_GEN_FAULT(CASmssg): 
     isread = False
@@ -2771,6 +2852,26 @@ class FUEL_ENG_1_2_3_LO_PRESS(CASmssg):
     land = False
 
 @register
+class FUEL_ENG_1_3_LO_PRESS(CASmssg): 
+    isread = False
+    text = "FUEL: ENG 1+3 LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class FUEL_ENG_2_LO_PRESS(CASmssg): 
+    isread = False
+    text = "FUEL: ENG 2 LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class FUEL_GAUGING_DEGRAD(CASmssg): 
     isread = False
     text = "FUEL: GAUGING DEGRAD"
@@ -3081,6 +3182,16 @@ class HYD_A_B_C_LO_PRESS(CASmssg):
     land = True
 
 @register
+class HYD_B_LO_PRESS(CASmssg): 
+    isread = False
+    text = "HYD: B LO PRESS"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+@register
 class HYD_A_B_C_LO_QTY(CASmssg): 
     isread = False
     text = "HYD: A+B+C LO QTY"
@@ -3102,6 +3213,16 @@ class HYD_A_B_C_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class HYD_B_HI_TEMP(CASmssg): 
+    isread = False
+    text = "HYD: B HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class HYD_BACKUP_PUMP_HI_TEMP(CASmssg): 
     isread = False
@@ -3662,6 +3783,16 @@ class ADS_X_X_X_PROBE_HEAT_FAIL(CASmssg):
     land = True
 
 @register
+class ADS_1_PROBE_HEAT_FAIL(CASmssg): 
+    isread = False
+    text = "ADS: 1 PROBE HEAT FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+@register
 class ADS_ALL_PROBE_HEAT_OFF(CASmssg): 
     isread = False
     text = "ADS: ALL PROBE HEAT OFF"
@@ -3838,6 +3969,16 @@ class BLEED_1_2_3_FAIL(CASmssg):
     land = False
 
 @register
+class BLEED_1_FAIL(CASmssg): 
+    isread = False
+    text = "BLEED: 1 FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class BLEED_HP_1_2_3_FAIL(CASmssg): 
     isread = False
     text = "BLEED: HP 1+2+3 FAIL"
@@ -3892,6 +4033,16 @@ class BLEED_1_2_3_HI_TEMP(CASmssg):
     TO = False
     land = False
 
+@register
+class BLEED_1_HI_TEMP(CASmssg): 
+    isread = False
+    text = "BLEED: 1 HI TEMP"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class BLEED_1_2_3_LO_TEMP(CASmssg): 
     isread = False
@@ -4309,6 +4460,16 @@ class ENG_OUT(CASmssg):
     cruise = True
     TO = False
     land = False
+@register
+class ENG_2_OUT(CASmssg): 
+    isread = False
+    text = "ENG 2: OUT"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 
 @register
 class ENG_1_2_3_AUTO_SHUTDOWN(CASmssg): 
@@ -4443,6 +4604,16 @@ class ENG_1_2_3_STARTER_FAIL(CASmssg):
     land = False
 
 @register
+class ENG_2_STARTER_FAIL(CASmssg): 
+    isread = False
+    text = "ENG 2: STARTER FAIL"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
 class ENG_1_2_3_STARTER_HI_TEMP(CASmssg): 
     isread = False
     text = "ENG 1+2+3 STARTER HI TEMP"
@@ -4486,6 +4657,26 @@ class ENG_MULTIPLE_START(CASmssg):
     TO = False
     land = False
 
+@register
+class ENGINE_1_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENGINE 1 SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+@register
+class ENGINE_2_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENGINE 2 SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
 @register
 class THRUST_REVERSER_FAIL(CASmssg): 
     isread = False
