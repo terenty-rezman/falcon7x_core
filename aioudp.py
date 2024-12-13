@@ -20,7 +20,7 @@ async def main():
     print(f"Got {data!r} from {address[0]} port {address[1]}")
 """
 
-__all__ = ['open_local_endpoint', 'open_remote_endpoint']
+__all__ = ['open_local_endpoint', 'open_local_endpoint']
 
 
 # Imports
@@ -54,6 +54,8 @@ class DatagramEndpointProtocol(asyncio.DatagramProtocol):
         self._endpoint.feed_datagram(data, addr)
 
     def error_received(self, exc):
+        # if isinstance(exc, ConnectionResetError):
+        #     self.connection_lost(None)
         msg = 'Endpoint received an error: {!r}'
         warnings.warn(msg.format(exc))
 
@@ -235,7 +237,7 @@ except ImportError:  # pragma: no cover
 
 async def test_standard_behavior():
     local = await open_local_endpoint()
-    remote = await open_remote_endpoint(*local.address)
+    remote = await open_local_endpoint(*local.address)
 
     remote.send(b'Hey Hey')
     data, address = await local.receive()
@@ -280,7 +282,7 @@ async def test_closed_endpoint():
 
 async def test_queue_size():
     local = await open_local_endpoint(queue_size=1)
-    remote = await open_remote_endpoint(*local.address)
+    remote = await open_local_endpoint(*local.address)
 
     remote.send(b'1')
     remote.send(b'2')
@@ -302,7 +304,7 @@ async def test_queue_size():
 
 async def test_flow_control():
     m = n = 1024
-    remote = await open_remote_endpoint("8.8.8.8", 12345)
+    remote = await open_local_endpoint("8.8.8.8", 12345)
 
     for _ in range(m):
         remote.send(b"a" * n)

@@ -28,12 +28,12 @@ async def subscribe_to_time_param():
     await xp.subscribe_to_param(Params["sim/time/total_running_time_sec"])
 
 
-async def request_all_data():
-    """ получить актуальное значения всех параметров """
-    for p in Params:
-        await xp.subscribe_to_param(p)
+# async def request_all_data():
+#     """ получить актуальное значения всех параметров """
+#     for p in Params:
+#         await xp.subscribe_to_param(p)
 
-    await ACState.wait_until_param_available("sim/time/total_running_time_sec")
+#     await ACState.wait_until_param_available("sim/time/total_running_time_sec")
 
 
 def blink_anim(every_period_sec: float):

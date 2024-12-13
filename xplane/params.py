@@ -104,6 +104,11 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot", # secondary flight display - std
     "sim/multiplayer/controls/flap_request", # pedestal - wings config - slats/flats sf
 
+    # "sim/cockpit2/engine/indicators/N1_percent", # synoptic indicator - eng - N1
+    "sim/cockpit2/engine/indicators/N1_percent[0]", # synoptic indicator - eng - N1
+    "sim/cockpit2/engine/indicators/N1_percent[1]", # synoptic indicator - eng - N1
+    "sim/cockpit2/engine/indicators/N1_percent[2]", # synoptic indicator - eng - N1
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 

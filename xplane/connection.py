@@ -4,24 +4,25 @@ ExtPlane plugin is used to communicate with xplane https://github.com/vranki/Ext
 """
 
 import asyncio
+import struct
 import json
+from time import time, ctime
+from aioudp import open_local_endpoint, open_local_endpoint
 
 import sane_tasks
 from xplane.params import Params
+from xplane.params_to_subscribe import udp_params_list
 
 
 def parse_xplane_dataref(data_line: str):
-
     type, dataref, value = data_line.split()
-    # type = type.decode()
-    # dataref = dataref.decode()
 
     if type == "ui":
         value = int(value) 
     elif type in ["uf", "ud"]:
         value = float(value)
     elif type in ["uia", "ufa"]:
-        # value = value.decode()
+        # arrays
         value = json.loads(value)
     else:
         print("Warning: dataref parse not INPLEMENTED!")
@@ -165,3 +166,93 @@ class XPconnection():
         await self.writer.drain()
         await asyncio.sleep(0) # NOTE: needed to call event loop !
 
+
+class XPconnectionUDP():
+    """ connection to native XPlane udp protocol """
+
+    def __init__(self) -> None:
+        self.remote_host = "127.0.0.1"
+        self.remote_port = 49000
+        self.remote_port = 49555
+
+        self.listen_host = "127.0.0.1"
+        self.listen_port = 62222 
+
+        self.sock = None
+        self.udp_read_task = None
+        self.terminate_reader_task = False
+
+        self.on_new_data_callback = None 
+        self.on_data_exception_callback = None
+
+        self.last_packet_received_time = None
+
+    async def connect(self, remote_address, remote_port, on_new_data_callback, on_data_exception_callback):
+        """ connect to ExtPlane plugin """
+        # remember for reconnect
+        self.remote_host = remote_address
+        # self.remote_port = remote_port
+
+        await self.disconnect()
+
+        self.on_new_data_callback = on_new_data_callback
+        self.on_data_exception_callback = on_data_exception_callback
+        await self.start_read_task()
+
+    async def start_read_task(self):
+        # self.sock = await open_local_endpoint(self.listen_host, self.listen_port)
+        self.sock = await open_local_endpoint(host='127.0.0.1', port=62222)
+        self.udp_read_task = sane_tasks.spawn(self.read_udp_task())    
+
+    async def read_udp_task(self):
+        while not self.terminate_reader_task:
+            print("x")
+            data, (host, port) = await self.sock.receive()
+
+            self.last_packet_received_time = time()
+
+            continue
+
+            try:
+                values = data[5:]
+                num_values = int(len(values) / 8)
+                received_vals = {}
+
+                for i in range(num_values):
+                    dref_info = data[(5 + 8 * i):(5 + 8 * (i + 1))]
+                    (index, value) = struct.unpack("<if", dref_info)
+                    param = udp_params_list[index]
+                    received_vals[param] = value
+                
+                self.on_new_data_callback(received_vals)
+            except Exception as ex:
+                if self.on_data_exception_callback:
+                    self.on_data_exception_callback(ex)
+
+    async def disconnect(self):
+        pass
+
+    def set_param(self, param, value):
+        msg = struct.pack(
+            '<4sxf500s', 
+            b'DREF',
+            value,
+            str(param).encode('utf-8')
+        )
+
+        self.sock.send(msg, (self.remote_host, self.remote_port))
+
+    def subscribe_to_param(self, param, freq=1):
+        freq = 1 if freq is None else freq
+
+        index = udp_params_list.index(param)
+
+        msg = struct.pack(
+            "<4sxii400s", 
+            b'RREF',
+            freq,
+            index,
+            str(param).encode('utf-8')
+        )
+
+        self.sock.send(msg, (self.remote_host, self.remote_port)) 

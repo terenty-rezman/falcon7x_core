@@ -4,7 +4,7 @@ connection to xplane copy used as mfi
 
 from xplane.connection import XPconnection
 from xplane.params import Params
-from xplane.params_subsriber import ParamsSubscriber
+from xplane.params_subsriber import ParamsSubscriberTCP
 import sane_tasks
 
 
@@ -26,7 +26,7 @@ xp_mfi.on_connected_callback = lambda: sane_tasks.spawn(subscribe_to_all_sync_pa
 
 xp_master = XPconnection()
 
-param_subscriber = ParamsSubscriber()
+param_subscriber = ParamsSubscriberTCP()
 param_subscriber.xp_connection = xp_mfi
 
 
