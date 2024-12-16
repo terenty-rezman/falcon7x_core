@@ -143,27 +143,23 @@ async def connect_to_mfi():
 async def main():
     # await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
 
-    # await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
-    # await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
+    await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
+    await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
 
     await xp.xp_master_udp.connect(XP_MASTER_HOST, XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
-    # await xp.xp_master.connect_until_success(XP_MASTER_HOST, XP_MASTER_PORT, on_new_xp_data, on_data_exception)
+    await xp.xp_master.connect_until_success(XP_MASTER_HOST, XP_MASTER_PORT, on_new_xp_data, on_data_exception)
 
-    # xp.param_subscriber.run_subsriber_task()
+    xp.param_subscriber.run_subsriber_task()
     xp.udp_param_subscriber.run_subsriber_task()
 
-    while True:
-        await asyncio.sleep(0.1)
-
-
     # connection to mfi is optional
-    # asyncio.create_task(connect_to_mfi())
-    # await add_mfi_sync_list()
+    asyncio.create_task(connect_to_mfi())
+    await add_mfi_sync_list()
 
     # synoptic_remote.run_updater()
-    # add_remote_synoptic_ui_sync_list()
+    add_remote_synoptic_ui_sync_list()
 
-    # await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
+    await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
 
     await main_loop()   
 

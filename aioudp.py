@@ -36,6 +36,10 @@ class DatagramEndpointProtocol(asyncio.DatagramProtocol):
 
     def __init__(self, endpoint):
         self._endpoint = endpoint
+    
+    def abort(self):
+        self._endpoint._transport.abort()
+        self._endpoint.close()
 
     # Protocol methods
 
@@ -54,8 +58,8 @@ class DatagramEndpointProtocol(asyncio.DatagramProtocol):
         self._endpoint.feed_datagram(data, addr)
 
     def error_received(self, exc):
-        # if isinstance(exc, ConnectionResetError):
-        #     self.connection_lost(None)
+        if isinstance(exc, ConnectionResetError):
+            self.abort()
         msg = 'Endpoint received an error: {!r}'
         warnings.warn(msg.format(exc))
 

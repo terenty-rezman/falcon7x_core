@@ -173,7 +173,6 @@ class XPconnectionUDP():
     def __init__(self) -> None:
         self.remote_host = "127.0.0.1"
         self.remote_port = 49000
-        self.remote_port = 49555
 
         self.listen_host = "127.0.0.1"
         self.listen_port = 62222 
@@ -191,9 +190,7 @@ class XPconnectionUDP():
         """ connect to ExtPlane plugin """
         # remember for reconnect
         self.remote_host = remote_address
-        # self.remote_port = remote_port
-
-        await self.disconnect()
+        self.remote_port = remote_port
 
         self.on_new_data_callback = on_new_data_callback
         self.on_data_exception_callback = on_data_exception_callback
@@ -206,12 +203,14 @@ class XPconnectionUDP():
 
     async def read_udp_task(self):
         while not self.terminate_reader_task:
-            print("x")
-            data, (host, port) = await self.sock.receive()
+            try:
+                data, (host, port) = await self.sock.receive()
+            except IOError:
+                # open new connection if prev connection was reset
+                await self.start_read_task()
+                break
 
             self.last_packet_received_time = time()
-
-            continue
 
             try:
                 values = data[5:]
@@ -229,9 +228,6 @@ class XPconnectionUDP():
                 if self.on_data_exception_callback:
                     self.on_data_exception_callback(ex)
 
-    async def disconnect(self):
-        pass
-
     def set_param(self, param, value):
         msg = struct.pack(
             '<4sxf500s', 
@@ -240,7 +236,10 @@ class XPconnectionUDP():
             str(param).encode('utf-8')
         )
 
-        self.sock.send(msg, (self.remote_host, self.remote_port))
+        try:
+            self.sock.send(msg, (self.remote_host, self.remote_port))
+        except IOError as e:
+            print(e)
 
     def subscribe_to_param(self, param, freq=1):
         freq = 1 if freq is None else freq
@@ -255,4 +254,8 @@ class XPconnectionUDP():
             str(param).encode('utf-8')
         )
 
-        self.sock.send(msg, (self.remote_host, self.remote_port)) 
+        try:
+            self.sock.send(msg, (self.remote_host, self.remote_port)) 
+        except IOError as e:
+            print(e)
+

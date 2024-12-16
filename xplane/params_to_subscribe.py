@@ -8,7 +8,7 @@ to_subscribe = [
     (Params["sim/joystick/yoke_pitch_ratio"], 2, "udp"),
     (Params["sim/joystick/yoke_roll_ratio"], 2, "udp"),
     (Params["sim/joystick/yoke_heading_ratio"], 2, "udp"),
-    (Params["sim/flightmodel/position/elevation"], None, "tcp"),
+    (Params["sim/flightmodel/position/elevation"], 2, "udp"),
     (Params["sim/weapons/warhead_type"], None, "tcp"),
     (Params["sim/cockpit2/engine/actuators/fire_extinguisher_on"], None, "tcp"),
     (Params["sim/cockpit2/annunciators/engine_fires"], None, "tcp"),

@@ -48,10 +48,10 @@ class ParamSubscriberUDP:
     async def _subscriber_task(self):
         while not self.terminate_task:
             now = time()
-            print("suka")
             if not self.xp_udp.last_packet_received_time or \
                 now - self.xp_udp.last_packet_received_time > 4:
                 
+                print("connecting to native xplane udp...")
                 for p, freq, proto, in to_subscribe:
                     if proto == "udp":
                         self.xp_udp.subscribe_to_param(p, freq)

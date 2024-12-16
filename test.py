@@ -5,7 +5,7 @@ import struct
 import asyncio
 from aioudp import open_local_endpoint, open_local_endpoint
 
-# from xplane import master
+from xplane import master
 
 # From https://github.com/charlylima/XPlaneUDP/blob/master/XPlaneUdp.py
 #  and https://gitlab.bliesener.com/jbliesener/PiDisplay/-/blob/master/XPlaneUDP.py
@@ -130,19 +130,23 @@ def find_xp(wait=3.0):
 #     msg = struct.pack("<4sxii400s", cmd, freq, index, b'sim/aircraft/engine/acf_num_engines')
 #     sock.sendto(msg, (ip, port))
 
-import time
+from time import time
+import sane_tasks
+from xplane.params_to_subscribe import udp_params_list
+
 class XPconnectionUDP():
     """ connection to native XPlane udp protocol """
 
     def __init__(self) -> None:
         self.remote_host = "127.0.0.1"
         self.remote_port = 49000
-        self.remote_port = 49555
 
         self.listen_host = "127.0.0.1"
-        self.listen_port = 62222 
+        self.receive_port = 62222 
+        self.send_port = 62223 
 
-        self.sock = None
+        self.sock_receive = None
+        self.sock_send = None
         self.udp_read_task = None
         self.terminate_reader_task = False
 
@@ -155,7 +159,7 @@ class XPconnectionUDP():
         """ connect to ExtPlane plugin """
         # remember for reconnect
         self.remote_host = remote_address
-        # self.remote_port = remote_port
+        self.remote_port = remote_port
 
         await self.disconnect()
 
@@ -165,15 +169,16 @@ class XPconnectionUDP():
 
     async def start_read_task(self):
         # self.sock = await open_local_endpoint(self.listen_host, self.listen_port)
-        self.sock = await open_local_endpoint(host='127.0.0.1', port=62222)
+        self.sock_receive = await open_local_endpoint(host='127.0.0.1', port=self.receive_port)
+        self.sock_send = await open_local_endpoint(host='127.0.0.1', port=self.send_port)
         self.udp_read_task = sane_tasks.spawn(self.read_udp_task())    
 
     async def read_udp_task(self):
         while not self.terminate_reader_task:
-            print("x")
-            data, (host, port) = await self.sock.receive()
+            data, (host, port) = await self.sock_receive.receive()
+            print("prinyal main")
 
-            self.last_packet_received_time = time.time()
+            self.last_packet_received_time = time()
 
             continue
 
@@ -204,12 +209,26 @@ class XPconnectionUDP():
             str(param).encode('utf-8')
         )
 
-        self.sock.send(msg, (self.remote_host, self.remote_port))
+        self.sock_send.send(msg, (self.remote_host, self.remote_port))
 
     def subscribe_to_param(self, param, freq=1):
-        self.sock.send("hello".encode(), (self.remote_host, self.remote_port))
+        freq = 1 if freq is None else freq
 
-import sane_tasks
+        index = udp_params_list.index(param)
+
+        msg = struct.pack(
+            "<4sxii400s", 
+            b'RREF',
+            freq,
+            index,
+            str(param).encode('utf-8')
+        )
+
+        self.sock_send.send(msg, (self.remote_host, self.remote_port)) 
+
+
+from xplane.params import Params
+from xplane.params_to_subscribe import to_subscribe
 
 class ParamSubscriberUDP:
     def __init__(self) -> None:
@@ -222,18 +241,17 @@ class ParamSubscriberUDP:
     
     async def _subscriber_task(self):
         while not self.terminate_task:
-            now = time.time()
-            print("suka")
+            now = time()
             if not self.xp_udp.last_packet_received_time or \
                 now - self.xp_udp.last_packet_received_time > 4:
                 
-                self.xp_udp.subscribe_to_param(1, 2)
+                print("poslal main")
+                for p, freq, proto, in to_subscribe:
+                    if proto == "udp":
+                        self.xp_udp.subscribe_to_param(p, freq)
                 
             await asyncio.sleep(2)
 
-xp_master_udp = XPconnectionUDP()
-udp_param_subscriber = ParamSubscriberUDP() 
-udp_param_subscriber.xp_udp = xp_master_udp
 
 async def send_task(resp):
     while True:
@@ -244,6 +262,10 @@ async def send_task(resp):
 
         await asyncio.sleep(1)
     
+xp_master_udp = XPconnectionUDP()
+udp_param_subscriber = ParamSubscriberUDP() 
+udp_param_subscriber.xp_udp = xp_master_udp
+
 
 async def read_task(endpoint):
     while True:
@@ -256,7 +278,7 @@ async def start_read_task():
     endpoint = await open_local_endpoint(host='127.0.0.1', port=62222)
 
 
-async def main(port=49555):
+async def main():
     endpoint = await open_local_endpoint(host='127.0.0.1', port=62222)
     asyncio.create_task(send_task(endpoint))
     
@@ -273,8 +295,8 @@ async def main2():
     def b(err):
         pass
 
-    await xp_master_udp.connect(1, 1, a, b)
-    udp_param_subscriber.run_subsriber_task()
+    await master.xp_master_udp.connect('127.0.0.1', 49555, a, b)
+    master.udp_param_subscriber.run_subsriber_task()
 
     while True:
         await asyncio.sleep(0.1)
