@@ -1,5 +1,6 @@
 from xplane.params import Params
 
+
 to_subscribe = [
     # (param, freq (for tcp it's accuracy, for udp its freq of time per sec), protocol)
     (Params["sim/time/total_running_time_sec"], 5, "udp"),
@@ -136,7 +137,19 @@ to_subscribe = [
 udp_params_list = []
 udp_params_set = set()
 
-for (p, _, proto) in to_subscribe:
-    if proto == "udp":
-        udp_params_list.append(p)
-        udp_params_set.add(p)
+
+def update_udp_lists():
+    global to_subscribe
+    global udp_params_list
+    global udp_params_set
+
+    udp_params_list.clear()
+    udp_params_set.clear()
+
+    for (p, _, proto) in to_subscribe:
+        if proto == "udp":
+            udp_params_list.append(p)
+            udp_params_set.add(p)
+
+
+update_udp_lists()

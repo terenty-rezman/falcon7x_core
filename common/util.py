@@ -1,7 +1,7 @@
 import time
 import asyncio
 
-from xp_aircraft_state import ACState
+from common.xp_aircraft_state import ACState
 import xplane.master as xp
 from xplane.params import Params, Commands
 

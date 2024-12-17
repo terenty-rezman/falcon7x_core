@@ -5,7 +5,7 @@ connection to xplane copy used as mfi
 from xplane.connection import XPconnection
 from xplane.params import Params
 from xplane.params_subsriber import ParamsSubscriberTCP
-import sane_tasks
+import common.sane_tasks as sane_tasks
 
 
 sync_params = set()

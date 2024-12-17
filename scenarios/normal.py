@@ -3,9 +3,9 @@
 import asyncio
 
 import xplane.master as xp
-import xp_aircraft_state as xp_ac
+import common.xp_aircraft_state as xp_ac
 from cas import cas
-from scenario import scenario
+from common.scenario import scenario
 import overhead_panel.dc_supply as elec
 import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights

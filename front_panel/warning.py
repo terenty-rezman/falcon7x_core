@@ -1,11 +1,11 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator
 import xplane.master as xp
 from xplane.params import Params, Commands
-import xp_aircraft_state as xp_ac
-import util
+import common.xp_aircraft_state as xp_ac
+import common.util as util
         
 
 # F7X_SDD_Avionics_Vol1 31-11 front panel warnings

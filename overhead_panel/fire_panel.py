@@ -1,7 +1,7 @@
-from instrument_panel import add_to_panel, TwoStateButton, Indicator
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator
 import xplane.master as xp
-import xp_aircraft_state as xp_ac
-import util
+import common.xp_aircraft_state as xp_ac
+import common.util as util
 
 
 @add_to_panel

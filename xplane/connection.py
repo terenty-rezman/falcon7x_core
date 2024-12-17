@@ -7,9 +7,9 @@ import asyncio
 import struct
 import json
 from time import time, ctime
-from aioudp import open_local_endpoint, open_local_endpoint
+from common.aioudp import open_local_endpoint, open_local_endpoint
 
-import sane_tasks
+import common.sane_tasks as sane_tasks
 from xplane.params import Params
 from xplane.params_to_subscribe import udp_params_list
 

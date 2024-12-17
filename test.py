@@ -3,7 +3,7 @@ import platform
 import socket
 import struct
 import asyncio
-from aioudp import open_local_endpoint, open_local_endpoint
+from common.aioudp import open_local_endpoint, open_local_endpoint
 
 from xplane import master
 
@@ -131,7 +131,7 @@ def find_xp(wait=3.0):
 #     sock.sendto(msg, (ip, port))
 
 from time import time
-import sane_tasks
+import common.sane_tasks as sane_tasks
 from xplane.params_to_subscribe import udp_params_list
 
 class XPconnectionUDP():

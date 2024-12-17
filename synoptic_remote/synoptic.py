@@ -3,7 +3,7 @@ import httpx
 
 from cas.messages import *
 from xplane.params import Params
-import sane_tasks
+import common.sane_tasks as sane_tasks
 
 
 SYNOPTIC_HOST = "127.0.0.1"

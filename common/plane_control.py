@@ -1,7 +1,7 @@
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper
 from xplane.params import Params
-import xp_aircraft_state as xp_ac
-import util
+import common.xp_aircraft_state as xp_ac
+import common.util as util
 
 
 @add_to_panel

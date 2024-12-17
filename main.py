@@ -3,19 +3,19 @@ import asyncio
 from enum import Enum 
 import traceback
 
-from xp_aircraft_state import ACState
+from common.xp_aircraft_state import ACState
 from aircraft_systems.aicrcaft_systems import Systems as ACSystems
 
-from joystick import Joystick
-from scenario import Scenario
+from common.joystick import Joystick
+from common.scenario import Scenario
 
 import xplane.master as xp
 import xplane.mfi as xp_mfi
 
-from instrument_panel import CockpitPanel
-import instrument_panel as op
-import util
-import web_interface
+from common.instrument_panel import CockpitPanel
+import common.instrument_panel as op
+import common.util as util
+import common.web_interface as web_interface
 from cas import cas
 import synoptic_remote.synoptic as synoptic_remote
 

@@ -1,10 +1,10 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton,FloatStepper, ThreeStateButton, LocalStateDiscreteSwitch
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton,FloatStepper, ThreeStateButton, LocalStateDiscreteSwitch
 import xplane.master as xp
-import xp_aircraft_state as xp_ac
-import util
+import common.xp_aircraft_state as xp_ac
+import common.util as util
         
 
 # F7X_SDD_Avionics_Vol1 23-4 front panel autopilot

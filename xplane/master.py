@@ -4,12 +4,12 @@ Xplane parameters, failures & commands
 ExtPlane plugin is used to communicate with xplane https://github.com/vranki/ExtPlane
 """
 
-from xp_aircraft_state import ACState
+from common.xp_aircraft_state import ACState
 from xplane.connection import XPconnection, XPconnectionUDP
 from xplane.params import Params
 from xplane.params_subsriber import ParamsSubscriberTCP, ParamSubscriberUDP
 import xplane.params_to_subscribe as params_to_subscribe
-import sane_tasks
+import common.sane_tasks as sane_tasks
 
 
 async def subscribe_to_all_tcp_params():

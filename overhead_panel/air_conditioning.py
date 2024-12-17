@@ -2,7 +2,7 @@
 import asyncio
 import time
 
-from instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, FloatStepper
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, FloatStepper
 import xplane.master as xp
 
 

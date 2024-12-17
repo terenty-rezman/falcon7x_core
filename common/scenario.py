@@ -1,7 +1,7 @@
 import asyncio
 
-import xp_aircraft_state as xp_ac
-import sane_tasks
+import common.xp_aircraft_state as xp_ac
+import common.sane_tasks as sane_tasks
 
 
 scenarios = {}

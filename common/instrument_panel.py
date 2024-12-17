@@ -4,10 +4,10 @@ from collections import OrderedDict
 import math
 
 import xplane.master as xp
-import xp_aircraft_state as xp_ac
-from aioudp import open_local_endpoint, open_remote_endpoint
+import common.xp_aircraft_state as xp_ac
+from common.aioudp import open_local_endpoint, open_remote_endpoint
 
-import sane_tasks
+import common.sane_tasks as sane_tasks
 
 
 def is_rotate_right(new_state, old_state):
@@ -509,4 +509,4 @@ from middle_pedestal import checklist_control
 from middle_pedestal import wings_config
 from middle_pedestal import trackball
 from middle_pedestal import engine
-import plane_control
+import common.plane_control as plane_control

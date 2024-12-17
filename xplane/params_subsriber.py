@@ -4,7 +4,7 @@ from time import time, ctime
 from xplane.connection import XPconnection, XPconnectionUDP
 from xplane.params import Params
 from xplane.params_to_subscribe import to_subscribe
-import sane_tasks
+import common.sane_tasks as sane_tasks
 
 
 class ParamsSubscriberTCP:

@@ -4,10 +4,10 @@ from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
 
 
-import sane_tasks
-import util
-import scenario
-from xp_aircraft_state import ACState
+import common.sane_tasks as sane_tasks
+import common.util as util
+import common.scenario as scenario
+from common.xp_aircraft_state import ACState
 from mfi import mfi
 from aircraft_systems.synoptic_screen import SynopticScreen
 

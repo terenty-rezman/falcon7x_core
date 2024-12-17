@@ -109,6 +109,10 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/indicators/N1_percent[1]", # synoptic indicator - eng - N1
     "sim/cockpit2/engine/indicators/N1_percent[2]", # synoptic indicator - eng - N1
 
+    "sim/cockpit2/engine/actuators/throttle_ratio[0]", # synoptic indicator - eng - throttle
+    "sim/cockpit2/engine/actuators/throttle_ratio[1]",
+    "sim/cockpit2/engine/actuators/throttle_ratio[2]",
+
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
 
