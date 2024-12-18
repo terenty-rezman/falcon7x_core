@@ -41,6 +41,7 @@ class ParamSubscriberUDP:
         self.to_subscribe = asyncio.Queue()
         self.xp_udp: XPconnectionUDP = None
         self.terminate_task = False
+        self.subscribed_once = False # subscribe at least once
 
     def run_subsriber_task(self):
         sane_tasks.spawn(self._subscriber_task())
@@ -49,11 +50,16 @@ class ParamSubscriberUDP:
         while not self.terminate_task:
             now = time()
             if not self.xp_udp.last_packet_received_time or \
-                now - self.xp_udp.last_packet_received_time > 4:
+                now - self.xp_udp.last_packet_received_time > 4 or \
+                self.subscribed_once == False:
                 
                 print("connecting to native xplane udp...")
                 for p, freq, proto, in to_subscribe:
                     if proto == "udp":
                         self.xp_udp.subscribe_to_param(p, freq)
-                
+
+                if self.xp_udp.last_packet_received_time is not None and \
+                    now - self.xp_udp.last_packet_received_time < 4:
+                    self.subscribed_once = True
+                    
             await asyncio.sleep(2)

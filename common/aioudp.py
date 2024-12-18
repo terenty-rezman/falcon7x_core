@@ -134,6 +134,19 @@ class Endpoint:
             raise IOError("Enpoint is closed")
         return data, addr
 
+    def receive_nowait(self):
+        """Wait for an incoming datagram and return it with
+        the corresponding address.
+
+        This method is a coroutine.
+        """
+        if self._closed:
+            raise IOError("Enpoint is closed")
+        data, addr = self._queue.get_nowait()
+        if data is None:
+            raise IOError("Enpoint is closed")
+        return data, addr
+
     def abort(self):
         """Close the transport immediately."""
         if self._closed:

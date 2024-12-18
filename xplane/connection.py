@@ -205,6 +205,11 @@ class XPconnectionUDP():
         while not self.terminate_reader_task:
             try:
                 data, (host, port) = await self.sock.receive()
+                # while True:
+                #     try:
+                #         data, (host, port) = self.sock.receive_nowait()
+                #     except asyncio.QueueEmpty:
+                #         break
             except IOError:
                 # open new connection if prev connection was reset
                 await self.start_read_task()
