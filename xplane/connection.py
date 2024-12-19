@@ -79,7 +79,7 @@ class XPconnection():
             self.reader_task = None
             self.reader = None
         
-    async def connect_until_success(self, server_address, server_port, on_new_data_callback, on_data_exception_callback):
+    async def connect_until_success(self, server_address, server_port, on_new_data_callback, on_data_exception_callback, retry_interval=1):
         while True:
             try:
                 print(f"connecting to xplane: {server_address}:{server_port}...")
@@ -95,7 +95,7 @@ class XPconnection():
             except (ConnectionRefusedError, OSError) as e:
                 print(f"Could not connect to xplane: {server_address}:{server_port} !")
                 print(f"retrying...")
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(retry_interval)
 
     async def _handle_read(self):
         try:

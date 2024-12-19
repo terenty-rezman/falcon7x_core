@@ -108,7 +108,7 @@ def add_remote_synoptic_ui_sync_list():
 async def main_loop():
     ACState.clear_all()
 
-    await util.subscribe_to_time_param() # we need time param to load situation correctly 
+    # await util.subscribe_to_time_param() # we need time param to load situation correctly 
 
     # await load_default_sit()
 
@@ -136,7 +136,7 @@ async def main_loop():
 
     
 async def connect_to_mfi():
-    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_MASTER_PORT, None, None)
+    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_MASTER_PORT, None, None, 5)
     xp_mfi.param_subscriber.run_subsriber_task()
 
 

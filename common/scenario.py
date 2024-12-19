@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 
 import common.xp_aircraft_state as xp_ac
 import common.sane_tasks as sane_tasks
@@ -23,11 +24,15 @@ class Scenario:
         # clear current task
         if cls.current_scenario_task:
             cls.current_scenario_task.cancel()
+            print(f"stoped task {cls.current_scenario_task}")
             try:
                 await cls.current_scenario_task
-            except asyncio.CancelledError:
+            # except Exception as ex: #asyncio.CancelledError:
+            except BaseException as ex:
+                print(traceback.format_exc())
                 print(f"stoped task {cls.current_scenario_task}")
-                cls.current_scenario_task = None
+
+            cls.current_scenario_task = None
 
     @classmethod
     async def run_scenario_task(cls, task_name, ac_state: xp_ac.ACState):
@@ -41,6 +46,7 @@ class Scenario:
     @classmethod
     def on_scenario_done(cls, task):
         print(f"task finished {task}")
+        cls.current_scenario_task = None
 
 
 @scenario("TEST", "TEST", "test_scenrio_1")

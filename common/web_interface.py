@@ -45,7 +45,7 @@ async def synoptic():
     data = await request.get_data(as_text=True)
     page_name = data.partition("=")[2]
 
-    if SynopticScreen.set_active_page(page_name) == False:
+    if await SynopticScreen.set_active_page(page_name) == False:
         return {"result": "error", "string": "wrong synoptic page name"}
 
     return {"result": "ok"}
@@ -58,10 +58,18 @@ class RunProcedure:
     procedure_name: str
 
 
+block_scenario_run = False
+
 @app.post("/api/run_procedure")
 @validate_request(RunProcedure)
 async def run_procedure(data: RunProcedure):
-    await scenario.Scenario.run_scenario_task((data.procedure_type, data.procedure_path, data.procedure_name), ACState)
+    global block_scenario_run
+
+    if not block_scenario_run:
+        block_scenario_run = True
+        await scenario.Scenario.run_scenario_task((data.procedure_type, data.procedure_path, data.procedure_name), ACState)
+    block_scenario_run = False
+
     return {"result": "ok"}
 
 

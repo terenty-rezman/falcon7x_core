@@ -110,6 +110,8 @@ to_subscribe = [
     (Params["sim/operation/failures/rel_engfla0"], None, "tcp"),
     (Params["sim/operation/failures/rel_apu_fire"], None, "tcp"), # apu fire
 
+    (Params["sim/operation/failures/rel_genera1"], None, "tcp"), # gen 2 fault
+
     (Params["sim/cockpit2/engine/indicators/N2_percent"], 1, "udp"), # eng N2
     (Params["sim/7x/choixtcas"], None, "tcp"), # PDU show ENG TRM
 
@@ -121,7 +123,7 @@ to_subscribe = [
     (Params["sim/cockpit/autopilot/heading_mag"], None, "tcp"), # fron panel - hdg/trk
     (Params["sim/cockpit2/autopilot/heading_mode"], None, "tcp"), # front panel - hdg/trk mode
 
-    (Params["sim/cockpit2/controls/left_brake_ratio"], None, "tcp"), # pedal brake left
+    (Params["sim/cockpit2/controls/left_brake_ratio"], 0.01, "tcp"), # pedal brake left
     (Params["sim/cockpit2/controls/right_brake_ratio"], None, "tcp"), # pedal brake right
     (Params["sim/cockpit2/engine/actuators/throttle_ratio"], None, "tcp"), # throttle
 

@@ -122,6 +122,8 @@ Params = Enum('XplaneParams', [
     "sim/operation/failures/rel_engfla0",
     "sim/operation/failures/rel_apu_fire", # apu fire
 
+    "sim/operation/failures/rel_genera1", # gen 2
+
     "sim/cockpit2/engine/indicators/N2_percent", # eng N2
     "sim/7x/choixtcas", # PDU show ENG TRM
 

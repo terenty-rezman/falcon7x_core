@@ -139,34 +139,6 @@ async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
     await cas.hide_message(cas.FCS_BOTH_AILERONS_FAIL)
 
 
-@scenario("EMERGENCY", "ELECTRICAL POWER", "26 ELEC: AFT DIST BOX OVHT")
-async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
-
-    # RED CAS message + sound
-    await cas.show_message_alarm(cas.ELEC_AFT_DIST_BOX_OVHT)
-
-    await emergency.ep_elec_rh_ess.wait_state(1)
-
-    await elec.bus_tie.wait_state(0)
-
-    await elec.rh_isol.wait_state(1)
-
-    await elec.cabin_master.wait_state(1)
-
-    # OFF
-    await exterior_lights.el_landing_lh.wait_state(0)
-    await exterior_lights.el_landing_rh.wait_state(0)
-
-    # OFF
-    await exterior_lights.el_taxi.wait_state(0)
-    await exterior_lights.el_wing.wait_state(0)
-
-    # OFF
-    await windshield.windshield_lh.wait_state(1)
-    await windshield.windshield_rh.wait_state(1)
-
-
 @scenario("EMERGENCY", "BLEED", "09 BLEED: 2 OVHT")
 async def _09_bleed_2_ovht(ac_state: xp_ac.ACState):
     await cas.show_message(cas.BLEED_2_OVHT)

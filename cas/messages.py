@@ -1639,6 +1639,7 @@ class ELEC_GEN_2_FAULT(CASmssg):
     cruise = True
     TO = True
     land = True
+
 @register
 class ELEC_RAT_GEN_FAULT(CASmssg): 
     isread = False

@@ -33,16 +33,16 @@ def post_to_all_cas(path: str, json: dict):
 
 
 async def show_message(cas_message: CASmssg):
-    post_to_all_cas("/show_message", {"message": str(cas_message)})
+    post_to_all_cas("/api/show_message", {"message": str(cas_message)})
     print(cas_message)
 
 
 async def show_message_alarm(cas_message: CASmssg):
-    post_to_all_cas("/show_message", {"message": str(cas_message)})
+    post_to_all_cas("/api/show_message", {"message": str(cas_message)})
     print(cas_message)
 
 
 async def hide_message(cas_message: CASmssg):
-    post_to_all_cas("/hide_message", {"message": str(cas_message)})
+    post_to_all_cas("/api/hide_message", {"message": str(cas_message)})
     print(cas_message)
 

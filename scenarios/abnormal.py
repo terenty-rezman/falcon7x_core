@@ -159,6 +159,29 @@ async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
 async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     await cas.show_message(cas.ELEC_GEN_2_FAULT)
 
+    await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
+
+    # light gen2 off
+    await elec.gen2.set_state(1)
+    await elec.gen2.wait_state(1)
+
+    # wait gen2 on
+    await elec.gen2.wait_state(0)
+
+    await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+    await cas.hide_message(cas.ELEC_GEN_2_FAULT)
+
+    return 
+
+    # light gen2 on unsuccessfull - light gen2 off again
+    await elec.gen2.set_state(1)
+
+    await elec.bus_tie.wait_state(1)
+
+    # wind shield AUTO
+    await windshield.windshield_lh.wait_state(0)
+    await windshield.windshield_rh.wait_state(0)
+
 
 @scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH ESS PWR LO")
 async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
