@@ -186,11 +186,12 @@ class XPconnectionUDP():
 
         self.last_packet_received_time = None
 
-    async def connect(self, remote_address, remote_port, on_new_data_callback, on_data_exception_callback):
+    async def connect(self, remote_address, remote_port, on_new_data_callback, on_data_exception_callback, listen_port=62222):
         """ connect to ExtPlane plugin """
         # remember for reconnect
         self.remote_host = remote_address
         self.remote_port = remote_port
+        self.listen_port = listen_port
 
         self.on_new_data_callback = on_new_data_callback
         self.on_data_exception_callback = on_data_exception_callback
@@ -198,7 +199,7 @@ class XPconnectionUDP():
 
     async def start_read_task(self):
         # self.sock = await open_local_endpoint(self.listen_host, self.listen_port)
-        self.sock = await open_local_endpoint(host='127.0.0.1', port=62222)
+        self.sock = await open_local_endpoint(host='127.0.0.1', port=self.listen_port)
         self.udp_read_task = sane_tasks.spawn(self.read_udp_task())    
 
     async def read_udp_task(self):
