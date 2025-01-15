@@ -51,7 +51,7 @@ class wc_backup_slats(PushButton):
 
 
 @add_to_panel
-class wc_ab(TwoStateButton):
+class wc_ab(FloatStepper):
     dataref = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
     index = 0
 

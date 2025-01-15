@@ -113,6 +113,8 @@ class NStateButton:
     states = [] # this values are sent to x plane dref;
     index = None
 
+    override_output_state = None
+
     @classmethod
     async def set_state(cls, state):
         """ set logical state """
@@ -127,9 +129,16 @@ class NStateButton:
 
         await xp.set_param(cls.dataref, val)
     
+    @classmethod
+    def set_override_output_state(cls, value):
+        cls.override_output_state = value
+    
     @classmethod 
     def get_state(cls):
         """ get logical state """
+
+        if cls.override_output_state is not None:
+            return cls.override_output_state
 
         val = xp_ac.ACState.get_curr_param(cls.dataref)
         if val is None or val == []:
@@ -138,7 +147,12 @@ class NStateButton:
         if cls.index is not None:
             val = val[cls.index]
 
-        state = cls.states.index(val)
+        try:
+            state = cls.states.index(val)
+        except ValueError:
+            print(f"Error: no valid state for value {val} in {cls} !")
+            state = 0      
+        
         return state
     
     @classmethod
@@ -415,7 +429,18 @@ async def receive_uso_task(udp_endpoint):
     global uso_floats_state
 
     while True:
-        new_state, (host, port) = await udp_endpoint.receive()
+        # new_state, (host, port) = await udp_endpoint.receive()
+        new_state = None
+
+        # receive all datagrams and continue with the last one
+        while True:
+            try:
+                new_state, (host, port) = udp_endpoint.receive_nowait()
+            except asyncio.QueueEmpty:
+                break
+
+        if new_state is None:
+            new_state, (host, port) = await udp_endpoint.receive()
 
         new_state = uso_receive.unpack_packet(new_state)
         new_bit_state = new_state["bits"]

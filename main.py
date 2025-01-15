@@ -121,6 +121,7 @@ async def main_loop():
     await CockpitPanel.reset_to_default_state()
 
     # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
+    # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
 
     while True:
         x, y, z, rz = joystick.get_axes_values()
@@ -141,10 +142,11 @@ async def connect_to_mfi():
 
 
 async def main():
-    # await Scenario.run_scenario_task(("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET"), ACState)
-
     await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
     await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
+
+    # while True:
+    #     await asyncio.sleep(1)
 
     await xp.xp_master_udp.connect(XP_MASTER_HOST, XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
     await xp.xp_master.connect_until_success(XP_MASTER_HOST, XP_MASTER_PORT, on_new_xp_data, on_data_exception)
@@ -160,6 +162,7 @@ async def main():
     add_remote_synoptic_ui_sync_list()
 
     await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
+
 
     await main_loop()   
 

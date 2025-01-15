@@ -218,7 +218,10 @@ uso_switches_receive_map = {
     "il_emerge_lights_arm": "I08_a08", # SWITCH ARM [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "il_emerge_lights_off": "I08_a09", #  SWITCH OFF [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "il_emerge_lights_on": "I08_a10", # SWITCH ON [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"fire_test": "I07_a09", # FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
+
 } # switches
+
 
 uso_rotate_switch_receive_map = {
     "vhf_control_lh": "I06_b28", # second bit for rotate switch (IO) always comes next in uso packet so we dont need its index
@@ -231,6 +234,7 @@ uso_rotate_switch_receive_map = {
     "baro_rot_rh": "I06_b23", # BARO IO right [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [21Пульт автопилота]
     "sfd_set": "I06_b03",  # SET IO [K2 Средний пульт (Pedestal)] [Приборная доска] [33 Attitude Display]
 }
+
 
 uso_floats_receive_map = {
    "pc_bank_lh": "A001", # Левая БРУ крен
@@ -246,11 +250,12 @@ uso_floats_receive_map = {
    "pc_throttle_3": "A015", # 03 hand Правая ручка
    "wc_sf": "A016", # switch SLATS/FLAPS SF 2
    "wc_ab": "A017", # switch AIRBRAKES AB 2
-   "aft_temp": "A028", # PAX AFT TEMP ADC=
-   "fwd_temp": "A029", # PAX FWD TEMP ADC=
-   "crew_temp": "A030", # CREW TEMP ADC=
-   "crew_ratio": "A031" # CREW RATIO ADC=
+   "aft_temp": "A026", # PAX AFT TEMP ADC=
+   "fwd_temp": "A027", # PAX FWD TEMP ADC=
+   "crew_temp": "A028", # CREW TEMP ADC=
+   "crew_ratio": "A029" # CREW RATIO ADC=
 }
+
 
 # replace buttons bit ids with indecies
 for button_id, bit_id in uso_pushbuttons_receive_map.items():

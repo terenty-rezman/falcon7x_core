@@ -1,4 +1,4 @@
-from common.instrument_panel import add_to_panel, TwoStateButton, Indicator
+from common.instrument_panel import add_to_panel, TwoStateButton, NLocalStateButton, Indicator
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
@@ -15,6 +15,10 @@ class firebutton_1(TwoStateButton):
 class fireindicator_1(Indicator):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 0
+
+    @classmethod
+    async def set_state(cls, state):
+        await super(TwoStateButton, cls).set_state(state)
 
 
 @add_to_panel
@@ -87,7 +91,7 @@ class firebutton_2(TwoStateButton):
 
 
 @add_to_panel
-class fireindicator_2(Indicator):
+class fireindicator_2(fireindicator_1):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 1
 
@@ -128,7 +132,7 @@ class firebutton_3(TwoStateButton):
 
 
 @add_to_panel
-class fireindicator_3(Indicator):
+class fireindicator_3(fireindicator_1):
     dataref: xp.Params = xp.Params["sim/cockpit2/annunciators/engine_fires"]
     index = 2
 
@@ -196,3 +200,33 @@ class firebagcomp_indicator(Indicator):
         if (val := xp_ac.ACState.get_curr_param(cls.dataref)) is None:
             return
         return 1 if val == 6 else 0
+
+
+@add_to_panel
+class fire_test(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def set_state(cls, state):
+        await super().set_state(state)
+
+        # await firebutton_1.set_state(state)
+        # await firebutton_2.set_state(state)
+        # await firebutton_3.set_state(state)
+
+        fireindicator_1.set_override_output_state(state)
+        fireindicator_2.set_override_output_state(state)
+        fireindicator_3.set_override_output_state(state)
+
+        disch1_eng1.set_override_output_state(state)
+        disch2_eng1.set_override_output_state(state)
+
+        disch1_eng2.set_override_output_state(state)
+        disch2_eng2.set_override_output_state(state)
+
+        disch1_eng3.set_override_output_state(state)
+        disch2_eng3.set_override_output_state(state)
+
+        fire_apu_indicator.set_override_output_state(state)
+        firebagcomp_indicator.set_override_output_state(state)
