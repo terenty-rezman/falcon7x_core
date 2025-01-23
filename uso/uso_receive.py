@@ -116,7 +116,7 @@ uso_pushbuttons_receive_map = {
     "bleed3": "I07_b27", # BLEED 3 [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "bleed_apu": "I07_b28", # BLEED APU [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "bleed2": "I07_b29", # BLEED 2 [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
-    "bag_vent": "I07_b01", #  GND VENT [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
+    "bag_vent": "I07_b31", # BAG VENT [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN BLEED - Pressurization]
     "boost1": "I07_c14", # BOOST 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "boost2": "I07_c15", # BOOST 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "boost3": "I07_c16", # BOOST 3 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
@@ -153,7 +153,7 @@ uso_switches_receive_map = {
     "ep_fuel_2_bu": "I03_a26", # FUEL 2 B/U [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_rat_auto": "I03_a27", # RAT AUTO [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_trim_emerg": "I03_a28", # TRIM EMERG [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
-    # "ep_empty_btn": "I03_a29", #
+    # "ep_empty_btn": "I03_a29", # Пустая [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "firebutton_1": "I06_c29", # engine 1 shut off FIRE 1 [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "disch1_eng1": "I06_c30", # engine 1 DISCH 1 [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "disch2_eng1": "I06_c31", # engine 1 DISCH 2 [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
