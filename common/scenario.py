@@ -49,19 +49,27 @@ class Scenario:
         cls.current_scenario_task = None
 
 
-@scenario("TEST", "TEST", "test_scenrio_1")
+@scenario("TEST", "TEST", "test_scenario_1")
 async def test_scenario_1(ac_state: xp_ac.ACState):
-    def fly_height_200m(ac_state: xp_ac.ACState):
-        elevation = "sim/flightmodel/position/elevation"
-        if not ac_state.param_available(elevation):
-            return False
+    from overhead_panel.fire_panel import fire_test
 
-        if ac_state.curr_params[elevation] - ac_state.initial_params[elevation] > 200:
-            return True
+    await asyncio.sleep(5)
+
+    await fire_test.set_state(1)
+    await asyncio.sleep(5)
+    await fire_test.set_state(0)
+
+    # def fly_height_200m(ac_state: xp_ac.ACState):
+    #     elevation = "sim/flightmodel/position/elevation"
+    #     if not ac_state.param_available(elevation):
+    #         return False
+
+    #     if ac_state.curr_params[elevation] - ac_state.initial_params[elevation] > 200:
+    #         return True
     
-    await ac_state.data_condition(fly_height_200m)
+    # await ac_state.data_condition(fly_height_200m)
 
-    print("fire the engine")
+    # print("fire the engine")
     #await xp.set_param(xp.Failures["sim/operation/failures/rel_engfir0"], 6)
     # await xp.set_param(xp.Failures["sim/operation/failures/rel_engfla0"], 6)
 

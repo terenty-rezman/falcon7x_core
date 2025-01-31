@@ -235,6 +235,10 @@ class XPconnectionUDP():
                     self.on_data_exception_callback(ex)
 
     def set_param(self, param, value):
+        if not self.sock:
+            print("no udp socket")
+            return
+
         msg = struct.pack(
             '<4sxf500s', 
             b'DREF',
