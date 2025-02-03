@@ -154,6 +154,12 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]", # synoptic eng ff
     "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]", # synoptic eng ff
     "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]", # synoptic eng ff
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[0]", # synoptic eng oil psi
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[1]",
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[2]",
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]", # synoptic eng oli temp
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]",
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]",
 ])
 Params.__str__ = to_str
 
