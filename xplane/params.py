@@ -144,6 +144,22 @@ Params = Enum('XplaneParams', [
     # our custom datarefs
     "sim/custom/7x/z_eng1_oil_press_override", # custom eng1 oil pressure
     "sim/custom/7x/z_eng1_oil_press", # custom eng1 oil pressure
+    "sim/cockpit2/electrical/APU_EGT_c", # apu temp
+    "sim/cockpit2/engine/indicators/ITT_deg_C[0]", # synoptic eng itt
+    "sim/cockpit2/engine/indicators/ITT_deg_C[1]", # synoptic eng itt
+    "sim/cockpit2/engine/indicators/ITT_deg_C[2]", # synoptic eng itt
+    "sim/cockpit2/engine/indicators/N2_percent[0]", # synoptic eng n2
+    "sim/cockpit2/engine/indicators/N2_percent[1]", # synoptic eng n2
+    "sim/cockpit2/engine/indicators/N2_percent[2]", # synoptic eng n2
+    "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]", # synoptic eng ff
+    "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]", # synoptic eng ff
+    "sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]", # synoptic eng ff
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[0]", # synoptic eng oil psi
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[1]",
+    "sim/cockpit2/engine/indicators/oil_pressure_psi[2]",
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]", # synoptic eng oli temp
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]",
+    "sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]",
 ])
 Params.__str__ = to_str
 
