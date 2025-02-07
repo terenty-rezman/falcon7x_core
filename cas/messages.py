@@ -341,6 +341,17 @@ class IRS_1_2_3_POS_ENTRY_FAULT(CASmssg):
     land = False
 
 @register
+class IRS_1_2_3_NO_POS_ENTRY(CASmssg): 
+    isread = False
+    text = "IRS 1+2+3 NO POS ENTRY"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
 class NAV_FMS_1_2_3_FAIL(CASmssg): 
     isread = False
     text = "NAV: FMS 1+2+3 FAIL"

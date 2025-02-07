@@ -20,29 +20,22 @@ async def make_post_to_cas(path, json: dict, cas_host: str, cas_port: int):
         print("CAS Exception:", type(e).__name__, "–", e) 
 
 
-def post_to_all_cas(path: str, json: dict):
-    # dont wait for cas
-    asyncio.create_task(
-        make_post_to_cas(path, json, CAS_HOST, CAS_PORT_LEFT)
-    )
-
-    # dont wait for cas
-    asyncio.create_task(
-        make_post_to_cas(path, json, CAS_HOST, CAS_PORT_RIGHT)
-    )
+async def post_to_all_cas(path: str, json: dict):
+    await make_post_to_cas(path, json, CAS_HOST, CAS_PORT_LEFT)
+    await make_post_to_cas(path, json, CAS_HOST, CAS_PORT_RIGHT)
 
 
 async def show_message(cas_message: CASmssg):
-    post_to_all_cas("/api/show_message", {"message": str(cas_message)})
+    await post_to_all_cas("/api/show_message", {"message": str(cas_message)})
     print(cas_message)
 
 
 async def show_message_alarm(cas_message: CASmssg):
-    post_to_all_cas("/api/show_message", {"message": str(cas_message)})
+    await post_to_all_cas("/api/show_message", {"message": str(cas_message)})
     print(cas_message)
 
 
 async def hide_message(cas_message: CASmssg):
-    post_to_all_cas("/api/hide_message", {"message": str(cas_message)})
+    await post_to_all_cas("/api/hide_message", {"message": str(cas_message)})
     print(cas_message)
 

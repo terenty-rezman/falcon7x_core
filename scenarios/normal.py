@@ -13,11 +13,6 @@ import overhead_panel.windshield_heat as windshield
 import middle_pedestal.wings_config as wc
 
 
-@scenario("NORMAL", None, "POWER ON")
-async def power_on(ac_state: xp_ac.ACState):
-    pass
-
-
 @scenario("NORMAL", None, "AFTER LANDING")
 async def after_landing(ac_state: xp_ac.ACState):
     pass
@@ -56,6 +51,14 @@ async def cruise(ac_state: xp_ac.ACState):
 @scenario("NORMAL", None, "LANDING")
 async def landing(ac_state: xp_ac.ACState):
     pass
+
+
+@scenario("NORMAL", None, "POWER ON")
+async def power_on(ac_state: xp_ac.ACState):
+    await cas.show_message_alarm(cas.CHECK_STATUS)
+    await cas.show_message_alarm(cas.PARK_BRAKE_ON)
+    await cas.show_message_alarm(cas.NWS_OFF)
+    await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED)
 
 
 @scenario("NORMAL", None, "POWER OFF")
