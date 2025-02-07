@@ -169,7 +169,7 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     await elec.gen2.wait_state(0)
 
     await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
-    await cas.hide_message(cas.ELEC_GEN_2_FAULT)
+    await cas.remove_message(cas.ELEC_GEN_2_FAULT)
 
     return 
 

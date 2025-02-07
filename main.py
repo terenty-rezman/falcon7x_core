@@ -36,7 +36,7 @@ XP_MASTER_PORT = 51000
 XP_MASTER_UDP_PORT = 49000
 
 # web interface listens on this address:
-WEB_INTERFACE_HOST = "127.0.0.1"
+WEB_INTERFACE_HOST = "0.0.0.0"
 WB_INTERFACE_PORT = 6070
 
 # uso udp ports
