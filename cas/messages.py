@@ -286,7 +286,7 @@ class AVC_WEATHER_RADAR_FAIL(CASmssg):
     land = False
 
 @register
-class CHECK_STATUS(CASmssg): 
+class CHECK_STATUS_A(CASmssg): 
     isread = False
     text = "CHECK STATUS"
     color = "A"
@@ -419,7 +419,7 @@ class AVC_VALIDATE_CONFIG(CASmssg):
 
 # такой же есть для желтого цвета
 @register
-class CHECK_STATUS(CASmssg): 
+class CHECK_STATUS_W(CASmssg): 
     isread = False
     text = "CHECK STATUS"
     color = "W"
@@ -4232,10 +4232,21 @@ class DOOR_EMERG_NOT_SECURED(CASmssg):
     land = False
 
 @register
-class DOOR_PAX_NOT_SECURED(CASmssg): 
+class DOOR_PAX_NOT_SECURED_A(CASmssg): 
     isread = False
     text = "DOOR: PAX NOT SECURED"
     color = "A"
+    park = False
+    taxi = False
+    cruise = True
+    TO = True
+    land = True
+
+@register
+class DOOR_PAX_NOT_SECURED_W(CASmssg): 
+    isread = False
+    text = "DOOR: PAX NOT SECURED"
+    color = "W"
     park = False
     taxi = False
     cruise = True
