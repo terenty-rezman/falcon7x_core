@@ -4,13 +4,13 @@ all_mssgs = {
 
 
 def register(cls):
-    all_mssgs[cls.text] = cls
+    all_mssgs[str(cls)] = cls
     return cls
 
 
 class Custom(type):
     def __str__(self):
-       return self.text
+       return self.__name__
 
 
 class CASmssg(metaclass=Custom):
