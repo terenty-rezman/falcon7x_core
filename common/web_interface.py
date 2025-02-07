@@ -53,9 +53,9 @@ async def synoptic():
 
 @dataclass
 class RunProcedure:
-    procedure_type: str
-    procedure_path: str
-    procedure_name: str
+    procedure_type: str | None
+    procedure_path: str | None
+    procedure_name: str | None
 
 
 block_scenario_run = False
@@ -64,6 +64,8 @@ block_scenario_run = False
 @validate_request(RunProcedure)
 async def run_procedure(data: RunProcedure):
     global block_scenario_run
+
+    data.procedure_path = None if data.procedure_path == 'null' else data.procedure_path
 
     if not block_scenario_run:
         block_scenario_run = True
