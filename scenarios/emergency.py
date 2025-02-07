@@ -59,7 +59,7 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
     # wait gen2 on
     await elec.gen2.wait_state(0)
 
-    await cas.hide_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+    await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "38 ELEC GEN 1+2+3 FAULT")
@@ -102,7 +102,7 @@ async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
     await xp_ac.ACState.wait_until_parameter_condition(N2, lambda p: p[0] < 10)
 
     # hide CAS msg ?
-    await cas.hide_message(cas.ENG_1_OIL_TOO_LO_PRESS)
+    await cas.remove_message(cas.ENG_1_OIL_TOO_LO_PRESS)
     
     # restore original oil pressure
     await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 0)
@@ -123,7 +123,7 @@ async def _66_fcs_direct_laws_active(ac_state: xp_ac.ACState):
     await fc.fcs_engage_stby.wait_state(1)
 
     # hide RED CAS message: FCS: DIRECT LAWS ACTIVE
-    await cas.hide_message(cas.FCS_DIRECT_LAWS_ACTIVE)
+    await cas.remove_message(cas.FCS_DIRECT_LAWS_ACTIVE)
 
 
 async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
@@ -136,7 +136,7 @@ async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
     await fc.airbrake_auto.wait_state(1)
 
     # YELLOW CAS message: FCS: BOTH AILERONS FAIL
-    await cas.hide_message(cas.FCS_BOTH_AILERONS_FAIL)
+    await cas.remove_message(cas.FCS_BOTH_AILERONS_FAIL)
 
 
 @scenario("EMERGENCY", "BLEED", "09 BLEED: 2 OVHT")

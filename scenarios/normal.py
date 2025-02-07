@@ -55,10 +55,15 @@ async def landing(ac_state: xp_ac.ACState):
 
 @scenario("NORMAL", None, "POWER ON")
 async def power_on(ac_state: xp_ac.ACState):
-    await cas.show_message_alarm(cas.CHECK_STATUS)
-    await cas.show_message_alarm(cas.PARK_BRAKE_ON)
+    await cas.set_regime(cas.Regimes.PARK)
+    await cas.remove_all_messages()
+    await asyncio.sleep(5)
     await cas.show_message_alarm(cas.NWS_OFF)
-    await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED)
+    await cas.show_message_alarm(cas.PARK_BRAKE_ON)
+    await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED_W)
+    await cas.show_message_alarm(cas.CHECK_STATUS_A)
+
+    print("done")
 
 
 @scenario("NORMAL", None, "POWER OFF")
