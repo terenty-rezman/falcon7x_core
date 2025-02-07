@@ -1,3 +1,5 @@
+from enum import StrEnum
+
 all_mssgs = {
     
 }
@@ -22,6 +24,14 @@ class CASmssg(metaclass=Custom):
     cruise = None
     TO = None
     land = None
+
+
+class Regimes(StrEnum):
+    PARK = "park"
+    TAXI = "taxi"
+    CRUISE = "cruise"
+    TO = "to"
+    LAND = "land"
 
 
 @register
