@@ -4257,9 +4257,9 @@ class DOOR_PAX_NOT_SECURED_W(CASmssg):
     isread = False
     text = "DOOR: PAX NOT SECURED"
     color = "W"
-    park = False
-    taxi = False
-    cruise = True
+    park = True
+    taxi = True
+    cruise = False
     TO = True
     land = True
 
