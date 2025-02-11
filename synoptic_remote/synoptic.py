@@ -1,15 +1,11 @@
 import asyncio
-import httpx
 
 from cas.messages import *
 from xplane.params import Params
 import common.sane_tasks as sane_tasks
 
-
-SYNOPTIC_HOST = "127.0.0.1"
-
-# 2 instances of CAS for left & right pilots
-SYNOPTIC_PORT = 8800
+import synoptic_remote.synoptic_connection as synoptic_connection
+import synoptic_remote.param_overrides as param_overrides
 
 
 sync_params = set()
@@ -22,15 +18,6 @@ def add_sync_param(param: Params):
     sync_params.add(param)
 
 
-async def _make_post_to_synoptic(path, json: dict, host: str, port: int):
-    try:
-        cas_url = f"http://{host}:{port}"
-        async with httpx.AsyncClient() as client:
-            await client.post(cas_url + path, json=json)
-    except httpx.HTTPError as e:
-        print("Synoptic Exception:", type(e).__name__, "–", e) 
-
-
 def update(dataref, value):
     to_update[str(dataref)] = value
 
@@ -38,12 +25,13 @@ def update(dataref, value):
 async def _updater():
     global to_update
     while not _stop_updater:
-        if to_update:
-            await _make_post_to_synoptic("/api/set_data", to_update, SYNOPTIC_HOST, SYNOPTIC_PORT)
+        if to_update or param_overrides.overrides_values:
+            await synoptic_connection.set_data(to_update, param_overrides.overrides_values)
 
             to_update = {}
+            param_overrides.clear_override_values()
 
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(synoptic_connection.Settings.SEND_DELAY)
 
 
 def run_updater():

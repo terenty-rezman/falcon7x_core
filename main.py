@@ -19,30 +19,7 @@ import common.web_interface as web_interface
 from cas import cas
 import synoptic_remote.synoptic as synoptic_remote
 
-
-# mfi slave xplane
-MFI_XP_HOST = "192.168.32.252"
-
-# cas displays
-cas.CAS_HOST = "127.0.0.1"
-cas.CAS_PORT_LEFT = 8881
-cas.CAS_PORT_RIGHT = 8882
-
-# connect to master xplane plugin
-XP_MASTER_HOST = "127.0.0.1"
-XP_MASTER_PORT = 51000
-
-# native xplane udp port to send to
-XP_MASTER_UDP_PORT = 49000
-
-# web interface listens on this address:
-WEB_INTERFACE_HOST = "0.0.0.0"
-WB_INTERFACE_PORT = 6070
-
-# uso udp ports
-USO_HOST = "127.0.0.1"
-USO_RECEIVE_PORT = 2001
-USO_SEND_PORT = 2002
+import settings
 
 
 joystick = Joystick()
@@ -69,8 +46,9 @@ def on_new_xp_data(type, dataref, value):
     if dataref in xp_mfi.sync_params:
         asyncio.create_task(xp_mfi.sync_param_to_slaves(dataref, value))
 
-    # send to synoptic UI
-    if dataref in synoptic_remote.sync_params:
+    # send to synoptic qml UI
+    if dataref in synoptic_remote.sync_params and \
+        dataref not in synoptic_remote.param_overrides.enabled_overrides: # synoptic_remote.update() will send overrides instead of xplane data ref value
         synoptic_remote.update(dataref, value)
 
     ACState.update_data_callbacks()
@@ -102,7 +80,8 @@ async def add_mfi_sync_list():
 
 def add_remote_synoptic_ui_sync_list():
     # synoptic_remote.add_sync_param(xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"])
-    synoptic_remote.add_sync_param(xp.Params["sim/cockpit2/engine/actuators/throttle_ratio"])
+    # synoptic_remote.add_sync_param(xp.Params["sim/cockpit2/engine/actuators/throttle_ratio"])
+    pass
 
 
 async def main_loop():
@@ -137,19 +116,16 @@ async def main_loop():
 
     
 async def connect_to_mfi():
-    await xp_mfi.xp_mfi.connect_until_success(MFI_XP_HOST, XP_MASTER_PORT, None, None, 5)
+    await xp_mfi.xp_mfi.connect_until_success(settings.MFI_XP_HOST, settings.XP_MASTER_PORT, None, None, 5)
     xp_mfi.param_subscriber.run_subsriber_task()
 
 
 async def main():
-    await op.run_receive_uso_task(USO_HOST, USO_RECEIVE_PORT)
-    await op.run_send_uso_task(USO_HOST, USO_SEND_PORT)
+    await op.run_receive_uso_task(settings.USO_HOST, settings.USO_RECEIVE_PORT)
+    await op.run_send_uso_task(settings.USO_HOST, settings.USO_SEND_PORT)
 
-    # while True:
-    #     await asyncio.sleep(1)
-
-    await xp.xp_master_udp.connect(XP_MASTER_HOST, XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
-    await xp.xp_master.connect_until_success(XP_MASTER_HOST, XP_MASTER_PORT, on_new_xp_data, on_data_exception)
+    await xp.xp_master_udp.connect(settings.XP_MASTER_HOST, settings.XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
+    await xp.xp_master.connect_until_success(settings.XP_MASTER_HOST, settings.XP_MASTER_PORT, on_new_xp_data, on_data_exception)
 
     xp.param_subscriber.run_subsriber_task()
     xp.udp_param_subscriber.run_subsriber_task()
@@ -158,11 +134,10 @@ async def main():
     asyncio.create_task(connect_to_mfi())
     await add_mfi_sync_list()
 
-    # synoptic_remote.run_updater()
+    synoptic_remote.run_updater()
     add_remote_synoptic_ui_sync_list()
 
-    await web_interface.run_server_task(WEB_INTERFACE_HOST, WB_INTERFACE_PORT)
-
+    await web_interface.run_server_task(settings.WEB_INTERFACE_HOST, settings.WB_INTERFACE_PORT)
 
     await main_loop()   
 
