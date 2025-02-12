@@ -134,6 +134,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_eng1_oil_press"], None, "tcp"), # custom eng1 oil pressure
 
         (Params["sim/custom/7x/z_syn_eng_start1"], None, "tcp"), # synoptic eng 1 start indication
+        (Params["sim/custom/7x/z_syn_eng_ign1"], None, "tcp"), # synoptic eng 1 ign indication
     ]
 
 

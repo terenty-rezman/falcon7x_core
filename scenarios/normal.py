@@ -67,7 +67,9 @@ async def power_on(ac_state: xp_ac.ACState):
     await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED_W)
     await cas.show_message_alarm(cas.CHECK_STATUS_A)
 
-    await engine_panel.en_start.wait_state(1)
+    await engine_panel.en_start.wait_state(1)    
+    await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_start1"], 1)
+    await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_ign1"], 1)
 
     async with synoptic_overrides.param_overrides([
         # Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"],
@@ -98,7 +100,12 @@ async def power_on(ac_state: xp_ac.ACState):
             await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 0, 5, 19)
             await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 5, 86, 50)
         
-        await asyncio.gather(*[ff(), N2(), oil()])
+        async def hide_start():
+            await asyncio.sleep(7)
+            await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_start1"], 0)
+            await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_ign1"], 0)
+        
+        await asyncio.gather(*[ff(), N2(), oil(), hide_start()])
 
         # ign appears after 15 sec after engine start or N2 == 17%
 
