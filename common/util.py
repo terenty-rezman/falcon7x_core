@@ -1,5 +1,6 @@
 import time
 import asyncio
+import inspect
 
 from common.xp_aircraft_state import ACState
 import xplane.master as xp
