@@ -162,7 +162,11 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]",
 
     "sim/custom/7x/z_syn_eng_start1", # synoptic eng - eng 1 START indication
+    "sim/custom/7x/z_syn_eng_start2", # synoptic eng - eng 1 START indication
+    "sim/custom/7x/z_syn_eng_start3", # synoptic eng - eng 1 START indication
     "sim/custom/7x/z_syn_eng_ign1", # synoptic eng - eng 1 IGN indication
+    "sim/custom/7x/z_syn_eng_ign2", # synoptic eng - eng 1 IGN indication
+    "sim/custom/7x/z_syn_eng_ign3", # synoptic eng - eng 1 IGN indication
 ])
 Params.__str__ = to_str
 
