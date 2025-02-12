@@ -9,6 +9,7 @@ from xplane.connection import XPconnection, XPconnectionUDP
 from xplane.params import Params
 from xplane.params_subsriber import ParamsSubscriberTCP, ParamSubscriberUDP
 from xplane.params_to_subscribe import Subscribe
+import xplane.params_to_subscribe as params_to_subscribe
 import common.sane_tasks as sane_tasks
 
 
@@ -74,4 +75,4 @@ async def end_command(cmd):
 
 
 def set_subscribe_params(params):
-    Subscribe.set_subscribe_params(params)
+    params_to_subscribe.set_subscribe_params(params)
