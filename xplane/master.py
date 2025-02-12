@@ -8,12 +8,12 @@ from common.xp_aircraft_state import ACState
 from xplane.connection import XPconnection, XPconnectionUDP
 from xplane.params import Params
 from xplane.params_subsriber import ParamsSubscriberTCP, ParamSubscriberUDP
-import xplane.params_to_subscribe as params_to_subscribe
+from xplane.params_to_subscribe import Subscribe
 import common.sane_tasks as sane_tasks
 
 
 async def subscribe_to_all_tcp_params():
-    for p, freq, proto, in params_to_subscribe.to_subscribe:
+    for p, freq, proto, in Subscribe.to_subscribe:
         if proto == "tcp":
             await subscribe_to_param(p, freq)
         elif proto == "udp":
@@ -46,7 +46,7 @@ async def subscribe_to_param(param: Params, freq=None):
 
 
 async def set_param(param: Params, value):
-    if param in params_to_subscribe.udp_params_set:
+    if param in Subscribe.udp_params_set:
         xp_master_udp.set_param(param, value)
     else:
         await xp_master.send_string(f"set {param} {value}")
@@ -74,4 +74,4 @@ async def end_command(cmd):
 
 
 def set_subscribe_params(params):
-    params_to_subscribe.set_subscribe_params(params)
+    Subscribe.set_subscribe_params(params)

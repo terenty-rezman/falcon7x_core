@@ -137,14 +137,17 @@ class Subscribe:
 
     # get name by index for native xplane udp protocol
     udp_params_list = []
+    udp_params_set = set()
 
 
 def update_udp_lists():
     Subscribe.udp_params_list.clear()
+    Subscribe.udp_params_set.clear()
 
     for (p, _, proto) in Subscribe.to_subscribe:
         if proto == "udp":
             Subscribe.udp_params_list.append(p)
+            Subscribe.udp_params_set.add(p)
 
 
 update_udp_lists()
