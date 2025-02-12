@@ -71,3 +71,7 @@ async def begin_command(cmd):
 
 async def end_command(cmd):
     await xp_master.send_string(f"cmd end {cmd}")
+
+
+def set_subscribe_params(params):
+    params_to_subscribe.set_subscribe_params(params)

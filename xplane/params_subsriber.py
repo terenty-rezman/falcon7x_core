@@ -3,7 +3,7 @@ from time import time, ctime
 
 from xplane.connection import XPconnection, XPconnectionUDP
 from xplane.params import Params
-from xplane.params_to_subscribe import to_subscribe
+from xplane.params_to_subscribe import Subscribe
 import common.sane_tasks as sane_tasks
 
 
@@ -54,7 +54,7 @@ class ParamSubscriberUDP:
                 self.subscribed_once == False:
                 
                 print("connecting to native xplane udp...")
-                for p, freq, proto, in to_subscribe:
+                for p, freq, proto, in Subscribe.to_subscribe:
                     if proto == "udp":
                         self.xp_udp.subscribe_to_param(p, freq)
 

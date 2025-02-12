@@ -11,7 +11,7 @@ from common.aioudp import open_local_endpoint, open_local_endpoint
 
 import common.sane_tasks as sane_tasks
 from xplane.params import Params
-from xplane.params_to_subscribe import udp_params_list
+from xplane.params_to_subscribe import Subscribe
 
 
 def parse_xplane_dataref(data_line: str):
@@ -226,7 +226,7 @@ class XPconnectionUDP():
                 for i in range(num_values):
                     dref_info = data[(5 + 8 * i):(5 + 8 * (i + 1))]
                     (index, value) = struct.unpack("<if", dref_info)
-                    param = udp_params_list[index]
+                    param = Subscribe.udp_params_list[index]
                     received_vals[param] = value
                 
                 self.on_new_data_callback(received_vals)
@@ -254,7 +254,7 @@ class XPconnectionUDP():
     def subscribe_to_param(self, param, freq=1):
         freq = 1 if freq is None else freq
 
-        index = udp_params_list.index(param)
+        index = Subscribe.udp_params_list.index(param)
 
         msg = struct.pack(
             "<4sxii400s", 
