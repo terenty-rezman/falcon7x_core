@@ -132,6 +132,8 @@ class Subscribe:
         # our custom datarefs
         (Params["sim/custom/7x/z_eng1_oil_press_override"], None, "tcp"), # custom eng1 oil pressure
         (Params["sim/custom/7x/z_eng1_oil_press"], None, "tcp"), # custom eng1 oil pressure
+
+        (Params["sim/custom/7x/z_syn_eng_start1"], None, "tcp"), # synoptic eng 1 start indication
     ]
 
 

@@ -14,6 +14,8 @@ import middle_pedestal.wings_config as wc
 import synoptic_remote.param_overrides as synoptic_overrides
 from xplane.params import Params
 
+import middle_pedestal.engine as engine_panel
+
 
 @scenario("NORMAL", None, "AFTER LANDING")
 async def after_landing(ac_state: xp_ac.ACState):
@@ -59,41 +61,48 @@ async def landing(ac_state: xp_ac.ACState):
 async def power_on(ac_state: xp_ac.ACState):
     await cas.set_regime(cas.Regimes.PARK)
     await cas.remove_all_messages()
-    await asyncio.sleep(5)
+    await asyncio.sleep(2)
     await cas.show_message_alarm(cas.NWS_OFF)
     await cas.show_message_alarm(cas.PARK_BRAKE_ON)
     await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED_W)
     await cas.show_message_alarm(cas.CHECK_STATUS_A)
 
-    await synoptic_overrides.enable_param_overrides([
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"],
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"],
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"],
+    await engine_panel.en_start.wait_state(1)
+
+    async with synoptic_overrides.param_overrides([
+        # Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"],
+        # Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"],
+        # Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"],
         Params["sim/cockpit2/engine/indicators/N2_percent[0]"],
         Params["sim/cockpit2/engine/indicators/N2_percent[1]"],
         Params["sim/cockpit2/engine/indicators/N2_percent[2]"],
         Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"],
         Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"],
         Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"],
-    ])
+        Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"],
+        Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"],
+        Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"],
+    ]) as _:
+        # after engine start
+        # start appears in 1 sec after engine start
+        async def ff():
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"], 0, 0.001, 20)
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"], 0.001, 0.0377386, 16)
 
-    synoptic_overrides.set_override_param(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], 1)
-    synoptic_overrides.set_override_param(Params["sim/cockpit2/engine/indicators/N2_percent[1]"], 2)
-    synoptic_overrides.set_override_param(Params["sim/cockpit2/engine/indicators/N2_percent[2]"], 3)
+        async def N2():
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], 0, 1, 1)
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], 1, 2, 8)
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], 1, 52, 32)
 
-    await asyncio.sleep(10)
+        async def oil():
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 0, 5, 19)
+            await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 5, 86, 50)
+        
+        await asyncio.gather(*[ff(), N2(), oil()])
 
-    await synoptic_overrides.disable_param_overrides([
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"],
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"],
-        Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"],
-        Params["sim/cockpit2/engine/indicators/N2_percent[0]"],
-        Params["sim/cockpit2/engine/indicators/N2_percent[1]"],
-        Params["sim/cockpit2/engine/indicators/N2_percent[2]"],
-        Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"],
-        Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"],
-        Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"],
-    ])
+        # ign appears after 15 sec after engine start or N2 == 17%
+
+        await asyncio.sleep(5)
 
     print("done")
 

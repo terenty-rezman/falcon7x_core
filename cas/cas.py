@@ -10,7 +10,7 @@ CAS_HOST = "127.0.0.1",
 CAS_PORT_LEFT = 8881
 CAS_PORT_RIGHT = 8882
 
-client = httpx.AsyncClient()
+client = httpx.AsyncClient(timeout=0.5)
 
 
 async def make_post_to_cas(path, json: dict, cas_host: str, cas_port: int):

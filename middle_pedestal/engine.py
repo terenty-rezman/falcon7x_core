@@ -26,10 +26,14 @@ class en_normal(TwoStateButton):
 
 @add_to_panel
 class en_start(TwoStateButton):
-    @classmethod
-    async def set_state(cls, state):
-        val = array_str(3, state) 
-        await xp.set_param(xp.Params["sim/weapons/warhead_type"], val)
+    dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
+    states = [0, 1]
+    index = 3
+
+    # @classmethod
+    # async def set_state(cls, state):
+    #     val = array_str(3, state) 
+    #     await xp.set_param(xp.Params["sim/weapons/warhead_type"], val)
 
 
 @add_to_panel
