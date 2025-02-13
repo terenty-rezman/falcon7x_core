@@ -6,6 +6,9 @@ import time
 from contextlib import asynccontextmanager
 import asyncio
 from typing import List
+
+import numpy as np
+
 from xplane.params import Params
 import synoptic_remote.synoptic_connection as synoptic_connection
 import common.sane_tasks as sane_tasks
@@ -17,11 +20,13 @@ overrides_values = dict()
 
 async def enable_param_overrides(params_list: List[Params]):
     xp_ac.ACState.enable_param_overrides(params_list)
+    params_list = [str(p) for p in params_list]
     await synoptic_connection.enable_param_overrides(params_list)
 
 
 async def disable_param_overrides(params_list: List[Params]):
     xp_ac.ACState.disable_param_overrides(params_list)
+    params_list = [str(p) for p in params_list]
     await synoptic_connection.disable_param_overrides(params_list)
 
 
@@ -67,6 +72,27 @@ def linear_anim(param: Params, start_val, finish_val, interval_sec: float, sleep
             await asyncio.sleep(sleep_sec)
     
     return sane_tasks.spawn(linear_anim_task())
+
+
+def _1d_table_anim(param: Params, t_values, y_values, sleep_sec: float = 0.1):
+    async def _1d_table_anim_task():
+        start_time = time.time()
+        end_time = t_values[-1]
+
+        while True: 
+            curr_time = time.time()
+            dt = curr_time - start_time
+
+            value = np.interp(dt, t_values, y_values)
+
+            set_override_value(param, value)
+
+            if dt > end_time:
+                break
+
+            await asyncio.sleep(sleep_sec)
+    
+    return sane_tasks.spawn(_1d_table_anim_task())
 
 
 def clear_override_values():

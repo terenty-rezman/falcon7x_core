@@ -2,14 +2,14 @@
 Xplane parameters, failures & commands
 """
 
-from enum import StrEnum
+from enum import Enum
 
 
 def to_str(self):
     return self.name
 
 
-Params = StrEnum('XplaneParams', [
+Params = Enum('XplaneParams', [
     "sim/time/total_running_time_sec",
     "sim/cockpit/electrical/night_vision_on",
     "sim/operation/override/override_joystick",
@@ -167,11 +167,13 @@ Params = StrEnum('XplaneParams', [
     "sim/custom/7x/z_syn_eng_ign1", # synoptic eng - eng 1 IGN indication
     "sim/custom/7x/z_syn_eng_ign2", # synoptic eng - eng 1 IGN indication
     "sim/custom/7x/z_syn_eng_ign3", # synoptic eng - eng 1 IGN indication
+
+    "sim/custom/xap/maxin1", # synoptic eng n1 top digit
 ])
 Params.__str__ = to_str
 
 
-Commands = StrEnum('XplaneCommands', [
+Commands = Enum('XplaneCommands', [
     "sim/operation/toggle_main_menu",
     "sim/view/forward_with_nothing", # 1st person camera with nothing
     "sim/operation/reload_aircraft",
