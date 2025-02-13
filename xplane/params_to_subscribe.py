@@ -101,6 +101,11 @@ class Subscribe:
         (Params["sim/cockpit2/engine/indicators/N1_percent[1]"], 2, "udp"), # synoptic indicator - eng - N1
         (Params["sim/cockpit2/engine/indicators/N1_percent[2]"], 2, "udp"), # synoptic indicator - eng - N1
 
+        (Params["sim/cockpit2/engine/indicators/N2_percent[0]"], 2, "udp"), # synoptic indicator - eng - N2
+        (Params["sim/cockpit2/engine/indicators/N2_percent[1]"], 2, "udp"), # synoptic indicator - eng - N2
+        (Params["sim/cockpit2/engine/indicators/N2_percent[2]"], 2, "udp"), # synoptic indicator - eng - N2
+        # (Params["sim/cockpit2/engine/indicators/N2_percent"], 1, "udp"), # eng N2
+
         # Failures
         (Params["sim/operation/failures/rel_engfir0"], None, "tcp"), # engine 1 fire
 
@@ -112,7 +117,6 @@ class Subscribe:
 
         (Params["sim/operation/failures/rel_genera1"], None, "tcp"), # gen 2 fault
 
-        (Params["sim/cockpit2/engine/indicators/N2_percent"], 1, "udp"), # eng N2
         (Params["sim/7x/choixtcas"], None, "tcp"), # PDU show ENG TRM
 
         (Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"], None, "tcp"), # front panel - airspeed val

@@ -9,33 +9,24 @@ from typing import List
 from xplane.params import Params
 import synoptic_remote.synoptic_connection as synoptic_connection
 import common.sane_tasks as sane_tasks
+import common.xp_aircraft_state as xp_ac
 
 
 overrides_values = dict()
 
-enabled_overrides = set()
-
 
 async def enable_param_overrides(params_list: List[Params]):
-    global enabled_overrides
-    enabled_overrides |= set(params_list)
-
-    params_list = [str(p) for p in params_list]
-
+    xp_ac.ACState.enable_param_overrides(params_list)
     await synoptic_connection.enable_param_overrides(params_list)
 
 
 async def disable_param_overrides(params_list: List[Params]):
-    global enabled_overrides
-    enabled_overrides -= set(params_list)
-
-    params_list = [str(p) for p in params_list]
-
+    xp_ac.ACState.disable_param_overrides(params_list)
     await synoptic_connection.disable_param_overrides(params_list)
 
 
 @asynccontextmanager
-async def param_overrides(*args, **kwds):
+async def override_params(*args, **kwds):
     await enable_param_overrides(*args, **kwds)
     try:
         yield None
@@ -48,7 +39,8 @@ async def param_overrides(*args, **kwds):
 def set_override_value(param: Params, value):
     global overrides_values
 
-    if param in enabled_overrides:
+    if param in xp_ac.ACState.enabled_overrides:
+        xp_ac.ACState.set_curr_param(param, value)
         overrides_values[str(param)] = value
     else:
         raise Exception(f"param {param} is not enabled for override!")

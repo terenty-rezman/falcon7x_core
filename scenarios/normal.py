@@ -69,7 +69,7 @@ async def power_on(ac_state: xp_ac.ACState):
 
     await engine_panel.en_start.wait_state(1)    
 
-    async with synoptic_overrides.param_overrides([
+    async with synoptic_overrides.override_params([
         # Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"],
         # Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"],
         # Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"],
@@ -99,20 +99,23 @@ async def power_on(ac_state: xp_ac.ACState):
             await synoptic_overrides.linear_anim(Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 5, 86, 50)
         
         async def ign():
-            await asyncio.sleep(15)
+            # show ign
+            await xp_ac.ACState.wait_until_parameter_condition(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], lambda p: p > 16)
             await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_ign1"], 1)
-            await asyncio.sleep(5)
+            # hide ign
+            await xp_ac.ACState.wait_until_parameter_condition(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], lambda p: p > 52)
             await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_ign1"], 0)
         
         async def start():
+            # show start
             await asyncio.sleep(1)
             await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_start1"], 1)
-            await asyncio.sleep(7)
+            # hide start
+            await xp_ac.ACState.wait_until_parameter_condition(Params["sim/cockpit2/engine/indicators/N2_percent[0]"], lambda p: p > 52)
             await xp.set_param(xp.Params["sim/custom/7x/z_syn_eng_start1"], 0)
         
-        await asyncio.gather(*[ff(), N2(), oil(), start(), ign()])
+        await asyncio.gather(ff(), N2(), oil(), start(), ign())
 
-        # ign appears after 15 sec after engine start or N2 == 17%
 
         await asyncio.sleep(5)
 

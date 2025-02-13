@@ -2,14 +2,14 @@
 Xplane parameters, failures & commands
 """
 
-from enum import Enum 
+from enum import StrEnum
 
 
 def to_str(self):
     return self.name
 
 
-Params = Enum('XplaneParams', [
+Params = StrEnum('XplaneParams', [
     "sim/time/total_running_time_sec",
     "sim/cockpit/electrical/night_vision_on",
     "sim/operation/override/override_joystick",
@@ -171,7 +171,7 @@ Params = Enum('XplaneParams', [
 Params.__str__ = to_str
 
 
-Commands = Enum('XplaneCommands', [
+Commands = StrEnum('XplaneCommands', [
     "sim/operation/toggle_main_menu",
     "sim/view/forward_with_nothing", # 1st person camera with nothing
     "sim/operation/reload_aircraft",

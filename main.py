@@ -18,6 +18,7 @@ import common.util as util
 import common.web_interface as web_interface
 from cas import cas
 import synoptic_remote.synoptic as synoptic_remote
+from common import sane_tasks
 
 import settings
 
@@ -40,7 +41,8 @@ def on_new_xp_data(type, dataref, value):
     #     ACState.initial_params[dataref] = value
 
     # запомнить текущее состояние ЛА
-    ACState.curr_params[dataref] = value
+    if dataref not in ACState.enabled_overrides:
+        ACState.curr_params[dataref] = value
 
     # NOTE!: maybe creating task for every param update is a bad idea
     if dataref in xp_mfi.sync_params:
@@ -51,7 +53,16 @@ def on_new_xp_data(type, dataref, value):
         dataref not in synoptic_remote.param_overrides.enabled_overrides: # synoptic_remote.update() will send overrides instead of xplane data ref value
         synoptic_remote.update(dataref, value)
 
-    ACState.update_data_callbacks()
+    ACState.data_updated = True
+
+
+async def ac_state_callback_task():
+    while True:
+        if ACState.data_updated:
+            ACState.update_data_callbacks()
+            ACState.data_updated = False
+
+        await asyncio.sleep(0.1)
 
 
 def on_data_exception(ex: Exception):
@@ -61,7 +72,10 @@ def on_data_exception(ex: Exception):
 def on_new_xp_data_udp(received_vals):
     for param, value in received_vals.items():
         # запомнить текущее состояние ЛА
-        ACState.curr_params[param] = value
+        if param not in ACState.enabled_overrides:
+            ACState.curr_params[param] = value
+
+    ACState.data_updated = True
 
 
 def on_data_exception_udp(ex):
@@ -124,6 +138,8 @@ async def main():
     await op.run_receive_uso_task(settings.USO_HOST, settings.USO_RECEIVE_PORT)
     await op.run_send_uso_task(settings.USO_HOST, settings.USO_SEND_PORT)
 
+    sane_tasks.spawn(ac_state_callback_task())
+
     await xp.xp_master_udp.connect(settings.XP_MASTER_HOST, settings.XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
     await xp.xp_master.connect_until_success(settings.XP_MASTER_HOST, settings.XP_MASTER_PORT, on_new_xp_data, on_data_exception)
 
@@ -131,7 +147,7 @@ async def main():
     xp.udp_param_subscriber.run_subsriber_task()
 
     # connection to mfi is optional
-    asyncio.create_task(connect_to_mfi())
+    sane_tasks.spawn(connect_to_mfi())
     await add_mfi_sync_list()
 
     synoptic_remote.run_updater()
