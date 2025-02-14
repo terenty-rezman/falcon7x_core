@@ -98,8 +98,8 @@ async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
     await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 1)
     await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press"], 0)
 
-    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent"]
-    await xp_ac.ACState.wait_until_parameter_condition(N2, lambda p: p[0] < 10)
+    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
+    await xp_ac.ACState.wait_until_parameter_condition(N2, lambda p: p < 10)
 
     # hide CAS msg ?
     await cas.remove_message(cas.ENG_1_OIL_TOO_LO_PRESS)
