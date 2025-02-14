@@ -146,6 +146,10 @@ class Subscribe:
         (Params["sim/custom/7x/z_syn_eng_ab1"], None, "tcp"), # synoptic eng 1 A or B
         (Params["sim/custom/7x/z_syn_eng_ab2"], None, "tcp"), # synoptic eng 2 A or B
         (Params["sim/custom/7x/z_syn_eng_ab3"], None, "tcp"), # synoptic eng 3 A or B
+
+        (Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"], 2, "udp"), # synoptic indicator - eng - itt
+        (Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"], 2, "udp"), # synoptic indicator - eng - itt
+        (Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"], 2, "udp"), # synoptic indicator - eng - itt
     ]
 
 

@@ -6,18 +6,17 @@ class System:
     logic_task = None
 
     @classmethod
-    async def start_condition(cls):
+    def start_condition(cls):
         pass
 
     @classmethod
     async def system_logic_task(cls):
         pass
 
-
     @classmethod
-    async def update(cls):
+    def update(cls):
         if cls.logic_task is None:
-            if await cls.start_condition():
+            if cls.start_condition():
                 cls.logic_task = sane_tasks.spawn(cls.system_logic_task())    
                 cls.logic_task.add_done_callback(cls.on_task_done)
     

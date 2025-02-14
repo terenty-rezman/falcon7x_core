@@ -62,6 +62,8 @@ async def ac_state_callback_task():
             ACState.update_data_callbacks()
             ACState.data_updated = False
 
+            ACSystems.update()
+
         await asyncio.sleep(0.1)
 
 
@@ -124,7 +126,6 @@ async def main_loop():
             await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
 
         # NOTE: maybe run in separate task?
-        await ACSystems.update()
 
         await asyncio.sleep(0.1)
 
