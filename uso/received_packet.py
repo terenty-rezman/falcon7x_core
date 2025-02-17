@@ -20,32 +20,34 @@ uso_float_field_names = [
 # [3] : K303 БРУ правая
 	"A009",	# Правая БРУ крен
 	"A010",	# Правая БРУ тангаж
-# [4] : 33 Attitude Display
-	"A011",	# BRT ADC=
-# [5] : 01 Сборка РУД
-	"A012",	# 01 hand Левая ручка
-	"A013",	# 02 hand Средняя ручка
-	"A014",	# 02 hand ball Доп ручка
-	"A015",	# 03 hand Правая ручка
-# [6] : 06 Пульт управления механизацией крыла
-	"A016",	# switch SLATS/FLAPS SF 2
-	"A017",	# switch AIRBRAKES AB 2
-# [7] : 16 Аудио панель (Audio panel) правая
-	"A018",	# BKUP ADC
-	"A019",	# MIC ADC
-# [8] : 17 Аудио панель (Audio panel) левая
-	"A020",	# BKUP ADC
-	"A021",	# MIC ADC
-# [9] : 18 (Reversion Panel)
-	"A022",	# DIM 1 ADC
-	"A023",	# DIM 2 ADC
-	"A024",	# DIM 3 ADC
-	"A025",	# DIM 4 ADC
-# [10] : 04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED
-	"A026",	# PAX AFT TEMP ADC=
-	"A027",	# PAX FWD TEMP ADC=
-	"A028",	# CREW TEMP ADC=
-	"A029",	# CREW RATIO ADC=
+# [4] : 02 Рычаг ручного выпуска шасси (# Кран-шасси #)
+	"A011",	# SWITCH i
+# [5] : 33 Attitude Display
+	"A012",	# BRT ADC=
+# [6] : 01 Сборка РУД
+	"A013",	# 01 hand Левая ручка
+	"A014",	# 02 hand Средняя ручка
+	"A015",	# 02 hand ball Доп ручка
+	"A016",	# 03 hand Правая ручка
+# [7] : 06 Пульт управления механизацией крыла
+	"A017",	# switch SLATS/FLAPS SF 2
+	"A018",	# switch AIRBRAKES AB 2
+# [8] : 16 Аудио панель (Audio panel) правая
+	"A019",	# BKUP ADC
+	"A020",	# MIC ADC
+# [9] : 17 Аудио панель (Audio panel) левая
+	"A021",	# BKUP ADC
+	"A022",	# MIC ADC
+# [10] : 18 (Reversion Panel)
+	"A023",	# DIM 1 ADC
+	"A024",	# DIM 2 ADC
+	"A025",	# DIM 3 ADC
+	"A026",	# DIM 4 ADC
+# [11] : 04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED
+	"A027",	# PAX AFT TEMP ADC=
+	"A028",	# PAX FWD TEMP ADC=
+	"A029",	# CREW TEMP ADC=
+	"A030",	# CREW RATIO ADC=
 ]
 
 uso_bitfield_names = [
@@ -107,9 +109,9 @@ uso_bitfield_names = [
 	"I06_c26",	# SIL [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [23 Пульт козырька правый]
 	"I06_c27",	# MASTER CAUTION [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [23 Пульт козырька правый]
 	"I06_c28",	# MASTER WARNING [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [23 Пульт козырька правый]
-	"I03_b01",	# SWITCH i [K2 Средний пульт (Pedestal)] [Приборная доска] [02 Рычаг ручного выпуска шасси (# Кран-шасси #)]
 	"I03_a20",	# 115/230 VAC OFF [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
 	"I03_a21",	# SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
+	"I03_a15",	# SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
 	"I03_a19",	# E.T. PUSH [K2 Средний пульт (Pedestal)] [Приборная доска] [31 Кнопка E.T.  Правая]
 	"I03_a07",	# E.T. PUSH [K2 Средний пульт (Pedestal)] [Приборная доска] [32 Кнопка E.T. левая]
 	"I06_b03",	# SET IO [K2 Средний пульт (Pedestal)] [Приборная доска] [33 Attitude Display]
@@ -433,25 +435,25 @@ uso_bitfield_names = [
 	"I07_a04",	# engine 3 DISCH 1 [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a05",	# engine 3 DISCH 2 [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a06",	# FIRE APU [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
+	"I07_a07",	# FIRE REAR COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
+	"I07_a08",	# FIRE BAG COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
+	"I07_a09",	# FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a11",	# AJB AUTO EXT. [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a12",	# FCS ENGAGE NORM [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a13",	# FCS ENGAGE ST-BY [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a14",	# NWS [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-	"I07_a07",	# FIRE REAR COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-	"I07_a08",	# FIRE BAG COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-	"I07_a09",	# FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации 02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 	"I07_a19",	# APU Start / Stop [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a20",	# BACK UP PUMP [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a21",	# SHUT OFF A1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a22",	# SHUT OFF A3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a23",	# SHUT OFF B2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a24",	# SHUT OFF B3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
+	"I07_a25",	# SHUT OFF C2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a15",	# man start eng 1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a16",	# man start eng 2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a26",	# PAX FWD TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a17",	# man start eng 3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a27",	# CREW TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
-	"I07_a25",	# SHUT OFF C2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a18",	# APU Master [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a28",	# PACK crew OFF [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
 	"I07_a29",	# PACK NORMAL [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED]
@@ -491,6 +493,9 @@ uso_bitfield_names = [
 	"I07_c20",	# XTK DOWN 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c21",	# XTK DOWN 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c22",	# XTK LEFT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
+	"I07_c23",	# XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
+	"I07_c24",	# XTK UP 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
+	"I07_c25",	# XTK UP 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c26",	# ANTICOL [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c27",	# NAV [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c28",	# SWITCH LANDING 1 OFF [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
@@ -500,11 +505,8 @@ uso_bitfield_names = [
 	"I07_c32",	# SWITCH LANDING 2 ON [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I08_a01",	# SWITCH LANDING 2 PULSE [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I08_a02",	# TAXI [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
-	"I07_c23",	# XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I08_a03",	# WINGS [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
-	"I07_c24",	# XTK UP 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I08_a04",	# LH [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
-	"I07_c25",	# XTK UP 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel 15 EXTERIOR LIGHTS + RAIN RPLNT LH]
 	"I07_c03",	# PROBE 1+2 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN BLEED - Pressurization]
 	"I07_c04",	# PROBE 3 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN BLEED - Pressurization]
 	"I07_c05",	# PROBE 4 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN BLEED - Pressurization]
