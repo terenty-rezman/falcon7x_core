@@ -125,6 +125,7 @@ class EngineStart2(EngineStart1):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     fuel_flow_switch = engine_panel.en_fuel_2
 
+    # otherwise logic_task will be shared between all derived classes
     logic_task = None
 
 
@@ -139,4 +140,5 @@ class EngineStart3(EngineStart1):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     fuel_flow_switch = engine_panel.en_fuel_3
 
+    # otherwise logic_task will be shared between all derived classes
     logic_task = None
