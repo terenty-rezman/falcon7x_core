@@ -1,4 +1,5 @@
 from typing import List
+import time
 
 from dataclasses import dataclass
 from asyncio import Future
@@ -62,8 +63,14 @@ class ACState:
         return f
     
     @classmethod
-    def wait_until_parameter_condition(cls, xp_param: Params, condition: Callable[["ACState"], bool]):
+    def wait_until_parameter_condition(cls, xp_param: Params, condition: Callable[["ACState"], bool], timeout=None):
+        start_time = time.time()
+
         def param_condition(ac_state: ACState):
+            if timeout:
+                if time.time() - start_time > timeout:
+                    return True
+
             if not ac_state.param_available(xp_param):
                 return False
 

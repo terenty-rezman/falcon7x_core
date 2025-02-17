@@ -46,7 +46,6 @@ class EngineStart1(System):
 
     @classmethod
     async def system_logic_task(cls):
-
         async with synoptic_overrides.override_params([cls.ITT, cls.N2, cls.FUEL, cls.OIL]):
             # after engine start
             # start appears in 1 sec after engine start
@@ -78,10 +77,15 @@ class EngineStart1(System):
                 await synoptic_overrides.disable_param_overrides([cls.ITT])
 
             async def oil():
+                curr_oil = xp_ac.ACState.get_curr_param(cls.OIL)
+                if curr_oil > 69:
+                    synoptic_overrides.disable_param_overrides([cls.OIL])
+                    return
+
                 await synoptic_overrides._1d_table_anim(
                     cls.OIL,
                     [0, 19, 35], # time
-                    [0, 5, 69] # 
+                    [curr_oil, curr_oil + 5, 69] # 
                 )
             
             async def ign():
@@ -90,7 +94,7 @@ class EngineStart1(System):
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
                 await xp.set_param(cls.IGN, 1)
                 # hide ign
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=20)
                 await xp.set_param(cls.IGN, 0)
             
             async def start():
@@ -98,7 +102,7 @@ class EngineStart1(System):
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 1)
                 # hide start
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=30)
                 await xp.set_param(cls.START, 0)
             
             async def ab():

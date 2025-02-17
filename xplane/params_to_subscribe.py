@@ -150,6 +150,9 @@ class Subscribe:
         (Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"], 2, "udp"), # synoptic indicator - eng - itt
         (Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"], 2, "udp"), # synoptic indicator - eng - itt
         (Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"], 2, "udp"), # synoptic indicator - eng - itt
+        (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"], 2, "udp"), # synoptic indicator - eng - oil
+        (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"], 2, "udp"), # synoptic indicator - eng - oil
+        (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"], 2, "udp"), # synoptic indicator - eng - oil
     ]
 
 
