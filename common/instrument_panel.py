@@ -8,6 +8,7 @@ import common.xp_aircraft_state as xp_ac
 from common.aioudp import open_local_endpoint, open_remote_endpoint
 
 import common.sane_tasks as sane_tasks
+from settings import USO_SEND_DELAY
 
 
 def is_rotate_right(new_state, old_state):
@@ -506,7 +507,7 @@ async def send_uso_task(remote):
 
         remote.send(uso_packet.tobytes())
 
-        await asyncio.sleep(0.3)
+        await asyncio.sleep(USO_SEND_DELAY)
 
 
 from overhead_panel import fire_panel

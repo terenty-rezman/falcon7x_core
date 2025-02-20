@@ -4,7 +4,7 @@ from uso.received_packet import uso_dtype, uso_float_field_names, uso_bitfield_n
 
 
 def unpack_packet(uso_udp_packet):
-    uso_packet = np.frombuffer(uso_udp_packet, uso_dtype)    
+    uso_packet = np.frombuffer(uso_udp_packet, dtype=uso_dtype)    
 
     unpacked = {}
     floats = [0] * len(uso_float_field_names) 

@@ -563,3 +563,5 @@ uso_dtype = np.dtype(
         ]
     }
 )
+
+uso_dtype = uso_dtype.newbyteorder('little')
