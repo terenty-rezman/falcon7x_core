@@ -25,7 +25,7 @@ WB_INTERFACE_PORT = 6070
 USO_HOST = "127.0.0.1"
 USO_RECEIVE_PORT = 6022
 USO_SEND_PORT = 5122
-USO_SEND_DELAY = 0.1
+USO_SEND_DELAY = 0.05
 
 # qml synoptic address
 synoptic_connection.Settings.QML_SYNOPTIC_HOST = "127.0.0.1"

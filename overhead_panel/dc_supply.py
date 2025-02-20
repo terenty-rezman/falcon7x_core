@@ -13,7 +13,7 @@ class galley_master(ThreeStateButton):
 
     @classmethod
     def get_indication(cls):
-        state = super().get_state()
+        state = cls.get_state()
         if state == 0:
             return 0
         if state == 1:
@@ -73,7 +73,7 @@ class cabin_master(ThreeStateButton):
 
     @classmethod
     def get_indication(cls):
-        state = super().get_state()
+        state = cls.get_state()
         if state == 0:
             return 0
         if state == 1:
@@ -86,14 +86,14 @@ class cabin_master(ThreeStateButton):
 class cabin_master_on(cabin_master):
     @classmethod
     def get_state(cls):
-        return cabin_master.get_state() == 2
+        return super().get_state() == 2
 
 
 @add_to_panel
 class cabin_master_off(cabin_master):
     @classmethod
     def get_state(cls):
-        return cabin_master.get_state() == 1
+        return super().get_state() == 1
 
 
 @add_to_panel

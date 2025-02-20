@@ -153,7 +153,7 @@ class xbleed_ecs(ThreeStateButton):
 
     @classmethod
     def get_indication(cls):
-        state = super().get_state()
+        state = cls.get_state()
         if state == 0:
             return 0
         if state == 1:
@@ -166,11 +166,11 @@ class xbleed_ecs(ThreeStateButton):
 class xbleed_ecs_on(xbleed_ecs):
     @classmethod
     def get_state(cls):
-        return xbleed_ecs.get_state() == 2
+        return xbleed_ecs.get_state() == 1
 
 
 @add_to_panel
 class xbleed_ecs_off(xbleed_ecs):
     @classmethod
     def get_state(cls):
-        return xbleed_ecs.get_state() == 1
+        return xbleed_ecs.get_state() == 2

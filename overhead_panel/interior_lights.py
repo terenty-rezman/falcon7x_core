@@ -78,7 +78,7 @@ class il_emerge_lights_on(il_emerge_lights):
 
     @classmethod
     def get_indication(cls):
-        state = super().get_state()
+        state = cls.get_state()
         if state == 1:
             return 1
 
