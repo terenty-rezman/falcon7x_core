@@ -104,8 +104,13 @@ class ext_power(TwoStateButton):
 @add_to_panel
 class gen1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
-    states = [1, 0]
+    states = [0, 1]
     index = 0
+
+    @classmethod
+    def get_indication(cls):
+        state = cls.get_state()
+        return 0 if state == 1 else 1
 
 
 @add_to_panel
@@ -129,26 +134,46 @@ class rh_isol(TwoStateButton):
 @add_to_panel
 class gen2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
-    states = [1, 0]
+    states = [0, 1]
     index = 1
+
+    @classmethod
+    def get_indication(cls):
+        state = cls.get_state()
+        return 0 if state == 1 else 1
 
 
 @add_to_panel
 class gen3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
-    states = [1, 0]
+    states = [0, 1]
     index = 2
+
+    @classmethod
+    def get_indication(cls):
+        state = cls.get_state()
+        return 0 if state == 1 else 1
 
 
 @add_to_panel
 class bat1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/battery_on"]
-    states = [1, 0]
+    states = [0, 1]
     index = 0
+
+    @classmethod
+    def get_indication(cls):
+        state = cls.get_state()
+        return 0 if state == 1 else 1
 
 
 @add_to_panel
 class bat2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/battery_on"]
-    states = [1, 0]
+    states = [0, 1]
     index = 1
+
+    @classmethod
+    def get_indication(cls):
+        state = cls.get_state()
+        return 0 if state == 1 else 1

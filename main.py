@@ -4,7 +4,7 @@ from enum import Enum
 import traceback
 
 from common.xp_aircraft_state import ACState
-from aircraft_systems.aicrcaft_systems import Systems as ACSystems
+from aircraft_systems.aircraft_systems import Systems as ACSystems
 
 from common.joystick import Joystick
 from common.scenario import Scenario

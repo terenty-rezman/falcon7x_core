@@ -173,6 +173,11 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_syn_eng_ab2", # synoptic eng - eng 1 A or B indication
     "sim/custom/7x/z_syn_eng_ab3", # synoptic eng - eng 1 A or B indication
 
+    "sim/custom/7x/z_line_gen2_on", # synoptic elec - power line
+    "sim/custom/7x/z_line_bat2_ratgen_on", # synoptic elec - power line
+    "sim/custom/7x/z_line_apu_bat1_on", # synoptic elec - power line
+    "sim/custom/7x/z_line_gen1_gen3_on", # synoptic elec - power line
+
     "sim/flightmodel/controls/parkbrake", # park brake
 ])
 Params.__str__ = to_str
