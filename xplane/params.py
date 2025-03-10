@@ -179,6 +179,15 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_line_gen1_gen3_on", # synoptic elec - power line
 
     "sim/flightmodel/controls/parkbrake", # park brake
+    "sim/cockpit2/electrical/bus_volts[0]", # synoptic elec bus volts lh
+    "sim/cockpit2/electrical/bus_volts[1]", # synoptic elec bus volts rh
+
+    "sim/cockpit2/electrical/generator_amps[0]", # synoptic elec gen amps
+    "sim/cockpit2/electrical/generator_amps[1]", # synoptic elec gen amps
+    "sim/cockpit2/electrical/generator_amps[2]", # synoptic elec gen amps
+    "sim/cockpit2/electrical/battery_amps[0]", # synopic elec bat amps
+    "sim/cockpit2/electrical/battery_amps[1]",
+    "sim/custom/7X/TBAT", # synoptic elec battery temp
 ])
 Params.__str__ = to_str
 
