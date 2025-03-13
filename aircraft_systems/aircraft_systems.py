@@ -1,5 +1,5 @@
 from aircraft_systems.fire_protection import APUFireProtection, RearCompFireProtection, BagCompFireProtection
-from aircraft_systems.engine import EngineStart1, EngineStart2, EngineStart3
+from aircraft_systems.engine import EngineStart1, EngineStart2, EngineStart3, ApuStart
 from aircraft_systems.elec import Gen1, Gen2, Gen3, Apu, ElecLinePower 
 
 
@@ -8,7 +8,7 @@ class Systems:
         APUFireProtection,
         RearCompFireProtection,
         BagCompFireProtection,
-        EngineStart1, EngineStart2, EngineStart3,
+        EngineStart1, EngineStart2, EngineStart3, ApuStart,
         Gen1, Gen2, Gen3, Apu, ElecLinePower
     ]
 

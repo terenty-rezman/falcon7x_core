@@ -160,6 +160,7 @@ class Subscribe:
         (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"], 2, "udp"), # synoptic indicator - eng - oil
 
         (Params["sim/flightmodel/controls/parkbrake"], None, "tcp"), # park brake
+        (Params["sim/cockpit2/electrical/APU_EGT_c"], 4, "udp"), # synoptic 
     ]
 
 

@@ -12,6 +12,52 @@ import overhead_panel.engines_apu as overhead_engines
 import synoptic_remote.param_overrides as synoptic_overrides
 
 
+class ApuStart(System):
+    APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
+    APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
+
+    logic_task = None
+
+    @classmethod
+    def start_condition(cls):
+        avail = [
+            xp_ac.ACState.param_available(cls.APU_N1),
+            xp_ac.ACState.param_available(cls.APU_TEMP),
+        ]
+
+        if not all(avail):
+            return False
+
+        cond = [
+            overhead_engines.apu_master.get_state() == 1,
+            xp_ac.ACState.get_curr_param(cls.APU_N1) < 15,
+            overhead_engines.apu_start_stop.get_state() == 1
+        ]
+
+        return all(cond)
+
+    @classmethod
+    async def system_logic_task(cls):
+        async with synoptic_overrides.override_params([cls.APU_N1, cls.APU_TEMP]):
+            async def n1():
+                apu_n1_curr = xp_ac.ACState.get_curr_param(cls.APU_N1)
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_N1,
+                    [0,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  37,  40], # time
+                    [apu_n1_curr, 3, 6,  17,  26,  30,  37,  39,  44,  47,  53,  57,  63,  68,  71,  78,  82,  90,  93,  95,  96,  97,  98,  99,  100,  100,  100] # n1
+                )
+
+            async def temp():
+                apu_temp_curr = xp_ac.ACState.get_curr_param(cls.APU_TEMP)
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_TEMP,
+                    [0,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  37,  40], # time
+                    [apu_temp_curr, 10, 10,  39,  145,  154,  170,  191,  256,  279,  293,  294,  288,  276,  268,  247,  239,  220,  216,  212,  207,  212,  218,  228,  234,  245,  247,  ] # apu temp
+                )
+            
+            await asyncio.gather(n1(), temp())
+
+
 class EngineStart1(System):
     N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
     ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"] 
