@@ -6,7 +6,7 @@ ExtPlane plugin is used to communicate with xplane https://github.com/vranki/Ext
 
 from common.xp_aircraft_state import ACState
 from xplane.connection import XPconnection, XPconnectionUDP
-from xplane.params import Params
+from xplane.params import Params, Commands
 from xplane.params_subsriber import ParamsSubscriberTCP, ParamSubscriberUDP
 from xplane.params_to_subscribe import Subscribe
 import xplane.params_to_subscribe as params_to_subscribe

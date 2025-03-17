@@ -23,8 +23,8 @@ class pc_bank_lh(FloatStepper):
 class pc_pitch_lh(FloatStepper):
     dataref = Params["sim/joystick/yoke_pitch_ratio"]
 
-    logic_left = -1.0
-    logic_right = 1.0
+    logic_left = -10.0
+    logic_right = 10.0
     left_most_value = -1.0 
     right_most_value = 1.0
     step = 0.01
@@ -36,8 +36,8 @@ class pc_pitch_lh(FloatStepper):
 class pc_heading_lh(FloatStepper):
     dataref = Params["sim/joystick/yoke_heading_ratio"]
 
-    logic_left = -1.0
-    logic_right = 1.0
+    logic_left = -10.0
+    logic_right = 10.0
     left_most_value = -1.0 
     right_most_value = 1.0
     step = 0.01
@@ -49,8 +49,8 @@ class pc_heading_lh(FloatStepper):
 class pc_left_brake_lh(FloatStepper):
     dataref = Params["sim/cockpit2/controls/left_brake_ratio"]
 
-    logic_left = -1.0
-    logic_right = 1.0
+    logic_left = -10.0
+    logic_right = 10.0
     left_most_value = 0
     right_most_value = 1.0
     step = 0.01
@@ -61,8 +61,8 @@ class pc_left_brake_lh(FloatStepper):
 class pc_right_brake_lh(FloatStepper):
     dataref = Params["sim/cockpit2/controls/right_brake_ratio"]
 
-    logic_left = -1.0
-    logic_right = 1.0
+    logic_left = -10.0
+    logic_right = 10.0
     left_most_value = 0
     right_most_value = 1.0
     step = 0.01
@@ -99,8 +99,8 @@ class pc_throttle_1(FloatStepper):
     dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio"]
     index = 0
 
-    logic_left = -1.0
-    logic_right = 1.0
+    logic_left = 0
+    logic_right = 10.0
     left_most_value = 0
     right_most_value = 1.0
     step = 0.01

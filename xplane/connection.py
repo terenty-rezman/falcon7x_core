@@ -174,7 +174,7 @@ class XPconnectionUDP():
         self.remote_host = "127.0.0.1"
         self.remote_port = 49000
 
-        self.listen_host = "127.0.0.1"
+        self.listen_host = "0.0.0.0"
         self.listen_port = 62222 
 
         self.sock = None
@@ -199,7 +199,7 @@ class XPconnectionUDP():
 
     async def start_read_task(self):
         # self.sock = await open_local_endpoint(self.listen_host, self.listen_port)
-        self.sock = await open_local_endpoint(host='127.0.0.1', port=self.listen_port)
+        self.sock = await open_local_endpoint(host='0.0.0.0', port=self.listen_port)
         self.udp_read_task = sane_tasks.spawn(self.read_udp_task())    
 
     async def read_udp_task(self):
