@@ -6,6 +6,7 @@ import time
 from contextlib import asynccontextmanager
 import asyncio
 from typing import List
+import bisect
 
 import numpy as np
 
@@ -84,6 +85,39 @@ def _1d_table_anim(param: Params, t_values, y_values, sleep_sec: float = 0.1):
             dt = curr_time - start_time
 
             value = np.interp(dt, t_values, y_values)
+
+            set_override_value(param, value)
+
+            if dt > end_time:
+                break
+
+            await asyncio.sleep(sleep_sec)
+    
+    return sane_tasks.spawn(_1d_table_anim_task())
+
+
+def _1d_table_start_from_curr_val_anim(param: Params, t_values, y_values, sleep_sec: float = 0.1):
+    async def _1d_table_anim_task():
+        # find time from which we start interpolation
+        start_value = xp_ac.ACState.get_curr_param(param) 
+        interp_from_idx = bisect.bisect_left(y_values, start_value)
+
+        if interp_from_idx == len(y_values):
+            interp_from_idx = interp_from_idx - 1
+
+        interp_from_time = t_values[interp_from_idx] 
+
+        start_time = time.time()
+        end_time = t_values[-1]
+
+        while True: 
+            curr_time = time.time()
+            dt = curr_time - start_time
+
+            if dt >= interp_from_time:
+                value = np.interp(dt, t_values, y_values)
+            else:
+                value = start_value
 
             set_override_value(param, value)
 

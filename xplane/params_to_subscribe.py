@@ -159,6 +159,14 @@ class Subscribe:
         (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"], 2, "udp"), # synoptic indicator - eng - oil
         (Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"], 2, "udp"), # synoptic indicator - eng - oil
 
+        (Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"], 2, "udp"), # synoptic indicator - eng - ff
+        (Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"], 2, "udp"), # synoptic indicator - eng - ff
+        (Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"], 2, "udp"), # synoptic indicator - eng - ff
+
+        (Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]"], 2, "udp"), # synoptic indicator - eng - oil temp
+        (Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]"], 2, "udp"), # synoptic indicator - eng - oil temp
+        (Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"], 2, "udp"), # synoptic indicator - eng - oil temp
+
         (Params["sim/flightmodel/controls/parkbrake"], None, "tcp"), # park brake
         (Params["sim/cockpit2/electrical/APU_EGT_c"], 4, "udp"), # synoptic 
     ]

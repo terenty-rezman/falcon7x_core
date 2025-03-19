@@ -3,6 +3,7 @@ import traceback
 
 import common.xp_aircraft_state as xp_ac
 import common.sane_tasks as sane_tasks
+from cas import cas
 
 
 scenarios = {}
@@ -37,6 +38,8 @@ class Scenario:
     @classmethod
     async def run_scenario_task(cls, task_name, ac_state: xp_ac.ACState):
         await cls.clear_all()
+        
+        await pre_scenario_task() 
 
         task = sane_tasks.spawn(scenarios[task_name](ac_state))
         task.add_done_callback(Scenario.on_scenario_done)
@@ -47,6 +50,10 @@ class Scenario:
     def on_scenario_done(cls, task):
         print(f"task finished {task}")
         cls.current_scenario_task = None
+
+
+async def pre_scenario_task(ac_state: xp_ac.ACState):
+    await cas.remove_all_messages()
 
 
 @scenario("TEST", "TEST", "test_scenario_1")
