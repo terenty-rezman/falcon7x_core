@@ -10,6 +10,7 @@ import common.scenario as scenario
 from common.xp_aircraft_state import ACState
 from mfi import mfi
 from aircraft_systems.synoptic_screen import SynopticScreen
+from common.instrument_panel import light_all_lamps
 
 
 quart_task = None
@@ -41,7 +42,7 @@ async def load_situation(data: LoadSit):
 
 
 @app.post("/api/synoptic")
-async def synoptic():
+async def synoptic_click():
     data = await request.get_data(as_text=True)
     page_name = data.partition("=")[2]
 
@@ -111,6 +112,12 @@ async def mfi_mouse_click(data: MfiMouseClick):
 #     data = await request.json
 #     print(data)
 #     return {"result": "ok"}
+
+
+@app.post("/api/light_all_lamps")
+async def light_lamps():
+    sane_tasks.spawn(light_all_lamps(2))
+    return {"result": "ok"}
 
 
 async def run_server_task(listen_host, listen_port):

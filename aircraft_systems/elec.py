@@ -11,64 +11,51 @@ import overhead_panel.engines_apu as eng_apu
 from aircraft_systems.system_base import System
 
 
-class GenStatus(enum.IntEnum):
-    NOT_WORKING = 0
-    WORKING = 1
+class GenPowerStatus(enum.IntEnum):
+    NO_POWER = 0
+    POWER_ON = 1
 
 
 class Gen1(System):
-    state = GenStatus.WORKING
+    WORKING_THRESHOLD_N1 = 24
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
+
+    power_state = GenPowerStatus.POWER_ON
+    gen_switch = dc.gen1
 
     @classmethod
     def start_condition(cls):
-        # run every time
-        return True
+        eng_n1 = xp_ac.ACState.get_curr_param(cls.N1) or 0
+        if cls.gen_switch.get_state() == 1 and eng_n1 > cls.WORKING_THRESHOLD_N1:
+            cls.power_state = GenPowerStatus.POWER_ON
+        else:
+            cls.power_state = GenPowerStatus.NO_POWER
+
+        return False
 
     @classmethod
     async def system_logic_task(cls):
-        eng1_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]) or 0
-        if dc.gen1.get_state() == 1 and eng1_n1 > 10:
-            cls.state = GenStatus.WORKING
-        else:
-            cls.state = GenStatus.NOT_WORKING
+        pass
 
 
-class Gen2(System):
-    state = GenStatus.WORKING
+class Gen2(Gen1):
+    WORKING_THRESHOLD_N1 = 24
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
 
-    @classmethod
-    def start_condition(cls):
-        # run every time
-        return True
-
-    @classmethod
-    async def system_logic_task(cls):
-        eng2_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]) or 0
-        if dc.gen2.get_state() == 1 and eng2_n1 > 10:
-            cls.state = GenStatus.WORKING
-        else:
-            cls.state = GenStatus.NOT_WORKING
+    state = GenPowerStatus.POWER_ON
+    gen_switch = dc.gen2
 
 
-class Gen3(System):
-    state = GenStatus.WORKING
+class Gen3(Gen1):
+    WORKING_THRESHOLD_N1 = 24
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
 
-    @classmethod
-    def start_condition(cls):
-        # run every time
-        return True
-
-    @classmethod
-    async def system_logic_task(cls):
-        eng3_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]) or 0
-        if dc.gen3.get_state() == 1 and eng3_n1 > 10:
-            cls.state = GenStatus.WORKING
-        else:
-            cls.state = GenStatus.NOT_WORKING
+    state = GenPowerStatus.POWER_ON
+    gen_switch = dc.gen3
 
 
 class Apu(System):
-    state = GenStatus.WORKING
+    state = GenPowerStatus.POWER_ON
 
     @classmethod
     def start_condition(cls):
@@ -79,9 +66,9 @@ class Apu(System):
     async def system_logic_task(cls):
         apu_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_N1_percent"]) or 0
         if eng_apu.apu_master.get_state() == 1 and apu_n1 > 50:
-            cls.state = GenStatus.WORKING
+            cls.state = GenPowerStatus.POWER_ON
         else:
-            cls.state = GenStatus.NOT_WORKING
+            cls.state = GenPowerStatus.NO_POWER
 
 
 class ElecLinePower(System):
@@ -94,7 +81,7 @@ class ElecLinePower(System):
     async def system_logic_task(cls):
         line_gen2_on = False
 
-        if Gen2.state == GenStatus.WORKING:
+        if Gen2.state == GenPowerStatus.POWER_ON:
             line_gen2_on |= True
 
         line_bat2_ratgen_on = False
@@ -102,11 +89,11 @@ class ElecLinePower(System):
             line_bat2_ratgen_on |= True
 
         line_apu_bat1_on = False
-        if dc.bat1.get_state() == 1 or Apu.state == GenStatus.WORKING:
+        if dc.bat1.get_state() == 1 or Apu.state == GenPowerStatus.POWER_ON:
             line_apu_bat1_on |= True
         
         line_gen1_gen3_on = False
-        if Gen1.state == GenStatus.WORKING or Gen3.state == GenStatus.WORKING:
+        if Gen1.power_state == GenPowerStatus.POWER_ON or Gen3.state == GenPowerStatus.POWER_ON:
             line_gen1_gen3_on |= True
         
         if dc.rh_isol.get_state() == 0:

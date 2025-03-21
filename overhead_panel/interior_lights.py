@@ -45,6 +45,9 @@ class il_emerge_lights(DiscreteSwitch):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         param = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/switches/generic_lights_switch"])
         if param is None:
             return 0
@@ -78,6 +81,9 @@ class il_emerge_lights_on(il_emerge_lights):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         if state == 1:
             return 1

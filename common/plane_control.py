@@ -1,4 +1,4 @@
-from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper
+from common.instrument_panel import add_to_panel, TwoStateButton, FloatStepper
 from xplane.params import Params
 import common.xp_aircraft_state as xp_ac
 import common.util as util
@@ -12,8 +12,8 @@ class pc_bank_lh(FloatStepper):
 
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
+    left_most_value = 1.0 
+    right_most_value = -1.0
     step = 0.01
 
     val_type = float
@@ -159,3 +159,8 @@ class pc_parkbrake_full:
             await pc_parkbrake.set_state(1)
         elif pc_parkbrake_half.state == 0:
             await pc_parkbrake.set_state(0)
+
+@add_to_panel
+class pc_gear(TwoStateButton):
+    dataref: Params = Params["sim/cockpit2/controls/gear_handle_down"]
+    states = [0, 1]

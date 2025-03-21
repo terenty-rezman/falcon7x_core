@@ -98,7 +98,7 @@ uso_pushbuttons_receive_map = {
     "rh_init": "I07_b06", # RH INIT [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "bus_tie": "I07_b07", # BUS TIE [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "lh_init": "I07_b08", # LH INIT [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
-    "rh_master": "I07_b09", # LH MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
+    "lh_master": "I07_b09", # LH MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "galley_master": "I07_b10", # GALLEY MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "gen1": "I07_b11", # GEN 1 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "lh_isol": "I07_b12", # LH ISOL [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]

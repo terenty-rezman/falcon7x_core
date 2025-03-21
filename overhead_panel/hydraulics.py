@@ -29,6 +29,9 @@ class backup_pump(ThreeStateButton):
 class backup_pump_on(backup_pump):
     @classmethod 
     def get_state(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         return backup_pump.get_state() == 1
 
 
@@ -36,6 +39,9 @@ class backup_pump_on(backup_pump):
 class backup_pump_off(backup_pump):
     @classmethod 
     def get_state(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         return backup_pump.get_state() == 2
 
 

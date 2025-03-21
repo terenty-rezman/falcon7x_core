@@ -166,6 +166,8 @@ class xbleed_ecs(ThreeStateButton):
 class xbleed_ecs_on(xbleed_ecs):
     @classmethod
     def get_state(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
         return xbleed_ecs.get_state() == 1
 
 
@@ -173,4 +175,6 @@ class xbleed_ecs_on(xbleed_ecs):
 class xbleed_ecs_off(xbleed_ecs):
     @classmethod
     def get_state(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
         return xbleed_ecs.get_state() == 2

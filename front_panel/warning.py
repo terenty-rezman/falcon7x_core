@@ -31,6 +31,9 @@ class master_warning_lh(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
 
         if state == 1:
@@ -54,6 +57,9 @@ class master_caution_lh(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
 
         if state == 1:

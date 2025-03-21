@@ -57,6 +57,9 @@ class apu_start_stop(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         param = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
         if (val := xp_ac.ACState.get_curr_param(param)) is None:

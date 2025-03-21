@@ -8,6 +8,8 @@ class probe_12(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
         return not super().get_indication()
 
 
@@ -17,6 +19,8 @@ class probe_3(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
         return not super().get_indication()
 
 
@@ -26,4 +30,6 @@ class probe_4(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
         return not super().get_indication()

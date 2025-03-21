@@ -73,6 +73,9 @@ class cabin_master(ThreeStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         if state == 0:
             return 0
@@ -109,6 +112,9 @@ class gen1(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         return 0 if state == 1 else 1
 
@@ -139,6 +145,9 @@ class gen2(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         return 0 if state == 1 else 1
 
@@ -151,6 +160,9 @@ class gen3(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         return 0 if state == 1 else 1
 
@@ -163,6 +175,9 @@ class bat1(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         return 0 if state == 1 else 1
 
@@ -175,5 +190,8 @@ class bat2(TwoStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
         return 0 if state == 1 else 1

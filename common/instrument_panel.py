@@ -70,19 +70,28 @@ class NLocalStateButton:
 
     states = []
 
+    override_indication = None
+
     @classmethod
     async def set_state(cls, state):
         if state in cls.states:
             cls.state = state
         else:
             raise Exception("No such state")
-    
+
     @classmethod 
     def get_state(cls):
         return cls.state
+
+    @classmethod
+    def set_override_indication(cls, value):
+        cls.override_indication = value
     
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         return cls.get_state()
 
     @classmethod
@@ -107,14 +116,14 @@ class NLocalStateButton:
         await xp_ac.ACState.data_condition(condition)
 
 
-class NStateButton:
+class NStateXPButton:
     """ N states are logical states: 0, 1, 2, 3, ..., N """
 
     dataref = None
     states = [] # this values are sent to x plane dref;
     index = None
 
-    override_output_state = None
+    override_indication = None
 
     @classmethod
     async def set_state(cls, state):
@@ -131,15 +140,12 @@ class NStateButton:
         await xp.set_param(cls.dataref, val)
     
     @classmethod
-    def set_override_output_state(cls, value):
-        cls.override_output_state = value
+    def set_override_indication(cls, value):
+        cls.override_indication = value
     
     @classmethod 
     def get_state(cls):
         """ get logical state """
-
-        if cls.override_output_state is not None:
-            return cls.override_output_state
 
         val = xp_ac.ACState.get_curr_param(cls.dataref)
         if val is None or val == []:
@@ -158,6 +164,9 @@ class NStateButton:
     
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         return cls.get_state()
 
     @classmethod
@@ -182,11 +191,11 @@ class NStateButton:
         await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
 
 
-class TwoStateButton(NStateButton):
+class TwoStateButton(NStateXPButton):
     states = [0, 1]
 
 
-class ThreeStateButton(NStateButton):
+class ThreeStateButton(NStateXPButton):
     states = [0, 1, 2]
 
 
@@ -210,11 +219,11 @@ class LocalStateDiscreteSwitch(NLocalStateButton):
     pass
 
 
-class DiscreteSwitch(NStateButton):
+class DiscreteSwitch(NStateXPButton):
     pass
 
 
-class FloatSwitch(NStateButton):
+class FloatSwitch(NStateXPButton):
     """ swith with continious float state """
     """ logical state actually is int in range of [0 255] """
     """ xp state is float in range of [float_left_most_value float_right_most_value] """
@@ -494,7 +503,7 @@ uso_send_lamps = [0] * len(uso_send.uso_bitfield_names)
 
 async def send_uso_task(remote):
     while True:
-        for lamp_id, bit_idx in uso_send.uso_lamp_send_map.items():
+        for bit_idx, lamp_id in uso_send.uso_lamp_send_map.items():
             item = CockpitPanel.buttons.get(lamp_id)
             if item is None:
                 print("X")
@@ -508,6 +517,18 @@ async def send_uso_task(remote):
         remote.send(uso_packet.tobytes())
 
         await asyncio.sleep(USO_SEND_DELAY)
+        
+
+async def light_all_lamps(duration_sec: int):
+    for bit_idx, lamp_id in uso_send.uso_lamp_send_map.items():
+        item = CockpitPanel.buttons.get(lamp_id)
+        item.set_override_indication(1)
+    
+    await asyncio.sleep(duration_sec)
+
+    for bit_idx, lamp_id in uso_send.uso_lamp_send_map.items():
+        item = CockpitPanel.buttons.get(lamp_id)
+        item.set_override_indication(None)
 
 
 from overhead_panel import fire_panel

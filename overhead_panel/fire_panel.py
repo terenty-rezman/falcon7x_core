@@ -34,6 +34,9 @@ class disch1_eng1_1(Indicator):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         if firebutton_1.get_state() == 1:
             return 1
 
@@ -75,6 +78,9 @@ class fire_apu_closed_indicator(Indicator):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         if xp_ac.ACState.get_curr_param(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
             if xp_ac.ACState.get_curr_param(cls.dataref) == 0:
                 # blink animation
@@ -109,6 +115,9 @@ class disch1_eng2_1(Indicator):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         if firebutton_2.get_state() == 1:
             return 1
 
@@ -150,6 +159,9 @@ class disch1_eng3_1(Indicator):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         if firebutton_3.get_state() == 1:
             return 1
 
@@ -211,22 +223,21 @@ class fire_test(NLocalStateButton):
     async def set_state(cls, state):
         await super().set_state(state)
 
-        # await firebutton_1.set_state(state)
-        # await firebutton_2.set_state(state)
-        # await firebutton_3.set_state(state)
+        if state == 0:
+            state = None
 
-        fireindicator_1.set_override_output_state(state)
-        fireindicator_2.set_override_output_state(state)
-        fireindicator_3.set_override_output_state(state)
+        fireindicator_1.set_override_indication(state)
+        fireindicator_2.set_override_indication(state)
+        fireindicator_3.set_override_indication(state)
 
-        disch1_eng1.set_override_output_state(state)
-        disch2_eng1.set_override_output_state(state)
+        disch1_eng1.set_override_indication(state)
+        disch2_eng1.set_override_indication(state)
 
-        disch1_eng2.set_override_output_state(state)
-        disch2_eng2.set_override_output_state(state)
+        disch1_eng2.set_override_indication(state)
+        disch2_eng2.set_override_indication(state)
 
-        disch1_eng3.set_override_output_state(state)
-        disch2_eng3.set_override_output_state(state)
+        disch1_eng3.set_override_indication(state)
+        disch2_eng3.set_override_indication(state)
 
-        fire_apu_indicator.set_override_output_state(state)
-        firebagcomp_indicator.set_override_output_state(state)
+        fire_apu_indicator.set_override_indication(state)
+        firebagcomp_indicator.set_override_indication(state)
