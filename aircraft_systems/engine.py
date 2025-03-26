@@ -113,45 +113,43 @@ class EngineStart1(System):
                     cls.N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
                 )
 
-                await synoptic_overrides.disable_param_overrides([cls.N1])
+                # await synoptic_overrides.disable_param_overrides([cls.N1])
 
             async def ff():
-                await synoptic_overrides._1d_table_start_from_curr_val_anim(
+                await synoptic_overrides._1d_table_anim(
                     cls.FF, cls.TIME_SAMPLE, cls.FF_SAMPLE
                 )
 
-                await synoptic_overrides.disable_param_overrides([cls.FF])
+                # await synoptic_overrides.disable_param_overrides([cls.FF])
 
             async def N2_anim():
                 await synoptic_overrides._1d_table_anim(
                     cls.N2, cls.TIME_SAMPLE, cls.N2_SAMPLE
                 )
 
-                await synoptic_overrides.disable_param_overrides([cls.N2])
+                # await synoptic_overrides.disable_param_overrides([cls.N2])
 
             async def itt():
-                await xp_ac.ACState.wait_until_parameter_condition(cls.IGN, lambda p: p == 1)
-                itt_curr = xp_ac.ACState.get_curr_param(cls.ITT)
-                await synoptic_overrides._1d_table_start_from_curr_val_anim(
+                await synoptic_overrides._1d_table_anim(
                     cls.ITT, cls.TIME_SAMPLE, cls.ITT_SAMPLE
                 )
 
-                await synoptic_overrides.disable_param_overrides([cls.ITT])
+                # await synoptic_overrides.disable_param_overrides([cls.ITT])
 
             async def oil_psi():
-                curr_oil_psi = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
-                if curr_oil_psi > 69:
-                    synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
-                    return
+                # curr_oil_psi = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
+                # if curr_oil_psi > 69:
+                #    synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
+                #    return
 
                 await synoptic_overrides._1d_table_anim(
                     cls.OIL_PSI, cls.TIME_SAMPLE, cls.OIL_PSI_SAMPLE
                 )
 
-                await synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
+                # await synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
 
             async def oil_temp():
-                await synoptic_overrides._1d_table_start_from_curr_val_anim(
+                await synoptic_overrides._1d_table_anim(
                     cls.OIL_TEMP, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_TEMP_SAMPLE
                 )
             
