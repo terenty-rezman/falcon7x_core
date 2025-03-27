@@ -68,12 +68,13 @@ class EngineStart1(System):
     START = xp.Params["sim/custom/7x/z_syn_eng_start1"]
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab1"]
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
+    N1_MAX = xp.Params["sim/custom/xap/maxin1"]
     fuel_flow_switch = engine_panel.en_fuel_1
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
     N1_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 11.4, 12.1, 13.7, 15.8, 16.7, 18.4, 19.5, 21, 21.8, 22.3, 23, 23.6, 23.9, 23.8, 24, 24.1, 24.2, 24.2] # time
     N2_SAMPLE = [0, 0, 3.6, 5.5, 9.2, 12.2, 14.3, 16.4, 17.7, 18.9, 19.5, 21.4, 22.8, 23.5, 24, 24.7, 27.8, 30.1, 30.8, 34.1, 34.8, 37.6, 39, 41.9, 44.5, 46.6, 49.1, 50.5, 50.1, 49.9, 50.3, 51.2, 51.6, 51.7, 51.7, 51.9, 52, 52, 52]
-    FF_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.008086843, 0.012938949, 0.012938949, 0.023182283, 0.023182283, 0.024260529, 0.024260529, 0.024260529, 0.025877897, 0.026956143, 0.028573511, 0.03019088, 0.032347371, 0.032886494, 0.033425617, 0.035042986, 0.036660354, 0.0377386, 0.0377386, 0.039355969, 0.038277723, 0.0377386, 0.0377386]
+    FF_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 120, 120, 215, 215, 225, 225, 225, 240, 250, 265, 280, 300, 305, 310, 325, 340, 350, 350, 365, 355, 350, 350]
     ITT_SAMPLE = [13, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 29, 35, 52, 60, 70, 115, 161, 174, 222, 232, 267, 283, 313, 338, 353, 371, 378, 378, 383, 394, 409, 418, 423, 422, 432, 439, 448, 453]
     OIL_PSI_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76]
 
@@ -105,7 +106,7 @@ class EngineStart1(System):
 
     @classmethod
     async def system_logic_task(cls):
-        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP]):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX]):
             # after engine start
             # start appears in 1 sec after engine start
             async def n1():
@@ -115,9 +116,13 @@ class EngineStart1(System):
 
                 # await synoptic_overrides.disable_param_overrides([cls.N1])
 
+            async def n1_max():
+                await synoptic_overrides.set_override_value(cls.N1_MAX, 88)
+
             async def ff():
+                ff_sample = [0.0012589 * x for x in cls.FF_SAMPLE]
                 await synoptic_overrides._1d_table_anim(
-                    cls.FF, cls.TIME_SAMPLE, cls.FF_SAMPLE
+                    cls.FF, cls.TIME_SAMPLE, ff_sample
                 )
 
                 # await synoptic_overrides.disable_param_overrides([cls.FF])
@@ -159,7 +164,7 @@ class EngineStart1(System):
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
                 await xp.set_param(cls.IGN, 1)
                 # hide ign
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=20)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=20)
                 await xp.set_param(cls.IGN, 0)
             
             async def start():
@@ -168,6 +173,7 @@ class EngineStart1(System):
                 await xp.set_param(cls.START, 1)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=30)
+                await asyncio.sleep(1)
                 await xp.set_param(cls.START, 0)
             
             async def ab():
@@ -176,7 +182,7 @@ class EngineStart1(System):
                 await asyncio.sleep(2)
                 await xp.set_param(cls.AB, 0)
             
-            await asyncio.gather(n1(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
+            await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
 
 
 class EngineStart2(EngineStart1):
