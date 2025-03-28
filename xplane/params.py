@@ -191,6 +191,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/electrical/battery_amps[1]",
     "sim/custom/7X/TBAT", # synoptic elec battery temp
     "sim/cockpit2/controls/gear_handle_down", # landing gear
+    "sim/cockpit2/electrical/APU_generator_amps", # synoptic elec apu amps
 ])
 Params.__str__ = to_str
 

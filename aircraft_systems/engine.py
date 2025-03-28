@@ -57,13 +57,13 @@ class ApuStart(System):
                 await asyncio.sleep(1)
                 await xp.set_param(cls.APU_STRATUP_STAGE, 1)
 
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 50, timeout=60)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 50, timeout=60)
                 await xp.set_param(cls.APU_STRATUP_STAGE, 2)
                 
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 94, timeout=60)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 94, timeout=60)
                 await xp.set_param(cls.APU_STRATUP_STAGE, 3)
 
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 99, timeout=60)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 99, timeout=60)
                 await asyncio.sleep(3)
                 await xp.set_param(cls.APU_STRATUP_STAGE, 4)
 
