@@ -178,6 +178,7 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_line_bat2_ratgen_on", # synoptic elec - power line
     "sim/custom/7x/z_line_apu_bat1_on", # synoptic elec - power line
     "sim/custom/7x/z_line_gen1_gen3_on", # synoptic elec - power line
+    "sim/custom/7x/z_apu_startup_stage", # synoptic elec apu startup states
 
     "sim/flightmodel/controls/parkbrake", # park brake
     "sim/cockpit2/electrical/bus_volts[0]", # synoptic elec bus volts lh

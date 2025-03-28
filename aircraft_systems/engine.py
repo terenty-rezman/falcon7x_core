@@ -15,6 +15,7 @@ import synoptic_remote.param_overrides as synoptic_overrides
 class ApuStart(System):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
+    APU_STRATUP_STAGE = xp.Params["sim/custom/7x/z_apu_startup_stage"]
 
     TIME_SAMPLE = [0,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  37,  40] # time
     N1_SAMPLE = [0, 3, 6,  17,  26,  30,  37,  39,  44,  47,  53,  57,  63,  68,  71,  78,  82,  90,  93,  95,  96,  97,  98,  99,  100,  100,  100] # n1
@@ -44,17 +45,32 @@ class ApuStart(System):
     async def system_logic_task(cls):
         async with synoptic_overrides.override_params([cls.APU_N1, cls.APU_TEMP]):
             async def n1():
-                apu_n1_curr = xp_ac.ACState.get_curr_param(cls.APU_N1)
                 await synoptic_overrides._1d_table_anim(
                     cls.APU_N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
                 )
 
             async def temp():
-                apu_temp_curr = xp_ac.ACState.get_curr_param(cls.APU_TEMP)
                 await synoptic_overrides._1d_table_anim(
                     cls.APU_TEMP, cls.TIME_SAMPLE, cls.TEMP_SAMPLE)
             
-            await asyncio.gather(n1(), temp())
+            async def elec_tab():
+                await asyncio.sleep(1)
+                await xp.set_param(cls.APU_STRATUP_STAGE, 1)
+
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 50, timeout=60)
+                await xp.set_param(cls.APU_STRATUP_STAGE, 2)
+                
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 94, timeout=60)
+                await xp.set_param(cls.APU_STRATUP_STAGE, 3)
+
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 99, timeout=60)
+                await asyncio.sleep(3)
+                await xp.set_param(cls.APU_STRATUP_STAGE, 4)
+
+                await asyncio.sleep(2)
+                await xp.set_param(cls.APU_STRATUP_STAGE, 0)
+            
+            await asyncio.gather(n1(), temp(), elec_tab())
 
 
 class EngineStart1(System):
@@ -69,6 +85,7 @@ class EngineStart1(System):
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab1"]
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     N1_MAX = xp.Params["sim/custom/xap/maxin1"]
+    APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
     fuel_flow_switch = engine_panel.en_fuel_1
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
@@ -80,6 +97,9 @@ class EngineStart1(System):
 
     TIME_OIL_TEMP_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50]
     OIL_TEMP_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19]
+
+    APU_TEMP_TIME_SAMPLE = [0, 12, 13, 38]
+    APU_TEMP_SAMPLE = [280, 500, 500, 280] # apu temp
 
     logic_task = None
 
@@ -106,7 +126,7 @@ class EngineStart1(System):
 
     @classmethod
     async def system_logic_task(cls):
-        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX]):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
             # after engine start
             # start appears in 1 sec after engine start
             async def n1():
@@ -114,44 +134,29 @@ class EngineStart1(System):
                     cls.N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
                 )
 
-                # await synoptic_overrides.disable_param_overrides([cls.N1])
-
             async def n1_max():
-                await synoptic_overrides.set_override_value(cls.N1_MAX, 88)
+                synoptic_overrides.set_override_value(cls.N1_MAX, 88)
 
             async def ff():
-                ff_sample = [0.0012589 * x for x in cls.FF_SAMPLE]
+                ff_sample = [0.00012589 * x for x in cls.FF_SAMPLE]
                 await synoptic_overrides._1d_table_anim(
                     cls.FF, cls.TIME_SAMPLE, ff_sample
                 )
-
-                # await synoptic_overrides.disable_param_overrides([cls.FF])
 
             async def N2_anim():
                 await synoptic_overrides._1d_table_anim(
                     cls.N2, cls.TIME_SAMPLE, cls.N2_SAMPLE
                 )
 
-                # await synoptic_overrides.disable_param_overrides([cls.N2])
-
             async def itt():
                 await synoptic_overrides._1d_table_anim(
                     cls.ITT, cls.TIME_SAMPLE, cls.ITT_SAMPLE
                 )
 
-                # await synoptic_overrides.disable_param_overrides([cls.ITT])
-
             async def oil_psi():
-                # curr_oil_psi = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
-                # if curr_oil_psi > 69:
-                #    synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
-                #    return
-
                 await synoptic_overrides._1d_table_anim(
                     cls.OIL_PSI, cls.TIME_SAMPLE, cls.OIL_PSI_SAMPLE
                 )
-
-                # await synoptic_overrides.disable_param_overrides([cls.OIL_PSI])
 
             async def oil_temp():
                 await synoptic_overrides._1d_table_anim(
@@ -164,7 +169,7 @@ class EngineStart1(System):
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
                 await xp.set_param(cls.IGN, 1)
                 # hide ign
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=20)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=60)
                 await xp.set_param(cls.IGN, 0)
             
             async def start():
@@ -172,7 +177,7 @@ class EngineStart1(System):
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 1)
                 # hide start
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=30)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 0)
             
@@ -181,8 +186,14 @@ class EngineStart1(System):
                 await xp.set_param(cls.AB, 1)
                 await asyncio.sleep(2)
                 await xp.set_param(cls.AB, 0)
+
+            async def apu_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_TEMP, cls.APU_TEMP_TIME_SAMPLE, cls.APU_TEMP_SAMPLE
+                )
             
-            await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
+            await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
+            await asyncio.sleep(30)
 
 
 class EngineStart2(EngineStart1):

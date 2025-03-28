@@ -17,7 +17,7 @@ class GenPowerStatus(enum.IntEnum):
 
 
 class Gen1(System):
-    WORKING_THRESHOLD_N1 = 24
+    WORKING_THRESHOLD_N1 = 10
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
 
     power_state = GenPowerStatus.POWER_ON
@@ -39,18 +39,18 @@ class Gen1(System):
 
 
 class Gen2(Gen1):
-    WORKING_THRESHOLD_N1 = 24
+    WORKING_THRESHOLD_N1 = 10 
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
 
-    state = GenPowerStatus.POWER_ON
+    power_state = GenPowerStatus.POWER_ON
     gen_switch = dc.gen2
 
 
 class Gen3(Gen1):
-    WORKING_THRESHOLD_N1 = 24
+    WORKING_THRESHOLD_N1 = 10
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
 
-    state = GenPowerStatus.POWER_ON
+    power_state = GenPowerStatus.POWER_ON
     gen_switch = dc.gen3
 
 
@@ -59,16 +59,17 @@ class Apu(System):
 
     @classmethod
     def start_condition(cls):
-        # run every time
-        return True
-
-    @classmethod
-    async def system_logic_task(cls):
         apu_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_N1_percent"]) or 0
         if eng_apu.apu_master.get_state() == 1 and apu_n1 > 50:
             cls.state = GenPowerStatus.POWER_ON
         else:
             cls.state = GenPowerStatus.NO_POWER
+
+        return False
+
+    @classmethod
+    async def system_logic_task(cls):
+        pass
 
 
 class ElecLinePower(System):
@@ -81,7 +82,7 @@ class ElecLinePower(System):
     async def system_logic_task(cls):
         line_gen2_on = False
 
-        if Gen2.state == GenPowerStatus.POWER_ON:
+        if Gen2.power_state == GenPowerStatus.POWER_ON:
             line_gen2_on |= True
 
         line_bat2_ratgen_on = False
@@ -93,7 +94,7 @@ class ElecLinePower(System):
             line_apu_bat1_on |= True
         
         line_gen1_gen3_on = False
-        if Gen1.power_state == GenPowerStatus.POWER_ON or Gen3.state == GenPowerStatus.POWER_ON:
+        if Gen1.power_state == GenPowerStatus.POWER_ON or Gen3.power_state == GenPowerStatus.POWER_ON:
             line_gen1_gen3_on |= True
         
         if dc.rh_isol.get_state() == 0:

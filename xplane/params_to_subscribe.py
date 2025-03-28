@@ -171,6 +171,8 @@ class Subscribe:
 
         (Params["sim/flightmodel/controls/parkbrake"], None, "tcp"), # park brake
         (Params["sim/cockpit2/electrical/APU_EGT_c"], 4, "udp"), # synoptic 
+
+        (Params["sim/custom/7x/z_apu_startup_stage"], None, "tcp"), # synoptic indicator - elec apu stages
     ]
 
 
