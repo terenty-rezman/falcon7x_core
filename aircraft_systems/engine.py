@@ -71,6 +71,7 @@ class ApuStart(System):
                 await xp.set_param(cls.APU_STRATUP_STAGE, 0)
             
             await asyncio.gather(n1(), temp(), elec_tab())
+            await asyncio.sleep(30)
 
 
 class EngineStart1(System):
@@ -86,6 +87,7 @@ class EngineStart1(System):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     N1_MAX = xp.Params["sim/custom/xap/maxin1"]
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
+    MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_1"]
     fuel_flow_switch = engine_panel.en_fuel_1
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
@@ -126,7 +128,7 @@ class EngineStart1(System):
 
     @classmethod
     async def system_logic_task(cls):
-        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP, cls.MIN_OIL_LEVEL]):
             # after engine start
             # start appears in 1 sec after engine start
             async def n1():
@@ -176,10 +178,12 @@ class EngineStart1(System):
                 # show start
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 0)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 0)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 25)
             
             async def ab():
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
@@ -207,6 +211,7 @@ class EngineStart2(EngineStart1):
     START = xp.Params["sim/custom/7x/z_syn_eng_start2"]
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab2"]
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
+    MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_2"]
     fuel_flow_switch = engine_panel.en_fuel_2
 
     # otherwise logic_task will be shared between all derived classes
@@ -224,6 +229,7 @@ class EngineStart3(EngineStart1):
     START = xp.Params["sim/custom/7x/z_syn_eng_start3"]
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab3"]
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
+    MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_3"]
     fuel_flow_switch = engine_panel.en_fuel_3
 
     # otherwise logic_task will be shared between all derived classes
