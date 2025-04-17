@@ -30,7 +30,7 @@ class LeftBlackScreen(System):
             await xp.set_param(cls.LEFT, 1)
         
         else:
-            if dc.rh_init.get_state() == 0: 
+            if dc.rh_init.get_state() == 1: 
                 await xp.set_param(cls.LEFT, 2)
             else:
                 await asyncio.sleep(3)
@@ -53,12 +53,11 @@ class MiddleUpBlackScreen(System):
             await xp.set_param(cls.MIDDLE_UP, 1)
         
         else:
-            if dc.rh_init.get_state() == 0: 
+            if dc.rh_init.get_state() == 1: 
                 await xp.set_param(cls.MIDDLE_UP, 2)
             else:
                 await asyncio.sleep(3)
                 await xp.set_param(cls.MIDDLE_UP, 0)
-
 
 
 class RightBlackScreen(System):
@@ -76,12 +75,12 @@ class RightBlackScreen(System):
         if dc.bat2.get_state() == 0:  
             await xp.set_param(cls.RIGHT, 1)
         else:
-            if dc.lh_master.get_state() == 0: 
+            if dc.lh_master.get_state() == 1: 
                 await xp.set_param(cls.RIGHT, 2)
             else:
                 await xp.set_param(cls.RIGHT, 0)
             
-            if dc.rh_master.get_state() == 0:
+            if dc.rh_master.get_state() == 1:
                 await xp.set_param(cls.RIGHT, 2)
                 await asyncio.sleep(3)
                 await xp.set_param(cls.RIGHT, 0)
