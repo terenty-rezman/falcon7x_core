@@ -95,15 +95,21 @@ class EngineStart1(System):
     N2_SAMPLE = [0, 0, 3.6, 5.5, 9.2, 12.2, 14.3, 16.4, 17.7, 18.9, 19.5, 21.4, 22.8, 23.5, 24, 24.7, 27.8, 30.1, 30.8, 34.1, 34.8, 37.6, 39, 41.9, 44.5, 46.6, 49.1, 50.5, 50.1, 49.9, 50.3, 51.2, 51.6, 51.7, 51.7, 51.9, 52, 52, 52]
     FF_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 120, 120, 215, 215, 225, 225, 225, 240, 250, 265, 280, 300, 305, 310, 325, 340, 350, 350, 365, 355, 350, 350]
     ITT_SAMPLE = [13, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 29, 35, 52, 60, 70, 115, 161, 174, 222, 232, 267, 283, 313, 338, 353, 371, 378, 378, 383, 394, 409, 418, 423, 422, 432, 439, 448, 453]
-    OIL_PSI_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76]
+    #OIL_PSI_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76]
 
-    TIME_OIL_TEMP_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50]
-    OIL_TEMP_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19]
+    # TIME_OIL_TEMP_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50]
+    # OIL_TEMP_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19]
+
+    TIME_OIL_TEMP_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50, 66, 71, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 118, 119, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 156, 157, 158, 160, 162, 164, 166, 172, 210, 218, 223]
+    OIL_TEMP_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 21, 21, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 27, 29, 27, 27, 28, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 35, 39, 40, 40]
+    OIL_PSI_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76, 72, 70, 70, 70, 70, 70, 70, 70, 69, 69, 69, 69, 69, 69, 68, 68, 68, 68, 68, 68, 67, 67, 67, 68, 68, 66, 68, 66, 66, 66, 67, 67, 66, 67, 66, 66, 66, 66, 65, 64, 63, 66, 63, 62, 62, 62, 62, 62, 62, 62, 62, 62, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 57]
+
 
     APU_TEMP_TIME_SAMPLE = [0, 12, 13, 38]
     APU_TEMP_SAMPLE = [280, 500, 500, 280] # apu temp
 
     logic_task = None
+    is_killing = False
 
     @classmethod
     def start_condition(cls):
@@ -127,8 +133,17 @@ class EngineStart1(System):
         return all(cond)
 
     @classmethod
+    def kill_condition(cls):
+        cond = [
+            cls.logic_task is not None,
+            cls.fuel_flow_switch.get_state() == 0,
+        ]
+
+        return all(cond)
+
+    @classmethod
     async def system_logic_task(cls):
-        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP, cls.MIN_OIL_LEVEL]):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
             # after engine start
             # start appears in 1 sec after engine start
             async def n1():
@@ -157,7 +172,7 @@ class EngineStart1(System):
 
             async def oil_psi():
                 await synoptic_overrides._1d_table_anim(
-                    cls.OIL_PSI, cls.TIME_SAMPLE, cls.OIL_PSI_SAMPLE
+                    cls.OIL_PSI, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_PSI_SAMPLE
                 )
 
             async def oil_temp():
@@ -176,14 +191,14 @@ class EngineStart1(System):
             
             async def start():
                 # show start
+                await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 1)
-                await xp.set_param(cls.MIN_OIL_LEVEL, 0)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await asyncio.sleep(1)
                 await xp.set_param(cls.START, 0)
-                await xp.set_param(cls.MIN_OIL_LEVEL, 25)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
             async def ab():
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
@@ -198,6 +213,13 @@ class EngineStart1(System):
             
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
             await asyncio.sleep(30)
+
+    @classmethod
+    async def killing_task(cls):
+        await xp.set_param(cls.START, 0)
+        await xp.set_param(cls.MIN_OIL_LEVEL, 5)
+        await xp.set_param(cls.IGN, 0)
+        await xp.set_param(cls.AB, 0)
 
 
 class EngineStart2(EngineStart1):
@@ -216,6 +238,7 @@ class EngineStart2(EngineStart1):
 
     # otherwise logic_task will be shared between all derived classes
     logic_task = None
+    is_killing = False
 
 
 class EngineStart3(EngineStart1):
@@ -234,3 +257,4 @@ class EngineStart3(EngineStart1):
 
     # otherwise logic_task will be shared between all derived classes
     logic_task = None
+    is_killing = False

@@ -53,7 +53,9 @@ def on_new_xp_data(type, dataref, value):
         dataref not in synoptic_remote.param_overrides.enabled_overrides: # synoptic_remote.update() will send overrides instead of xplane data ref value
         synoptic_remote.update(dataref, value)
 
-    ACState.data_updated = True
+    ACState.update_data_callbacks()
+    ACSystems.update()
+    print(dataref, value)
 
 
 async def ac_state_callback_task():

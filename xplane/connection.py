@@ -124,7 +124,11 @@ class XPconnection():
                     continue
 
                 # data received
-                type, dataref, value = parse_xplane_dataref(data)
+                try:
+                    type, dataref, value = parse_xplane_dataref(data)
+                except Exception as ex:
+                    print("DATA:", data)
+                    raise ex
 
                 if self.on_new_data_callback:
                     self.on_new_data_callback(type, dataref, value) 

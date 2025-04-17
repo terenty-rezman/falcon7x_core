@@ -1,5 +1,6 @@
 from typing import List
 import time
+import traceback
 
 from dataclasses import dataclass
 from asyncio import Future
@@ -47,7 +48,10 @@ class ACState:
         for c in cls._data_callbacks:
             # if callback returs true its finished
             if c.callback(cls):
-                c.future.set_result(None)
+                try:
+                    c.future.set_result(None)
+                except Exception as e:
+                    traceback.print_exception(type(e), e, e.__traceback__)
 
         # remove finished callbacks
         cls._data_callbacks[:] = [c for c in cls._data_callbacks if c.future.done() == False]

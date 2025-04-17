@@ -128,7 +128,7 @@ class Subscribe:
         (Params["sim/cockpit2/autopilot/heading_mode"], None, "tcp"), # front panel - hdg/trk mode
 
         (Params["sim/cockpit2/controls/left_brake_ratio"], 0.01, "tcp"), # pedal brake left
-        (Params["sim/cockpit2/controls/right_brake_ratio"], None, "tcp"), # pedal brake right
+        (Params["sim/cockpit2/controls/right_brake_ratio"], 2, "udp"), # pedal brake right
         (Params["sim/cockpit2/engine/actuators/throttle_ratio"], None, "tcp"), # throttle
 
         (Params["sim/cockpit/weapons/firing_rate"], None, "tcp"), # synoptic page
@@ -176,6 +176,12 @@ class Subscribe:
         (Params["sim/custom/7x/z_oil_min_height_1"], 1, "udp"), # synoptic eng min oil level
         (Params["sim/custom/7x/z_oil_min_height_2"], 1, "udp"), # synoptic eng min oil level
         (Params["sim/custom/7x/z_oil_min_height_3"], 1, "udp"), # synoptic eng min oil level
+
+        (Params["sim/custom/7x/z_left_black_screen"], None, "tcp"), # pdu left
+        (Params["sim/custom/7x/z_right_black_screen"], None, "tcp"), # pdu right
+        (Params["sim/custom/7x/z_middle_up_black_screen"], None, "tcp"), # mdu up 
+        (Params["sim/custom/7x/z_middle_down_black_screen"], None, "tcp"), # mdu down
+        (Params["sim/custom/7x/z_mini_black_screen"], None, "tcp"), # aux screen
     ]
 
 

@@ -55,3 +55,12 @@ def dont_await(async_f):
     loop.create_task(async_f)
 
 
+async def in_sequence(*tasks):
+    for index, task in enumerate(tasks):
+        try:
+            await task
+        except Exception as e:
+            for task in tasks[index + 1:]:
+                task.close()
+            raise e
+

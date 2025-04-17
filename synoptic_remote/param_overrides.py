@@ -49,7 +49,8 @@ def set_override_value(param: Params, value):
         xp_ac.ACState.set_curr_param(param, value)
         overrides_values[str(param)] = value
     else:
-        raise Exception(f"param {param} is not enabled for override!")
+        # raise Exception(f"param {param} is not enabled for override!")
+        pass
 
 
 def linear_anim(param: Params, start_val, finish_val, interval_sec: float, sleep_sec: float = 0.1):

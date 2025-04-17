@@ -196,6 +196,12 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_oil_min_height_1", # synoptic eng oil min level
     "sim/custom/7x/z_oil_min_height_2", # synoptic eng oil min level
     "sim/custom/7x/z_oil_min_height_3", # synoptic eng oil min level
+
+    "sim/custom/7x/z_left_black_screen" ,# pdu left
+    "sim/custom/7x/z_right_black_screen", # pdu right
+    "sim/custom/7x/z_middle_up_black_screen", # mdu up 
+    "sim/custom/7x/z_middle_down_black_screen", # mdu down
+    "sim/custom/7x/z_mini_black_screen", # aux screen
 ])
 Params.__str__ = to_str
 
