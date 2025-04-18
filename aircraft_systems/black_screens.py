@@ -51,12 +51,12 @@ class MiddleUpBlackScreen(System):
     async def system_logic_task(cls):
         if dc.bat1.get_state() == 0:  
             await xp.set_param(cls.MIDDLE_UP, 1)
-        
         else:
-            if dc.rh_init.get_state() == 1: 
+            if dc.rh_init.get_state() == 1:
+                await xp.set_param(cls.MIDDLE_UP, 2)
+            elif dc.rh_init.get_state() == 0 and dc.lh_master.get_state() == 0 and dc.rh_master.get_state() == 1: 
                 await xp.set_param(cls.MIDDLE_UP, 2)
             else:
-                await asyncio.sleep(3)
                 await xp.set_param(cls.MIDDLE_UP, 0)
 
 
@@ -75,14 +75,30 @@ class RightBlackScreen(System):
         if dc.bat2.get_state() == 0:  
             await xp.set_param(cls.RIGHT, 1)
         else:
-            if dc.lh_master.get_state() == 1: 
+            if dc.lh_master.get_state() == 1 and dc.rh_master.get_state() == 1: 
                 await xp.set_param(cls.RIGHT, 2)
             else:
                 await xp.set_param(cls.RIGHT, 0)
             
-            if dc.rh_master.get_state() == 1:
-                await xp.set_param(cls.RIGHT, 2)
-                await asyncio.sleep(3)
-                await xp.set_param(cls.RIGHT, 0)
+
+class MiddleDownBlackScreen(System):
+    MIDDLE_DOWN = xp.Params["sim/custom/7x/z_middle_down_black_screen"]
+
+    logic_task = None
+    is_killing = False
+
+    @classmethod
+    def start_condition(cls):
+        return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        if dc.bat1.get_state() == 0:  
+            await xp.set_param(cls.MIDDLE_DOWN, 1)
+        else:
+            if dc.rh_init.get_state() == 0 and dc.lh_master.get_state() == 0 and dc.rh_master.get_state() == 0: 
+                await xp.set_param(cls.MIDDLE_DOWN, 0)
+            elif dc.rh_isol.get_state() == 0:
+                await xp.set_param(cls.MIDDLE_DOWN, 2)
             else:
-                await xp.set_param(cls.RIGHT, 0)
+                await xp.set_param(cls.MIDDLE_DOWN, 1)
