@@ -102,3 +102,22 @@ class MiddleDownBlackScreen(System):
                 await xp.set_param(cls.MIDDLE_DOWN, 2)
             else:
                 await xp.set_param(cls.MIDDLE_DOWN, 1)
+
+
+class MiniBlackScreen(System):
+    MINI = xp.Params["sim/custom/7x/z_mini_black_screen"]
+
+    logic_task = None
+    is_killing = False
+
+    @classmethod
+    def start_condition(cls):
+        return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        if dc.bat1.get_state() == 0:  
+            await xp.set_param(cls.MINI, 1)
+        else:
+            await asyncio.sleep(2)
+            await xp.set_param(cls.MINI, 0)

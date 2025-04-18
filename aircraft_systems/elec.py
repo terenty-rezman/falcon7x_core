@@ -113,6 +113,3 @@ class ElecLinePower(System):
         await xp.set_param(xp.Params["sim/custom/7x/z_line_bat2_ratgen_on"], int(line_bat2_ratgen_on))
         await xp.set_param(xp.Params["sim/custom/7x/z_line_apu_bat1_on"], int(line_apu_bat1_on))
         await xp.set_param(xp.Params["sim/custom/7x/z_line_gen1_gen3_on"], int(line_gen1_gen3_on))
-
-        await asyncio.sleep(0.3)
-        
