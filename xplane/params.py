@@ -202,6 +202,8 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_middle_up_black_screen", # mdu up 
     "sim/custom/7x/z_middle_down_black_screen", # mdu down
     "sim/custom/7x/z_mini_black_screen", # aux screen
+
+    "sim/cockpit2/electrical/battery_on[0]" # bat 1
 ])
 Params.__str__ = to_str
 

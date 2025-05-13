@@ -119,5 +119,9 @@ class MiniBlackScreen(System):
         if dc.bat1.get_state() == 0:  
             await xp.set_param(cls.MINI, 1)
         else:
-            await asyncio.sleep(2)
-            await xp.set_param(cls.MINI, 0)
+            if dc.lh_init.get_state() == 0:
+                await asyncio.sleep(2)
+                await xp.set_param(cls.MINI, 0)
+            else:
+                await xp.set_param(cls.MINI, 1)
+

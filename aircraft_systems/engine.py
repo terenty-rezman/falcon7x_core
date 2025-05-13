@@ -16,6 +16,7 @@ class ApuStart(System):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
     APU_STRATUP_STAGE = xp.Params["sim/custom/7x/z_apu_startup_stage"]
+    BATTERY_1 = xp.Params["sim/cockpit2/electrical/battery_on[0]"]
 
     TIME_SAMPLE = [0,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  37,  40] # time
     N1_SAMPLE = [0, 3, 6,  17,  26,  30,  37,  39,  44,  47,  53,  57,  63,  68,  71,  78,  82,  90,  93,  95,  96,  97,  98,  99,  100,  100,  100] # n1
@@ -69,8 +70,15 @@ class ApuStart(System):
 
                 await asyncio.sleep(2)
                 await xp.set_param(cls.APU_STRATUP_STAGE, 0)
+
+            async def bat1():
+                with synoptic_overrides.enable_param_overrides([cls.BATTERY_1]):
+                    synoptic_overrides.set_override_value(cls.BATTERY_1, 0)
+                    await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 15, timeout=60)
+                    synoptic_overrides.set_override_value(cls.BATTERY_1, 2)
+                    await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 50, timeout=60)
             
-            await asyncio.gather(n1(), temp(), elec_tab())
+            await asyncio.gather(n1(), temp(), elec_tab(), bat1())
             await asyncio.sleep(30)
 
 
