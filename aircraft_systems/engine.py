@@ -72,7 +72,7 @@ class ApuStart(System):
                 await xp.set_param(cls.APU_STRATUP_STAGE, 0)
 
             async def bat1():
-                with synoptic_overrides.enable_param_overrides([cls.BATTERY_1]):
+                async with synoptic_overrides.override_params([cls.BATTERY_1]):
                     synoptic_overrides.set_override_value(cls.BATTERY_1, 0)
                     await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 15, timeout=60)
                     synoptic_overrides.set_override_value(cls.BATTERY_1, 2)

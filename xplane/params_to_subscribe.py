@@ -39,7 +39,7 @@ class Subscribe:
         (Params["sim/cockpit2/switches/ram_air_turbine_on"], None, "tcp"), # dc supply - rat reset
         (Params["sim/custom/7x/rhisol"], None, "tcp"), # dc supply - rh isol
         (Params["sim/cockpit2/electrical/battery_on"], None, "tcp"), # dc supply - bat 1
-        (Params["sim/cockpit2/electrical/battery_on[0]"], None, "tcp"), # bat 1
+        (Params["sim/cockpit2/electrical/battery_on[0]"], 2, "udp"), # bat 1
 
         (Params["sim/weapons/target_index"], None, "tcp"), # air condition - pack
         (Params["sim/custom/7x/fpump0"], None, "tcp"), # fuel - boost1
