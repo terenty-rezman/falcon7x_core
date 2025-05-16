@@ -96,8 +96,7 @@ class pc_pitch_rh(pc_pitch_lh):
 
 @add_to_panel
 class pc_throttle_1(FloatStepper):
-    dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio"]
-    index = 0
+    dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[0]"]
 
     logic_left = 0
     logic_right = 10.0
@@ -110,12 +109,12 @@ class pc_throttle_1(FloatStepper):
 
 @add_to_panel
 class pc_throttle_2(pc_throttle_1):
-    index = 1
+    dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"]
 
 
 @add_to_panel
 class pc_throttle_3(pc_throttle_1):
-    index = 2
+    dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[2]"]
 
 
 @add_to_panel

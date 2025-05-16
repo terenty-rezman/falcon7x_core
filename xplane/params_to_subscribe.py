@@ -130,7 +130,9 @@ class Subscribe:
 
         (Params["sim/cockpit2/controls/left_brake_ratio"], 0.01, "tcp"), # pedal brake left
         (Params["sim/cockpit2/controls/right_brake_ratio"], 2, "udp"), # pedal brake right
-        (Params["sim/cockpit2/engine/actuators/throttle_ratio"], 3, "udp"), # throttle
+        (Params["sim/cockpit2/engine/actuators/throttle_ratio[0]"], 2, "udp"), # throttle
+        (Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"], 2, "udp"), # throttle
+        (Params["sim/cockpit2/engine/actuators/throttle_ratio[2]"], 2, "udp"), # throttle
 
         (Params["sim/cockpit/weapons/firing_rate"], None, "tcp"), # synoptic page
 
