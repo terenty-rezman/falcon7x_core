@@ -17,10 +17,16 @@ class ApuStart(System):
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
     APU_STRATUP_STAGE = xp.Params["sim/custom/7x/z_apu_startup_stage"]
     BATTERY_1 = xp.Params["sim/cockpit2/electrical/battery_on[0]"]
+    BAT_1_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[0]"]
+    BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
+    APU_AMPS = xp.Params["sim/cockpit2/electrical/APU_generator_amps"]
 
-    TIME_SAMPLE = [0,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,  37,  40] # time
-    N1_SAMPLE = [0, 3, 6,  17,  26,  30,  37,  39,  44,  47,  53,  57,  63,  68,  71,  78,  82,  90,  93,  95,  96,  97,  98,  99,  100,  100,  100] # n1
-    TEMP_SAMPLE = [0, 10, 10,  39,  145,  154,  170,  191,  256,  279,  293,  294,  288,  276,  268,  247,  239,  220,  216,  212,  207,  212,  218,  228,  234,  245,  247] # apu temp
+    TIME_SAMPLE = [0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 37, 40, 43, 44, 45, 46, 47, 48, 49, 30] # time
+    N1_SAMPLE = [0, 3, 6, 17, 26, 30, 37, 39, 44, 47, 53, 57, 63, 68, 71, 78, 82, 90, 93, 95, 96, 97, 98, 99, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100] # n1
+    TEMP_SAMPLE = [10, 10, 10, 39, 145, 154, 170, 191, 256, 279, 293, 294, 288, 276, 268, 247, 239, 220, 216, 212, 207, 212, 218, 228, 234, 245, 247, 245, 243, 240, 240, 240, 240, 240, 240] # apu temp
+    BAT_1_AMPS_SAMPLE = [450, 522, 450, 380, 322, 240, 182, 162, 100, 82, 74.4, 66.8, 59.2, 51.6, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, -118, -96, -70, -58, -50, -42, -30, -35]
+    BAT_2_AMPS_SAMPLE = [86, 86, 86, 86, 86, 86, 86, 86, 80, 62, 56, 50, 44, 38, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, -50, -48, -40, -30, -34, -28, -24, -24]
+    APU_AMPS_SAMPLE = [-610, -516, -459.514, -389.492, -322, -249.448, -180, -143, -56, -52, -41.6, -31.2, -20.8, -10.4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 238, 214, 182, 168, 152, 142, 134, 130]
 
     logic_task = None
 
@@ -44,7 +50,7 @@ class ApuStart(System):
 
     @classmethod
     async def system_logic_task(cls):
-        async with synoptic_overrides.override_params([cls.APU_N1, cls.APU_TEMP]):
+        async with synoptic_overrides.override_params([cls.APU_N1, cls.APU_TEMP, cls.BAT_1_AMPS, cls.BAT_2_AMPS, cls.APU_AMPS]):
             async def n1():
                 await synoptic_overrides._1d_table_anim(
                     cls.APU_N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
@@ -77,8 +83,26 @@ class ApuStart(System):
                     await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 15, timeout=60)
                     synoptic_overrides.set_override_value(cls.BATTERY_1, 2)
                     await xp_ac.ACState.wait_until_parameter_condition(cls.APU_N1, lambda p: p > 50, timeout=60)
+
+            async def apu_amps():
+                amps = [-1 * i for i in cls.APU_AMPS_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_AMPS, cls.TIME_SAMPLE, amps
+                )
+
+            async def bat_1_amps():
+                amps = [-1 * i for i in cls.BAT_1_AMPS_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.BAT_1_AMPS, cls.TIME_SAMPLE, amps
+                )
+
+            async def bat_2_amps():
+                amps = [-1 * i for i in cls.BAT_2_AMPS_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.BAT_2_AMPS, cls.TIME_SAMPLE, amps
+                )
             
-            await asyncio.gather(n1(), temp(), elec_tab(), bat1())
+            await asyncio.gather(n1(), temp(), elec_tab(), bat1(), apu_amps(), bat_1_amps(), bat_2_amps())
             await asyncio.sleep(30)
 
 
