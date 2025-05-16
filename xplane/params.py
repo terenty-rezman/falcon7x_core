@@ -231,6 +231,7 @@ Commands = Enum('XplaneCommands', [
     "sim/autopilot/vertical_speed", # front panel - vs mode
     "sim/autopilot/FMS", # front panel - vs mode
     "sim/autopilot/altitude_hold", # front panel - alt
+    "sim/flight_controls/pitch_trim_up", # trim up
 ])
 
 Commands.__str__ = to_str
