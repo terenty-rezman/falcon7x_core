@@ -140,9 +140,44 @@ class pc_heading_total(FloatStepper):
 
 @add_to_panel
 class pc_left_brake_lh(FloatStepper):
+    dataref = None
+
+    logic_left = 0.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class pc_left_brake_rh(FloatStepper):
+    dataref = None
+
+    logic_left = 0.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        lh_state = pc_left_brake_lh.get_state()
+        await pc_left_brake_total.set_state(
+            cls.state + lh_state
+        )
+
+
+@add_to_panel
+class pc_left_brake_total(FloatStepper):
     dataref = Params["sim/cockpit2/controls/left_brake_ratio"]
 
-    logic_left = -10.0
+    logic_left = 0.0
     logic_right = 10.0
     left_most_value = 0
     right_most_value = 1.0
@@ -153,9 +188,9 @@ class pc_left_brake_lh(FloatStepper):
 
 @add_to_panel
 class pc_right_brake_lh(FloatStepper):
-    dataref = Params["sim/cockpit2/controls/right_brake_ratio"]
+    dataref = None
 
-    logic_left = -10.0
+    logic_left = 0.0
     logic_right = 10.0
     left_most_value = 0
     right_most_value = 1.0
@@ -165,13 +200,39 @@ class pc_right_brake_lh(FloatStepper):
 
 
 @add_to_panel
-class pc_left_brake_rh(pc_left_brake_lh):
-    pass
+class pc_right_brake_rh(FloatStepper):
+    dataref = None
+
+    logic_left = 0.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        lh_state = pc_right_brake_lh.get_state()
+        await pc_right_brake_total.set_state(
+            cls.state + lh_state
+        )
 
 
 @add_to_panel
-class pc_right_brake_rh(pc_right_brake_lh):
-    pass
+class pc_right_brake_total(FloatStepper):
+    dataref = Params["sim/cockpit2/controls/right_brake_ratio"]
+
+    logic_left = 0.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
 
 
 @add_to_panel
