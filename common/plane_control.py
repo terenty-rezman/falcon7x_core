@@ -12,8 +12,8 @@ class pc_bank_lh(FloatStepper):
 
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = 1.0 
-    right_most_value = -1.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
     step = 0.01
 
     val_type = float
@@ -80,18 +80,69 @@ class pc_right_brake_rh(pc_right_brake_lh):
 
 
 @add_to_panel
-class pc_heading_rh(pc_heading_lh):
-    pass
+class pc_heading_rh(FloatStepper):
+    dataref = Params["sim/joystick/yoke_heading_ratio_copilot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        super().set_state(state)
+
+        lh_state = pc_heading_lh.get_state()
+        pc_heading_lh.set_state(
+            max(cls.state, lh_state)
+        )
 
 
 @add_to_panel
-class pc_bank_rh(pc_bank_lh):
-    pass
+class pc_bank_rh(FloatStepper):
+    dataref = Params["sim/joystick/yoke_roll_ratio_copilot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        super().set_state(state)
+
+        lh_state = pc_bank_lh.get_state()
+        pc_bank_lh.set_state(
+            max(cls.state, lh_state)
+        )
 
 
 @add_to_panel
-class pc_pitch_rh(pc_pitch_lh):
-    pass
+class pc_pitch_rh(FloatStepper):
+    dataref = Params["sim/joystick/yoke_pitch_ratio_copilot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        super().set_state(state)
+
+        lh_state = pc_pitch_lh.get_state()
+        pc_pitch_lh.set_state(
+            max(cls.state, lh_state)
+        )
 
 
 @add_to_panel
