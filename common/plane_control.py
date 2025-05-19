@@ -8,6 +8,40 @@ import cas.cas as cas
 
 @add_to_panel
 class pc_bank_lh(FloatStepper):
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = 1.0 
+    right_most_value = -1.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class pc_bank_rh(FloatStepper):
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        lh_state = pc_bank_lh.get_state()
+        await pc_bank_total.set_state(
+            cls.state + lh_state
+        )
+
+
+@add_to_panel
+class pc_bank_total(FloatStepper):
+    # dataref = Params["sim/joystick/yoke_roll_ratio_copilot"]
     dataref = Params["sim/joystick/yoke_roll_ratio"]
 
     logic_left = -10.0
@@ -21,6 +55,41 @@ class pc_bank_lh(FloatStepper):
 
 @add_to_panel
 class pc_pitch_lh(FloatStepper):
+    # dataref = Params["sim/joystick/yoke_pitch_ratio"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class pc_pitch_rh(FloatStepper):
+    # dataref = Params["sim/joystick/yoke_pitch_ratio_copilot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        lh_state = pc_pitch_lh.get_state()
+        await pc_pitch_total.set_state(
+            cls.state + lh_state
+        )
+        
+
+@add_to_panel
+class pc_pitch_total(FloatStepper):
     dataref = Params["sim/joystick/yoke_pitch_ratio"]
 
     logic_left = -10.0
@@ -34,11 +103,46 @@ class pc_pitch_lh(FloatStepper):
 
 @add_to_panel
 class pc_heading_lh(FloatStepper):
-    dataref = Params["sim/joystick/yoke_heading_ratio"]
+    # dataref = Params["sim/joystick/yoke_heading_ratio"]
 
     logic_left = -10.0
     logic_right = 10.0
     left_most_value = -1.0 
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class pc_heading_rh(FloatStepper):
+    # dataref = Params["sim/joystick/yoke_heading_ratio_copilot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = 0
+    right_most_value = 1.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        lh_state = pc_heading_lh.get_state()
+        await pc_heading_total.set_state(
+            cls.state + lh_state
+        )
+
+
+@add_to_panel
+class pc_heading_total(FloatStepper):
+    dataref = Params["sim/joystick/yoke_heading_ratiot"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = 0
     right_most_value = 1.0
     step = 0.01
 
@@ -57,6 +161,7 @@ class pc_left_brake_lh(FloatStepper):
 
     val_type = float
 
+
 @add_to_panel
 class pc_right_brake_lh(FloatStepper):
     dataref = Params["sim/cockpit2/controls/right_brake_ratio"]
@@ -74,75 +179,10 @@ class pc_right_brake_lh(FloatStepper):
 class pc_left_brake_rh(pc_left_brake_lh):
     pass
 
+
 @add_to_panel
 class pc_right_brake_rh(pc_right_brake_lh):
     pass
-
-
-@add_to_panel
-class pc_heading_rh(FloatStepper):
-    dataref = Params["sim/joystick/yoke_heading_ratio_copilot"]
-
-    logic_left = -10.0
-    logic_right = 10.0
-    left_most_value = 0
-    right_most_value = 1.0
-    step = 0.01
-
-    val_type = float
-
-    @classmethod
-    async def set_state(cls, state: float):
-        super().set_state(state)
-
-        lh_state = pc_heading_lh.get_state()
-        pc_heading_lh.set_state(
-            max(cls.state, lh_state)
-        )
-
-
-@add_to_panel
-class pc_bank_rh(FloatStepper):
-    dataref = Params["sim/joystick/yoke_roll_ratio_copilot"]
-
-    logic_left = -10.0
-    logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
-    step = 0.01
-
-    val_type = float
-
-    @classmethod
-    async def set_state(cls, state: float):
-        super().set_state(state)
-
-        lh_state = pc_bank_lh.get_state()
-        pc_bank_lh.set_state(
-            max(cls.state, lh_state)
-        )
-
-
-@add_to_panel
-class pc_pitch_rh(FloatStepper):
-    dataref = Params["sim/joystick/yoke_pitch_ratio_copilot"]
-
-    logic_left = -10.0
-    logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
-    step = 0.01
-
-    val_type = float
-
-    @classmethod
-    async def set_state(cls, state: float):
-        super().set_state(state)
-
-        lh_state = pc_pitch_lh.get_state()
-        pc_pitch_lh.set_state(
-            max(cls.state, lh_state)
-        )
 
 
 @add_to_panel
@@ -209,6 +249,7 @@ class pc_parkbrake_full:
             await pc_parkbrake.set_state(1)
         elif pc_parkbrake_half.state == 0:
             await pc_parkbrake.set_state(0)
+
 
 @add_to_panel
 class pc_gear(TwoStateButton):

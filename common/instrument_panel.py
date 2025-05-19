@@ -1,4 +1,5 @@
 import array
+import traceback
 import asyncio
 from collections import OrderedDict
 import math
@@ -439,61 +440,64 @@ async def receive_uso_task(udp_endpoint):
     global uso_floats_state
 
     while True:
-        # new_state, (host, port) = await udp_endpoint.receive()
-        new_state = None
+        try:
+            # new_state, (host, port) = await udp_endpoint.receive()
+            new_state = None
 
-        # receive all datagrams and continue with the last one
-        while True:
-            try:
-                new_state, (host, port) = udp_endpoint.receive_nowait()
-            except asyncio.QueueEmpty:
-                break
+            # receive all datagrams and continue with the last one
+            while True:
+                try:
+                    new_state, (host, port) = udp_endpoint.receive_nowait()
+                except asyncio.QueueEmpty:
+                    break
 
-        if new_state is None:
-            new_state, (host, port) = await udp_endpoint.receive()
+            if new_state is None:
+                new_state, (host, port) = await udp_endpoint.receive()
 
-        new_state = uso_receive.unpack_packet(new_state)
-        new_bit_state = new_state["bits"]
-        new_floats_state = new_state["floats"]
+            new_state = uso_receive.unpack_packet(new_state)
+            new_bit_state = new_state["bits"]
+            new_floats_state = new_state["floats"]
 
-        # push buttons
-        for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
-            old_state = uso_bits_state[bit_idx]
-            new_state = new_bit_state[bit_idx]
-            if new_state != old_state:
-                await handle_uso_button_state(button_id, new_state)
+            # push buttons
+            for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
+                old_state = uso_bits_state[bit_idx]
+                new_state = new_bit_state[bit_idx]
+                if new_state != old_state:
+                    await handle_uso_button_state(button_id, new_state)
 
-        # switches 
-        for switch_id, bit_idx in uso_receive.uso_switches_receive_map.items():
-            old_state = uso_bits_state[bit_idx]
-            new_state = new_bit_state[bit_idx]
-            if new_state != old_state:
-                await handle_uso_switch_state(switch_id, new_state)
+            # switches 
+            for switch_id, bit_idx in uso_receive.uso_switches_receive_map.items():
+                old_state = uso_bits_state[bit_idx]
+                new_state = new_bit_state[bit_idx]
+                if new_state != old_state:
+                    await handle_uso_switch_state(switch_id, new_state)
 
-        # rotate switches
-        for rotate_id, bit_idx in uso_receive.uso_rotate_switch_receive_map.items():
-            first_idx = bit_idx
-            second_idx = bit_idx + 1
+            # rotate switches
+            for rotate_id, bit_idx in uso_receive.uso_rotate_switch_receive_map.items():
+                first_idx = bit_idx
+                second_idx = bit_idx + 1
 
-            old_state = (
-                uso_bits_state[first_idx], uso_bits_state[second_idx]
-            )
-            new_state = (
-                new_bit_state[first_idx], new_bit_state[second_idx]
-            )
+                old_state = (
+                    uso_bits_state[first_idx], uso_bits_state[second_idx]
+                )
+                new_state = (
+                    new_bit_state[first_idx], new_bit_state[second_idx]
+                )
 
-            if new_state != old_state:
-                await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
-        
-        # floats fields
-        for float_id, bit_idx in uso_receive.uso_floats_receive_map.items():
-            old_state = uso_floats_state[bit_idx]
-            new_state = new_floats_state[bit_idx]
-            if not math.isclose(old_state, new_state, abs_tol=0.0001):
-                await handle_uso_float_state(float_id, new_state)
+                if new_state != old_state:
+                    await handle_uso_rotate_switch_state(rotate_id, new_state, old_state)
+            
+            # floats fields
+            for float_id, bit_idx in uso_receive.uso_floats_receive_map.items():
+                old_state = uso_floats_state[bit_idx]
+                new_state = new_floats_state[bit_idx]
+                if not math.isclose(old_state, new_state, abs_tol=0.0001):
+                    await handle_uso_float_state(float_id, new_state)
 
-        uso_bits_state = new_bit_state
-        uso_floats_state = new_floats_state
+            uso_bits_state = new_bit_state
+            uso_floats_state = new_floats_state
+        except Exception as e:
+            print(traceback.format_exc())
 
 
 import uso.uso_send as uso_send

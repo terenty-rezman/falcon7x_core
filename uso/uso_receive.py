@@ -248,7 +248,7 @@ uso_floats_receive_map = {
    "pc_left_brake_rh": "A007", # Прав пед левый тормоз
    "pc_heading_rh": "A008", # Прав пед  датчик перемещений
    "pc_bank_rh": "A009", # Правая БРУ крен
-   "pc_pith_rh": "A010", # Правая БРУ тангаж
+   "pc_pitch_rh": "A010", # Правая БРУ тангаж
    "pc_throttle_1": "A013", # 01 hand Левая ручка
    "pc_throttle_2": "A014", # 02 hand Средняя ручка
    "pc_throttle_3": "A016", # 03 hand Правая ручка
