@@ -8,11 +8,9 @@ import cas.cas as cas
 
 @add_to_panel
 class pc_bank_lh(FloatStepper):
-
+    dataref = None
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = 1.0 
-    right_most_value = -1.0
     step = 0.01
 
     val_type = float
@@ -20,11 +18,9 @@ class pc_bank_lh(FloatStepper):
 
 @add_to_panel
 class pc_bank_rh(FloatStepper):
-
+    dataref = None
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
     step = 0.01
 
     val_type = float
@@ -41,7 +37,6 @@ class pc_bank_rh(FloatStepper):
 
 @add_to_panel
 class pc_bank_total(FloatStepper):
-    # dataref = Params["sim/joystick/yoke_roll_ratio_copilot"]
     dataref = Params["sim/joystick/yoke_roll_ratio"]
 
     logic_left = -10.0
@@ -55,12 +50,9 @@ class pc_bank_total(FloatStepper):
 
 @add_to_panel
 class pc_pitch_lh(FloatStepper):
-    # dataref = Params["sim/joystick/yoke_pitch_ratio"]
-
+    dataref = None
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
     step = 0.01
 
     val_type = float
@@ -68,12 +60,9 @@ class pc_pitch_lh(FloatStepper):
 
 @add_to_panel
 class pc_pitch_rh(FloatStepper):
-    # dataref = Params["sim/joystick/yoke_pitch_ratio_copilot"]
-
+    dataref = None
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = -1.0 
-    right_most_value = 1.0
     step = 0.01
 
     val_type = float
@@ -84,7 +73,7 @@ class pc_pitch_rh(FloatStepper):
 
         lh_state = pc_pitch_lh.get_state()
         await pc_pitch_total.set_state(
-            cls.state + lh_state
+            cls.state - lh_state
         )
         
 
@@ -103,7 +92,7 @@ class pc_pitch_total(FloatStepper):
 
 @add_to_panel
 class pc_heading_lh(FloatStepper):
-    # dataref = Params["sim/joystick/yoke_heading_ratio"]
+    dataref = None
 
     logic_left = -10.0
     logic_right = 10.0
@@ -116,7 +105,7 @@ class pc_heading_lh(FloatStepper):
 
 @add_to_panel
 class pc_heading_rh(FloatStepper):
-    # dataref = Params["sim/joystick/yoke_heading_ratio_copilot"]
+    dataref = None
 
     logic_left = -10.0
     logic_right = 10.0
@@ -138,7 +127,7 @@ class pc_heading_rh(FloatStepper):
 
 @add_to_panel
 class pc_heading_total(FloatStepper):
-    dataref = Params["sim/joystick/yoke_heading_ratiot"]
+    dataref = Params["sim/joystick/yoke_heading_ratio"]
 
     logic_left = -10.0
     logic_right = 10.0
