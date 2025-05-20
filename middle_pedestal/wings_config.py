@@ -32,7 +32,7 @@ class wc_sf(FloatStepper):
     dataref = xp.Params["sim/multiplayer/controls/flap_request"]
     index = 0
 
-    logic_left = -1.0
+    logic_left = 0
     logic_right = 1.0
 
     left_most_value = 0
@@ -55,10 +55,10 @@ class wc_ab(FloatStepper):
     dataref = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
     index = 0
 
-    logic_left = -1.0
+    logic_left = -0.5
     logic_right = 1.0
 
-    left_most_value = 0
+    left_most_value = -0.5
     right_most_value = 1.0
 
     step = 0.01
