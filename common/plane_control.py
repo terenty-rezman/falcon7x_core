@@ -109,7 +109,7 @@ class pc_heading_rh(FloatStepper):
 
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = 0
+    left_most_value = -1.0
     right_most_value = 1.0
     step = 0.01
 
@@ -131,7 +131,7 @@ class pc_heading_total(FloatStepper):
 
     logic_left = -10.0
     logic_right = 10.0
-    left_most_value = 0
+    left_most_value = -1.0
     right_most_value = 1.0
     step = 0.01
 

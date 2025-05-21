@@ -248,14 +248,13 @@ uso_floats_receive_map = {
    "pc_right_brake_rh": "A006", # Прав пед правый тормоз
    "pc_left_brake_rh": "A007", # Прав пед левый тормоз
    "pc_heading_rh": "A008", # Прав пед  датчик перемещений
-   "pc_heading_rh": "A008", # Прав пед  датчик перемещений
    "pc_bank_rh": "A009", # Правая БРУ крен
    "pc_pitch_rh": "A010", # Правая БРУ тангаж
    "pc_throttle_1": "A013", # 01 hand Левая ручка
    "pc_throttle_2": "A014", # 02 hand Средняя ручка
    "pc_throttle_3": "A016", # 03 hand Правая ручка
-   "wc_sf": "A016", # switch SLATS/FLAPS SF 2
-   "wc_ab": "A017", # switch AIRBRAKES AB 2
+   "wc_sf": "A017", # switch SLATS/FLAPS SF 2
+   "wc_ab": "A018", # switch AIRBRAKES AB 2
    "aft_temp": "A027", # PAX AFT TEMP ADC=
    "fwd_temp": "A028", # PAX FWD TEMP ADC=
    "crew_temp": "A029", # CREW TEMP ADC=
