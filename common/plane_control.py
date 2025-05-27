@@ -31,9 +31,11 @@ class pc_bank_rh(FloatStepper):
         await super().set_state(state)
 
         lh_state = pc_bank_lh.get_state()
-        await pc_bank_total.set_state(
-            cls.state + lh_state
-        )
+
+        total = cls.state + lh_state
+        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 0.5)
+
+        await pc_bank_total.set_state(total)
 
 
 @add_to_panel
@@ -123,15 +125,7 @@ class pc_heading_rh(FloatStepper):
         lh_state = pc_heading_lh.get_state()
         total = cls.state + lh_state
 
-        dead_zone = 1 # Зона нечувствительности
-
-        if math.fabs(total) < dead_zone:
-            total = 0
-        else:
-            if total > 0:
-                total = (cls.logic_right + dead_zone)/cls.logic_right * total - dead_zone
-            else:
-                total = (cls.logic_left - dead_zone)/cls.logic_left * total + dead_zone
+        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
         await pc_heading_total.set_state(total)
 

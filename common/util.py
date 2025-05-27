@@ -1,6 +1,7 @@
 import time
 import asyncio
 import inspect
+import math
 
 from common.xp_aircraft_state import ACState
 import xplane.master as xp
@@ -64,3 +65,16 @@ async def in_sequence(*tasks):
                 task.close()
             raise e
 
+
+def dead_zone(x, left, right, dead_zone):
+    """ Зона нечувствительности """
+
+    if math.fabs(x) < dead_zone:
+        x = 0
+    else:
+        if x > 0:
+            x = (right + dead_zone)/right * x - dead_zone
+        else:
+            x = (left - dead_zone)/left * x + dead_zone
+    
+    return x
