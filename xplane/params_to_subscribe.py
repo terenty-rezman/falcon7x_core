@@ -28,6 +28,7 @@ class Subscribe:
         (Params["sim/cockpit2/electrical/APU_generator_on"], None, "tcp"), # apu master
         (Params["sim/cockpit2/electrical/APU_N1_percent"], 2, "udp"), # apu start stop
         (Params["sim/cockpit2/electrical/APU_starter_switch"], None, "tcp"), # apu start stop
+        (Params["sim/cockpit2/controls/gear_handle_down"], None, "tcp"), # gear
 
         (Params["sim/custom/7x/selecthyd"], None, "tcp"), # backup pump hydraulics
 
