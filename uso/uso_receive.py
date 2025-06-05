@@ -140,9 +140,9 @@ uso_pushbuttons_receive_map = {
 
 uso_switches_receive_map = {
     "en_motor": "I03_c09", # Switch MOTOR [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
-    "en_ign": "I03_c10", # Switch IGN [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
-    "en_normal": "I03_c11", # Switch NORMAL [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
-    "en_start": "I03_c12", # Switch START [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
+    "en_ign": "I03_c12", #"I03_c10", # Switch IGN [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
+    "en_normal": "I03_c10", #"I03_c11", # Switch NORMAL [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
+    "en_start": "I03_c11", #"I03_c12", # Switch START [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]
     "en_fuel_1": "I03_c16", # FUEL ON 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]
     "en_fuel_2": "I03_c17", # FUEL ON 2 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]
     "en_fuel_3": "I03_c18", # FUEL ON 3 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]

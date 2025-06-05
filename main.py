@@ -55,7 +55,7 @@ def on_new_xp_data(type, dataref, value):
 
     ACState.update_data_callbacks()
     ACSystems.update()
-    print(dataref, value)
+    # print(dataref, value)
 
 
 async def ac_state_callback_task():
