@@ -313,7 +313,7 @@ class pc_gear(TwoStateButton):
 
 
 @add_to_panel
-class pc_gear_float(TwoStateButton):
+class pc_gear_float(FloatStepper):
     dataref = None
     logic_left = 0
     logic_right = 1
