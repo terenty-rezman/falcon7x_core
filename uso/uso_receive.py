@@ -258,7 +258,8 @@ uso_floats_receive_map = {
    "aft_temp": "A027", # PAX AFT TEMP ADC=
    "fwd_temp": "A028", # PAX FWD TEMP ADC=
    "crew_temp": "A029", # CREW TEMP ADC=
-   "crew_ratio": "A030" # CREW RATIO ADC=
+   "crew_ratio": "A030", # CREW RATIO ADC=
+   "pc_gear_float": "A011", # 02 Рычаг ручного выпуска шасси (# Кран-шасси #)
 }
 
 

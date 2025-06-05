@@ -310,3 +310,23 @@ class pc_parkbrake_full:
 class pc_gear(TwoStateButton):
     dataref: Params = Params["sim/cockpit2/controls/gear_handle_down"]
     states = [0, 1]
+
+
+@add_to_panel
+class pc_gear_float(TwoStateButton):
+    dataref = None
+    logic_left = 0
+    logic_right = 1
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+
+        gear = 0
+        if state > 0.5:
+            gear = 1
+
+        await pc_gear.set_state(gear)
