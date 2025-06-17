@@ -219,8 +219,7 @@ uso_switches_receive_map = {
     "il_emerge_lights_off": "I08_a09", #  SWITCH OFF [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "il_emerge_lights_on": "I08_a10", # SWITCH ON [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"fire_test": "I07_a09", # FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
-    "pc_parkbrake_half": "I03_a15", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
-    "pc_parkbrake_full": "I03_a21", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
+
 
 } # switches
 
@@ -250,16 +249,18 @@ uso_floats_receive_map = {
    "pc_heading_rh": "A008", # Прав пед  датчик перемещений
    "pc_bank_rh": "A009", # Правая БРУ крен
    "pc_pitch_rh": "A010", # Правая БРУ тангаж
-   "pc_throttle_1": "A013", # 01 hand Левая ручка
-   "pc_throttle_2": "A014", # 02 hand Средняя ручка
-   "pc_throttle_3": "A016", # 03 hand Правая ручка
-   "wc_sf": "A017", # switch SLATS/FLAPS SF 2
-   "wc_ab": "A018", # switch AIRBRAKES AB 2
-   "aft_temp": "A027", # PAX AFT TEMP ADC=
-   "fwd_temp": "A028", # PAX FWD TEMP ADC=
-   "crew_temp": "A029", # CREW TEMP ADC=
-   "crew_ratio": "A030", # CREW RATIO ADC=
+   "pc_throttle_1": "A015", # 01 hand Левая ручка
+   "pc_throttle_2": "A016", # 02 hand Средняя ручка
+   "pc_throttle_3": "A018", # 03 hand Правая ручка
+   "wc_sf": "A019", # switch SLATS/FLAPS SF 2
+   "wc_ab": "A020", # switch AIRBRAKES AB 2
+   "aft_temp": "A029", # PAX AFT TEMP ADC=
+   "fwd_temp": "A030", # PAX FWD TEMP ADC=
+   "crew_temp": "A031", # CREW TEMP ADC=
+   "crew_ratio": "A032", # CREW RATIO ADC=
    "pc_gear_float": "A011", # 02 Рычаг ручного выпуска шасси (# Кран-шасси #)
+    "pc_parkbrake_half": "A012", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
+    "pc_parkbrake_full": "A013", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
 }
 
 

@@ -22,32 +22,35 @@ uso_float_field_names = [
 	"A010",	# Правая БРУ тангаж
 # [4] : 02 Рычаг ручного выпуска шасси (# Кран-шасси #)
 	"A011",	# SWITCH i
-# [5] : 33 Attitude Display
-	"A012",	# BRT ADC=
-# [6] : 01 Сборка РУД
-	"A013",	# 01 hand Левая ручка
-	"A014",	# 02 hand Средняя ручка
-	"A015",	# 02 hand ball Доп ручка
-	"A016",	# 03 hand Правая ручка
-# [7] : 06 Пульт управления механизацией крыла
-	"A017",	# switch SLATS/FLAPS SF 2
-	"A018",	# switch AIRBRAKES AB 2
-# [8] : 16 Аудио панель (Audio panel) правая
-	"A019",	# BKUP ADC
-	"A020",	# MIC ADC
-# [9] : 17 Аудио панель (Audio panel) левая
+# [5] : 03 - 15 Рукоятка аварийного/стояночного тормоза (//--//) - Кнопка-переключатель 115/220
+	"A012",	# SWITCH BREAK PARK Первое положение
+	"A013",	# SWITCH BREAK PARK Второе положение
+# [6] : 33 Attitude Display
+    "A014",	# BRT ADC=
+# [7] : 01 Сборка РУД
+	"A015",	# 01 hand Левая ручка
+	"A016",	# 02 hand Средняя ручка
+	"A017",	# 02 hand ball Доп ручка
+	"A018",	# 03 hand Правая ручка
+# [8] : 06 Пульт управления механизацией крыла
+	"A019",	# switch SLATS/FLAPS SF 2
+	"A020",	# switch AIRBRAKES AB 2
+# [9] : 16 Аудио панель (Audio panel) правая
 	"A021",	# BKUP ADC
 	"A022",	# MIC ADC
-# [10] : 18 (Reversion Panel)
-	"A023",	# DIM 1 ADC
-	"A024",	# DIM 2 ADC
-	"A025",	# DIM 3 ADC
-	"A026",	# DIM 4 ADC
-# [11] : 04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED
-	"A027",	# PAX AFT TEMP ADC=
-	"A028",	# PAX FWD TEMP ADC=
-	"A029",	# CREW TEMP ADC=
-	"A030",	# CREW RATIO ADC=
+# [10] : 17 Аудио панель (Audio panel) левая
+	"A023",	# BKUP ADC
+	"A024",	# MIC ADC
+# [11] : 18 (Reversion Panel)
+	"A025",	# DIM 1 ADC
+	"A026",	# DIM 2 ADC
+	"A027",	# DIM 3 ADC
+	"A028",	# DIM 4 ADC
+# [12] : 04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS 08 AIR CONDITION - BLEED
+	"A029",	# PAX AFT TEMP ADC=
+	"A030",	# PAX FWD TEMP ADC=
+	"A031",	# CREW TEMP ADC=
+	"A032",	# CREW RATIO ADC=
 ]
 
 uso_bitfield_names = [

@@ -284,6 +284,8 @@ class pc_parkbrake_half:
 
     @classmethod
     async def set_state(cls, state):
+        state = 1 if state > 1 else 0
+
         cls.state = state
 
         if cls.state == 1:
@@ -298,6 +300,9 @@ class pc_parkbrake_full:
 
     @classmethod
     async def set_state(cls, state):
+        # float to int
+        state = 1 if state > 1 else 0
+
         cls.state = state
 
         if cls.state == 1:
