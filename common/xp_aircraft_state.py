@@ -5,6 +5,7 @@ import traceback
 from dataclasses import dataclass
 from asyncio import Future
 from typing import Callable, Optional, Any
+from collections import defaultdict
 
 from xplane.params import Params
 
@@ -27,7 +28,7 @@ class ACState:
 
     _data_callbacks: list[DataCallback] = []
 
-    enabled_overrides = set()
+    enabled_overrides = defaultdict(int)
 
     @classmethod
     def clear_all(cls):
@@ -106,10 +107,15 @@ class ACState:
 
     @classmethod
     def enable_param_overrides(cls, params_list: List[Params]):
-        cls.enabled_overrides |= set(params_list)
-        # params_list = [str(p) for p in params_list]
+        for p in params_list:
+            cls.enabled_overrides[p] += 1
 
     @classmethod
     def disable_param_overrides(cls, params_list: List[Params]):
-        cls.enabled_overrides -= set(params_list)
-        # params_list = [str(p) for p in params_list]
+        for p in params_list:
+            cls.enabled_overrides[p] -= 1
+
+        for p, count in list(cls.enabled_overrides.items()):
+            if count <= 0:
+                del cls.enabled_overrides[p]
+

@@ -103,7 +103,7 @@ class ApuStart(System):
                 )
             
             await asyncio.gather(n1(), temp(), elec_tab(), bat1(), apu_amps(), bat_1_amps(), bat_2_amps())
-            await asyncio.sleep(30)
+            # await asyncio.sleep(30)
 
 
 class EngineStart1(System):
@@ -244,7 +244,7 @@ class EngineStart1(System):
                 )
             
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
-            await asyncio.sleep(30)
+            # await asyncio.sleep(30)
 
     @classmethod
     async def killing_task(cls):

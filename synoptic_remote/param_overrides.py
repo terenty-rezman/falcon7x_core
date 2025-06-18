@@ -27,7 +27,7 @@ async def enable_param_overrides(params_list: List[Params]):
 
 async def disable_param_overrides(params_list: List[Params]):
     xp_ac.ACState.disable_param_overrides(params_list)
-    params_list = [str(p) for p in params_list]
+    params_list = [str(p) for p in params_list if p not in xp_ac.ACState.enabled_overrides]
     await synoptic_connection.disable_param_overrides(params_list)
 
 
@@ -49,8 +49,7 @@ def set_override_value(param: Params, value):
         xp_ac.ACState.set_curr_param(param, value)
         overrides_values[str(param)] = value
     else:
-        # raise Exception(f"param {param} is not enabled for override!")
-        pass
+        raise Exception(f"param {param} is not enabled for override!")
 
 
 def linear_anim(param: Params, start_val, finish_val, interval_sec: float, sleep_sec: float = 0.1):
