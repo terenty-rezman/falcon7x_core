@@ -44,10 +44,9 @@ class wc_sf(FloatStepper):
 
 
 @add_to_panel
-class wc_backup_slats(PushButton):
-    @classmethod
-    async def click(cls):
-        pass
+class wc_backup_slats(NLocalStateButton):
+    states = [0, 1]
+    state = 0
 
 
 @add_to_panel

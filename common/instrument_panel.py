@@ -457,7 +457,6 @@ async def receive_uso_task(udp_endpoint):
             else:
                 new_state, (host, port) = await udp_endpoint.receive()
 
-
             if new_state is None:
                 new_state, (host, port) = await udp_endpoint.receive()
 

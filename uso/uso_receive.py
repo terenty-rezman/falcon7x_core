@@ -64,7 +64,6 @@ uso_pushbuttons_receive_map = {
     "clc_next_rh": "I04_a22", # switch NEXT [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [05 Пульт управления чеклистом (CLC) правый]
     "clc_prev_rh": "I04_a23", # switch PREV [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [05 Пульт управления чеклистом (CLC) правый]
     "clc_cl_rh": "I04_a24", # C/L [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [05 Пульт управления чеклистом (CLC) правый]
-    "wc_backup_slats": "I03_b02", # BACK-UP SLATS [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [06 Пульт управления механизацией крыла]
     #
     "tb_mic_rh": "I04_a26", # MIC [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)]
     "tb_disp_left_rh": "I04_a27", # DISP LEFT [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)]
@@ -221,6 +220,7 @@ uso_switches_receive_map = {
 	"fire_test": "I07_a09", # FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "tb_reserv_lh": "I08_a16", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "tb_reserv_rh": "I08_a21", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)] 
+    "wc_backup_slats": "I03_b02", # BACK-UP SLATS [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [06 Пульт управления механизацией крыла]
 } # switches
 
 
