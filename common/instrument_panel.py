@@ -439,17 +439,24 @@ async def receive_uso_task(udp_endpoint):
     global uso_bits_state
     global uso_floats_state
 
+    first_run = True
+
     while True:
         try:
             # new_state, (host, port) = await udp_endpoint.receive()
             new_state = None
 
-            # receive all datagrams and continue with the last one
-            while True:
-                try:
-                    new_state, (host, port) = udp_endpoint.receive_nowait()
-                except asyncio.QueueEmpty:
-                    break
+            if first_run == True:
+                # receive all datagrams and continue with the last one
+                while True:
+                    try:
+                        new_state, (host, port) = udp_endpoint.receive_nowait()
+                    except asyncio.QueueEmpty:
+                        first_run = False
+                        break
+            else:
+                new_state, (host, port) = await udp_endpoint.receive()
+
 
             if new_state is None:
                 new_state, (host, port) = await udp_endpoint.receive()
