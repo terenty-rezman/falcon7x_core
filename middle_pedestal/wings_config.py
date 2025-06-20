@@ -111,48 +111,48 @@ class wc_trim_pitch_down_rh(wc_trim_pitch_down_lh):
 
 
 @add_to_panel
-class wc_trim_roll_right_lh(PushButton):
+class wc_trim_roll_up_lh(PushButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/flight_controls/aileron_trim_right"])
 
 
 @add_to_panel
-class wc_trim_roll_left_lh(PushButton):
+class wc_trim_roll_down_lh(PushButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/flight_controls/aileron_trim_left"])
 
 
 @add_to_panel
-class wc_trim_roll_right_rh(wc_trim_roll_right_lh):
+class wc_trim_roll_up_rh(wc_trim_roll_up_lh):
     pass
 
 
 @add_to_panel
-class wc_trim_roll_left_rh(wc_trim_roll_left_lh):
+class wc_trim_roll_down_rh(wc_trim_roll_down_lh):
     pass
 
 
 @add_to_panel
-class wc_trim_yaw_right_lh(PushButton):
+class wc_trim_yaw_up_lh(PushButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/flight_controls/rudder_trim_right"])
 
 
 @add_to_panel
-class wc_trim_yaw_left_lh(PushButton):
+class wc_trim_yaw_down_lh(PushButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/flight_controls/rudder_trim_left"])
 
 
 @add_to_panel
-class wc_trim_yaw_right_rh(wc_trim_yaw_right_lh):
+class wc_trim_yaw_up_rh(wc_trim_yaw_up_lh):
     pass
 
 
 @add_to_panel
-class wc_trim_yaw_left_rh(wc_trim_yaw_left_lh):
+class wc_trim_yaw_down_rh(wc_trim_yaw_down_lh):
     pass
