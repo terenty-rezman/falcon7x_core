@@ -77,7 +77,7 @@ uso_pushbuttons_receive_map = {
     "tb_disp_right_lh": "I03_c27", # DISP RIGHT [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "tb_disp_up_lh": "I03_c28", # DISP UP [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "tb_disp_down_lh": "I03_c29", # DISP DOWN [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
-    "tb_menu_rl": "I03_c24", # MENU [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
+    "tb_menu_lh": "I03_c24", # MENU [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "wc_trim_pitch_up_lh": "I03_b06", # pitch left + [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "wc_trim_pitch_down_lh": "I03_b07", # pitch left - [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "wc_trim_pitch_up_rh": "I03_b08", # pitch right + [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
