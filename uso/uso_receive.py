@@ -219,8 +219,8 @@ uso_switches_receive_map = {
     "il_emerge_lights_off": "I08_a09", #  SWITCH OFF [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "il_emerge_lights_on": "I08_a10", # SWITCH ON [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"fire_test": "I07_a09", # FIRE TEST [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
-
-
+    "tb_reserv_lh": "I08_a16", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
+    "tb_reserv_rh": "I08_a21", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)] 
 } # switches
 
 
@@ -236,6 +236,8 @@ uso_rotate_switch_receive_map = {
     "sfd_set": "I06_b03",  # SET IO [K2 Средний пульт (Pedestal)] [Приборная доска] [33 Attitude Display]
     "tb_set_top_lh": "I08_a12",	# SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "tb_set_bottom_lh": "I08_a14", # SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
+    "tb_set_top_rh": "I08_a17",	# SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)]
+    "tb_set_bottom_rh": "I08_a19", # SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)]
 }
 
 

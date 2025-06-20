@@ -92,3 +92,35 @@ class tb_set_bottom_lh(FloatStepper):
     step = 0.01
 
     val_type = float
+
+
+@add_to_panel
+class tb_reserv_lh(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+
+@add_to_panel
+class tb_set_top_rh(FloatStepper):
+    dataref = None
+    logic_left = -10.0
+    logic_right = 10.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class tb_set_bottom_rh(FloatStepper):
+    dataref = None
+    logic_left = -10.0
+    logic_right = 10.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class tb_reserv_rh(NLocalStateButton):
+    states = [0, 1]
+    state = 0
