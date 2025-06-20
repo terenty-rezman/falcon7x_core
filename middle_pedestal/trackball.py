@@ -72,3 +72,23 @@ class tb_disp_down_rh(tb_disp_down_lh):
 @add_to_panel
 class tb_menu_rh(tb_menu_lh):
     pass
+
+
+@add_to_panel
+class tb_set_top_lh(FloatStepper):
+    dataref = None
+    logic_left = -10.0
+    logic_right = 10.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class tb_set_bottom_lh(FloatStepper):
+    dataref = None
+    logic_left = -10.0
+    logic_right = 10.0
+    step = 0.01
+
+    val_type = float

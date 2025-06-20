@@ -234,6 +234,8 @@ uso_rotate_switch_receive_map = {
     "vhf_control_rh": "I06_b18", # VHF IO 1 right [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [21Пульт автопилота]
     "baro_rot_rh": "I06_b23", # BARO IO right [K2 Средний пульт (Pedestal)] [Козырек приборной доски] [21Пульт автопилота]
     "sfd_set": "I06_b03",  # SET IO [K2 Средний пульт (Pedestal)] [Приборная доска] [33 Attitude Display]
+    "tb_set_top_lh": "I08_a12",	# SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
+    "tb_set_bottom_lh": "I08_a14", # SET io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
 }
 
 
