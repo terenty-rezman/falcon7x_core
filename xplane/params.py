@@ -206,7 +206,8 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_middle_down_black_screen", # mdu down
     "sim/custom/7x/z_mini_black_screen", # aux screen
 
-    "sim/cockpit2/electrical/battery_on[0]" # bat 1
+    "sim/cockpit2/electrical/battery_on[0]", # bat 1
+    "sim/cockpit2/annunciators/reverser_deployed", # thrust reverse deployed
 ])
 Params.__str__ = to_str
 
@@ -240,6 +241,7 @@ Commands = Enum('XplaneCommands', [
     "sim/flight_controls/aileron_trim_right",
     "sim/flight_controls/aileron_trim_left",
     "sim/flight_controls/pitch_trim_down",
+    "sim/engines/thrust_reverse_toggle",
 ])
 
 Commands.__str__ = to_str

@@ -256,6 +256,7 @@ uso_floats_receive_map = {
    "pc_throttle_1": "A015", # 01 hand Левая ручка
    "pc_throttle_2": "A016", # 02 hand Средняя ручка
    "pc_throttle_3": "A018", # 03 hand Правая ручка
+   "pc_thrust_reverse": "A017", # 02 hand ball Доп ручка
    "wc_sf": "A019", # switch SLATS/FLAPS SF 2
    "wc_ab": "A020", # switch AIRBRAKES AB 2
    "aft_temp": "A029", # PAX AFT TEMP ADC=
@@ -263,8 +264,8 @@ uso_floats_receive_map = {
    "crew_temp": "A031", # CREW TEMP ADC=
    "crew_ratio": "A032", # CREW RATIO ADC=
    "pc_gear_float": "A011", # 02 Рычаг ручного выпуска шасси (# Кран-шасси #)
-    "pc_parkbrake_half": "A012", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
-    "pc_parkbrake_full": "A013", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
+   "pc_parkbrake_half": "A012", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
+   "pc_parkbrake_full": "A013", # SWITCH BREAK PARK [K2 Средний пульт (Pedestal)] [Приборная доска] [03 - 15 Рукоятка аварийного/стояночного тормоза (#--#) - Кнопка-переключатель 115/220]
 }
 
 

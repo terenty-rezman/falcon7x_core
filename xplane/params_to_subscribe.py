@@ -189,6 +189,8 @@ class Subscribe:
         (Params["sim/custom/7x/z_middle_up_black_screen"], None, "tcp"), # mdu up 
         (Params["sim/custom/7x/z_middle_down_black_screen"], None, "tcp"), # mdu down
         (Params["sim/custom/7x/z_mini_black_screen"], None, "tcp"), # aux screen
+
+        (Params["sim/cockpit2/annunciators/reverser_deployed"], None, "tcp"), # thrust reverse
     ]
 
 

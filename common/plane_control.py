@@ -1,5 +1,6 @@
 from common.instrument_panel import add_to_panel, TwoStateButton, FloatStepper
-from xplane.params import Params
+from xplane.params import Params, Commands
+import xplane as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
 import math
@@ -335,3 +336,37 @@ class pc_gear_float(FloatStepper):
             gear = 1
 
         await pc_gear.set_state(gear)
+
+
+@add_to_panel
+class pc_thrust_reverse(FloatStepper):
+    dataref = None
+    logic_left = 0
+    logic_right = 1
+    step = 0.01
+    val_type = float
+
+    dataref_revers_deployed = Params["sim/cockpit2/annunciators/reverser_deployed"]
+    old_state_reverse_on = None
+
+    @classmethod
+    async def set_state(cls, state: float):
+        reverse_deployed = xp_ac.ACState.get_curr_param[cls.dataref_revers_deployed]
+        if reverse_deployed is None:
+            return
+
+        reverse_deployed = True if reverse_deployed else False
+        
+        if cls.old_state_reverse_on is None:
+            cls.old_state_reverse_on = reverse_deployed
+
+        new_state = True if state > 0.5 else False
+
+        if new_state == cls.old_state_reverse_on:
+            return
+
+        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle"])
+        
+        cls.old_state_reverse_on = new_state
+
+
