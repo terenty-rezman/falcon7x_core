@@ -246,7 +246,6 @@ class pc_right_brake_total(FloatStepper):
     val_type = float
 
 
-
 @add_to_panel
 class pc_throttle_1(FloatStepper):
     dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[0]"]
@@ -259,15 +258,34 @@ class pc_throttle_1(FloatStepper):
 
     val_type = float
 
+    last_uso_state = None
+
+    @classmethod
+    async def set_state(cls, state: float):
+        cls.last_uso_state = state
+
+        auto_throttle_enabled = xp_ac.ACState.get_curr_param(Params["sim/cockpit2/autopilot/autothrottle_enabled"])
+        if auto_throttle_enabled is None:
+            return
+
+        if auto_throttle_enabled == 0:
+            await super().set_state(state)
+    
+    @classmethod
+    def get_uso_state(cls):
+        return cls.last_uso_state
+
 
 @add_to_panel
 class pc_throttle_2(pc_throttle_1):
     dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"]
+    last_uso_state = None
 
 
 @add_to_panel
 class pc_throttle_3(pc_throttle_1):
     dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[2]"]
+    last_uso_state = None
 
 
 @add_to_panel

@@ -30,3 +30,7 @@ USO_SEND_DELAY = 0.05
 # qml synoptic address
 synoptic_connection.Settings.QML_SYNOPTIC_HOST = "127.0.0.1"
 synoptic_connection.Settings.QML_SYNOPTIC_PORT = 8800
+
+# auto throttle send udp
+AUTO_THROTTLE_HOST = "127.0.0.1"
+AUTO_THROTTLE_PORT = 3344

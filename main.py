@@ -19,6 +19,7 @@ import common.web_interface as web_interface
 from cas import cas
 import synoptic_remote.synoptic as synoptic_remote
 from common import sane_tasks
+import common.send_to_autothrottle as auto_throttle_send
 
 import settings
 
@@ -157,6 +158,8 @@ async def main():
     add_remote_synoptic_ui_sync_list()
 
     await web_interface.run_server_task(settings.WEB_INTERFACE_HOST, settings.WB_INTERFACE_PORT)
+
+    await auto_throttle_send.run_send_to_autothrottle_task(settings.AUTO_THROTTLE_HOST, settings.AUTO_THROTTLE_PORT)
 
     await main_loop()   
 
