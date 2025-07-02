@@ -76,9 +76,11 @@ class pc_pitch_rh(FloatStepper):
         await super().set_state(state)
 
         lh_state = pc_pitch_lh.get_state()
-        await pc_pitch_total.set_state(
-            cls.state - lh_state
-        )
+
+        total = cls.state + lh_state
+        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 0.5)
+
+        await pc_pitch_total.set_state(total)
         
 
 @add_to_panel
