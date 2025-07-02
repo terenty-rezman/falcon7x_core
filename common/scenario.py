@@ -39,7 +39,7 @@ class Scenario:
     async def run_scenario_task(cls, task_name, ac_state: xp_ac.ACState):
         await cls.clear_all()
         
-        await pre_scenario_task() 
+        await pre_scenario_task(ac_state) 
 
         task = sane_tasks.spawn(scenarios[task_name](ac_state))
         task.add_done_callback(Scenario.on_scenario_done)
