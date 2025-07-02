@@ -353,7 +353,7 @@ class pc_thrust_reverse(FloatStepper):
 
     @classmethod
     async def set_state(cls, state: float):
-        reverse_deployed = xp_ac.ACState.get_curr_param[cls.dataref_revers_deployed]
+        reverse_deployed = xp_ac.ACState.get_curr_param(cls.dataref_revers_deployed)
         if reverse_deployed is None:
             return
 
