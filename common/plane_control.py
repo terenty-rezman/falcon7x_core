@@ -82,7 +82,7 @@ class pc_pitch_rh(FloatStepper):
 
         rh_state = util.dead_zone(cls.state, cls.logic_left, cls.logic_right, 0.5) 
 
-        total = rh_state + lh_state
+        total = rh_state - lh_state
 
         await pc_pitch_total.set_state(total)
         
