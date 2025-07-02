@@ -32,9 +32,11 @@ class pc_bank_rh(FloatStepper):
         await super().set_state(state)
 
         lh_state = pc_bank_lh.get_state()
+        lh_state = util.dead_zone(lh_state, pc_bank_lh.logic_left, pc_bank_lh.logic_right, 0.5)
 
-        total = cls.state + lh_state
-        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 0.5)
+        rh_state = util.dead_zone(cls.state, cls.logic_left, cls.logic_right, 0.5) 
+
+        total = lh_state + rh_state
 
         await pc_bank_total.set_state(total)
 
@@ -76,9 +78,11 @@ class pc_pitch_rh(FloatStepper):
         await super().set_state(state)
 
         lh_state = pc_pitch_lh.get_state()
+        lh_state = util.dead_zone(lh_state, pc_pitch_lh.logic_left, pc_pitch_lh.logic_right, 0.5)
 
-        total = cls.state + lh_state
-        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 0.5)
+        rh_state = util.dead_zone(cls.state, cls.logic_left, cls.logic_right, 0.5) 
+
+        total = rh_state + lh_state
 
         await pc_pitch_total.set_state(total)
         
