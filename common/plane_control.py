@@ -366,7 +366,7 @@ class pc_gear_float(FloatStepper):
 class pc_thrust_reverse(FloatStepper):
     dataref = None
     logic_left = 0
-    logic_right = 1
+    logic_right = 2
     step = 0.01
     val_type = float
 
