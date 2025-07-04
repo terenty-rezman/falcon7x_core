@@ -1,6 +1,6 @@
 from common.instrument_panel import add_to_panel, TwoStateButton, FloatStepper
 from xplane.params import Params, Commands
-import xplane as xp
+import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
 import math
