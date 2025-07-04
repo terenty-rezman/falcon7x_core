@@ -298,7 +298,7 @@ class pc_parkbrake(TwoStateButton):
         await super().set_state(state)
 
         if state == 0:
-            await cas.remove_message(cas.PARK_BRAKE_ON)
+            await cas.remove_message(cas.PARK_BRAKE_OFF)
         else:
             await cas.show_message(cas.PARK_BRAKE_ON)
 
