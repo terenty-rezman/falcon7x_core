@@ -30,17 +30,17 @@ async def post_to_all_cas(path: str, json: dict):
 
 async def show_message(cas_message: CASmssg):
     await post_to_all_cas("/api/show_message", {"message": str(cas_message)})
-    print(cas_message)
+    print("show", cas_message)
 
 
 async def show_message_alarm(cas_message: CASmssg):
     await post_to_all_cas("/api/show_message", {"message": str(cas_message)})
-    print(cas_message)
+    print("show + alarm", cas_message)
 
 
 async def remove_message(cas_message: CASmssg):
     await post_to_all_cas("/api/remove_message", {"message": str(cas_message)})
-    print(cas_message)
+    print("remove", cas_message)
 
 
 async def set_regime(cas_regime: Regimes):
