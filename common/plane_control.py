@@ -333,10 +333,14 @@ class pc_parkbrake_full:
         cls.filter_sum = min(0, cls.filter_sum)
         cls.filter_sum = max(40, cls.filter_sum)
 
-        if cls.filter_sum > 20:
-            await pc_parkbrake.set_state(1)
-        elif pc_parkbrake_half.state == 0:
-            await pc_parkbrake.set_state(0)
+        enabled = 1 if cls.filter_sum > 20 else 0
+
+        if cls.last_enabled is None:
+            await pc_parkbrake.set_state(enabled)
+        elif cls.last_enabled != enabled :
+            await pc_parkbrake.set_state(enabled)
+
+        cls.last_enabled = enabled 
 
 
 @add_to_panel
