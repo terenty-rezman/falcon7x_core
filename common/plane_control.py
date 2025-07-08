@@ -331,8 +331,8 @@ class pc_parkbrake_full:
 
         # filter
         cls.filter_sum += dx
-        cls.filter_sum = min(0, cls.filter_sum)
-        cls.filter_sum = max(40, cls.filter_sum)
+        cls.filter_sum = min(40, cls.filter_sum)
+        cls.filter_sum = max(0, cls.filter_sum)
 
         enabled = 1 if cls.filter_sum > 20 else 0
 
