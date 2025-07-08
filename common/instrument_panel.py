@@ -12,6 +12,12 @@ import common.sane_tasks as sane_tasks
 from settings import USO_SEND_DELAY
 
 
+filtered_signals = {
+    "pc_parkbrake_half",
+    "pc_parkbrake_full"
+}
+
+
 def is_rotate_right(new_state, old_state):
     next_state = {
         (0, 0): (0, 1),
@@ -497,7 +503,7 @@ async def receive_uso_task(udp_endpoint):
             for float_id, bit_idx in uso_receive.uso_floats_receive_map.items():
                 old_state = uso_floats_state[bit_idx]
                 new_state = new_floats_state[bit_idx]
-                if not math.isclose(old_state, new_state, abs_tol=0.01):
+                if float_id in filtered_signals or not math.isclose(old_state, new_state, abs_tol=0.01):
                     await handle_uso_float_state(float_id, new_state)
 
             uso_bits_state = new_bit_state
