@@ -317,6 +317,7 @@ class pc_parkbrake_half:
 class pc_parkbrake_full:
     state = 0
     filter_sum = 0
+    last_enabled = None
 
     @classmethod
     async def set_state(cls, state):
