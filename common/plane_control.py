@@ -309,28 +309,31 @@ class pc_parkbrake_half:
 
     @classmethod
     async def set_state(cls, state):
-        state = 1 if state > 1 else 0
-
+        state = 1 if state > 0.5 else 0
         cls.state = state
-
-        if cls.state == 1:
-            await pc_parkbrake.set_state(1)
-        elif pc_parkbrake_full.state == 0:
-            await pc_parkbrake.set_state(0)
 
 
 @add_to_panel
 class pc_parkbrake_full:
     state = 0
+    filter_sum = 0
 
     @classmethod
     async def set_state(cls, state):
         # float to int
-        state = 1 if state > 1 else 0
+        state = 1 if state > 0.5 else 0
 
         cls.state = state
 
-        if cls.state == 1:
+        half_state = pc_parkbrake_half.state
+        dx = 1 if cls.state or half_state else -1  
+
+        # filter
+        cls.filter_sum + dx
+        cls.filter_sum = min(0, cls.filter_sum)
+        cls.filter_sum = max(40, cls.filter_sum)
+
+        if cls.filter_sum > 20:
             await pc_parkbrake.set_state(1)
         elif pc_parkbrake_half.state == 0:
             await pc_parkbrake.set_state(0)
