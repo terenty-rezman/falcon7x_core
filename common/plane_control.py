@@ -330,7 +330,7 @@ class pc_parkbrake_full:
         dx = 1 if cls.state or half_state else -1  
 
         # filter
-        cls.filter_sum + dx
+        cls.filter_sum += dx
         cls.filter_sum = min(0, cls.filter_sum)
         cls.filter_sum = max(40, cls.filter_sum)
 
