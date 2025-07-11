@@ -78,3 +78,12 @@ def dead_zone(x, left, right, dead_zone):
             x = (left - dead_zone)/left * x + dead_zone
     
     return x
+
+
+def linear_map(val, left_min, left_max, right_min, right_max):
+    # map [left_min, left_max] -> [0, 1]
+    val_10 = (val - left_min) / (left_max - left_min)
+
+    # map [0, 1] -> [right_min, right_max]
+    val_r = right_min + (right_max - right_min) * val_10
+    return val_r

@@ -1,6 +1,12 @@
+import enum
 import asyncio
+import time
+
+import numpy as np
+import simple_pid
 
 import common.xp_aircraft_state as xp_ac
+import common.util as util
 import xplane.master as xp
 import common.sane_tasks as sane_tasks
 import overhead_panel.fire_panel as fp 
@@ -106,6 +112,11 @@ class ApuStart(System):
             # await asyncio.sleep(30)
 
 
+class EngineStatus(enum.IntEnum):
+    STOPPED = 0
+    RUNNING = 1
+
+
 class EngineStart1(System):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
     N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
@@ -136,12 +147,13 @@ class EngineStart1(System):
     OIL_TEMP_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 21, 21, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 27, 29, 27, 27, 28, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 35, 39, 40, 40]
     OIL_PSI_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76, 72, 70, 70, 70, 70, 70, 70, 70, 69, 69, 69, 69, 69, 69, 68, 68, 68, 68, 68, 68, 67, 67, 67, 68, 68, 66, 68, 66, 66, 66, 67, 67, 66, 67, 66, 66, 66, 66, 65, 64, 63, 66, 63, 62, 62, 62, 62, 62, 62, 62, 62, 62, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 57]
 
-
     APU_TEMP_TIME_SAMPLE = [0, 12, 13, 38]
     APU_TEMP_SAMPLE = [280, 500, 500, 280] # apu temp
 
     logic_task = None
     is_killing = False
+
+    status = EngineStatus.RUNNING
 
     @classmethod
     def start_condition(cls):
@@ -161,6 +173,11 @@ class EngineStart1(System):
             xp_ac.ACState.get_curr_param(cls.APU_N1) > 90,
             engine_panel.en_start.get_state() == 1
         ]
+
+        if xp_ac.ACState.get_curr_param(cls.N1) < 10:
+            cls.status = EngineStatus.STOPPED
+        elif cls.logic_task is None:
+            cls.status = EngineStatus.RUNNING
 
         return all(cond)
 
@@ -182,6 +199,7 @@ class EngineStart1(System):
                 await synoptic_overrides._1d_table_anim(
                     cls.N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
                 )
+                cls.status = EngineStatus.RUNNING
 
             async def n1_max():
                 synoptic_overrides.set_override_value(cls.N1_MAX, 88)
@@ -252,6 +270,7 @@ class EngineStart1(System):
         await xp.set_param(cls.MIN_OIL_LEVEL, 5)
         await xp.set_param(cls.IGN, 0)
         await xp.set_param(cls.AB, 0)
+        cls.status = EngineStatus.STOPPED
 
 
 class EngineStart2(EngineStart1):
@@ -272,6 +291,8 @@ class EngineStart2(EngineStart1):
     logic_task = None
     is_killing = False
 
+    working_state = EngineStatus.RUNNING
+
 
 class EngineStart3(EngineStart1):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
@@ -290,3 +311,66 @@ class EngineStart3(EngineStart1):
     # otherwise logic_task will be shared between all derived classes
     logic_task = None
     is_killing = False
+
+    working_state = EngineStatus.RUNNING
+
+
+class Engine1CustomSpecs(System):
+    ENGINE = EngineStart1
+
+    TRHOTTLE_RATIO = xp.Params["sim/cockpit2/engine/actuators/throttle_ratio[0]"]
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
+
+    THROTTLE_N1_MAP_ARGS = [0, 5, 15, 25, 35, 40]
+    THROTTLE_N1_MAP_VALUES = [22, 28, 30, 48, 83, 90]
+
+    N1_PID = simple_pid.PID(Kp=4.6, Ki=0.7, Kd=0)
+    N1_PID_OUTPUT = 0
+
+
+    fuel_flow_switch = engine_panel.en_fuel_1
+    next_wake_sleep_delay = 0.05
+    active = False
+
+
+    @classmethod
+    def start_condition(cls):
+        avail = [
+            xp_ac.ACState.param_available(cls.TRHOTTLE_RATIO),
+            xp_ac.ACState.param_available(cls.N1),
+        ]
+
+        if not all(avail):
+            return False
+
+        enable = [
+            cls.ENGINE.status == EngineStatus.RUNNING,
+            cls.fuel_flow_switch.get_state() == 1
+        ]
+        enable = all(enable)
+
+        if enable and not cls.active:
+            sane_tasks.spawn(synoptic_overrides.enable_param_overrides([cls.N1]))
+            cls.active = True
+        
+        if not enable and cls.active:
+            sane_tasks.spawn(synoptic_overrides.disable_param_overrides([cls.N1]))
+            cls.active = False
+
+        return enable
+
+    @classmethod
+    async def system_logic_task(cls):
+        throttle_ratio = xp_ac.ACState.get_curr_param(cls.TRHOTTLE_RATIO)
+
+        throttle_real = util.linear_map(throttle_ratio, 0, 1, 0, 40)
+
+        n1_ref_val = np.interp(throttle_real, cls.THROTTLE_N1_MAP_ARGS, cls.THROTTLE_N1_MAP_VALUES)
+
+        cls.N1_PID.setpoint = n1_ref_val
+        dt = cls.next_wake_sleep_delay
+        y1 = cls.N1_PID(cls.N1_PID_OUTPUT, dt)
+
+        cls.N1_PID_OUTPUT += y1 * dt 
+
+        synoptic_overrides.set_override_value(cls.N1, cls.N1_PID_OUTPUT)

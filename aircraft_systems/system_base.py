@@ -7,6 +7,8 @@ class System:
     logic_task = None
     is_killing = False
 
+    next_wake_sleep_delay = 0.3
+
     @classmethod
     def start_condition(cls):
         pass
@@ -28,7 +30,7 @@ class System:
         if cls.logic_task is None and cls.is_killing == False:
             if cls.start_condition():
                 cls.logic_task = sane_tasks.spawn(
-                    in_sequence(cls.system_logic_task(), asyncio.sleep(0.3))
+                    in_sequence(cls.system_logic_task(), asyncio.sleep(cls.next_wake_sleep_delay))
                 )  
                 cls.logic_task.add_done_callback(cls.on_task_done)
         if cls.logic_task and cls.is_killing == False:

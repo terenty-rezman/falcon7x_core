@@ -4,3 +4,4 @@ quart-schema
 pydantic
 httpx
 numpy
+simple-pid
