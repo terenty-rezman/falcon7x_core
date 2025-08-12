@@ -136,6 +136,9 @@ uso_pushbuttons_receive_map = {
     "rain_rplint_rh": "I08_a11", # RH [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "fcs_engage_norm": "I07_a12", # FCS ENGAGE NORM [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
     "fcs_engage_stby": "I07_a13", # FCS ENGAGE ST-BY [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
+    "eng_1": "I07_a15", # man start eng 1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
+    "eng_2": "I07_a16", # man start eng 2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
+    "eng_3": "I07_a17", # man start eng 3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
 }
 
 
@@ -169,9 +172,6 @@ uso_switches_receive_map = {
     "firebagcomp_button": "I07_a08", # FIRE BAG COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "airbrake_auto": "I07_a11", # AJB AUTO EXT. [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
     "fcs_steering": "I07_a14", # NWS [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-    "eng_1": "I07_a15", # man start eng 1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
-    "eng_2": "I07_a16", # man start eng 2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
-    "eng_3": "I07_a17", # man start eng 3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "shutoff_a1": "I07_a21", # SHUT OFF A1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "shutoff_a3": "I07_a22", # SHUT OFF A3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "shutoff_b2": "I07_a23", # SHUT OFF B2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
