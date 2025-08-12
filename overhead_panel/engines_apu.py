@@ -50,7 +50,7 @@ class apu_start_stop(TwoStateButton):
     @classmethod
     def get_state(cls):
         state = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_starter_switch"])
-        if state == 2:
+        if state:
             return 1
         else:
             return 0
