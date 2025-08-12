@@ -89,7 +89,6 @@ uso_pushbuttons_receive_map = {
     "wc_trim_yaw_down_lh": "I03_b15", # yaw left - [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "wc_trim_yaw_up_rh": "I03_b16", # yaw right + [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "wc_trim_yaw_down_rh": "I03_b17", # yaw right - [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
-    "apu_master": "I07_a18", # APU Master [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "apu_start_stop": "I07_a19", # APU Start / Stop [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "backup_pump": "I07_a20", # BACK UP PUMP [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "cabin_master": "I07_b04", # CABIN MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
@@ -221,6 +220,7 @@ uso_switches_receive_map = {
     "tb_reserv_lh": "I08_a16", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [08 Пульт трэкбола левый (Trackball)]
     "tb_reserv_rh": "I08_a21", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)] 
     "wc_backup_slats": "I03_b02", # BACK-UP SLATS [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [06 Пульт управления механизацией крыла]
+    "apu_master": "I07_a18", # APU Master [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
 } # switches
 
 
