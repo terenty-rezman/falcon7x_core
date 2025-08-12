@@ -143,6 +143,8 @@ uso_pushbuttons_receive_map = {
     "ice_eng3": "I07_b22", # ENG 3 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "ice_brake": "I07_b19", # BRAKE [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "ice_wings": "I07_b23", # WINGS [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
+    "xtk_left": "I07_c22", # XTK LEFT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+    "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 }
 
 
@@ -199,8 +201,6 @@ uso_switches_receive_map = {
     "xbp_23": "I07_c19", # X-BP 2<-->3 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_down_1": "I07_c20", # XTK DOWN 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_down_2": "I07_c21", # XTK DOWN 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-    "xtk_left": "I07_c22", # XTK LEFT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-    "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_up_1": "I07_c24", # XTK UP 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_up_2": "I07_c25", # XTK UP 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "pax_oxygen_closed": "I07_c09", # Selector CLOSED [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
