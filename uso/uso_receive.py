@@ -145,6 +145,8 @@ uso_pushbuttons_receive_map = {
     "ice_wings": "I07_b23", # WINGS [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "xtk_left": "I07_c22", # XTK LEFT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+    "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
+    "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
 }
 
 
@@ -156,8 +158,6 @@ uso_switches_receive_map = {
     "en_fuel_1": "I03_c16", # FUEL ON 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]
     "en_fuel_2": "I03_c17", # FUEL ON 2 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]
     "en_fuel_3": "I03_c18", # FUEL ON 3 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [01 Сборка РУД]
-    "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
-    "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_bag_fan": "I03_a24", # BAG FAN [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_elec_rh_ess": "I03_a25", # ELEC RH ESS [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_fuel_2_bu": "I03_a26", # FUEL 2 B/U [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
