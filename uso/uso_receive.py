@@ -134,6 +134,8 @@ uso_pushbuttons_receive_map = {
     "il_fasten": "I08_a06", # FASTEN BELT [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "il_smoking": "I08_a07", # NO SMOKING [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "rain_rplint_rh": "I08_a11", # RH [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+    "fcs_engage_norm": "I07_a12", # FCS ENGAGE NORM [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
+    "fcs_engage_stby": "I07_a13", # FCS ENGAGE ST-BY [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
 }
 
 
@@ -166,8 +168,6 @@ uso_switches_receive_map = {
     "firerearcomp_button": "I07_a07", # FIRE REAR COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "firebagcomp_button": "I07_a08", # FIRE BAG COMP DISCH [K4 Верхний пульт] [Верхний пульт] [01 (Fire Control Panel) Пульт пожарной сигнализации]
     "airbrake_auto": "I07_a11", # AJB AUTO EXT. [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-    "fcs_engage_norm": "I07_a12", # FCS ENGAGE NORM [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
-    "fcs_engage_stby": "I07_a13", # FCS ENGAGE ST-BY [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
     "fcs_steering": "I07_a14", # NWS [K4 Верхний пульт] [Верхний пульт] [02 - 03 FLIGHT CONTROL  - STEERING FL CON]
     "eng_1": "I07_a15", # man start eng 1 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "eng_2": "I07_a16", # man start eng 2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
