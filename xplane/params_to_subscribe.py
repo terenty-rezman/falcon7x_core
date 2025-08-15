@@ -19,6 +19,7 @@ class Subscribe:
         (Params["sim/weapons/mis_thrust2"], None, "tcp"),
         (Params["sim/weapons/mis_thrust3"], None, "tcp"),
         (Params["sim/cockpit/engine/APU_switch"], None, "tcp"),
+        (Params["sim/cockpit2/electrical/APU_running"], None, "tcp"),
 
         (Params["sim/cockpit2/controls/speedbrake_ratio"], None, "tcp"), # flight control - airbrake auto
         (Params["sim/cockpit2/switches/artificial_stability_on"], None, "tcp"), # fcs engage norm

@@ -208,6 +208,7 @@ Params = Enum('XplaneParams', [
 
     "sim/cockpit2/electrical/battery_on[0]", # bat 1
     "sim/cockpit2/annunciators/reverser_deployed", # thrust reverse deployed
+    "sim/cockpit2/electrical/APU_running", # apu running
 ])
 Params.__str__ = to_str
 

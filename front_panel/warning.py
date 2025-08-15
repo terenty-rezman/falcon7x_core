@@ -21,13 +21,25 @@ class master_warning_lh(TwoStateButton):
     dataref: Params = Params["sim/cockpit2/annunciators/master_warning"]
     blink = util.blink_anim(0.5)
 
-    @classmethod
-    async def click(cls):
-        command = Commands["sim/annunciator/clear_master_warning"]
-        await xp.run_command_once(command)
+    # @classmethod
+    # async def click(cls):
+    #     command = Commands["sim/annunciator/clear_master_warning"]
+    #     await xp.run_command_once(command)
 
+    #     param = Params["sim/cockpit2/annunciators/plugin_master_warning"]
+    #     await xp.set_param(param, 0)
+    
+    @classmethod
+    async def set_state(cls, state):
         param = Params["sim/cockpit2/annunciators/plugin_master_warning"]
-        await xp.set_param(param, 0)
+
+        if state == 0:
+            command = Commands["sim/annunciator/clear_master_warning"]
+            await xp.run_command_once(command)
+            await xp.set_param(param, 0)
+        else:
+            await xp.set_param(param, 1)
+
 
     @classmethod
     def get_indication(cls):

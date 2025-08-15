@@ -35,8 +35,13 @@ class System:
                 cls.logic_task.add_done_callback(cls.on_task_done)
         if cls.logic_task and cls.is_killing == False:
             if cls.kill_condition():
-                cls.is_killing = True
-                sane_tasks.spawn(in_sequence(cls.killing_task(), cls.reset()))
+                cls.kill_self()
+    
+    @classmethod
+    def kill_self(cls):
+        if cls.logic_task and cls.is_killing == False:
+            cls.is_killing = True
+            sane_tasks.spawn(in_sequence(cls.killing_task(), cls.reset()))
     
     @classmethod
     def on_task_done(cls, task_future):

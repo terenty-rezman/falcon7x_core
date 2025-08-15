@@ -9,6 +9,14 @@ import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights
 import overhead_panel.windshield_heat as windshield
 import overhead_panel.flight_control as fc 
+import front_panel.warning as fpw
+import overhead_panel.fire_panel as fp 
+import overhead_panel.engines_apu as overhead_engines
+from aircraft_systems import engine
+import common.util as util
+
+
+APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "26 ELEC: AFT DIST BOX OVHT")
@@ -181,7 +189,51 @@ async def _69_fcs_ths_prot_fail(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "FIRE", "72 FIRE: APU")
 async def _72_fire_apu(ac_state: xp_ac.ACState):
+    await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+    await fp.apu_disch.set_state(0)
+    # await overhead_engines.apu_start_stop.set_state(0)
+
+    await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
+    await asyncio.sleep(5)
+    await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
+    await fpw.master_warning_lh.set_state(1)
+    await fpw.master_warning_rh.set_state(1)
     await cas.show_message(cas.FIRE_APU)
+
+    await overhead_engines.apu_start_stop.set_state(0)
+    await asyncio.sleep(1)
+    engine.ApuStart.kill_self()
+
+    # Apu fire protection system automatically closes apu fsov
+    await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 0)
+
+    blink = util.blink_anim(0.5)
+    def blink_master(n1):
+        if n1 > 1 and n1 < 6: 
+            overhead_engines.apu_master.set_override_indication(next(blink))
+        
+        if n1 < 1:
+            return True
+
+        return False
+        
+    await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
+
+    await asyncio.sleep(25)
+    await fp.apu_disch.set_state(1)
+
+    await fp.apu_disch.wait_state(1)
+
+    await asyncio.sleep(3)
+
+    # fire has been succesfully extinguished
+    failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+    await xp.set_param(failure, 0)
+    await cas.remove_message(cas.FIRE_APU)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")

@@ -82,7 +82,7 @@ class fire_apu_closed_indicator(Indicator):
             return cls.override_indication
 
         if xp_ac.ACState.get_curr_param(xp.Params["sim/operation/failures/rel_apu_fire"]) == 6:
-            if xp_ac.ACState.get_curr_param(cls.dataref) == 0:
+            if xp_ac.ACState.get_curr_param(cls.dataref) == 1:
                 # blink animation
                 return next(cls.blink)
             else:
