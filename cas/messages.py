@@ -4515,6 +4515,42 @@ class ENG_1_2_3_AUTO_SHUTDOWN(CASmssg):
     TO = False
     land = False
 
+
+@register
+class ENG_1_AUTO_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENG 1: AUTO SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
+
+@register
+class ENG_3_AUTO_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENG 2: AUTO SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
+
+@register
+class ENG_3_AUTO_SHUTDOWN(CASmssg): 
+    isread = False
+    text = "ENG 3: AUTO SHUTDOWN"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
 @register
 class ENG_1_2_3_FUEL_FILT_BYPASS(CASmssg): 
     isread = False

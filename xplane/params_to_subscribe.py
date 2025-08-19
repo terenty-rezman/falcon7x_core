@@ -114,6 +114,8 @@ class Subscribe:
 
         # Failures
         (Params["sim/operation/failures/rel_engfir0"], None, "tcp"), # engine 1 fire
+        (Params["sim/operation/failures/rel_engfir1"], None, "tcp"), # engine 2 fire
+        (Params["sim/operation/failures/rel_engfir2"], None, "tcp"), # engine 3 fire
 
         (Params["sim/operation/failures/rel_engfir3"], None, "tcp"), # fire rear comp
         (Params["sim/operation/failures/rel_engfir4"], None, "tcp"), # fire bag comp
@@ -192,6 +194,9 @@ class Subscribe:
         (Params["sim/custom/7x/z_mini_black_screen"], None, "tcp"), # aux screen
 
         (Params["sim/cockpit2/annunciators/reverser_deployed"], None, "tcp"), # thrust reverse
+        (Params["sim/custom/7x/z_fuel_digital_1"], None, "tcp"), # control fuel flow programatically
+        (Params["sim/custom/7x/z_fuel_digital_2"], None, "tcp"), # control fuel flow programatically
+        (Params["sim/custom/7x/z_fuel_digital_3"], None, "tcp"), # control fuel flow programatically
     ]
 
 

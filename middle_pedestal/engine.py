@@ -55,3 +55,21 @@ class en_fuel_3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     states = [0, 1]
     index = 2
+
+
+@add_to_panel
+class en_fuel_digital_1(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_fuel_digital_1"]
+    states = [0, 1]
+
+
+@add_to_panel
+class en_fuel_digital_2(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_fuel_digital_2"]
+    states = [0, 1]
+
+
+@add_to_panel
+class en_fuel_digital_3(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_fuel_digital_3"]
+    states = [0, 1]

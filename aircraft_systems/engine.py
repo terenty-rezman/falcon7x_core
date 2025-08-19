@@ -15,7 +15,10 @@ from aircraft_systems.system_base import System
 from xplane.params import Params
 import middle_pedestal.engine as engine_panel
 import overhead_panel.engines_apu as overhead_engines
+import overhead_panel.fuel as fuel
 import synoptic_remote.param_overrides as synoptic_overrides
+import front_panel.warning as warning
+from cas import cas
 
 
 class ApuStart(System):
@@ -132,6 +135,9 @@ class EngineStart1(System):
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
     MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_1"]
     fuel_flow_switch = engine_panel.en_fuel_1
+    fuel_digital = engine_panel.en_fuel_digital_1
+
+    broken_start = False
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
     N1_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 11.4, 12.1, 13.7, 15.8, 16.7, 18.4, 19.5, 21, 21.8, 22.3, 23, 23.6, 23.9, 23.8, 24, 24.1, 24.2, 24.2] # time
@@ -167,6 +173,7 @@ class EngineStart1(System):
 
         cond = [
             cls.fuel_flow_switch.get_state() == 1,
+            cls.fuel_digital.get_state() == 1,
             xp_ac.ACState.get_curr_param(cls.N1) < 1,
             xp_ac.ACState.get_curr_param(cls.N2) < 5,
             overhead_engines.apu_master.get_state() == 1,
@@ -185,13 +192,20 @@ class EngineStart1(System):
     def kill_condition(cls):
         cond = [
             cls.logic_task is not None,
-            cls.fuel_flow_switch.get_state() == 0,
+            cls.fuel_flow_switch.get_state() == 0 or cls.fuel_digital.get_state() == 0,
         ]
 
         return all(cond)
 
     @classmethod
     async def system_logic_task(cls):
+        if cls.broken_start:
+            await cls.run_broken_start()
+        else:
+            await cls.run_normal_start()
+
+    @classmethod
+    async def run_normal_start(cls):
         async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
             # after engine start
             # start appears in 1 sec after engine start
@@ -265,6 +279,82 @@ class EngineStart1(System):
             # await asyncio.sleep(30)
 
     @classmethod
+    async def run_broken_start(cls):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
+            # broken start
+            async def n1():
+                synoptic_overrides.set_override_value(cls.N1, 0)
+
+            async def n1_max():
+                synoptic_overrides.set_override_value(cls.N1_MAX, 88)
+
+            async def ff():
+                ff_sample = [0.00012589 * x for x in cls.FF_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.FF, cls.TIME_SAMPLE, ff_sample
+                )
+
+            async def N2_anim():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N2, cls.TIME_SAMPLE, cls.N2_SAMPLE
+                )
+
+            async def itt():
+                await synoptic_overrides._1d_table_anim(
+                    cls.ITT, cls.TIME_SAMPLE, cls.ITT_SAMPLE
+                )
+
+            async def oil_psi():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_PSI, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_PSI_SAMPLE
+                )
+
+            async def oil_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_TEMP, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_TEMP_SAMPLE
+                )
+            
+            async def ign():
+                # show ign
+                await asyncio.sleep(1)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
+                await xp.set_param(cls.IGN, 1)
+                # hide ign
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=60)
+                await xp.set_param(cls.IGN, 0)
+            
+            async def start():
+                # show start
+                await xp.set_param(cls.MIN_OIL_LEVEL, 5)
+                await asyncio.sleep(1)
+                await xp.set_param(cls.START, 1)
+                # hide start
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
+                await asyncio.sleep(1)
+                await xp.set_param(cls.START, 0)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 24)
+            
+            async def ab():
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
+                await xp.set_param(cls.AB, 1)
+                await asyncio.sleep(2)
+                await xp.set_param(cls.AB, 0)
+
+            async def apu_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_TEMP, cls.APU_TEMP_TIME_SAMPLE, cls.APU_TEMP_SAMPLE
+                )
+            
+            async def auto_stop():
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51)
+                await cas.show_message(cas.ENG_1_AUTO_SHUTDOWN)
+                await cls.fuel_digital.set_state(0)
+                await warning.master_caution_lh.set_state(1)
+                await warning.master_caution_rh.set_state(1)
+            
+            await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
+
+    @classmethod
     async def killing_task(cls):
         await xp.set_param(cls.START, 0)
         await xp.set_param(cls.MIN_OIL_LEVEL, 5)
@@ -327,11 +417,9 @@ class Engine1CustomSpecs(System):
     N1_PID = simple_pid.PID(Kp=4.6, Ki=0.7, Kd=0)
     N1_PID_OUTPUT = 0
 
-
     fuel_flow_switch = engine_panel.en_fuel_1
     next_wake_sleep_delay = 0.05
     active = False
-
 
     @classmethod
     def start_condition(cls):

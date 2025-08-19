@@ -103,3 +103,4 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
 from scenarios import abnormal
 from scenarios import emergency
 from scenarios import normal
+from scenarios import maintenance

@@ -37,6 +37,18 @@ async def subscribe_to_time_param():
 
 #     await ACState.wait_until_param_available("sim/time/total_running_time_sec")
 
+class Timer():
+    started = None
+
+    def start(self):
+        self.started = time.time()
+    
+    def stop(self):
+        self.started = None
+    
+    def elapsed(self):
+        return self.started - time.time()
+
 
 def blink_anim(every_period_sec: float):
     start = time.time()

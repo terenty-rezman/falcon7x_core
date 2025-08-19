@@ -1,4 +1,4 @@
-from common.instrument_panel import add_to_panel, TwoStateButton, FloatStepper
+from common.instrument_panel import add_to_panel, TwoStateButton, FloatStepper, NLocalStateButton
 from xplane.params import Params, Commands
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
@@ -402,3 +402,18 @@ class pc_thrust_reverse(FloatStepper):
         cls.old_state_reverse_on = new_state
 
 
+@add_to_panel
+class pc_thrust_red_light_1(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+@add_to_panel
+class pc_thrust_red_light_2(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+
+@add_to_panel
+class pc_thrust_red_light_3(NLocalStateButton):
+    states = [0, 1]
+    state = 0

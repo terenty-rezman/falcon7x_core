@@ -118,6 +118,8 @@ Params = Enum('XplaneParams', [
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire
+    "sim/operation/failures/rel_engfir1", # engine 1 fire
+    "sim/operation/failures/rel_engfir2", # engine 1 fire
 
     "sim/operation/failures/rel_engfir3", # fire rear comp
     "sim/operation/failures/rel_engfir4", # fire bag comp
@@ -205,6 +207,9 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_middle_up_black_screen", # mdu up 
     "sim/custom/7x/z_middle_down_black_screen", # mdu down
     "sim/custom/7x/z_mini_black_screen", # aux screen
+    "sim/custom/7x/z_fuel_digital_1", # disable fuel flow from python
+    "sim/custom/7x/z_fuel_digital_2", # disable fuel flow from python
+    "sim/custom/7x/z_fuel_digital_3", # disable fuel flow from python
 
     "sim/cockpit2/electrical/battery_on[0]", # bat 1
     "sim/cockpit2/annunciators/reverser_deployed", # thrust reverse deployed

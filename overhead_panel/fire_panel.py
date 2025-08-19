@@ -1,3 +1,4 @@
+import time
 from common.instrument_panel import add_to_panel, TwoStateButton, NLocalStateButton, Indicator
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
@@ -9,6 +10,32 @@ class firebutton_1(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 4
     states = [0, 1]
+
+    blink = util.blink_anim(0.5)
+    blink_timer = None
+
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            cls.blink_timer = util.Timer()
+            cls.blink_timer.start()
+        else:
+            cls.blink_timer = None
+            
+        return await super().set_state(state)
+
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        if cls.blink_timer:
+            if cls.blink_timer.elapsed() < 3:
+                return next(cls.blink)
+            else:
+                cls.blink_timer = None
+
+        return cls.get_state()
 
 
 @add_to_panel
@@ -37,6 +64,7 @@ class disch1_eng1_1(Indicator):
         if cls.override_indication is not None:
             return cls.override_indication
 
+        # fireindicator_1 instead of fireindicator_1 ?? 
         if firebutton_1.get_state() == 1:
             return 1
 

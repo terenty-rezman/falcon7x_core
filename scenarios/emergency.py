@@ -12,9 +12,11 @@ import overhead_panel.flight_control as fc
 import front_panel.warning as fpw
 import overhead_panel.fire_panel as fp 
 import overhead_panel.engines_apu as overhead_engines
+import middle_pedestal.engine as engine_panel
+
+from common import plane_control as pc
 from aircraft_systems import engine
 import common.util as util
-
 
 APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
@@ -236,9 +238,94 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
     await fpw.master_warning_rh.set_state(0)
 
 
+@scenario("EMERGENCY", "FIRE", "74 FIRE: ENG 1")
+async def _74_fire_eng_1(ac_state: xp_ac.ACState):
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+
+    await engine_panel.en_fuel_1.wait_state(1)
+    await asyncio.sleep(3)
+
+    await cas.show_message(cas.FIRE_ENG_1)
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
+
+    await fpw.master_warning_lh.set_state(1)
+    await fpw.master_warning_rh.set_state(1)
+    await pc.pc_thrust_red_light_1.set_state(1)
+
+    await engine_panel.en_fuel_1.wait_state(0)
+
+    # pilot clicks shut off
+    await fp.firebutton_1.wait_state(1)
+
+    await fp.disch1_eng1.wait_state(1)
+
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
+    await pc.pc_thrust_red_light_1.set_state(0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+    await cas.remove_message(cas.FIRE_ENG_1)
+
+
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
 async def _75_fire_eng_2(ac_state: xp_ac.ACState):
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+
+    await engine_panel.en_fuel_2.wait_state(1)
+    await asyncio.sleep(3)
+
     await cas.show_message(cas.FIRE_ENG_2)
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
+
+    await fpw.master_warning_lh.set_state(1)
+    await fpw.master_warning_rh.set_state(1)
+    await pc.pc_thrust_red_light_2.set_state(1)
+
+    await engine_panel.en_fuel_2.wait_state(0)
+
+    # pilot clicks shut off
+    await fp.firebutton_2.wait_state(1)
+
+    await fp.disch1_eng2.wait_state(1)
+
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
+    await pc.pc_thrust_red_light_2.set_state(0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+    await cas.remove_message(cas.FIRE_ENG_2)
+
+
+@scenario("EMERGENCY", "FIRE", "76 FIRE: ENG 3")
+async def _75_fire_eng_2(ac_state: xp_ac.ACState):
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+
+    await engine_panel.en_fuel_3.wait_state(1)
+    await asyncio.sleep(3)
+
+    await cas.show_message(cas.FIRE_ENG_3)
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)
+
+    await fpw.master_warning_lh.set_state(1)
+    await fpw.master_warning_rh.set_state(1)
+    await pc.pc_thrust_red_light_3.set_state(1)
+
+    await engine_panel.en_fuel_3.wait_state(0)
+
+    # pilot clicks shut off
+    await fp.firebutton_3.wait_state(1)
+
+    await fp.disch1_eng3.wait_state(1)
+
+    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
+    await pc.pc_thrust_red_light_3.set_state(0)
+    await fpw.master_warning_lh.set_state(0)
+    await fpw.master_warning_rh.set_state(0)
+    await cas.remove_message(cas.FIRE_ENG_3)
 
 
 @scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")
