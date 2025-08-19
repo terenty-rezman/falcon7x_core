@@ -181,7 +181,7 @@ class EngineStart1(System):
             engine_panel.en_start.get_state() == 1
         ]
 
-        if xp_ac.ACState.get_curr_param(cls.N1) < 10:
+        if xp_ac.ACState.get_curr_param(cls.N1) < 10 or cls.fuel_digital.get_state() == 0:
             cls.status = EngineStatus.STOPPED
         elif cls.logic_task is None:
             cls.status = EngineStatus.RUNNING
@@ -192,7 +192,7 @@ class EngineStart1(System):
     def kill_condition(cls):
         cond = [
             cls.logic_task is not None,
-            cls.fuel_flow_switch.get_state() == 0 or cls.fuel_digital.get_state() == 0,
+            cls.fuel_flow_switch.get_state() == 0,
         ]
 
         return all(cond)
@@ -278,6 +278,14 @@ class EngineStart1(System):
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
             # await asyncio.sleep(30)
 
+    TIME_BROKEN_N1_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 56 ]
+    N2_BROKEN_N1_SAMPLE = [0, 0, 3.6, 5.5, 9.2, 12.2, 14.3, 16.4, 17.7, 18.9, 19.5, 21.4, 22.8, 23.5, 24, 24.7, 27.8, 30.1, 30.8, 34.1, 34.8, 37.6, 39, 41.9, 44.5, 46.6, 49.1, 50.5, 50.1, 49.9, 50.3, 51.2, 51.5, 0]
+    FF_BROKEN_N1_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 120, 120, 215, 215, 225, 225, 225, 240, 250, 265, 280, 300, 305, 310, 325, 330, 0]
+    ITT_BROKEN_N1_SAMPLE = [13, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 29, 35, 52, 60, 70, 115, 161, 174, 222, 232, 267, 283, 313, 338, 353, 371, 378, 378, 383, 394, 409, 410, 150]
+
+    OIL_TEMP_BROKEN_N1_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
+    OIL_PSI_BROKEN_N1_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 68, 69, 2]
+
     @classmethod
     async def run_broken_start(cls):
         async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
@@ -289,29 +297,29 @@ class EngineStart1(System):
                 synoptic_overrides.set_override_value(cls.N1_MAX, 88)
 
             async def ff():
-                ff_sample = [0.00012589 * x for x in cls.FF_SAMPLE]
+                ff_sample = [0.00012589 * x for x in cls.FF_BROKEN_N1_SAMPLE]
                 await synoptic_overrides._1d_table_anim(
-                    cls.FF, cls.TIME_SAMPLE, ff_sample
+                    cls.FF, cls.TIME_BROKEN_N1_SAMPLE, ff_sample
                 )
 
             async def N2_anim():
                 await synoptic_overrides._1d_table_anim(
-                    cls.N2, cls.TIME_SAMPLE, cls.N2_SAMPLE
+                    cls.N2, cls.TIME_BROKEN_N1_SAMPLE, cls.N2_BROKEN_N1_SAMPLE
                 )
 
             async def itt():
                 await synoptic_overrides._1d_table_anim(
-                    cls.ITT, cls.TIME_SAMPLE, cls.ITT_SAMPLE
+                    cls.ITT, cls.TIME_BROKEN_N1_SAMPLE, cls.ITT_BROKEN_N1_SAMPLE
                 )
 
             async def oil_psi():
                 await synoptic_overrides._1d_table_anim(
-                    cls.OIL_PSI, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_PSI_SAMPLE
+                    cls.OIL_PSI, cls.TIME_BROKEN_N1_SAMPLE, cls.OIL_PSI_BROKEN_N1_SAMPLE
                 )
 
             async def oil_temp():
                 await synoptic_overrides._1d_table_anim(
-                    cls.OIL_TEMP, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_TEMP_SAMPLE
+                    cls.OIL_TEMP, cls.TIME_BROKEN_N1_SAMPLE, cls.OIL_TEMP_BROKEN_N1_SAMPLE
                 )
             
             async def ign():
@@ -340,19 +348,15 @@ class EngineStart1(System):
                 await asyncio.sleep(2)
                 await xp.set_param(cls.AB, 0)
 
-            async def apu_temp():
-                await synoptic_overrides._1d_table_anim(
-                    cls.APU_TEMP, cls.APU_TEMP_TIME_SAMPLE, cls.APU_TEMP_SAMPLE
-                )
-            
             async def auto_stop():
+                await cls.fuel_digital.set_state(0)
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51)
                 await cas.show_message(cas.ENG_1_AUTO_SHUTDOWN)
-                await cls.fuel_digital.set_state(0)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
             
-            await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
+            await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
+            await cls.fuel_digital.set_state(1)
 
     @classmethod
     async def killing_task(cls):
@@ -418,6 +422,7 @@ class Engine1CustomSpecs(System):
     N1_PID_OUTPUT = 0
 
     fuel_flow_switch = engine_panel.en_fuel_1
+    fuel_flow_digital = engine_panel.en_fuel_digital_1
     next_wake_sleep_delay = 0.05
     active = False
 
@@ -433,7 +438,9 @@ class Engine1CustomSpecs(System):
 
         enable = [
             cls.ENGINE.status == EngineStatus.RUNNING,
-            cls.fuel_flow_switch.get_state() == 1
+            cls.fuel_flow_switch.get_state() == 1,
+            cls.fuel_flow_digital.get_state() == 1
+
         ]
         enable = all(enable)
 

@@ -29,6 +29,7 @@ async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
         engine_system.EngineStart1.broken_start = True
         await asyncio.sleep(42)
 
+    except asyncio.CancelledError:
+        await engine_panel.en_fuel_digital_1.set_state(1)
     finally:
         engine_system.EngineStart1.broken_start = False
-        await engine_panel.en_fuel_digital_1.set_state(1)
