@@ -14,7 +14,7 @@ from aircraft_systems.system_base import System
 
 
 class FlightRegime(System):
-    regime = cas.Regimes.PARK
+    regime = None
     next_wake_sleep_delay = 1
 
     @classmethod
@@ -28,7 +28,7 @@ class FlightRegime(System):
         park_brake_enabled =  pc.pc_parkbrake.get_state() == 1
         n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]) or 0
 
-        regime = None
+        regime = cas.Regimes.PARK
 
         if alt_above_ground < 200: 
             if n1 > 65:
