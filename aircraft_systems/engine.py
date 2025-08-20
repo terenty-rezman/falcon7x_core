@@ -120,6 +120,12 @@ class EngineStatus(enum.IntEnum):
     RUNNING = 1
 
 
+class BrokenStart(enum.IntEnum):
+    NORMAL_START = 0
+    N1_BROKEN_START = 1
+    N2_BROKEN_START = 2
+
+
 class EngineStart1(System):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
     N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
@@ -137,7 +143,7 @@ class EngineStart1(System):
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_digital = engine_panel.en_fuel_digital_1
 
-    broken_start = False
+    broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
     cas_eng_shutdown_msg = cas.ENG_1_AUTO_SHUTDOWN
 
@@ -202,10 +208,12 @@ class EngineStart1(System):
 
     @classmethod
     async def system_logic_task(cls):
-        if cls.broken_start:
-            await cls.run_broken_start()
-        else:
+        if cls.broken_start == BrokenStart.NORMAL_START:
             await cls.run_normal_start()
+        elif cls.broken_start == BrokenStart.N1_BROKEN_START:
+            await cls.run_broken_start_n1()
+        elif cls.broken_start == BrokenStart.N2_BROKEN_START:
+            await cls.run_broken_start_n2()
 
     @classmethod
     async def run_normal_start(cls):
@@ -279,7 +287,6 @@ class EngineStart1(System):
                 )
             
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
-            cls.broken_start_finished = True
             # await asyncio.sleep(30)
 
     TIME_BROKEN_N1_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 56 ]
@@ -291,7 +298,7 @@ class EngineStart1(System):
     OIL_PSI_BROKEN_N1_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 68, 69, 2]
 
     @classmethod
-    async def run_broken_start(cls):
+    async def run_broken_start_n1(cls):
         async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
             # broken start
             async def n1():
@@ -360,7 +367,75 @@ class EngineStart1(System):
                 await warning.master_caution_rh.set_state(1)
             
             await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
+            cls.broken_start_finished = True
             await cls.fuel_digital.set_state(1)
+
+    TIME_BROKEN_N2_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 31]
+    N2_BROKEN_N2_SAMPLE = [0, 0, 0.1, 0.2, 0.3, 0.5, 1, 1.5, 2, 2.5, 3, 3.4, 3.5, 4, 4.5, 5, 5.5, 0]
+    FF_BROKEN_N2_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ITT_BROKEN_N2_SAMPLE = [13, 13, 13, 13, 13, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13]
+
+    OIL_TEMP_BROKEN_N2_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
+    OIL_PSI_BROKEN_N2_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2] 
+
+    @classmethod
+    async def run_broken_start_n2(cls):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
+            # broken start
+            async def n1():
+                synoptic_overrides.set_override_value(cls.N1, 0)
+
+            async def n1_max():
+                synoptic_overrides.set_override_value(cls.N1_MAX, 88)
+
+            async def ff():
+                ff_sample = [0.00012589 * x for x in cls.FF_BROKEN_N2_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.FF, cls.TIME_BROKEN_N2_SAMPLE, ff_sample
+                )
+
+            async def N2_anim():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N2, cls.TIME_BROKEN_N2_SAMPLE, cls.N2_BROKEN_N2_SAMPLE
+                )
+
+            async def itt():
+                await synoptic_overrides._1d_table_anim(
+                    cls.ITT, cls.TIME_BROKEN_N2_SAMPLE, cls.ITT_BROKEN_N2_SAMPLE
+                )
+
+            async def oil_psi():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_PSI, cls.TIME_BROKEN_N2_SAMPLE, cls.OIL_PSI_BROKEN_N2_SAMPLE
+                )
+
+            async def oil_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_TEMP, cls.TIME_BROKEN_N2_SAMPLE, cls.OIL_TEMP_BROKEN_N2_SAMPLE
+                )
+            
+            async def start():
+                # show start
+                await xp.set_param(cls.MIN_OIL_LEVEL, 5)
+                await asyncio.sleep(1)
+                await xp.set_param(cls.START, 1)
+                # hide start
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 5, timeout=60)
+                await xp.set_param(cls.START, 0)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 24)
+            
+
+            async def auto_stop():
+                await cls.fuel_digital.set_state(0)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 5, timeout=60)
+                await cas.show_message(cls.cas_eng_shutdown_msg)
+                await warning.master_caution_lh.set_state(1)
+                await warning.master_caution_rh.set_state(1)
+            
+            await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start())
+            cls.broken_start_finished = True
+            await cls.fuel_digital.set_state(1)
+
 
     @classmethod
     async def killing_task(cls):
@@ -386,7 +461,7 @@ class EngineStart2(EngineStart1):
     fuel_flow_switch = engine_panel.en_fuel_2
     fuel_digital = engine_panel.en_fuel_digital_2
 
-    broken_start = False
+    broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
     cas_eng_shutdown_msg = cas.ENG_2_AUTO_SHUTDOWN
 
@@ -412,7 +487,7 @@ class EngineStart3(EngineStart1):
     fuel_flow_switch = engine_panel.en_fuel_3
     fuel_digital = engine_panel.en_fuel_digital_3
 
-    broken_start = False
+    broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
     cas_eng_shutdown_msg = cas.ENG_3_AUTO_SHUTDOWN
 
@@ -483,3 +558,104 @@ class Engine1CustomSpecs(System):
         cls.N1_PID_OUTPUT += y1 * dt 
 
         synoptic_overrides.set_override_value(cls.N1, cls.N1_PID_OUTPUT)
+
+
+class Engine1ManualShutdown(System):
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
+    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"] 
+    IGN = xp.Params["sim/custom/7x/z_syn_eng_ign1"]
+    OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]"]
+    FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"]
+    START = xp.Params["sim/custom/7x/z_syn_eng_start1"]
+    AB = xp.Params["sim/custom/7x/z_syn_eng_ab1"]
+
+    fuel_flow_switch = engine_panel.en_fuel_1
+
+    logic_task = None
+    is_killing = False
+
+    @classmethod
+    def start_condition(cls):
+        avail = [
+            xp_ac.ACState.param_available(cls.N2),
+        ]
+        if not all(avail):
+            return False
+
+        cond = [
+            cls.fuel_flow_switch.get_state() == 0,
+            xp_ac.ACState.get_curr_param(cls.N2) > 0.5,
+        ]
+        return all(cond)
+
+    @classmethod
+    def kill_condition(cls):
+        cond = [
+            cls.logic_task is not None,
+            cls.fuel_flow_switch.get_state() == 1,
+        ]
+
+        return all(cond)
+
+    @classmethod
+    async def system_logic_task(cls):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP]):
+            await xp.set_param(cls.AB, 0)
+            await xp.set_param(cls.START, 0)
+            await xp.set_param(cls.IGN, 0)
+
+            n1_curr = xp_ac.ACState.get_curr_param(cls.N1)
+            n1_coro = synoptic_overrides.linear_anim(cls.N1, n1_curr, 0, 10)
+
+            n2_curr = xp_ac.ACState.get_curr_param(cls.N2)
+            n2_coro = synoptic_overrides.linear_anim(cls.N2, n2_curr, 0, 30)
+
+            itt_curr = xp_ac.ACState.get_curr_param(cls.ITT)
+            itt_coro = synoptic_overrides.linear_anim(cls.ITT, itt_curr, 150, 30)
+
+            ff_curr = xp_ac.ACState.get_curr_param(cls.FF)
+            ff_coro = synoptic_overrides.linear_anim(cls.FF, ff_curr, 0, 10)
+
+            oil_psi_curr = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
+            oil_psi_coro = synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 0, 30)
+
+            oil_tmp_curr = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
+            oil_tmp_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, oil_tmp_curr, 18, 30)
+
+            await asyncio.gather(n1_coro, n2_coro, itt_coro, ff_coro, oil_psi_coro, oil_tmp_coro)
+
+
+class Engine2ManualShutdown(Engine1ManualShutdown):
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
+    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[1]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"] 
+    IGN = xp.Params["sim/custom/7x/z_syn_eng_ign2"]
+    OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]"]
+    FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"]
+    START = xp.Params["sim/custom/7x/z_syn_eng_start2"]
+    AB = xp.Params["sim/custom/7x/z_syn_eng_ab2"]
+
+    fuel_flow_switch = engine_panel.en_fuel_2
+
+    logic_task = None
+    is_killing = False
+
+
+class Engine3ManualShutdown(Engine1ManualShutdown):
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
+    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[2]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"] 
+    IGN = xp.Params["sim/custom/7x/z_syn_eng_ign3"]
+    OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"]
+    FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"]
+    START = xp.Params["sim/custom/7x/z_syn_eng_start3"]
+    AB = xp.Params["sim/custom/7x/z_syn_eng_ab3"]
+
+    fuel_flow_switch = engine_panel.en_fuel_3
+
+    logic_task = None
+    is_killing = False

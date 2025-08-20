@@ -29,13 +29,12 @@ async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
     try:
         await fuel_flow_digital.set_state(1)
-        engine.broken_start = True
+        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
-    except asyncio.CancelledError:
-        await fuel_flow_digital.set_state(1)
     finally:
-        engine.broken_start = False
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
         await cas.remove_message(cas_msg)
 
 
@@ -46,13 +45,12 @@ async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
     cas_msg = cas.ENG_2_AUTO_SHUTDOWN
     try:
         await fuel_flow_digital.set_state(1)
-        engine.broken_start = True
+        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
-    except asyncio.CancelledError:
-        await fuel_flow_digital.set_state(1)
     finally:
-        engine.broken_start = False
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
         await cas.remove_message(cas_msg)
 
 
@@ -63,11 +61,58 @@ async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
     cas_msg = cas.ENG_3_AUTO_SHUTDOWN
     try:
         await fuel_flow_digital.set_state(1)
-        engine.broken_start = True
+        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
-    except asyncio.CancelledError:
-        await fuel_flow_digital.set_state(1)
     finally:
-        engine.broken_start = False
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
+        await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG1 N2")
+async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart1 
+    fuel_flow_digital = engine_panel.en_fuel_digital_1
+    cas_msg = cas.ENG_1_AUTO_SHUTDOWN
+    try:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+    finally:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
+        await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG2 N2")
+async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart2 
+    fuel_flow_digital = engine_panel.en_fuel_digital_2
+    cas_msg = cas.ENG_2_AUTO_SHUTDOWN
+    try:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+    finally:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
+        await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG3 N2")
+async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart3 
+    fuel_flow_digital = engine_panel.en_fuel_digital_3
+    cas_msg = cas.ENG_3_AUTO_SHUTDOWN
+    try:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+    finally:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
         await cas.remove_message(cas_msg)
