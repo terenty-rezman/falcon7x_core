@@ -191,141 +191,145 @@ async def _69_fcs_ths_prot_fail(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "FIRE", "72 FIRE: APU")
 async def _72_fire_apu(ac_state: xp_ac.ACState):
-    await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
-    await fp.apu_disch.set_state(0)
-    # await overhead_engines.apu_start_stop.set_state(0)
+    try:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await fp.apu_disch.set_state(0)
+        # await overhead_engines.apu_start_stop.set_state(0)
 
-    await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
-    await asyncio.sleep(5)
-    await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
-    await fpw.master_warning_lh.set_state(1)
-    await fpw.master_warning_rh.set_state(1)
-    await cas.show_message(cas.FIRE_APU)
+        await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
+        await asyncio.sleep(5)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+        await cas.show_message(cas.FIRE_APU)
 
-    await overhead_engines.apu_start_stop.set_state(0)
-    await asyncio.sleep(1)
-    engine.ApuStart.kill_self()
+        await overhead_engines.apu_start_stop.set_state(0)
+        await asyncio.sleep(1)
+        engine.ApuStart.kill_self()
 
-    # Apu fire protection system automatically closes apu fsov
-    await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 0)
+        # Apu fire protection system automatically closes apu fsov
+        await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 0)
 
-    blink = util.blink_anim(0.5)
-    def blink_master(n1):
-        if n1 > 1 and n1 < 6: 
-            overhead_engines.apu_master.set_override_indication(next(blink))
-        
-        if n1 < 1:
-            return True
+        blink = util.blink_anim(0.5)
+        def blink_master(n1):
+            if n1 > 1 and n1 < 6: 
+                overhead_engines.apu_master.set_override_indication(next(blink))
+            
+            if n1 < 1:
+                return True
 
-        return False
-        
-    await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
+            return False
+            
+        await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
 
-    await asyncio.sleep(25)
-    await fp.apu_disch.set_state(1)
+        await asyncio.sleep(25)
+        await fp.apu_disch.set_state(1)
 
-    await fp.apu_disch.wait_state(1)
+        await fp.apu_disch.wait_state(1)
 
-    await asyncio.sleep(3)
-
-    # fire has been succesfully extinguished
-    failure = xp.Params["sim/operation/failures/rel_apu_fire"]
-    await xp.set_param(failure, 0)
-    await cas.remove_message(cas.FIRE_APU)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
+        await asyncio.sleep(3)
+    finally:
+        # fire has been succesfully extinguished
+        failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+        await xp.set_param(failure, 0)
+        await cas.remove_message(cas.FIRE_APU)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "74 FIRE: ENG 1")
 async def _74_fire_eng_1(ac_state: xp_ac.ACState):
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
+    try:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
-    await engine_panel.en_fuel_1.wait_state(1)
-    await asyncio.sleep(3)
+        await engine_panel.en_fuel_1.wait_state(1)
+        await asyncio.sleep(3)
 
-    await cas.show_message(cas.FIRE_ENG_1)
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
+        await cas.show_message(cas.FIRE_ENG_1)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
 
-    await fpw.master_warning_lh.set_state(1)
-    await fpw.master_warning_rh.set_state(1)
-    await pc.pc_thrust_red_light_1.set_state(1)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+        await pc.pc_thrust_red_light_1.set_state(1)
 
-    await engine_panel.en_fuel_1.wait_state(0)
+        await engine_panel.en_fuel_1.wait_state(0)
 
-    # pilot clicks shut off
-    await fp.firebutton_1.wait_state(1)
+        # pilot clicks shut off
+        await fp.firebutton_1.wait_state(1)
 
-    await fp.disch1_eng1.wait_state(1)
-
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
-    await pc.pc_thrust_red_light_1.set_state(0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
-    await cas.remove_message(cas.FIRE_ENG_1)
+        await fp.disch1_eng1.wait_state(1)
+    finally:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
+        await pc.pc_thrust_red_light_1.set_state(0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await cas.remove_message(cas.FIRE_ENG_1)
 
 
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
 async def _75_fire_eng_2(ac_state: xp_ac.ACState):
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
+    try:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
-    await engine_panel.en_fuel_2.wait_state(1)
-    await asyncio.sleep(3)
+        await engine_panel.en_fuel_2.wait_state(1)
+        await asyncio.sleep(3)
 
-    await cas.show_message(cas.FIRE_ENG_2)
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
+        await cas.show_message(cas.FIRE_ENG_2)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
 
-    await fpw.master_warning_lh.set_state(1)
-    await fpw.master_warning_rh.set_state(1)
-    await pc.pc_thrust_red_light_2.set_state(1)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+        await pc.pc_thrust_red_light_2.set_state(1)
 
-    await engine_panel.en_fuel_2.wait_state(0)
+        await engine_panel.en_fuel_2.wait_state(0)
 
-    # pilot clicks shut off
-    await fp.firebutton_2.wait_state(1)
+        # pilot clicks shut off
+        await fp.firebutton_2.wait_state(1)
 
-    await fp.disch1_eng2.wait_state(1)
-
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
-    await pc.pc_thrust_red_light_2.set_state(0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
-    await cas.remove_message(cas.FIRE_ENG_2)
+        await fp.disch1_eng2.wait_state(1)
+    finally:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
+        await pc.pc_thrust_red_light_2.set_state(0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await cas.remove_message(cas.FIRE_ENG_2)
 
 
 @scenario("EMERGENCY", "FIRE", "76 FIRE: ENG 3")
 async def _75_fire_eng_2(ac_state: xp_ac.ACState):
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
+    try:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
-    await engine_panel.en_fuel_3.wait_state(1)
-    await asyncio.sleep(3)
+        await engine_panel.en_fuel_3.wait_state(1)
+        await asyncio.sleep(3)
 
-    await cas.show_message(cas.FIRE_ENG_3)
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)
+        await cas.show_message(cas.FIRE_ENG_3)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)
 
-    await fpw.master_warning_lh.set_state(1)
-    await fpw.master_warning_rh.set_state(1)
-    await pc.pc_thrust_red_light_3.set_state(1)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+        await pc.pc_thrust_red_light_3.set_state(1)
 
-    await engine_panel.en_fuel_3.wait_state(0)
+        await engine_panel.en_fuel_3.wait_state(0)
 
-    # pilot clicks shut off
-    await fp.firebutton_3.wait_state(1)
+        # pilot clicks shut off
+        await fp.firebutton_3.wait_state(1)
 
-    await fp.disch1_eng3.wait_state(1)
-
-    await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
-    await pc.pc_thrust_red_light_3.set_state(0)
-    await fpw.master_warning_lh.set_state(0)
-    await fpw.master_warning_rh.set_state(0)
-    await cas.remove_message(cas.FIRE_ENG_3)
+        await fp.disch1_eng3.wait_state(1)
+    finally:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
+        await pc.pc_thrust_red_light_3.set_state(0)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await cas.remove_message(cas.FIRE_ENG_3)
 
 
 @scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")

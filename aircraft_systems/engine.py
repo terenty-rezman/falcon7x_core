@@ -138,6 +138,7 @@ class EngineStart1(System):
     fuel_digital = engine_panel.en_fuel_digital_1
 
     broken_start = False
+    broken_start_finished = False
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
     N1_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 11.4, 12.1, 13.7, 15.8, 16.7, 18.4, 19.5, 21, 21.8, 22.3, 23, 23.6, 23.9, 23.8, 24, 24.1, 24.2, 24.2] # time
@@ -181,7 +182,8 @@ class EngineStart1(System):
             engine_panel.en_start.get_state() == 1
         ]
 
-        if xp_ac.ACState.get_curr_param(cls.N1) < 10 or cls.fuel_digital.get_state() == 0:
+        if xp_ac.ACState.get_curr_param(cls.N1) < 10:
+            cls.broken_start_finished = False
             cls.status = EngineStatus.STOPPED
         elif cls.logic_task is None:
             cls.status = EngineStatus.RUNNING
@@ -276,6 +278,7 @@ class EngineStart1(System):
                 )
             
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
+            cls.broken_start_finished = True
             # await asyncio.sleep(30)
 
     TIME_BROKEN_N1_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 56 ]
@@ -350,7 +353,7 @@ class EngineStart1(System):
 
             async def auto_stop():
                 await cls.fuel_digital.set_state(0)
-                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 50)
                 await cas.show_message(cas.ENG_1_AUTO_SHUTDOWN)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
@@ -380,6 +383,10 @@ class EngineStart2(EngineStart1):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_2"]
     fuel_flow_switch = engine_panel.en_fuel_2
+    fuel_digital = engine_panel.en_fuel_digital_1
+
+    broken_start = False
+    broken_start_finished = False
 
     # otherwise logic_task will be shared between all derived classes
     logic_task = None
@@ -401,6 +408,10 @@ class EngineStart3(EngineStart1):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
     MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_3"]
     fuel_flow_switch = engine_panel.en_fuel_3
+    fuel_digital = engine_panel.en_fuel_digital_1
+
+    broken_start = False
+    broken_start_finished = False
 
     # otherwise logic_task will be shared between all derived classes
     logic_task = None

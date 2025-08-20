@@ -4529,7 +4529,7 @@ class ENG_1_AUTO_SHUTDOWN(CASmssg):
 
 
 @register
-class ENG_3_AUTO_SHUTDOWN(CASmssg): 
+class ENG_2_AUTO_SHUTDOWN(CASmssg): 
     isread = False
     text = "ENG 2: AUTO SHUTDOWN"
     color = "A"

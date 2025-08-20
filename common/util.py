@@ -30,6 +30,18 @@ async def subscribe_to_time_param():
     await xp.subscribe_to_param(Params["sim/time/total_running_time_sec"])
 
 
+async def wait_condition(condition: callable, timeout=None, sleep_sec=0.5):
+    started = time.time()
+    while True:
+        if condition():
+            break
+        await asyncio.sleep(sleep_sec)
+        if timeout:
+            elapsed = time.time() - started
+            if elapsed > timeout:
+                break
+
+
 # async def request_all_data():
 #     """ получить актуальное значения всех параметров """
 #     for p in Params:

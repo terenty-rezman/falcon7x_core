@@ -24,12 +24,50 @@ APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
 @scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG1 N1")
 async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart1 
+    fuel_flow_digital = engine_panel.en_fuel_digital_1
+    cas_msg = cas.ENG_1_AUTO_SHUTDOWN
     try:
-        await engine_panel.en_fuel_digital_1.set_state(1)
-        engine_system.EngineStart1.broken_start = True
-        await asyncio.sleep(42)
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = True
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
     except asyncio.CancelledError:
-        await engine_panel.en_fuel_digital_1.set_state(1)
+        await fuel_flow_digital.set_state(1)
     finally:
-        engine_system.EngineStart1.broken_start = False
+        engine.broken_start = False
+        await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG2 N1")
+async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart2 
+    fuel_flow_digital = engine_panel.en_fuel_digital_2
+    cas_msg = cas.ENG_2_AUTO_SHUTDOWN
+    try:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = True
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+    except asyncio.CancelledError:
+        await fuel_flow_digital.set_state(1)
+    finally:
+        engine.broken_start = False
+        await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "AUTO SHUTDOWN ENG3 N1")
+async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart3 
+    fuel_flow_digital = engine_panel.en_fuel_digital_3
+    cas_msg = cas.ENG_3_AUTO_SHUTDOWN
+    try:
+        await fuel_flow_digital.set_state(1)
+        engine.broken_start = True
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+    except asyncio.CancelledError:
+        await fuel_flow_digital.set_state(1)
+    finally:
+        engine.broken_start = False
+        await cas.remove_message(cas_msg)

@@ -295,12 +295,22 @@ class pc_parkbrake(TwoStateButton):
 
     @classmethod
     async def set_state(cls, state):
-        await super().set_state(state)
-
         if state == 0:
+            await xp.set_param(cls.dataref, cls.states[0])
             await cas.remove_message(cas.PARK_BRAKE_ON)
         else:
+            await xp.set_param(cls.dataref, cls.states[1])
             await cas.show_message(cas.PARK_BRAKE_ON)
+    
+    @classmethod
+    def get_state(cls):
+        val = xp_ac.ACState.get_curr_param(cls.dataref) or 0
+        if val < 0.05:
+            state = 0
+        else:
+            state = 1
+
+        return state
 
 
 @add_to_panel
