@@ -2,10 +2,8 @@ import asyncio
 import traceback
 
 import common.xp_aircraft_state as xp_ac
-import xplane.master as xp
-from xplane.master import Params, Commands
 import common.sane_tasks as sane_tasks
-from cas import cas
+from common.reset_systems import reset_all_systems
 
 
 scenarios = {}
@@ -59,8 +57,7 @@ class Scenario:
 
 
 async def pre_scenario_task(ac_state: xp_ac.ACState):
-    await cas.remove_all_messages()
-    await xp.run_command_once(Commands["sim/operation/fix_all_systems"])
+    await reset_all_systems() 
 
 
 @scenario("TEST", "TEST", "test_scenario_1")
@@ -100,9 +97,6 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
 # abnormal 47
 # emergency 38
 # normal 13
-
-# from scenarios import *
-# from scenarios import _26_elec_aft_dist_box_ovht 
 
 from scenarios import abnormal
 from scenarios import emergency

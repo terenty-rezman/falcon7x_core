@@ -116,3 +116,20 @@ async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.NORMAL_START
         await cas.remove_message(cas_msg)
+
+
+@scenario("MAINTENANCE", "ENGINE", "ENG1 PARAM EXCEED")
+async def param_exceed_eng1(ac_state: xp_ac.ACState):
+    engine = engine_system.EngineStart1 
+    # fuel_flow_digital = engine_panel.en_fuel_digital_1
+    cas_msg = cas.ENG_1_PARAM_EXCEED
+    try:
+        # await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
+        # await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+        await asyncio.sleep(20)
+
+    finally:
+        # await fuel_flow_digital.set_state(1)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
+        await cas.remove_message(cas_msg)

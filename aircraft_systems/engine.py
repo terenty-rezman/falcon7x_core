@@ -19,6 +19,7 @@ import overhead_panel.fuel as fuel
 import synoptic_remote.param_overrides as synoptic_overrides
 import front_panel.warning as warning
 from cas import cas
+import common.external_sound as sounds
 
 
 class ApuStart(System):
@@ -124,6 +125,7 @@ class BrokenStart(enum.IntEnum):
     NORMAL_START = 0
     N1_BROKEN_START = 1
     N2_BROKEN_START = 2
+    ITT_BROKEN_START = 3
 
 
 class EngineStart1(System):
@@ -146,6 +148,7 @@ class EngineStart1(System):
     broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
     cas_eng_shutdown_msg = cas.ENG_1_AUTO_SHUTDOWN
+    cas_eng_param_exceed = cas.ENG_1_PARAM_EXCEED
 
     TIME_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
     N1_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 11.4, 12.1, 13.7, 15.8, 16.7, 18.4, 19.5, 21, 21.8, 22.3, 23, 23.6, 23.9, 23.8, 24, 24.1, 24.2, 24.2] # time
@@ -214,6 +217,8 @@ class EngineStart1(System):
             await cls.run_broken_start_n1()
         elif cls.broken_start == BrokenStart.N2_BROKEN_START:
             await cls.run_broken_start_n2()
+        elif cls.broken_start == BrokenStart.ITT_BROKEN_START:
+            await cls.run_broken_start_itt()
 
     @classmethod
     async def run_normal_start(cls):
@@ -365,6 +370,7 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
+                await sounds.play_sound(sounds.Sound.GONG)
             
             await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
             cls.broken_start_finished = True
@@ -431,10 +437,104 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
+                await sounds.play_sound(sounds.Sound.GONG)
             
             await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start())
             cls.broken_start_finished = True
             await cls.fuel_digital.set_state(1)
+
+
+    TIME_BROKEN_ITT_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50 ]
+    N1_BROKEN_ITT_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 11.4, 12.1, 13.7, 15.8, 16.7, 18.4, 19.5, 21, 21.8, 22.3, 23, 23.6, 23.9, 23.8, 24, 24.1, 24.2, 24.2] # time
+    N2_BROKEN_ITT_SAMPLE = [0, 0, 3.6, 5.5, 9.2, 12.2, 14.3, 16.4, 17.7, 18.9, 19.5, 21.4, 22.8, 23.5, 24, 24.7, 27.8, 30.1, 30.8, 34.1, 34.8, 37.6, 39, 41.9, 44.5, 46.6, 49.1, 50.5, 50.1, 49.9, 50.3, 51.2, 51.6, 51.7, 51.7, 51.9, 52, 52, 52]
+    FF_BROKEN_ITT_SAMPLE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 75, 120, 120, 215, 215, 225, 225, 225, 240, 250, 265, 280, 300, 305, 310, 325, 340, 350, 350, 365, 355, 350, 350]
+    ITT_BROKEN_ITT_SAMPLE = [13, 43, 83, 130, 170, 240, 300, 350, 380, 420, 440, 470, 480, 500, 520, 570, 600, 620, 640, 670, 710, 730, 760, 790, 810, 830, 850, 870, 875, 880, 885, 890, 893, 896, 899, 900, 900, 901, 900]
+
+    TIME_OIL_TEMP_BROKEN_ITT_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 40, 43, 47, 50, 66, 71, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 118, 119, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 156, 157, 158, 160, 162, 164, 166, 172, 210, 218, 223]
+    OIL_TEMP_BROKEN_ITT_SAMPLE = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 21, 21, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 27, 29, 27, 27, 28, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 35, 39, 40, 40]
+    OIL_PSI_BROKEN_ITT_SAMPLE = [1, 2, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 7, 8, 11, 11, 11, 11, 22, 28, 28, 34, 34, 41, 44, 46, 50, 55, 60, 63, 67, 69, 71, 71, 71, 75, 77, 76, 76, 72, 70, 70, 70, 70, 70, 70, 70, 69, 69, 69, 69, 69, 69, 68, 68, 68, 68, 68, 68, 67, 67, 67, 68, 68, 66, 68, 66, 66, 66, 67, 67, 66, 67, 66, 66, 66, 66, 65, 64, 63, 66, 63, 62, 62, 62, 62, 62, 62, 62, 62, 62, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 61, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 59, 59, 59, 57, 57, 57]
+
+    @classmethod
+    async def run_broken_start_itt(cls):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
+            # after engine start
+            # start appears in 1 sec after engine start
+            async def n1():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N1, cls.TIME_BROKEN_ITT_SAMPLE, cls.N1_BROKEN_ITT_SAMPLE
+                )
+                cls.status = EngineStatus.RUNNING
+
+            async def n1_max():
+                synoptic_overrides.set_override_value(cls.N1_MAX, 88)
+
+            async def ff():
+                ff_sample = [0.00012589 * x for x in cls.FF_BROKEN_ITT_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.FF, cls.TIME_BROKEN_ITT_SAMPLE, ff_sample
+                )
+
+            async def N2_anim():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N2, cls.TIME_BROKEN_ITT_SAMPLE, cls.N2_BROKEN_ITT_SAMPLE
+                )
+
+            async def itt():
+                await synoptic_overrides._1d_table_anim(
+                    cls.ITT, cls.TIME_BROKEN_ITT_SAMPLE, cls.ITT_BROKEN_ITT_SAMPLE
+                )
+
+            async def oil_psi():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_PSI, cls.TIME_OIL_TEMP_BROKEN_ITT_SAMPLE, cls.OIL_PSI_BROKEN_ITT_SAMPLE
+                )
+
+            async def oil_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_TEMP, cls.TIME_OIL_TEMP_BROKEN_ITT_SAMPLE, cls.OIL_TEMP_BROKEN_ITT_SAMPLE
+                )
+            
+            async def ign():
+                # show ign
+                await asyncio.sleep(1)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
+                await xp.set_param(cls.IGN, 1)
+                # hide ign
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=60)
+                await xp.set_param(cls.IGN, 0)
+            
+            async def start():
+                # show start
+                await xp.set_param(cls.MIN_OIL_LEVEL, 5)
+                await asyncio.sleep(1)
+                await xp.set_param(cls.START, 1)
+                # hide start
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
+                await asyncio.sleep(1)
+                await xp.set_param(cls.START, 0)
+                await xp.set_param(cls.MIN_OIL_LEVEL, 24)
+
+            async def itt_500():
+                await xp_ac.ACState.wait_until_parameter_condition(cls.ITT, lambda p: p > 500, timeout=60)
+                await xp.set_param(cls.START, 2)
+                await cas.show_message(cas.cas_eng_param_exceed)
+                await warning.master_caution_lh.set_state(1)
+                await warning.master_caution_rh.set_state(1)
+                await sounds.play_sound(sounds.Sound.GONG)
+            
+            async def ab():
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
+                await xp.set_param(cls.AB, 1)
+                await asyncio.sleep(2)
+                await xp.set_param(cls.AB, 0)
+
+            async def apu_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_TEMP, cls.APU_TEMP_TIME_SAMPLE, cls.APU_TEMP_SAMPLE
+                )
+            
+            await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp(), itt_500())
+            cls.broken_start_finished = True
 
 
     @classmethod

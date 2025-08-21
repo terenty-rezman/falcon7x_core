@@ -4639,6 +4639,43 @@ class ENG_1_2_3_PARAM_EXCEED(CASmssg):
     TO = False
     land = False
 
+
+@register
+class ENG_1_PARAM_EXCEED(CASmssg): 
+    isread = False
+    text = "ENG 1: PARAM EXCEED"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
+
+@register
+class ENG_2_PARAM_EXCEED(CASmssg): 
+    isread = False
+    text = "ENG 2: PARAM EXCEED"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
+
+@register
+class ENG_3_PARAM_EXCEED(CASmssg): 
+    isread = False
+    text = "ENG 3: PARAM EXCEED"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = False
+    TO = False
+    land = False
+
+
 @register
 class ENG_1_2_3_SHORT_DISPATCH(CASmssg): 
     isread = False

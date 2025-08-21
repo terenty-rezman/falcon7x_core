@@ -224,9 +224,6 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
             
         await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
 
-        await asyncio.sleep(25)
-        await fp.apu_disch.set_state(1)
-
         await fp.apu_disch.wait_state(1)
 
         await asyncio.sleep(3)
