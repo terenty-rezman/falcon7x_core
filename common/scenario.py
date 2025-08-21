@@ -21,9 +21,10 @@ def scenario(procedure_type: str, path: str, procedure_name: str):
 
 class Scenario:
     current_scenario_task = None
+    current_scenario_name = None
 
     @classmethod
-    async def clear_all(cls):
+    async def kill_current_scenario(cls):
         # clear current task
         if cls.current_scenario_task:
             cls.current_scenario_task.cancel()
@@ -36,22 +37,25 @@ class Scenario:
                 print(f"stoped task {cls.current_scenario_task}")
 
             cls.current_scenario_task = None
+            cls.current_scenario_name = None
 
     @classmethod
-    async def run_scenario_task(cls, task_name, ac_state: xp_ac.ACState):
-        await cls.clear_all()
+    async def run_scenario_task(cls, name, ac_state: xp_ac.ACState):
+        await cls.kill_current_scenario()
         
         await pre_scenario_task(ac_state) 
 
-        task = sane_tasks.spawn(scenarios[task_name](ac_state))
+        task = sane_tasks.spawn(scenarios[name](ac_state))
         task.add_done_callback(Scenario.on_scenario_done)
         cls.current_scenario_task = task
-        print(f"run task {task_name}")
+        cls.current_scenario_name = name
+        print(f"run task {name}")
     
     @classmethod
     def on_scenario_done(cls, task):
         print(f"task finished {task}")
         cls.current_scenario_task = None
+        cls.current_scenario_name = None
 
 
 async def pre_scenario_task(ac_state: xp_ac.ACState):

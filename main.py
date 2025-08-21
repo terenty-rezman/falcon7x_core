@@ -112,7 +112,7 @@ async def main_loop():
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
 
-    await Scenario.clear_all()
+    await Scenario.kill_current_scenario()
     await ACSystems.reset()
     ACState.clear_all()
 

@@ -76,6 +76,33 @@ async def run_procedure(data: RunProcedure):
     return {"result": "ok"}
 
 
+@app.post("/api/stop_procedure")
+async def stop_procedure():
+    await scenario.Scenario.kill_current_scenario()
+
+    return {"result": "ok"}
+
+
+@app.get("/api/status")
+async def status():
+    status = {}
+
+    procedure_name = scenario.Scenario.current_scenario_name
+    if procedure_name:
+        _type, path, name = procedure_name
+        status.update({
+            "current_procedure": {
+                "procedure_type": _type,
+                "procedure_path": path,
+                "procedure_name": name 
+            }
+        })
+    else:
+        status.update({"current_procedure": None})
+
+    return status
+
+
 @app.get("/api/procedure_list")
 async def procedure_list():
     proc_list = []
