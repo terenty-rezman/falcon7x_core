@@ -142,6 +142,8 @@ async def main():
     await op.run_receive_uso_task(settings.USO_HOST, settings.USO_RECEIVE_PORT)
     await op.run_send_uso_task(settings.USO_HOST, settings.USO_SEND_PORT)
 
+    await web_interface.run_server_task(settings.WEB_INTERFACE_HOST, settings.WB_INTERFACE_PORT)
+
     sane_tasks.spawn(ac_state_callback_task())
 
     await xp.xp_master_udp.connect(settings.XP_MASTER_HOST, settings.XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
@@ -156,8 +158,6 @@ async def main():
 
     synoptic_remote.run_updater()
     add_remote_synoptic_ui_sync_list()
-
-    await web_interface.run_server_task(settings.WEB_INTERFACE_HOST, settings.WB_INTERFACE_PORT)
 
     await auto_throttle_send.run_send_to_autothrottle_task(settings.AUTO_THROTTLE_HOST, settings.AUTO_THROTTLE_PORT)
 
