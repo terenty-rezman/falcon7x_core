@@ -723,9 +723,11 @@ class Engine1CustomSpecs(System):
     N2 = Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
     OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
     FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]"]
 
     THROTTLE_N1_MAP_ARGS = [0, 5, 15, 25, 35, 40]
-    THROTTLE_N1_MAP_VALUES = [22, 30, 60, 82, 89, 90]
+    THROTTLE_N1_MAP_VALUES = [22, 30, 60, 82, 89, 90.7]
 
     N1_T = 2
     N1_OUTPUT = None
@@ -749,10 +751,23 @@ class Engine1CustomSpecs(System):
     FF_T = 5
     FF_OUTPUT = None
 
+    THROTTLE_ITT_MAP_ARGS = [0, 5, 15, 25, 31.85, 40]
+    THROTTLE_ITT_MAP_VALUES = [453, 592, 681, 707, 760, 816]
+
+    ITT_T = 5
+    ITT_OUTPUT = None
+
+    OIL_TEMP_T = 588
+    OIL_TEMP_OUTPUT = None
+    OIL_TEMP_MAX = 96
+
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     next_wake_sleep_delay = 0.1
     active = False
+
+    logic_task = None
+    is_killing = False
 
     @classmethod
     def start_condition(cls):
@@ -773,11 +788,16 @@ class Engine1CustomSpecs(System):
         enable = all(enable)
 
         if enable and not cls.active:
-            sane_tasks.spawn(synoptic_overrides.enable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF]))
+            sane_tasks.spawn(synoptic_overrides.enable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF, cls.ITT, cls.OIL_TEMP]))
             cls.active = True
         
         if not enable and cls.active:
-            sane_tasks.spawn(synoptic_overrides.disable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF]))
+            sane_tasks.spawn(synoptic_overrides.disable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF, cls.ITT, cls.OIL_TEMP]))
+            cls.N1_OUTPUT = None
+            cls.N2_OUTPUT = None
+            cls.OIL_PSI_OUTPUT = None
+            cls.ITT_OUTPUT = None
+            cls.OIL_TEMP_OUTPUT = None
             cls.active = False
 
         return enable
@@ -787,6 +807,8 @@ class Engine1CustomSpecs(System):
         if cls.N1_OUTPUT is None: cls.N1_OUTPUT = xp_ac.ACState.get_curr_param(cls.N1)
         if cls.N2_OUTPUT is None: cls.N2_OUTPUT = xp_ac.ACState.get_curr_param(cls.N2)
         if cls.OIL_PSI_OUTPUT is None: cls.OIL_PSI_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
+        if cls.ITT_OUTPUT is None: cls.ITT_OUTPUT = xp_ac.ACState.get_curr_param(cls.ITT)
+        if cls.OIL_TEMP_OUTPUT is None: cls.OIL_TEMP_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
 
         FF_COEFF = 0.00012589
         if cls.FF_OUTPUT is None: cls.FF_OUTPUT = xp_ac.ACState.get_curr_param(cls.FF) / FF_COEFF 
@@ -831,6 +853,67 @@ class Engine1CustomSpecs(System):
         cls.FF_OUTPUT = ff_i_1
 
         synoptic_overrides.set_override_value(cls.FF, cls.FF_OUTPUT * FF_COEFF) 
+
+        # ITT
+        itt_target = np.interp(throttle_real, cls.THROTTLE_ITT_MAP_ARGS, cls.THROTTLE_ITT_MAP_VALUES)
+
+        itt_i = cls.ITT_OUTPUT
+        itt_i_1 = itt_i + (itt_target - itt_i) / cls.ITT_T * dt 
+        cls.ITT_OUTPUT = itt_i_1
+
+        synoptic_overrides.set_override_value(cls.ITT, cls.ITT_OUTPUT) 
+
+        # oil temp
+        oil_temp_i = cls.OIL_TEMP_OUTPUT
+        if cls.N1_OUTPUT > 10:
+            oil_temp_i_1 = oil_temp_i + cls.N1_OUTPUT / 10 * (cls.OIL_TEMP_MAX - cls.OIL_TEMP_OUTPUT) / cls.OIL_TEMP_T * dt
+        else:
+            oil_temp_i_1 = oil_temp_i - 0.0183 * dt
+
+        cls.OIL_TEMP_OUTPUT = oil_temp_i_1
+        synoptic_overrides.set_override_value(cls.OIL_TEMP, cls.OIL_TEMP_OUTPUT) 
+
+
+class Engine2CustomSpecs(Engine1CustomSpecs):
+    ENGINE = EngineStart2
+
+    TRHOTTLE_RATIO = Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"]
+    N1 = Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
+    N2 = Params["sim/cockpit2/engine/indicators/N2_percent[1]"]
+    OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"] 
+    FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]"]
+
+    fuel_flow_switch = engine_panel.en_fuel_2
+    fuel_flow_digital = engine_panel.en_fuel_digital_2
+    next_wake_sleep_delay = 0.1
+    active = False
+
+    logic_task = None
+    is_killing = False
+
+
+class Engine3CustomSpecs(Engine1CustomSpecs):
+    ENGINE = EngineStart3
+
+    TRHOTTLE_RATIO = Params["sim/cockpit2/engine/actuators/throttle_ratio[2]"]
+    N1 = Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
+    N2 = Params["sim/cockpit2/engine/indicators/N2_percent[2]"]
+    OIL_PSI = Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
+    FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"]
+    ITT = Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"] 
+    OIL_TEMP = Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"]
+
+    fuel_flow_switch = engine_panel.en_fuel_3
+    fuel_flow_digital = engine_panel.en_fuel_digital_3
+    next_wake_sleep_delay = 0.1
+    active = False
+
+    logic_task = None
+    is_killing = False
+
+
 
 class Engine1ManualShutdown(System):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
@@ -895,7 +978,7 @@ class Engine1ManualShutdown(System):
             oil_psi_coro = synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 0, 30)
 
             oil_tmp_curr = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
-            oil_tmp_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, oil_tmp_curr, 18, 30)
+            oil_tmp_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, oil_tmp_curr, 30, 30)
 
             cls.engine.status = EngineStatus.STOPPING 
             await asyncio.gather(n1_coro, n2_coro, itt_coro, ff_coro, oil_psi_coro, oil_tmp_coro)

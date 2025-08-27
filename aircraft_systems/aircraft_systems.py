@@ -1,7 +1,8 @@
 from aircraft_systems.fire_protection import APUFireProtection, RearCompFireProtection, BagCompFireProtection
 from aircraft_systems.engine import (
-    EngineStart1, EngineStart2, EngineStart3, ApuStart, Engine1CustomSpecs, Engine1ManualShutdown, 
-    Engine2ManualShutdown, Engine3ManualShutdown
+    EngineStart1, EngineStart2, EngineStart3, ApuStart, 
+    Engine1CustomSpecs, Engine2CustomSpecs, Engine3CustomSpecs,
+    Engine1ManualShutdown, Engine2ManualShutdown, Engine3ManualShutdown
 )
 from aircraft_systems.elec import Gen1, Gen2, Gen3, Apu, ElecLinePower
 from aircraft_systems.black_screens import LeftBlackScreen, RightBlackScreen, MiddleUpBlackScreen, MiddleDownBlackScreen, MiniBlackScreen
@@ -17,7 +18,7 @@ class Systems:
         Engine1ManualShutdown, Engine2ManualShutdown, Engine3ManualShutdown,
         Gen1, Gen2, Gen3, Apu, ElecLinePower,
         LeftBlackScreen, RightBlackScreen, MiddleUpBlackScreen, MiddleDownBlackScreen, MiniBlackScreen,
-        Engine1CustomSpecs,
+        Engine1CustomSpecs, Engine2CustomSpecs, Engine3CustomSpecs,
         FlightRegime
     ]
 

@@ -156,7 +156,7 @@ async def main():
     sane_tasks.spawn(connect_to_mfi())
     await add_mfi_sync_list()
 
-    synoptic_remote.run_updater()
+    synoptic_remote.run_updater(ACState)
     add_remote_synoptic_ui_sync_list()
 
     await auto_throttle_send.run_send_to_autothrottle_task(settings.AUTO_THROTTLE_HOST, settings.AUTO_THROTTLE_PORT)

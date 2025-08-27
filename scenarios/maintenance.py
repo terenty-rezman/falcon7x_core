@@ -26,7 +26,33 @@ APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
 @scenario("MAINTENANCE", "NORMAL ENGINE START, RUNNING, SHUTDOWN", "NORMAL ENGINE START, RUNNING, SHUTDOWN")
 async def m_normal_eng_start_run_shutdown(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+    N1_1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
+    N2_1 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
+    ITT_1 = xp.Params["sim/cockpit2/engine/indicators/ITT_deg_C[0]"] 
+    OIL_PSI_1 = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
+    OIL_TEMP_1 = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]"]
+    FF_1 = xp.Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[0]"]
+
+    N1_2 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
+    N2_2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[1]"]
+    ITT_2 = xp.Params["sim/cockpit2/engine/indicators/ITT_deg_C[1]"] 
+    OIL_PSI_2 = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"] 
+    OIL_TEMP_2 = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]"]
+    FF_2 = xp.Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[1]"]
+
+    N1_3 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
+    N2_3 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[2]"]
+    ITT_3 = xp.Params["sim/cockpit2/engine/indicators/ITT_deg_C[2]"] 
+    OIL_PSI_3 = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
+    OIL_TEMP_3 = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"]
+    FF_3 = xp.Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"]
+    async with synoptic_overrides.override_params([
+            ITT_1, N1_1, N2_1, FF_1, OIL_PSI_1, OIL_TEMP_1,
+            ITT_2, N1_2, N2_2, FF_2, OIL_PSI_2, OIL_TEMP_2,
+            ITT_3, N1_3, N2_3, FF_3, OIL_PSI_3, OIL_TEMP_3
+        ]):
+        while True:
+            await asyncio.sleep(2)
 
 
 @scenario("MAINTENANCE", "FIRE", "72 FIRE: APU")

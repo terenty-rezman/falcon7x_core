@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 from cas.messages import *
 from xplane.params import Params
@@ -22,7 +23,8 @@ def update(dataref, value):
     to_update[str(dataref)] = value
 
 
-async def _updater():
+async def _updater(ac_state):
+    started = time.time()
     global to_update
     while not _stop_updater:
         if to_update or param_overrides.overrides_values:
@@ -31,11 +33,17 @@ async def _updater():
             to_update = {}
             param_overrides.clear_override_values()
 
+            elapsed = time.time() - started
+            if elapsed > 2:
+                params_list = [str(p) for p in ac_state.enabled_overrides]
+                await synoptic_connection.enable_param_overrides(params_list)
+                started = time.time()
+
         await asyncio.sleep(synoptic_connection.Settings.SEND_DELAY)
 
 
-def run_updater():
-    sane_tasks.spawn(_updater())
+def run_updater(ac_state):
+    sane_tasks.spawn(_updater(ac_state))
 
 
 def stop_updater():
