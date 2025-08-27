@@ -17,7 +17,7 @@ class GenPowerStatus(enum.IntEnum):
 
 
 class Gen1(System):
-    WORKING_THRESHOLD_N1 = 10
+    WORKING_THRESHOLD_N1 = 52
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
 
     power_state = GenPowerStatus.POWER_ON

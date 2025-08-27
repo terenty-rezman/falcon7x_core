@@ -204,6 +204,7 @@ async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -220,6 +221,7 @@ async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_2
     cas_msg = cas.ENG_2_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -236,6 +238,7 @@ async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_3
     cas_msg = cas.ENG_3_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -252,6 +255,7 @@ async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -268,6 +272,7 @@ async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_2
     cas_msg = cas.ENG_2_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -284,6 +289,7 @@ async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
     fuel_flow_digital = engine_panel.en_fuel_digital_3
     cas_msg = cas.ENG_3_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -299,6 +305,7 @@ async def param_exceed_eng1(ac_state: xp_ac.ACState):
     engine = engine_system.EngineStart1 
     cas_msg = cas.ENG_1_PARAM_EXCEED
     try:
+        engine.broken_start_finished = False
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
         await asyncio.sleep(60)
 
@@ -312,6 +319,7 @@ async def param_exceed_eng2(ac_state: xp_ac.ACState):
     engine = engine_system.EngineStart2 
     cas_msg = cas.ENG_2_PARAM_EXCEED
     try:
+        engine.broken_start_finished = False
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
         await asyncio.sleep(60)
 
@@ -325,6 +333,7 @@ async def param_exceed_eng3(ac_state: xp_ac.ACState):
     engine = engine_system.EngineStart3 
     cas_msg = cas.ENG_3_PARAM_EXCEED
     try:
+        engine.broken_start_finished = False
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
         await asyncio.sleep(60)
 
@@ -340,6 +349,7 @@ async def auto_shutdown_itt_eng1(ac_state: xp_ac.ACState):
     cas_msg_exceed = cas.ENG_1_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_1_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -359,6 +369,7 @@ async def auto_shutdown_itt_eng2(ac_state: xp_ac.ACState):
     cas_msg_exceed = cas.ENG_2_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_2_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
@@ -378,6 +389,7 @@ async def auto_shutdown_itt_eng2(ac_state: xp_ac.ACState):
     cas_msg_exceed = cas.ENG_3_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_3_AUTO_SHUTDOWN
     try:
+        engine.broken_start_finished = False
         await fuel_flow_digital.set_state(1)
         engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
