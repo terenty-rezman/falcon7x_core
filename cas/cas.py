@@ -18,7 +18,8 @@ async def make_post_to_cas(path, json: dict, cas_host: str, cas_port: int):
         cas_url = f"http://{cas_host}:{cas_port}"
         await client.post(cas_url + path, json=json)
     except httpx.HTTPError as e:
-        print("CAS Exception:", type(e).__name__, "–", e) 
+        # print("CAS Exception:", type(e).__name__, "–", e) 
+        pass
 
 
 async def post_to_all_cas(path: str, json: dict):

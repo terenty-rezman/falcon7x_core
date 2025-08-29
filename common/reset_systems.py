@@ -26,4 +26,11 @@ async def reset_all_systems():
 
     await sounds.stop_all_sounds()
 
+    MAX_THRUST_1 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_1"]
+    MAX_THRUST_2 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_2"]
+    MAX_THRUST_3 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_3"]
+    await xp.set_param(MAX_THRUST_1, 75)
+    await xp.set_param(MAX_THRUST_2, 75)
+    await xp.set_param(MAX_THRUST_3, 75)
+
 

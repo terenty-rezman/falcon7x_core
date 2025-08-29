@@ -46,6 +46,15 @@ async def m_normal_eng_start_run_shutdown(ac_state: xp_ac.ACState):
     OIL_PSI_3 = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
     OIL_TEMP_3 = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"]
     FF_3 = xp.Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"]
+
+    MAX_THRUST_1 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_1"]
+    MAX_THRUST_2 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_2"]
+    MAX_THRUST_3 = xp.Params["sim/custom/7x/z_thrust_purple_max_deg_3"]
+
+    await xp.set_param(MAX_THRUST_1, 30)
+    await xp.set_param(MAX_THRUST_2, 30)
+    await xp.set_param(MAX_THRUST_3, 30)
+
     async with synoptic_overrides.override_params([
             ITT_1, N1_1, N2_1, FF_1, OIL_PSI_1, OIL_TEMP_1,
             ITT_2, N1_2, N2_2, FF_2, OIL_PSI_2, OIL_TEMP_2,

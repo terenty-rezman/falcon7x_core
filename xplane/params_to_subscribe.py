@@ -198,6 +198,10 @@ class Subscribe:
         (Params["sim/custom/7x/z_fuel_digital_2"], None, "tcp"), # control fuel flow programatically
         (Params["sim/custom/7x/z_fuel_digital_3"], None, "tcp"), # control fuel flow programatically
         (Params["sim/flightmodel/position/y_agl"], 1, "udp"), # above ground altitude
+
+        (Params["sim/custom/7x/z_thrust_purple_max_deg_1"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
+        (Params["sim/custom/7x/z_thrust_purple_max_deg_2"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
+        (Params["sim/custom/7x/z_thrust_purple_max_deg_3"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
     ]
 
 

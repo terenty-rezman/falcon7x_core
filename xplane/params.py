@@ -210,6 +210,9 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_fuel_digital_1", # disable fuel flow from python
     "sim/custom/7x/z_fuel_digital_2", # disable fuel flow from python
     "sim/custom/7x/z_fuel_digital_3", # disable fuel flow from python
+    "sim/custom/7x/z_thrust_purple_max_deg_1", # max thrust degree of purple circle on synoptic indicator
+    "sim/custom/7x/z_thrust_purple_max_deg_2", # max thrust degree of purple circle on synoptic indicator
+    "sim/custom/7x/z_thrust_purple_max_deg_3", # max thrust degree of purple circle on synoptic indicator
 
     "sim/cockpit2/electrical/battery_on[0]", # bat 1
     "sim/cockpit2/annunciators/reverser_deployed", # thrust reverse deployed
