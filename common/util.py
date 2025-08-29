@@ -94,14 +94,14 @@ def dead_zone(x, left, right, dead_zone):
     """ Зона нечувствительности """
 
     if math.fabs(x) < dead_zone:
-        x = 0
+        y = 0
     else:
         if x > 0:
-            x = (right + dead_zone)/right * x - dead_zone
+            y = right/(right - dead_zone)*(x - dead_zone)
         else:
-            x = (left - dead_zone)/left * x + dead_zone
+            y = left/(left + dead_zone)*(x + dead_zone)
     
-    return x
+    return y
 
 
 def linear_map(val, left_min, left_max, right_min, right_max):

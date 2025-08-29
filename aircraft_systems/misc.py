@@ -46,4 +46,6 @@ class FlightRegime(System):
         
         if regime != cls.regime:
             cls.regime = regime
-            await cas.set_regime(cls.regime) 
+
+        # send regime to cas all the time
+        await cas.set_regime(cls.regime) 

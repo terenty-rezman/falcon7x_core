@@ -1,5 +1,6 @@
 from cas import cas
 import synoptic_remote.synoptic_connection as synoptic_connection
+import common.external_sound as soundplayer
 
 
 # mfi slave xplane
@@ -34,3 +35,7 @@ synoptic_connection.Settings.QML_SYNOPTIC_PORT = 8800
 # auto throttle send udp
 AUTO_THROTTLE_HOST = "127.0.0.1"
 AUTO_THROTTLE_PORT = 3344
+
+# soundplayer
+soundplayer.Settings.SOUNDPLAYER_HOST = "127.0.0.1"
+soundplayer.Settings.SOUNDPLAYER_PORT = 4455

@@ -15,7 +15,7 @@
             "name": "test",
             "type": "debugpy",
             "request": "launch",
-            "program": "test.py",
+            "program": "test_all.py",
             "console": "integratedTerminal"
         },
         {

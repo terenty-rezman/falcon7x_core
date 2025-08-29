@@ -10,6 +10,7 @@ import common.scenario as scenario
 from common.xp_aircraft_state import ACState
 from mfi import mfi
 from aircraft_systems.synoptic_screen import SynopticScreen
+from aircraft_systems.misc import FlightRegime
 from common.instrument_panel import light_all_lamps
 
 
@@ -99,6 +100,11 @@ async def status():
         })
     else:
         status.update({"current_procedure": None})
+    
+    # flight regime
+    status.update({
+        "flight_regime": FlightRegime.regime
+    })
 
     return status
 
