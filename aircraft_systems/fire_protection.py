@@ -3,6 +3,7 @@ import asyncio
 import common.xp_aircraft_state as xp_ac
 import xplane.master as xp
 import common.sane_tasks as sane_tasks
+import common.simulation as sim
 import overhead_panel.fire_panel as fp 
 
 from aircraft_systems.system_base import System
@@ -17,7 +18,7 @@ class APUFireProtection(System):
 
     @classmethod
     async def system_logic_task(cls):
-        await asyncio.sleep(3)
+        await sim.sleep(3)
         return
 
         # Apu fire protection system automatically closes apu fsov
@@ -26,7 +27,7 @@ class APUFireProtection(System):
         # wait until user presses apu extinguisher button 
         await fp.apu_disch.wait_state(1)
 
-        await asyncio.sleep(2)
+        await sim.sleep(2)
 
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
@@ -45,7 +46,7 @@ class RearCompFireProtection(System):
         # wait until user presses apu extinguisher button 
         await fp.firerearcomp_button.wait_state(1)
 
-        await asyncio.sleep(2)
+        await sim.sleep(2)
 
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_engfir3"]
@@ -64,7 +65,7 @@ class BagCompFireProtection(System):
         # wait until user presses apu extinguisher button 
         await fp.firebagcomp_button.wait_state(1)
 
-        await asyncio.sleep(2)
+        await sim.sleep(2)
 
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_engfir4"]

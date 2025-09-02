@@ -33,11 +33,12 @@ async def _updater(ac_state):
             to_update = {}
             param_overrides.clear_override_values()
 
-            elapsed = time.time() - started
-            if elapsed > 2:
-                params_list = [str(p) for p in ac_state.enabled_overrides]
+        elapsed = time.time() - started
+        if elapsed > 2:
+            params_list = [str(p) for p in ac_state.enabled_overrides]
+            if params_list:
                 await synoptic_connection.enable_param_overrides(params_list)
-                started = time.time()
+            started = time.time()
 
         await asyncio.sleep(synoptic_connection.Settings.SEND_DELAY)
 

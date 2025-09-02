@@ -1,19 +1,28 @@
 import asyncio
 import traceback
+import inspect
 
 import common.xp_aircraft_state as xp_ac
 import common.sane_tasks as sane_tasks
 from common.reset_systems import reset_all_systems
+import common.simulation as sim
 
 
 scenarios = {}
 # scenario = lambda f: scenarios.setdefault(f.__name__, f)
 
 def scenario(procedure_type: str, path: str, procedure_name: str):
-    def wrapper(fcn):
+    def wrapper(fcn_or_class):
         key = (procedure_type, path, procedure_name)
-        scenarios[key] = fcn
-        return fcn
+
+        if inspect.isclass(fcn_or_class):
+            # if class
+            scenarios[key] = fcn_or_class.procedure 
+        else:
+            # if fcn
+            scenarios[key] = fcn_or_class
+        return fcn_or_class
+
     return wrapper
 
 
@@ -64,10 +73,10 @@ async def pre_scenario_task(ac_state: xp_ac.ACState):
 async def test_scenario_1(ac_state: xp_ac.ACState):
     from overhead_panel.fire_panel import fire_test
 
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     await fire_test.set_state(1)
-    await asyncio.sleep(5)
+    await sim.sleep(5)
     await fire_test.set_state(0)
 
     # def fly_height_200m(ac_state: xp_ac.ACState):
@@ -84,11 +93,11 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
     #await xp.set_param(xp.Failures["sim/operation/failures/rel_engfir0"], 6)
     # await xp.set_param(xp.Failures["sim/operation/failures/rel_engfla0"], 6)
 
-    # await asyncio.sleep(10)
+    # await sim.sleep(10)
 
     # press engine 1 shutoff button on overhead panel
     # await OverheadPanel["Fireclosed 0"].set_enabled(True)
-    # await asyncio.sleep(5)
+    # await sim.sleep(5)
 
     # await OverheadPanel["dish 2 2 2 2"].set_enabled(True)
     # roll control, left control column jammed

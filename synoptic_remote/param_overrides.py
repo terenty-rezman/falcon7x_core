@@ -14,6 +14,7 @@ from xplane.params import Params
 import synoptic_remote.synoptic_connection as synoptic_connection
 import common.sane_tasks as sane_tasks
 import common.xp_aircraft_state as xp_ac
+import common.simulation as sim
 
 
 overrides_values = dict()
@@ -54,13 +55,13 @@ def set_override_value(param: Params, value):
 
 def linear_anim(param: Params, start_val, finish_val, interval_sec: float, sleep_sec: float = 0.1):
     async def linear_anim_task():
-        start_time = time.time()
+        start_time = sim.time()
 
         speed = (finish_val - start_val) / interval_sec;
         value = start_val
 
         while True: 
-            curr_time = time.time()
+            curr_time = sim.time()
             dt = curr_time - start_time
 
             value = start_val + speed * dt
@@ -70,18 +71,18 @@ def linear_anim(param: Params, start_val, finish_val, interval_sec: float, sleep
             if dt >= interval_sec:
                 break
 
-            await asyncio.sleep(sleep_sec)
+            await sim.sleep(sleep_sec)
     
     return sane_tasks.spawn(linear_anim_task())
 
 
 def _1d_table_anim(param: Params, t_values, y_values, sleep_sec: float = 0.1):
     async def _1d_table_anim_task():
-        start_time = time.time()
+        start_time = sim.time()
         end_time = t_values[-1]
 
         while True: 
-            curr_time = time.time()
+            curr_time = sim.time()
             dt = curr_time - start_time
 
             value = np.interp(dt, t_values, y_values)
@@ -91,7 +92,7 @@ def _1d_table_anim(param: Params, t_values, y_values, sleep_sec: float = 0.1):
             if dt > end_time:
                 break
 
-            await asyncio.sleep(sleep_sec)
+            await sim.sleep(sleep_sec)
     
     return sane_tasks.spawn(_1d_table_anim_task())
 
@@ -107,11 +108,11 @@ def _1d_table_start_from_curr_val_anim(param: Params, t_values, y_values, sleep_
 
         interp_from_time = t_values[interp_from_idx] 
 
-        start_time = time.time()
+        start_time = sim.time()
         end_time = t_values[-1]
 
         while True: 
-            curr_time = time.time()
+            curr_time = sim.time()
             dt = curr_time - start_time
 
             if dt >= interp_from_time:
@@ -124,7 +125,7 @@ def _1d_table_start_from_curr_val_anim(param: Params, t_values, y_values, sleep_
             if dt > end_time:
                 break
 
-            await asyncio.sleep(sleep_sec)
+            await sim.sleep(sleep_sec)
     
     return sane_tasks.spawn(_1d_table_anim_task())
 

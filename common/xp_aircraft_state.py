@@ -8,6 +8,7 @@ from typing import Callable, Optional, Any
 from collections import defaultdict
 
 from xplane.params import Params
+import common.simulation as sim
 
 
 @dataclass
@@ -69,11 +70,11 @@ class ACState:
     
     @classmethod
     def wait_until_parameter_condition(cls, xp_param: Params, condition: Callable[["ACState"], bool], timeout=None):
-        start_time = time.time()
+        start_time = sim.time()
 
         def param_condition(ac_state: ACState):
             if timeout:
-                if time.time() - start_time > timeout:
+                if sim.time() - start_time > timeout:
                     return True
 
             if not ac_state.param_available(xp_param):

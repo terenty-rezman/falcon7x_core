@@ -16,6 +16,7 @@ from xplane.params import Params
 
 import middle_pedestal.engine as engine_panel
 import overhead_panel.engines_apu as overhead_engines
+import common.simulation as sim
 
 
 @scenario("NORMAL", None, "AFTER LANDING")
@@ -62,7 +63,7 @@ async def landing(ac_state: xp_ac.ACState):
 async def power_on(ac_state: xp_ac.ACState):
     await cas.set_regime(cas.Regimes.PARK)
     await cas.remove_all_messages()
-    await asyncio.sleep(2)
+    await sim.sleep(2)
     await cas.show_message_alarm(cas.NWS_OFF)
     await cas.show_message_alarm(cas.PARK_BRAKE_ON)
     await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED_W)

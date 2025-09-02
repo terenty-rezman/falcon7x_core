@@ -7,7 +7,11 @@ from common.scenario import scenario
 import overhead_panel.dc_supply as elec
 import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights
+import overhead_panel.interior_lights as interior_lights
 import overhead_panel.windshield_heat as windshield
+import overhead_panel.bleed as bleed
+import overhead_panel.air_conditioning as air_conditioning
+import overhead_panel.pressurization as pressuarization
 import overhead_panel.flight_control as fc 
 import front_panel.warning as fpw
 import overhead_panel.fire_panel as fp 
@@ -17,13 +21,14 @@ import middle_pedestal.engine as engine_panel
 from common import plane_control as pc
 from aircraft_systems import engine
 import common.util as util
+import common.simulation as sim
 
 APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "26 ELEC: AFT DIST BOX OVHT")
 async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # RED CAS message + sound
     await cas.show_message_alarm(cas.ELEC_AFT_DIST_BOX_OVHT)
@@ -51,7 +56,7 @@ async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO")
 async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # red cas message + sound
     await cas.show_message_alarm(cas.ELEC_LH_RH_ESS_PWR_LO)
@@ -74,7 +79,7 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "38 ELEC GEN 1+2+3 FAULT")
 async def _38_elec_gen_2_fault(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # YELLOW CAS message
     await cas.show_message_alarm(cas.ELEC_GEN_1_2_3_FAULT)
@@ -97,7 +102,7 @@ async def _38_elec_gen_2_fault(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ENGINES", "54 ENG 1 OIL TOO LO PRESS")
 async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # RED CAS message + sound: 54 ENG 1 OIL TOO LOW PRESS
     await cas.show_message_alarm(cas.ENG_1_OIL_TOO_LO_PRESS)
@@ -120,7 +125,7 @@ async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "FCS", "66 FCS: DIRECT LAWS ACTIVE")
 async def _66_fcs_direct_laws_active(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # RED CAS message: FCS: DIRECT LAWS ACTIVE
     await cas.show_message(cas.FCS_DIRECT_LAWS_ACTIVE)
@@ -137,7 +142,7 @@ async def _66_fcs_direct_laws_active(ac_state: xp_ac.ACState):
 
 
 async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):
-    await asyncio.sleep(5)
+    await sim.sleep(5)
 
     # YELLOW CAS message: FCS: BOTH AILERONS FAIL
     print("FCS: BOTH AILERONS FAIL")
@@ -166,7 +171,14 @@ async def _15_cond_aft_fcs_box_ovht(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "DOORS", "18 DOOR: BAG")
 async def _18_door_bag(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.DOOR_PAX___BAG)
+    try:
+        await cas.show_message(cas.DOOR_PAX___BAG)
+
+        await interior_lights.il_fasten.wait_state(1)
+        await air_conditioning.bag_isol.wait_state(1)
+        await pressuarization.pressu_man.wait_state(1)
+    finally:
+        await cas.remove_message(cas.DOOR_PAX___BAG)
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "40 ELEC: RAT GEN FAULT")
@@ -199,14 +211,14 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
         # await overhead_engines.apu_start_stop.set_state(0)
 
         await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
-        await asyncio.sleep(5)
+        await sim.sleep(5)
         await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
         await cas.show_message(cas.FIRE_APU)
 
         await overhead_engines.apu_start_stop.set_state(0)
-        await asyncio.sleep(1)
+        await sim.sleep(1)
         engine.ApuStart.kill_self()
 
         # Apu fire protection system automatically closes apu fsov
@@ -226,7 +238,7 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
 
         await fp.apu_disch.wait_state(1)
 
-        await asyncio.sleep(3)
+        await sim.sleep(3)
     finally:
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
@@ -244,7 +256,7 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
         await fpw.master_warning_rh.set_state(0)
 
         await engine_panel.en_fuel_1.wait_state(1)
-        await asyncio.sleep(3)
+        await sim.sleep(3)
 
         await cas.show_message(cas.FIRE_ENG_1)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
@@ -275,7 +287,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fpw.master_warning_rh.set_state(0)
 
         await engine_panel.en_fuel_2.wait_state(1)
-        await asyncio.sleep(3)
+        await sim.sleep(3)
 
         await cas.show_message(cas.FIRE_ENG_2)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
@@ -306,7 +318,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fpw.master_warning_rh.set_state(0)
 
         await engine_panel.en_fuel_3.wait_state(1)
-        await asyncio.sleep(3)
+        await sim.sleep(3)
 
         await cas.show_message(cas.FIRE_ENG_3)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)

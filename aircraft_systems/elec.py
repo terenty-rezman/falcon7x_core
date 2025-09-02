@@ -17,7 +17,7 @@ class GenPowerStatus(enum.IntEnum):
 
 
 class Gen1(System):
-    WORKING_THRESHOLD_N1 = 52
+    WORKING_THRESHOLD_N1 = 51.9
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
 
     power_state = GenPowerStatus.POWER_ON
@@ -26,7 +26,7 @@ class Gen1(System):
     @classmethod
     def start_condition(cls):
         eng_n1 = xp_ac.ACState.get_curr_param(cls.N1) or 0
-        if cls.gen_switch.get_state() == 1 and eng_n1 > cls.WORKING_THRESHOLD_N1:
+        if cls.gen_switch.get_state() == 1 and eng_n1 >= cls.WORKING_THRESHOLD_N1:
             cls.power_state = GenPowerStatus.POWER_ON
         else:
             cls.power_state = GenPowerStatus.NO_POWER
@@ -39,7 +39,6 @@ class Gen1(System):
 
 
 class Gen2(Gen1):
-    WORKING_THRESHOLD_N1 = 10 
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
 
     power_state = GenPowerStatus.POWER_ON
@@ -47,7 +46,6 @@ class Gen2(Gen1):
 
 
 class Gen3(Gen1):
-    WORKING_THRESHOLD_N1 = 10
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
 
     power_state = GenPowerStatus.POWER_ON

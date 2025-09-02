@@ -6,6 +6,7 @@ import math
 from common.xp_aircraft_state import ACState
 import xplane.master as xp
 from xplane.params import Params, Commands
+import common.simulation as sim
 
 
 async def load_sit(sit_name: str):
@@ -31,13 +32,13 @@ async def subscribe_to_time_param():
 
 
 async def wait_condition(condition: callable, timeout=None, sleep_sec=0.5):
-    started = time.time()
+    started = sim.time()
     while True:
         if condition():
             break
         await asyncio.sleep(sleep_sec)
         if timeout:
-            elapsed = time.time() - started
+            elapsed = sim.time() - started
             if elapsed > timeout:
                 break
 

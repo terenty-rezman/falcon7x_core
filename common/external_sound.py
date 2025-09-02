@@ -8,6 +8,7 @@ import xplane.params
 
 class Sound(StrEnum):
     GONG = "gong"
+    FIRE_BELL = "fire_bell"
 
 
 async def play_sound(sound_id: Sound, volume=1.0, looped=False):

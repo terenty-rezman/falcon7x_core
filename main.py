@@ -16,6 +16,7 @@ from common.instrument_panel import CockpitPanel
 import common.instrument_panel as op
 import common.util as util
 import common.web_interface as web_interface
+import common.simulation as simulation
 from cas import cas
 import synoptic_remote.synoptic as synoptic_remote
 from common import sane_tasks
@@ -148,6 +149,8 @@ async def main():
 
     await xp.xp_master_udp.connect(settings.XP_MASTER_HOST, settings.XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
     await xp.xp_master.connect_until_success(settings.XP_MASTER_HOST, settings.XP_MASTER_PORT, on_new_xp_data, on_data_exception)
+
+    simulation.run_time_update_task()
 
     xp.param_subscriber.run_subsriber_task()
     xp.udp_param_subscriber.run_subsriber_task()

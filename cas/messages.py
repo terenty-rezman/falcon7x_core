@@ -4629,6 +4629,39 @@ class ENG_1_2_3_OIL_PARAM_ABNORM(CASmssg):
     land = False
 
 @register
+class ENG_1_OIL_PARAM_ABNORM(CASmssg): 
+    isread = False
+    text = "ENG 1 OIL PARAM ABNORM"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class ENG_2_OIL_PARAM_ABNORM(CASmssg):
+    isread = False
+    text = "ENG 2 OIL PARAM ABNORM"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class ENG_3_OIL_PARAM_ABNORM(CASmssg): 
+    isread = False
+    text = "ENG 3 OIL PARAM ABNORM"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
 class ENG_1_2_3_PARAM_EXCEED(CASmssg): 
     isread = False
     text = "ENG 1+2+3 PARAM EXCEED"

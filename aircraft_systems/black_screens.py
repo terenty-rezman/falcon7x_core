@@ -3,6 +3,7 @@ import asyncio
 import common.xp_aircraft_state as xp_ac
 import xplane.master as xp
 import common.sane_tasks as sane_tasks
+import common.simulation as sim
 import overhead_panel.fire_panel as fp 
 
 from aircraft_systems.system_base import System
@@ -33,7 +34,7 @@ class LeftBlackScreen(System):
             if dc.rh_init.get_state() == 1: 
                 await xp.set_param(cls.LEFT, 2)
             else:
-                await asyncio.sleep(3)
+                await sim.sleep(3)
                 await xp.set_param(cls.LEFT, 0)
 
 
@@ -120,7 +121,7 @@ class MiniBlackScreen(System):
             await xp.set_param(cls.MINI, 1)
         else:
             if dc.lh_init.get_state() == 0:
-                await asyncio.sleep(2)
+                await sim.sleep(2)
                 await xp.set_param(cls.MINI, 0)
             else:
                 await xp.set_param(cls.MINI, 1)
