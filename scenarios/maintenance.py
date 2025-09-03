@@ -178,211 +178,143 @@ class m_fire_eng_3(m_fire_eng_1):
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 1: AUTO SHUTDOWN N1")
-async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng1_n1:
     engine = engine_system.EngineStart1 
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
+    @classmethod
+    async def procedure(cls):
+        try:
+            engine.broken_start_finished = False
+            await cls.fuel_flow_digital.set_state(1)
+            engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
+            await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+        finally:
+            await cls.fuel_flow_digital.set_state(1)
+            engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            await cas.remove_message(cls.cas_msg)
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 2: AUTO SHUTDOWN N1")
-async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng2_n1(m_auto_shutdown_eng1_n1):
     engine = engine_system.EngineStart2 
     fuel_flow_digital = engine_panel.en_fuel_digital_2
     cas_msg = cas.ENG_2_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 3: AUTO SHUTDOWN N1")
-async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng3_n1(m_auto_shutdown_eng1_n1):
     engine = engine_system.EngineStart3 
     fuel_flow_digital = engine_panel.en_fuel_digital_3
     cas_msg = cas.ENG_3_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 1: AUTO SHUTDOWN N2")
-async def auto_shutdown_eng1_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng1_n2:
     engine = engine_system.EngineStart1 
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
+    @classmethod
+    async def procedure(cls):
+        try:
+            engine.broken_start_finished = False
+            await cls.fuel_flow_digital.set_state(1)
+            engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
+            await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+
+        finally:
+            await cls.fuel_flow_digital.set_state(1)
+            engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            await cas.remove_message(cls.cas_msg)
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 2: AUTO SHUTDOWN N2")
-async def auto_shutdown_eng2_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng2_n2(m_auto_shutdown_eng1_n2):
     engine = engine_system.EngineStart2 
     fuel_flow_digital = engine_panel.en_fuel_digital_2
     cas_msg = cas.ENG_2_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 3: AUTO SHUTDOWN N2")
-async def auto_shutdown_eng3_n1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_eng3_n2(m_auto_shutdown_eng1_n2):
     engine = engine_system.EngineStart3 
     fuel_flow_digital = engine_panel.en_fuel_digital_3
     cas_msg = cas.ENG_3_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 1: PARAM EXCEED")
-async def param_exceed_eng1(ac_state: xp_ac.ACState):
+class m_param_exceed_eng1:
     engine = engine_system.EngineStart1 
     cas_msg = cas.ENG_1_PARAM_EXCEED
-    try:
-        engine.broken_start_finished = False
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
-        await sim.sleep(60)
 
-    finally:
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
+    @classmethod
+    async def procedure(cls):
+        try:
+            cls.engine.broken_start_finished = False
+            cls.engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
+            await sim.sleep(60)
+
+        finally:
+            cls.engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            await cas.remove_message(cls.cas_msg)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 2: PARAM EXCEED")
-async def param_exceed_eng2(ac_state: xp_ac.ACState):
+class m_param_exceed_eng2(m_param_exceed_eng1):
     engine = engine_system.EngineStart2 
     cas_msg = cas.ENG_2_PARAM_EXCEED
-    try:
-        engine.broken_start_finished = False
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
-        await sim.sleep(60)
-
-    finally:
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 3: PARAM EXCEED")
-async def param_exceed_eng3(ac_state: xp_ac.ACState):
+class m_param_exceed_eng3(m_param_exceed_eng1):
     engine = engine_system.EngineStart3 
     cas_msg = cas.ENG_3_PARAM_EXCEED
-    try:
-        engine.broken_start_finished = False
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
-        await sim.sleep(60)
-
-    finally:
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 1: AUTO SHUTDOWN")
-async def auto_shutdown_itt_eng1(ac_state: xp_ac.ACState):
+class m_auto_shutdown_itt_eng1:
     engine = engine_system.EngineStart1 
     fuel_flow_digital = engine_panel.en_fuel_digital_1
     cas_msg_exceed = cas.ENG_1_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_1_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-        await sim.sleep(60)
 
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg_exceed)
-        await cas.remove_message(cas_msg_shutdown)
+    @classmethod
+    async def procedure(cls):
+        try:
+            cls.engine.broken_start_finished = False
+            await cls.fuel_flow_digital.set_state(1)
+            cls.engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
+            await util.wait_condition(lambda: cls.engine.broken_start_finished == True, timeout=60)
+            await sim.sleep(60)
+
+        finally:
+            await cls.fuel_flow_digital.set_state(1)
+            cls.engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            await cas.remove_message(cls.cas_msg_exceed)
+            await cas.remove_message(cls.cas_msg_shutdown)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 2: AUTO SHUTDOWN")
-async def auto_shutdown_itt_eng2(ac_state: xp_ac.ACState):
+class m_auto_shutdown_itt_eng2(m_auto_shutdown_itt_eng1):
     engine = engine_system.EngineStart2 
     fuel_flow_digital = engine_panel.en_fuel_digital_2
     cas_msg_exceed = cas.ENG_2_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_2_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-        await sim.sleep(60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg_exceed)
-        await cas.remove_message(cas_msg_shutdown)
 
 
 @scenario("MAINTENANCE", "ITT", "ENG 3: AUTO SHUTDOWN")
-async def auto_shutdown_itt_eng2(ac_state: xp_ac.ACState):
+class m_auto_shutdown_itt_eng3(m_auto_shutdown_itt_eng1):
     engine = engine_system.EngineStart3 
     fuel_flow_digital = engine_panel.en_fuel_digital_3
     cas_msg_exceed = cas.ENG_3_PARAM_EXCEED
     cas_msg_shutdown = cas.ENG_3_AUTO_SHUTDOWN
-    try:
-        engine.broken_start_finished = False
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN
-        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
-        await sim.sleep(60)
-
-    finally:
-        await fuel_flow_digital.set_state(1)
-        engine.broken_start = engine_system.BrokenStart.NORMAL_START
-        await cas.remove_message(cas_msg_exceed)
-        await cas.remove_message(cas_msg_shutdown)
 
 
 @scenario("MAINTENANCE", "OIL", "54 ENG 1 OIL TOO LO PRESS")
-class m_oil_too_high_temp_eng1:
+class m_oil_too_low_press_eng1:
     OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
     fuel_flow_switch = engine_panel.en_fuel_1
     cas_too_low_press = cas.ENG_1_OIL_TOO_LO_PRESS
@@ -401,7 +333,7 @@ class m_oil_too_high_temp_eng1:
                     await cas.show_message(cls.cas_too_low_press)
                     await fpw.master_warning_lh.set_state(1)
                     await fpw.master_warning_rh.set_state(1)
-                    await sounds.play_sound(sounds.Sound.GONG)
+                    await sounds.play_sound(sounds.Sound.GONG, looped=True)
                     oil_psi_curr = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
                     await synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 5, 15)
                 await sim.sleep(5)
@@ -413,7 +345,7 @@ class m_oil_too_high_temp_eng1:
 
 
 @scenario("MAINTENANCE", "OIL", "55 ENG 2 OIL TOO LO PRESS")
-class m_oil_too_low_press_eng2(m_oil_too_high_temp_eng1):
+class m_oil_too_low_press_eng2(m_oil_too_low_press_eng1):
     OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"] 
     fuel_flow_switch = engine_panel.en_fuel_2
     cas_too_low_press = cas.ENG_2_OIL_TOO_LO_PRESS
@@ -421,7 +353,7 @@ class m_oil_too_low_press_eng2(m_oil_too_high_temp_eng1):
 
 
 @scenario("MAINTENANCE", "OIL", "56 ENG 3 OIL TOO LO PRESS")
-class m_oil_too_low_press_eng3(m_oil_too_high_temp_eng1):
+class m_oil_too_low_press_eng3(m_oil_too_low_press_eng1):
     OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
     fuel_flow_switch = engine_panel.en_fuel_3
     cas_too_low_press = cas.ENG_3_OIL_TOO_LO_PRESS
@@ -429,7 +361,7 @@ class m_oil_too_low_press_eng3(m_oil_too_high_temp_eng1):
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 1: OIL PARAM ABNORM (TEMP)")
-class m_oil_too_high_temp_eng1:
+class m_oil_param_abnorm_temp_eng1:
     OIL_TEMP = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[0]"]
     cas_msg_oil_abnormal = cas.ENG_1_OIL_PARAM_ABNORM
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
@@ -448,33 +380,32 @@ class m_oil_too_high_temp_eng1:
 
                 done, pending = await asyncio.wait([temp_grow_coro, n1_pilot_decrease], return_when=asyncio.FIRST_COMPLETED)
 
-                if temp_grow_coro in done: 
-                    (p.cancel() for p in pending)
+                if temp_grow_coro in done:
+                    [p.cancel() for p in pending]
                     await cas.show_message(cls.cas_msg_oil_abnormal)
 
                     await fpw.master_caution_lh.set_state(1)
                     await fpw.master_caution_rh.set_state(1)
-                    await sounds.play_sound(sounds.Sound.GONG)
+                    await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
                     await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p < 67, timeout=60)
                     temp_drop_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, 147, 95, 180)
 
-                    async def on_temp_drop(temp):
-                        if temp < 145:
-                            await cas.remove_message(cls.cas_msg_oil_abnormal)
-                            await fpw.master_caution_lh.set_state(0)
-                            await fpw.master_caution_rh.set_state(0)
-                            return True
+                    async def on_temp_drop():
+                        await xp_ac.ACState.wait_until_parameter_condition(cls.OIL_TEMP, lambda p: p < 145, timeout=60)
+                        await cas.remove_message(cls.cas_msg_oil_abnormal)
+                        await fpw.master_caution_lh.set_state(0)
+                        await fpw.master_caution_rh.set_state(0)
+                        await sounds.stop_sound(sounds.Sound.GONG)
 
-                    on_temp_drop_coro = xp_ac.ACState.wait_until_parameter_condition(cls.OIL_TEMP, on_temp_drop, timeout=60)
-
-                    await asyncio.gather(temp_drop_coro, on_temp_drop_coro)
+                    await asyncio.gather(temp_drop_coro, on_temp_drop())
                     cls.engine_custom_specs.emulate_oil_temp = True
                 else:
-                    (p.cancel() for p in pending)
+                    [p.cancel() for p in pending]
                     cls.engine_custom_specs.emulate_oil_temp = True
                     await sim.sleep(5)
         finally:
+            await sounds.stop_sound(sounds.Sound.GONG)
             await cas.remove_message(cls.cas_msg_oil_abnormal)
             await fpw.master_caution_lh.set_state(0)
             await fpw.master_caution_rh.set_state(0)
@@ -482,13 +413,19 @@ class m_oil_too_high_temp_eng1:
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 2: OIL PARAM ABNORM (TEMP)")
-async def oil_too_low_temp_eng2(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+class m_oil_param_abnorm_temp_eng2(m_oil_param_abnorm_temp_eng1):
+    OIL_TEMP = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[1]"]
+    cas_msg_oil_abnormal = cas.ENG_2_OIL_PARAM_ABNORM
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
+    engine_custom_specs = engine.Engine2CustomSpecs
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 3: OIL PARAM ABNORM (TEMP)")
-async def oil_too_low_temp_eng2(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+class m_oil_param_abnorm_temp_eng3(m_oil_too_low_press_eng1):
+    OIL_TEMP = xp.Params["sim/cockpit2/engine/indicators/oil_temperature_deg_C[2]"]
+    cas_msg_oil_abnormal = cas.ENG_3_OIL_PARAM_ABNORM
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
+    engine_custom_specs = engine.Engine3CustomSpecs
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 1: OIL PARAM ABNORM (PRESS)")

@@ -805,7 +805,8 @@ class Engine1CustomSpecs(System):
             cls.OIL_TEMP_OUTPUT = None
             cls.active = False
 
-        cls.last_step_time = sim.time() 
+        if cls.last_step_time is None:
+            cls.last_step_time = sim.time() 
 
         return enable
 
@@ -814,14 +815,15 @@ class Engine1CustomSpecs(System):
 
         if cls.N1_OUTPUT is None: cls.N1_OUTPUT = xp_ac.ACState.get_curr_param(cls.N1)
         if cls.N2_OUTPUT is None: cls.N2_OUTPUT = xp_ac.ACState.get_curr_param(cls.N2)
-        if cls.OIL_PSI_OUTPUT is None: cls.OIL_PSI_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
+        if cls.OIL_PSI_OUTPUT is None or cls.emulate_oil_psi is False: cls.OIL_PSI_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
         if cls.ITT_OUTPUT is None: cls.ITT_OUTPUT = xp_ac.ACState.get_curr_param(cls.ITT)
-        if cls.OIL_TEMP_OUTPUT is None: cls.OIL_TEMP_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
+        if cls.OIL_TEMP_OUTPUT is None or cls.emulate_oil_temp is False: cls.OIL_TEMP_OUTPUT = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
 
         FF_COEFF = 0.00012589
         if cls.FF_OUTPUT is None: cls.FF_OUTPUT = xp_ac.ACState.get_curr_param(cls.FF) / FF_COEFF 
 
         dt = sim.time() - cls.last_step_time
+        cls.last_step_time = sim.time() 
 
         throttle_ratio = xp_ac.ACState.get_curr_param(cls.TRHOTTLE_RATIO)
 
@@ -905,6 +907,7 @@ class Engine2CustomSpecs(Engine1CustomSpecs):
     is_killing = False
 
     emulate_oil_psi = True
+    emulate_oil_temp = True
 
 
 class Engine3CustomSpecs(Engine1CustomSpecs):
@@ -927,7 +930,7 @@ class Engine3CustomSpecs(Engine1CustomSpecs):
     is_killing = False
 
     emulate_oil_psi = True
-
+    emulate_oil_temp = True
 
 
 class Engine1ManualShutdown(System):

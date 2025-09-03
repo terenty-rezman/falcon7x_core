@@ -35,12 +35,12 @@ async def _sim_time_update_task():
     last_real_time = sys_time.time()
 
     while True:
-        if not simulation_paused:
-            curr_real_time = sys_time.time()
-            delta = curr_real_time - last_real_time
-            simulation_time += delta
-            last_real_time = curr_real_time
+        curr_real_time = sys_time.time()
+        delta = curr_real_time - last_real_time
+        last_real_time = curr_real_time
 
+        if not simulation_paused:
+            simulation_time += delta
             update_sleep_timers()
         
         await asyncio.sleep(sleep_delay)
@@ -71,3 +71,19 @@ def update_sleep_timers():
 
 def time():
     return simulation_time
+
+
+def pause_simulation():
+    global simulation_paused
+    simulation_paused = True
+
+
+def resume_simulation():
+    global simulation_paused
+    simulation_paused = False
+
+
+def is_simulation_paused():
+    global simulation_paused
+    return simulation_paused
+

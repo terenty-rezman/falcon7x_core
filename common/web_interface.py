@@ -12,7 +12,7 @@ from mfi import mfi
 from aircraft_systems.synoptic_screen import SynopticScreen
 from aircraft_systems.misc import FlightRegime
 from common.instrument_panel import light_all_lamps
-
+import common.simulation as sim
 
 quart_task = None
 app = Quart(__name__)
@@ -80,7 +80,18 @@ async def run_procedure(data: RunProcedure):
 @app.post("/api/stop_procedure")
 async def stop_procedure():
     await scenario.Scenario.kill_current_scenario()
+    return {"result": "ok"}
 
+
+@app.post("/api/pause_simulation")
+async def pause_simulation():
+    sim.pause_simulation()
+    return {"result": "ok"}
+
+
+@app.post("/api/resume_simulation")
+async def resume_simulation():
+    sim.resume_simulation()
     return {"result": "ok"}
 
 
@@ -104,6 +115,11 @@ async def status():
     # flight regime
     status.update({
         "flight_regime": FlightRegime.regime
+    })
+
+    # simulation paused or not
+    status.update({
+        "simulation_paused": sim.is_simulation_paused()
     })
 
     return status
