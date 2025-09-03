@@ -794,24 +794,25 @@ class Engine1CustomSpecs(System):
 
         if enable and not cls.active:
             sane_tasks.spawn(synoptic_overrides.enable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF, cls.ITT, cls.OIL_TEMP]))
-            cls.active = True
-        
-        if not enable and cls.active:
-            sane_tasks.spawn(synoptic_overrides.disable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF, cls.ITT, cls.OIL_TEMP]))
+            cls.last_step_time = None
             cls.N1_OUTPUT = None
             cls.N2_OUTPUT = None
             cls.OIL_PSI_OUTPUT = None
             cls.ITT_OUTPUT = None
             cls.OIL_TEMP_OUTPUT = None
-            cls.active = False
 
-        if cls.last_step_time is None:
-            cls.last_step_time = sim.time() 
+            cls.active = True
+        
+        if not enable and cls.active:
+            sane_tasks.spawn(synoptic_overrides.disable_param_overrides([cls.N1, cls.N2, cls.OIL_PSI, cls.FF, cls.ITT, cls.OIL_TEMP]))
+            cls.active = False
 
         return enable
 
     @classmethod
     async def system_logic_task(cls):
+        if cls.last_step_time is None:
+            cls.last_step_time = sim.time() 
 
         if cls.N1_OUTPUT is None: cls.N1_OUTPUT = xp_ac.ACState.get_curr_param(cls.N1)
         if cls.N2_OUTPUT is None: cls.N2_OUTPUT = xp_ac.ACState.get_curr_param(cls.N2)

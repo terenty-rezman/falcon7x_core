@@ -429,15 +429,18 @@ class m_oil_param_abnorm_temp_eng3(m_oil_too_low_press_eng1):
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 1: OIL PARAM ABNORM (PRESS)")
-async def oil_too_low_press_eng1(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+class m_oil_param_abnorm_press_eng1:
+
+    @classmethod
+    async def procedure(cls):
+        print("NOT IMPLEMENTED")
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 2: OIL PARAM ABNORM (PRESS)")
-async def oil_too_low_press_eng2(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+class m_oil_param_abnorm_press_eng2(m_oil_param_abnorm_press_eng1):
+    pass
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 3: OIL PARAM ABNORM (PRESS)")
-async def oil_too_low_press_eng2(ac_state: xp_ac.ACState):
-    print("NOT IMPLEMENTED")
+class m_oil_param_abnorm_press_eng3(m_oil_param_abnorm_press_eng1):
+    pass
