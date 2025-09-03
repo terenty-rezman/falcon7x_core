@@ -184,7 +184,7 @@ class m_auto_shutdown_eng1_n1:
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
 
     @classmethod
-    async def procedure(cls):
+    async def procedure(cls, ac_state: xp_ac.ACState):
         try:
             engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
@@ -218,7 +218,7 @@ class m_auto_shutdown_eng1_n2:
     cas_msg = cas.ENG_1_AUTO_SHUTDOWN
 
     @classmethod
-    async def procedure(cls):
+    async def procedure(cls, ac_state: xp_ac.ACState):
         try:
             engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
@@ -251,7 +251,7 @@ class m_param_exceed_eng1:
     cas_msg = cas.ENG_1_PARAM_EXCEED
 
     @classmethod
-    async def procedure(cls):
+    async def procedure(cls, ac_state: xp_ac.ACState):
         try:
             cls.engine.broken_start_finished = False
             cls.engine.broken_start = engine_system.BrokenStart.ITT_BROKEN_START
@@ -282,7 +282,7 @@ class m_auto_shutdown_itt_eng1:
     cas_msg_shutdown = cas.ENG_1_AUTO_SHUTDOWN
 
     @classmethod
-    async def procedure(cls):
+    async def procedure(cls, ac_state: xp_ac.ACState):
         try:
             cls.engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
@@ -321,7 +321,7 @@ class m_oil_too_low_press_eng1:
     engine_custom_specs = engine.Engine1CustomSpecs
 
     @classmethod
-    async def procedure(cls):
+    async def procedure(cls, ac_state: xp_ac.ACState):
         try:
             await xp_ac.ACState.wait_until_parameter_condition(cls.OIL_PSI, lambda p: p > 43, timeout=60)
             async with synoptic_overrides.override_params([cls.OIL_PSI]):
@@ -379,9 +379,10 @@ class m_oil_param_abnorm_temp_eng1:
                 n1_pilot_decrease = xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p < 40, timeout=60)
 
                 done, pending = await asyncio.wait([temp_grow_coro, n1_pilot_decrease], return_when=asyncio.FIRST_COMPLETED)
+                # cancel pending tasks
+                [p.cancel() for p in pending]
 
                 if temp_grow_coro in done:
-                    [p.cancel() for p in pending]
                     await cas.show_message(cls.cas_msg_oil_abnormal)
 
                     await fpw.master_caution_lh.set_state(1)
@@ -401,7 +402,6 @@ class m_oil_param_abnorm_temp_eng1:
                     await asyncio.gather(temp_drop_coro, on_temp_drop())
                     cls.engine_custom_specs.emulate_oil_temp = True
                 else:
-                    [p.cancel() for p in pending]
                     cls.engine_custom_specs.emulate_oil_temp = True
                     await sim.sleep(5)
         finally:
@@ -430,17 +430,59 @@ class m_oil_param_abnorm_temp_eng3(m_oil_too_low_press_eng1):
 
 @scenario("MAINTENANCE", "OIL", "ENG 1: OIL PARAM ABNORM (PRESS)")
 class m_oil_param_abnorm_press_eng1:
+    OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
+    engine_custom_specs = engine.Engine1CustomSpecs
+    cas_oil_abnormal = cas.ENG_1_OIL_PARAM_ABNORM
+    engine_fuel_switch = engine_panel.en_fuel_1
 
     @classmethod
-    async def procedure(cls):
-        print("NOT IMPLEMENTED")
+    async def procedure(cls, ac_state: xp_ac.ACState):
+        try:
+            await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 19, timeout=60)
+            oil_psi_curr = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
+            cls.engine_custom_specs.emulate_oil_psi = False
+            oil_drop_coro = synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 20, 30)
+
+            pilot_fuel_cutoff = asyncio.create_task(
+                util.wait_condition(lambda: cls.engine_fuel_switch.get_state() == 0, timeout=60)
+            )
+
+            done, pending = await asyncio.wait([oil_drop_coro, pilot_fuel_cutoff], return_when=asyncio.FIRST_COMPLETED)
+            # cancel pending tasks
+            [p.cancel() for p in pending]
+
+            if oil_drop_coro in done:
+                await cas.show_message(cls.cas_oil_abnormal)
+                await fpw.master_caution_lh.set_state(1)
+                await fpw.master_caution_rh.set_state(1)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
+
+                await synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 15, 15)
+                await cls.engine_fuel_switch.wait_state(0)
+            else:
+                pass
+        finally:
+            await cas.remove_message(cls.cas_oil_abnormal)
+            await fpw.master_caution_lh.set_state(0)
+            await fpw.master_caution_rh.set_state(0)
+            await sounds.stop_sound(sounds.Sound.GONG)
+            cls.engine_custom_specs.emulate_oil_psi = True
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 2: OIL PARAM ABNORM (PRESS)")
 class m_oil_param_abnorm_press_eng2(m_oil_param_abnorm_press_eng1):
-    pass
+    OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[1]"] 
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
+    engine_custom_specs = engine.Engine2CustomSpecs
+    cas_oil_abnormal = cas.ENG_2_OIL_PARAM_ABNORM
+    engine_fuel_switch = engine_panel.en_fuel_2
 
 
 @scenario("MAINTENANCE", "OIL", "ENG 3: OIL PARAM ABNORM (PRESS)")
 class m_oil_param_abnorm_press_eng3(m_oil_param_abnorm_press_eng1):
-    pass
+    OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[2]"] 
+    N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
+    engine_custom_specs = engine.Engine3CustomSpecs
+    cas_oil_abnormal = cas.ENG_3_OIL_PARAM_ABNORM
+    engine_fuel_switch = engine_panel.en_fuel_3
