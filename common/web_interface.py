@@ -42,6 +42,7 @@ async def load_situation(data: LoadSit):
     return {"result": "ok"}
 
 
+# clicks from xplane plugin to select clicked synoptic tab
 @app.post("/api/synoptic")
 async def synoptic_click():
     data = await request.get_data(as_text=True)

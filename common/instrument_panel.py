@@ -573,3 +573,4 @@ from middle_pedestal import wings_config
 from middle_pedestal import trackball
 from middle_pedestal import engine
 import common.plane_control as plane_control
+from middle_pedestal import reversion

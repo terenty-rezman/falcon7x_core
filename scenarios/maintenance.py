@@ -186,14 +186,14 @@ class m_auto_shutdown_eng1_n1:
     @classmethod
     async def procedure(cls, ac_state: xp_ac.ACState):
         try:
-            engine.broken_start_finished = False
+            cls.engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
-            engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
+            cls.engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
             await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
         finally:
             await cls.fuel_flow_digital.set_state(1)
-            engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            cls.engine.broken_start = engine_system.BrokenStart.NORMAL_START
             await cas.remove_message(cls.cas_msg)
 
 
@@ -220,14 +220,14 @@ class m_auto_shutdown_eng1_n2:
     @classmethod
     async def procedure(cls, ac_state: xp_ac.ACState):
         try:
-            engine.broken_start_finished = False
+            cls.engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
-            engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
+            cls.engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
             await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
 
         finally:
             await cls.fuel_flow_digital.set_state(1)
-            engine.broken_start = engine_system.BrokenStart.NORMAL_START
+            cls.engine.broken_start = engine_system.BrokenStart.NORMAL_START
             await cas.remove_message(cls.cas_msg)
 
 
