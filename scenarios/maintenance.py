@@ -341,6 +341,7 @@ class m_oil_too_low_press_eng1:
             await cas.remove_message(cls.cas_too_low_press)
             await fpw.master_warning_lh.set_state(0)
             await fpw.master_warning_rh.set_state(0)
+            await sounds.stop_sound(sounds.Sound.GONG)
             cls.engine_custom_specs.emulate_oil_psi = True
 
 
