@@ -189,7 +189,7 @@ class m_auto_shutdown_eng1_n1:
             cls.engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
             cls.engine.broken_start = engine_system.BrokenStart.N1_BROKEN_START
-            await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+            await util.wait_condition(lambda: cls.engine.broken_start_finished == True, timeout=60)
 
         finally:
             await cls.fuel_flow_digital.set_state(1)
@@ -223,7 +223,7 @@ class m_auto_shutdown_eng1_n2:
             cls.engine.broken_start_finished = False
             await cls.fuel_flow_digital.set_state(1)
             cls.engine.broken_start = engine_system.BrokenStart.N2_BROKEN_START
-            await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+            await util.wait_condition(lambda: cls.engine.broken_start_finished == True, timeout=60)
 
         finally:
             await cls.fuel_flow_digital.set_state(1)
