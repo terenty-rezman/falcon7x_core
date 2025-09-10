@@ -11,6 +11,11 @@ import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights
 import overhead_panel.windshield_heat as windshield
 import middle_pedestal.wings_config as wc
+import middle_pedestal.reversion as rev
+import front_panel.autopilot as ap
+import common.external_sound as sound
+import common.simulation as sim
+import overhead_panel.anti_ice as ai
 
 
 @scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET")
@@ -43,6 +48,7 @@ async def abnormal_start(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 FAIL")
 async def ads_1_fail(ac_state: xp_ac.ACState):
     await cas.show_message(cas.ADS_1_FAIL)
+    await rev.rev_ads_lh.get_state() == 2
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 2 FAIL")
@@ -58,21 +64,37 @@ async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 PROBE HEAT FAIL")
 async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
     await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
+    await rev.rev_irs_lh.get_state() == 2
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: ADS ALL MISCOMPARE")
 async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
+    try:
+        await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
+        await sim.sleep(5)
+    finally:
+        await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: AP FAIL")
 async def afcs_ap_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AFCS_AP_FAIL)
+    try:
+        await cas.show_message(cas.AFCS_AP_FAIL)
+        # autopilot voice warning
+        await sound.play_sound(sound.Sound.GONG, looped=False)
+
+        await ap.fp_autopilot.wait_state(0)
+    finally:
+        await sound.stop_all_sounds()
+        await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS .. MISCOMPARE")
 async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AFCS_IRS_MISCOMPARE)
+    try:
+        await cas.show_message(cas.AFCS_IRS_MISCOMPARE)
+    finally:
+        pass
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS ALL MISCOMPARE")
@@ -82,7 +104,11 @@ async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "A/I: ENG.. RESID PRESS")
 async def a_i_eng_1_2_3_resid_press(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.A_I_ENG_1_2_3_RESID_PRESS)
+    try:
+        await cas.show_message(cas.A_I_ENG_1_2_3_RESID_PRESS)
+        await ai.ice_eng1.wait_state(1)
+    finally:
+        pass
 
 
 @scenario("ABNORMAL", "APU", "APU: AUTO SHUTDOWN")

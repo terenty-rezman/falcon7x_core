@@ -19,6 +19,8 @@ Params = Enum('XplaneParams', [
     "sim/joystick/yoke_roll_ratio_copilot",
     "sim/joystick/yoke_heading_ratio",
     "sim/joystick/yoke_heading_ratio_copilot",
+    "sim/cockpit2/gauges/indicators/roll_electric_deg_pilot",
+    "sim/cockpit2/gauges/indicators/pitch_electric_deg_pilot",
     "sim/flightmodel/position/elevation",
     "sim/weapons/warhead_type",
     "sim/cockpit2/engine/actuators/fire_extinguisher_on",
