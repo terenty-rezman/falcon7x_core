@@ -123,11 +123,11 @@ async def main_loop():
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
 
     while True:
-        x, y, z, rz = joystick.get_axes_values()
-        if joystick.is_plugged():
-            await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
-            await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
-            await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
+        #x, y, z, rz = joystick.get_axes_values()
+        ##if joystick.is_plugged():
+            ##await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
+            #await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
+           # await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
 
         # NOTE: maybe run in separate task?
 

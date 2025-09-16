@@ -79,6 +79,7 @@ async def m_72_fire_apu(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
         await cas.show_message(cas.FIRE_APU)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
 
         await overhead_engines.apu_start_stop.set_state(0)
         await sim.sleep(1)
@@ -107,6 +108,8 @@ async def m_72_fire_apu(ac_state: xp_ac.ACState):
         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
         await xp.set_param(failure, 0)
         await cas.remove_message(cas.FIRE_APU)
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
+
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
 

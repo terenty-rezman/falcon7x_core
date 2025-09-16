@@ -382,7 +382,7 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
-                await sounds.play_sound(sounds.Sound.GONG)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
             
             cls.status = EngineStatus.STARTING
             await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab())
@@ -451,7 +451,7 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
-                await sounds.play_sound(sounds.Sound.GONG)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
             
             cls.status = EngineStatus.STARTING
             await asyncio.gather(auto_stop(), n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start())
@@ -536,7 +536,7 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_param_exceed)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
-                await sounds.play_sound(sounds.Sound.GONG)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
             
             async def ab():
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
@@ -633,7 +633,7 @@ class EngineStart1(System):
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
                 await warning.master_caution_rh.set_state(1)
-                await sounds.play_sound(sounds.Sound.GONG)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
             
             async def ab():
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)

@@ -14,7 +14,8 @@ from settings import USO_SEND_DELAY
 
 always_handle = {
     "pc_parkbrake_half",
-    "pc_parkbrake_full"
+    "pc_parkbrake_full",
+    "pc_thrust_reverse"
 }
 
 
