@@ -56,3 +56,11 @@ async def disable_param_overrides(params: List[xplane.params.Params]):
         Settings.QML_SYNOPTIC_HOST, 
         Settings.QML_SYNOPTIC_PORT
     )
+
+
+async def set_page(page_name: str):
+    await _make_post_to_synoptic(
+        "/api/synoptic_page", {"page": page_name}, 
+        Settings.QML_SYNOPTIC_HOST, 
+        Settings.QML_SYNOPTIC_PORT
+    )

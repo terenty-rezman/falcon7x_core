@@ -441,6 +441,13 @@ uso_bits_state = [0] * len(uso_receive.uso_bitfield_names)
 uso_floats_state = [0] * len(uso_receive.uso_float_field_names)
 
 
+def reset_uso_bits():
+    global uso_bits_state
+    global uso_floats_state
+    uso_bits_state = [0] * len(uso_receive.uso_bitfield_names)
+    uso_floats_state = [0] * len(uso_receive.uso_float_field_names)
+
+
 async def receive_uso_task(udp_endpoint):
     global uso_bits_state
     global uso_floats_state

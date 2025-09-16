@@ -12,7 +12,9 @@ from mfi import mfi
 from aircraft_systems.synoptic_screen import SynopticScreen
 from aircraft_systems.misc import FlightRegime
 from common.instrument_panel import light_all_lamps
+import common.instrument_panel as instrument_panel
 import common.simulation as sim
+import synoptic_remote.synoptic_connection as synoptic_remote
 
 quart_task = None
 app = Quart(__name__)
@@ -42,7 +44,7 @@ async def load_situation(data: LoadSit):
     return {"result": "ok"}
 
 
-# clicks from xplane plugin to select clicked synoptic tab
+# synoptic selection from checklist
 @app.post("/api/synoptic")
 async def synoptic_click():
     data = await request.get_data(as_text=True)
@@ -50,6 +52,8 @@ async def synoptic_click():
 
     if await SynopticScreen.set_active_page(page_name) == False:
         return {"result": "error", "string": "wrong synoptic page name"}
+    
+    await synoptic_remote.set_page(page_name)
 
     return {"result": "ok"}
 
@@ -93,6 +97,12 @@ async def pause_simulation():
 @app.post("/api/resume_simulation")
 async def resume_simulation():
     sim.resume_simulation()
+    return {"result": "ok"}
+
+
+@app.post("/api/reset_simulation")
+async def reset_simulation():
+    instrument_panel.reset_uso_bits()
     return {"result": "ok"}
 
 
@@ -149,6 +159,7 @@ class MfiMouseClick:
     window_name: str
 
 
+# clicks from xplane plugin to select clicked synoptic tab
 @app.post("/api/mfi_mouse_click")
 @validate_request(MfiMouseClick)
 async def mfi_mouse_click(data: MfiMouseClick):
