@@ -25,11 +25,13 @@ import common.send_to_autothrottle as auto_throttle_send
 import settings
 
 
-joystick = Joystick()
-if joystick.is_plugged():
-    joystick.run_in_thread()
-else:
-    print("No joystick connected!")
+USE_JOYSTICK = False
+if USE_JOYSTICK:
+    joystick = Joystick()
+    if joystick.is_plugged():
+        joystick.run_in_thread()
+    else:
+        print("No joystick connected!")
 
 
 start = timeit.timeit()
@@ -119,17 +121,21 @@ async def main_loop():
 
     await CockpitPanel.reset_to_default_state()
 
+    try:
+        while True:
+            await asyncio.sleep(0.1)
+    except KeyboardInterrupt:
+        pass
+
     # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
 
     while True:
-        #x, y, z, rz = joystick.get_axes_values()
-        ##if joystick.is_plugged():
-            ##await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
-            #await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
-           # await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
-
-        # NOTE: maybe run in separate task?
+        # x, y, z, rz = joystick.get_axes_values()
+        # if joystick.is_plugged():
+        #     await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
+        #     await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
+        #     await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
 
         await asyncio.sleep(0.1)
 

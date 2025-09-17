@@ -100,9 +100,16 @@ async def resume_simulation():
     return {"result": "ok"}
 
 
-@app.post("/api/reset_simulation")
+@app.post("/api/command_callback")
 async def reset_simulation():
-    instrument_panel.reset_uso_bits()
+    data = await request.json
+
+    command = data.get("command")
+    if command in ["sim/operation/reload_aircraft_no_art", "sim/operation/reload_aircraft"]:
+        instrument_panel.reset_uso_bits()
+    
+    print(data)
+
     return {"result": "ok"}
 
 

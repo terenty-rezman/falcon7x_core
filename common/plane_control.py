@@ -177,6 +177,7 @@ class pc_left_brake_rh(FloatStepper):
     step = 0.01
 
     val_type = float
+    old_value = False
 
     @classmethod
     async def set_state(cls, state: float):
@@ -186,22 +187,21 @@ class pc_left_brake_rh(FloatStepper):
         total =  cls.state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
-        await pc_left_brake_total.set_state(total)
+        # hysteresis
+        new_val = True if total > 5 else cls.old_value
+        new_val = False if total < 3 else cls.old_value
 
-        #await pc_left_brake_total.set_state(0)
+        if new_val == cls.old_value:
+            return
+        
+        cls.old_value = new_val
 
-
-@add_to_panel
-class pc_left_brake_total(FloatStepper):
-    dataref = Params["sim/cockpit2/controls/left_brake_ratio"]
-
-    logic_left = 0.0
-    logic_right = 10.0
-    left_most_value = 0
-    right_most_value = 1.0
-    step = 0.01
-
-    val_type = float
+        print(cls, new_val)
+        
+        if new_val:
+            await xp.begin_command(Commands["sim/flight_controls/left_brake"])
+        else:
+            await xp.end_command(Commands["sim/flight_controls/left_brake"])
 
 
 @add_to_panel
@@ -228,6 +228,7 @@ class pc_right_brake_rh(FloatStepper):
     step = 0.01
 
     val_type = float
+    old_value = False
 
     @classmethod
     async def set_state(cls, state: float):
@@ -237,21 +238,21 @@ class pc_right_brake_rh(FloatStepper):
         total =  cls.state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
-        await pc_right_brake_total.set_state(total)        
-        #await pc_right_brake_total.set_state(0)
+        # hysteresis
+        new_val = True if total > 5 else cls.old_value
+        new_val = False if total < 3 else cls.old_value
 
+        if new_val == cls.old_value:
+            return
+        
+        cls.old_value = new_val
 
-@add_to_panel
-class pc_right_brake_total(FloatStepper):
-    dataref = Params["sim/cockpit2/controls/right_brake_ratio"]
-
-    logic_left = 0.0
-    logic_right = 10.0
-    left_most_value = 0
-    right_most_value = 1.0
-    step = 0.01
-
-    val_type = float
+        print(cls, new_val)
+        
+        if new_val:
+            await xp.begin_command(Commands["sim/flight_controls/right_brake"])
+        else:
+            await xp.end_command(Commands["sim/flight_controls/right_brake"])
 
 
 @add_to_panel
@@ -395,21 +396,10 @@ class pc_thrust_reverse(FloatStepper):
     val_type = float
 
     filter_sum = 0
-
-    dataref_revers_deployed = Params["sim/cockpit2/annunciators/reverser_deployed"]
-    old_state_reverse_on = None
+    old_state = False
 
     @classmethod
     async def set_state(cls, state: float):
-        reverse_deployed = xp_ac.ACState.get_curr_param(cls.dataref_revers_deployed)
-        if reverse_deployed is None:
-            return
-
-        reverse_deployed = True if reverse_deployed else False
-        
-        #if cls.old_state_reverse_on != reverse_deployed:
-        #    cls.old_state_reverse_on = reverse_deployed
-
         dx = 1 if state > 1 else -1  
 
         # filter
@@ -417,16 +407,22 @@ class pc_thrust_reverse(FloatStepper):
         cls.filter_sum = min(40, cls.filter_sum)
         cls.filter_sum = max(0, cls.filter_sum)
 
-        new_state = True if cls.filter_sum > 20 else False
+        # гистерезис
+        new_state = cls.old_state
+        new_state = True if cls.filter_sum > 25 else new_state
+        new_state = False if cls.filter_sum < 15 else new_state
 
-        if new_state == reverse_deployed:
+        if new_state == cls.old_state:
             return
 
-        #await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle"])
+        cls.old_state = new_state
 
         print(cls, new_state)
-        
-        cls.old_state_reverse_on = new_state
+
+        if new_state:
+            await xp.begin_command(Commands["sim/engines/thrust_reverse_hold"])
+        else:
+            await xp.end_command(Commands["sim/engines/thrust_reverse_hold"])
 
 
 @add_to_panel
