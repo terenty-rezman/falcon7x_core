@@ -221,6 +221,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/electrical/APU_running", # apu running
     "sim/flightmodel/position/y_agl", # altitude above ground
     "sim/cockpit2/gauges/indicators/altitude_ft_pilot",
+    "sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot", # heading
 ])
 Params.__str__ = to_str
 
