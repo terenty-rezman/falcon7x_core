@@ -415,7 +415,8 @@ class pc_thrust_reverse(FloatStepper):
         cls.filter_sum = min(40, cls.filter_sum)
         cls.filter_sum = max(0, cls.filter_sum)
 
-        cls.state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
+        xp_state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
+        cls.state = 1 if xp_state == 7 else 0
         new_state = cls.state
 
         # гистерезис
