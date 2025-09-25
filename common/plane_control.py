@@ -389,17 +389,25 @@ class pc_gear_float(FloatStepper):
 
 @add_to_panel
 class pc_thrust_reverse(FloatStepper):
-    dataref = None
+    dataref_xp = xp.Params["sim/cockpit2/annunciators/reverser_deployed"]
+
     logic_left = 0
-    logic_right = 2
+    logic_right = 2   
+
     step = 0.01
     val_type = float
 
     filter_sum = 0
     old_state = False
 
+    skip_steps = 0
+
     @classmethod
     async def set_state(cls, state: float):
+        if cls.skip_steps > 0:
+            cls.skip_steps -= 1
+            return
+
         dx = 1 if state > 1 else -1  
 
         # filter
@@ -407,23 +415,29 @@ class pc_thrust_reverse(FloatStepper):
         cls.filter_sum = min(40, cls.filter_sum)
         cls.filter_sum = max(0, cls.filter_sum)
 
+        cls.state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
+        new_state = cls.state
+
         # гистерезис
-        new_state = cls.old_state
-        new_state = True if cls.filter_sum > 25 else new_state
-        new_state = False if cls.filter_sum < 15 else new_state
+        if cls.filter_sum > 25:
+            new_state = True
 
-        if new_state == cls.old_state:
+        if cls.filter_sum < 15:
+            new_state = False
+
+        if new_state == cls.state:
             return
-
-        cls.old_state = new_state
 
         print(cls, new_state)
 
-        if new_state:
-            await xp.begin_command(Commands["sim/engines/thrust_reverse_hold"])
-        else:
-            await xp.end_command(Commands["sim/engines/thrust_reverse_hold"])
+        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle"])
+        cls.skip_steps = 40 
 
+    @classmethod
+    async def get_state(cls):
+        state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
+        cls.state = 1 if state == 7 else 0
+        return cls.state
 
 @add_to_panel
 class pc_thrust_red_light_1(NLocalStateButton):
