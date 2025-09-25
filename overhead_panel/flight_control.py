@@ -1,35 +1,24 @@
-from common.instrument_panel import add_to_panel, TwoStateButton, Indicator
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, NLocalStateButton
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 
 
 @add_to_panel
-class airbrake_auto(TwoStateButton):
+class airbrake_auto(NLocalStateButton):
     # vol 2 27-66
     dataref: xp.Params = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
-    states = [-0.5, 0, 0.5, 1.0]
+    state = 0
+
+    @classmethod 
+    def get_state(cls):
+        return cls.state
 
     @classmethod
-    def get_state(cls):
-        state = super().get_state()
-
-        if state is None:
-            return
+    async def set_state(cls, state):
+        cls.state = state
 
         if state > 0:
-            return 1
-        return 0
-
-    @classmethod
-    async def click(cls):
-        state = cls.get_state()
-        if state is None:
-            return
-
-        if state != 0:
-            await cls.set_state(0) 
-        else:
-            await cls.set_state(1)
+            await xp.set_param(cls.dataref, -0.5)
 
 
 @add_to_panel

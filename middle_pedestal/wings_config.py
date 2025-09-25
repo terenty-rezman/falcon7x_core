@@ -1,5 +1,7 @@
 from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper, array_str
 import xplane.master as xp
+
+import overhead_panel.flight_control as fc
         
 
 # @add_to_panel
@@ -54,15 +56,22 @@ class wc_ab(FloatStepper):
     dataref = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
     index = 0
 
-    logic_left = -0.5
+    logic_left = 0
     logic_right = 1.0
 
-    left_most_value = -0.5
+    left_most_value = 0
     right_most_value = 1.0
 
     step = 0.01
 
     val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        if fc.airbrake_auto.get_state() == 1:
+            return
+
+        await super().set_state(state)
 
 
 # @add_to_panel
