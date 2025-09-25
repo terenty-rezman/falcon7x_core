@@ -146,15 +146,15 @@ async def connect_to_mfi():
 
 
 async def main():
-    await op.run_receive_uso_task(settings.USO_HOST, settings.USO_RECEIVE_PORT)
-    await op.run_send_uso_task(settings.USO_HOST, settings.USO_SEND_PORT)
-
     await web_interface.run_server_task(settings.WEB_INTERFACE_HOST, settings.WB_INTERFACE_PORT)
 
     sane_tasks.spawn(ac_state_callback_task())
 
     await xp.xp_master_udp.connect(settings.XP_MASTER_HOST, settings.XP_MASTER_UDP_PORT, on_new_xp_data_udp, on_data_exception_udp)
     await xp.xp_master.connect_until_success(settings.XP_MASTER_HOST, settings.XP_MASTER_PORT, on_new_xp_data, on_data_exception)
+
+    await op.run_receive_uso_task(settings.USO_HOST, settings.USO_RECEIVE_PORT)
+    await op.run_send_uso_task(settings.USO_HOST, settings.USO_SEND_PORT)
 
     simulation.run_time_update_task()
 

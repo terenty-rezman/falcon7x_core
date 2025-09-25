@@ -54,7 +54,6 @@ class wc_backup_slats(NLocalStateButton):
 @add_to_panel
 class wc_ab(FloatStepper):
     dataref = xp.Params["sim/cockpit2/controls/speedbrake_ratio"]
-    index = 0
 
     logic_left = 0
     logic_right = 1.0
