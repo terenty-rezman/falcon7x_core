@@ -13,6 +13,7 @@ Params = Enum('XplaneParams', [
     "sim/time/total_running_time_sec",
     "sim/cockpit/electrical/night_vision_on",
     "sim/operation/override/override_joystick",
+    "sim/operation/override/override_gearbrake",
     "sim/joystick/yoke_pitch_ratio",
     "sim/joystick/yoke_pitch_ratio_copilot",
     "sim/joystick/yoke_roll_ratio",

@@ -6,6 +6,7 @@ class Subscribe:
         (Params["sim/time/total_running_time_sec"], 5, "udp"),
         (Params["sim/cockpit/electrical/night_vision_on"], None, "tcp"),
         (Params["sim/operation/override/override_joystick"], None, "tcp"),
+        (Params["sim/operation/override/override_gearbrake"], None, "tcp"),
         (Params["sim/joystick/yoke_pitch_ratio"], 2, "udp"),
         (Params["sim/joystick/yoke_pitch_ratio_copilot"], 2, "udp"),
         (Params["sim/joystick/yoke_roll_ratio"], 2, "udp"),

@@ -135,6 +135,9 @@ class pc_heading_rh(FloatStepper):
         total = cls.state
 
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
+        if total < 5:
+            k = total / 5
+            total *= k
 
         await pc_heading_total.set_state(total)
         #await pc_heading_total.set_state(0)
@@ -187,21 +190,13 @@ class pc_left_brake_rh(FloatStepper):
         total =  cls.state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
-        # hysteresis
-        new_val = True if total > 5 else cls.old_value
-        new_val = False if total < 3 else cls.old_value
+        # from [logic_left logic_right] to [0 1]
+        val_01 = (total - cls.logic_left) / (cls.logic_right - cls.logic_left)
 
-        if new_val == cls.old_value:
-            return
-        
-        cls.old_value = new_val
+        # map logic state [0.0 1.0] to [float_left_most_value float_right_most_value]
+        xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
 
-        print(cls, new_val)
-        
-        if new_val:
-            await xp.begin_command(Commands["sim/flight_controls/left_brake"])
-        else:
-            await xp.end_command(Commands["sim/flight_controls/left_brake"])
+        await xp.set_param(xp.Params["sim/cockpit2/controls/left_brake_ratio"], xp_val) 
 
 
 @add_to_panel
@@ -228,7 +223,7 @@ class pc_right_brake_rh(FloatStepper):
     step = 0.01
 
     val_type = float
-    old_value = False
+    old_value = None
 
     @classmethod
     async def set_state(cls, state: float):
@@ -238,21 +233,14 @@ class pc_right_brake_rh(FloatStepper):
         total =  cls.state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
-        # hysteresis
-        new_val = True if total > 5 else cls.old_value
-        new_val = False if total < 3 else cls.old_value
+        # from [logic_left logic_right] to [0 1]
+        val_01 = (total - cls.logic_left) / (cls.logic_right - cls.logic_left)
 
-        if new_val == cls.old_value:
-            return
-        
-        cls.old_value = new_val
+        # map logic state [0.0 1.0] to [float_left_most_value float_right_most_value]
+        xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
 
-        print(cls, new_val)
-        
-        if new_val:
-            await xp.begin_command(Commands["sim/flight_controls/right_brake"])
-        else:
-            await xp.end_command(Commands["sim/flight_controls/right_brake"])
+        await xp.set_param(xp.Params["sim/cockpit2/controls/right_brake_ratio"], xp_val) 
+
 
 
 @add_to_panel

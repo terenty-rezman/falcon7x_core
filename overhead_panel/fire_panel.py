@@ -3,6 +3,7 @@ from common.instrument_panel import add_to_panel, TwoStateButton, NLocalStateBut
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
+from common import plane_control as pc
 
 
 @add_to_panel
@@ -269,3 +270,7 @@ class fire_test(NLocalStateButton):
 
         fire_apu_indicator.set_override_indication(state)
         firebagcomp_indicator.set_override_indication(state)
+
+        pc.pc_thrust_red_light_1.set_override_indication(state)
+        pc.pc_thrust_red_light_2.set_override_indication(state)
+        pc.pc_thrust_red_light_3.set_override_indication(state)

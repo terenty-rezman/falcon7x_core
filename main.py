@@ -114,6 +114,7 @@ async def main_loop():
     # await load_default_sit()
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
+    await xp.set_param(xp.Params["sim/operation/override/override_gearbrake"], 1)
 
     await Scenario.kill_current_scenario()
     await ACSystems.reset()
@@ -121,14 +122,10 @@ async def main_loop():
 
     await CockpitPanel.reset_to_default_state()
 
-    try:
-        while True:
-            await asyncio.sleep(0.1)
-    except KeyboardInterrupt:
-        pass
-
     # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
+
+    import common.plane_control as pc
 
     while True:
         # x, y, z, rz = joystick.get_axes_values()
