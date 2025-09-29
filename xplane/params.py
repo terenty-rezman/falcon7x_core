@@ -227,6 +227,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/clock_timer/local_time_hours", # utc time hours
     "sim/cockpit2/clock_timer/local_time_minutes", # utc time minutes
     "sim/cockpit2/gauges/indicators/vvi_fpm_pilot", # vertical speed ft per min adi
+    "sim/cockpit2/gauges/actuators/barometer_setting_in_hg_pilot", # adi altitude baro settings
 ])
 Params.__str__ = to_str
 
