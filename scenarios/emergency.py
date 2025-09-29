@@ -17,6 +17,7 @@ import front_panel.warning as fpw
 import overhead_panel.fire_panel as fp 
 import overhead_panel.engines_apu as overhead_engines
 import middle_pedestal.engine as engine_panel
+import common.external_sound as sounds
 
 from common import plane_control as pc
 from aircraft_systems import engine
@@ -343,7 +344,16 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")
 async def _78_fire_rear_comp(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.FIRE_REAR_COMP)
+    try:
+        await cas.show_message(cas.FIRE_REAR_COMP)
+        await cas.show_message(cas.FIRE_REAR_COMP_DETECT_FAIL)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
+        await fp.firerearcomp_button.wait_state(1)
+        await sim.sleep(3)
+    finally:
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
+        await cas.remove_message(cas.FIRE_REAR_COMP)
+        await cas.remove_message(cas.FIRE_REAR_COMP_DETECT_FAIL)
 
 
 @scenario("EMERGENCY", "FIRE", "80 FIRE: LH WHEEL OVHT")
