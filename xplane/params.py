@@ -231,6 +231,7 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/position/true_airspeed", # true airspeed
     "sim/flightmodel2/position/groundspeed", # ground speed
     "sim/cockpit2/gauges/indicators/mach_pilot", # mach value on pilot side
+    "sim/flightmodel/controls/elv_trim", # adi pitch indicator
 ])
 Params.__str__ = to_str
 
