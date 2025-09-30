@@ -147,8 +147,8 @@ uso_pushbuttons_receive_map = {
     "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
-    "rev_ads_lh": "I03_b26",	# ADS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
-    "rev_ads_rh": "I03_b20",	# ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
+    "rev_ads_lh": "I03_b20",	# ADS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
+    "rev_ads_rh": "I03_b26",	# ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
 }
 
 
