@@ -170,8 +170,7 @@ class pc_left_brake_lh(FloatStepper):
 
 
 @add_to_panel
-class pc_left_brake_rh(FloatStepper):
-    # left pedal right pilot
+class pc_right_brake_lh(FloatStepper):
     dataref = None
 
     logic_left = 0.0
@@ -181,7 +180,6 @@ class pc_left_brake_rh(FloatStepper):
     step = 0.01
 
     val_type = float
-    old_value = False
 
     @classmethod
     async def set_state(cls, state: float):
@@ -201,7 +199,8 @@ class pc_left_brake_rh(FloatStepper):
 
 
 @add_to_panel
-class pc_right_brake_lh(FloatStepper):
+class pc_left_brake_rh(FloatStepper):
+    # left pedal right pilot
     dataref = None
 
     logic_left = 0.0
@@ -211,6 +210,7 @@ class pc_right_brake_lh(FloatStepper):
     step = 0.01
 
     val_type = float
+    old_value = False
 
 
 @add_to_panel
@@ -231,7 +231,7 @@ class pc_right_brake_rh(FloatStepper):
     async def set_state(cls, state: float):
         await super().set_state(state)
 
-        lh_state = pc_right_brake_lh.get_state()
+        lh_state = pc_left_brake_rh.get_state()
         total =  cls.state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
