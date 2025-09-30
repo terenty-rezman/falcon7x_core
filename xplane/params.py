@@ -199,6 +199,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/electrical/battery_amps[1]",
     "sim/custom/7X/TBAT", # synoptic elec battery temp
     "sim/cockpit2/controls/gear_handle_down", # landing gear
+    "sim/cockpit2/annunciators/gear_unsafe", # gear in transition
     "sim/cockpit2/electrical/APU_generator_amps", # synoptic elec apu amps
 
     "sim/custom/7x/z_oil_min_height_1", # synoptic eng oil min level
