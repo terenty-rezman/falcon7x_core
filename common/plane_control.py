@@ -136,7 +136,7 @@ class pc_heading_rh(FloatStepper):
 
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
         if total < 5:
-            k = total / 5
+            k = math.fabs(total / 5)
             total *= k
 
         await pc_heading_total.set_state(total)
