@@ -172,7 +172,7 @@ class pc_left_brake_lh(FloatStepper):
     @classmethod
     async def set_state(cls, state: float):
         await super().set_state(state)
-        await pc_total_brake_lh.set_state(None)
+        await pc_left_brake_total.set_state(None)
 
 
 @add_to_panel
@@ -191,16 +191,16 @@ class pc_right_brake_lh(FloatStepper):
     @classmethod
     async def set_state(cls, state: float):
         await super().set_state(state)
-        await pc_total_brake_lh.set_state(None)
+        await pc_right_brake_total.set_state(None)
 
 
 @add_to_panel
-class pc_total_brake_lh(FloatStepper):
+class pc_left_brake_total(FloatStepper):
     dataref = None
 
     @classmethod
     async def set_state(cls, state: float):
-        rh_state = pc_right_brake_lh.get_state()
+        rh_state = pc_left_brake_rh.get_state()
         lh_state = pc_left_brake_lh.get_state()
 
         total =  rh_state + lh_state
@@ -232,7 +232,7 @@ class pc_left_brake_rh(FloatStepper):
     @classmethod
     async def set_state(cls, state: float):
         await super().set_state(state)
-        await pc_total_brake_rh.set_state(None)
+        await pc_left_brake_total.set_state(None)
 
 
 @add_to_panel
@@ -252,15 +252,15 @@ class pc_right_brake_rh(FloatStepper):
     @classmethod
     async def set_state(cls, state: float):
         await super().set_state(state)
-        await pc_total_brake_rh.set_state(None)
+        await pc_right_brake_total.set_state(None)
 
 
 @add_to_panel
-class pc_total_brake_rh(FloatStepper):
+class pc_right_brake_total(FloatStepper):
     @classmethod
     async def set_state(cls, state: float):
         rh_state = pc_right_brake_rh.get_state()
-        lh_state = pc_left_brake_rh.get_state()
+        lh_state = pc_right_brake_lh.get_state()
 
         total =  rh_state + lh_state
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
