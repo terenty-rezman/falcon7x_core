@@ -229,6 +229,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/clock_timer/local_time_minutes", # utc time minutes
     "sim/cockpit2/gauges/indicators/vvi_fpm_pilot", # vertical speed ft per min adi
     "sim/flightmodel/position/true_airspeed", # true airspeed
+    "sim/flightmodel2/position/groundspeed", # ground speed
 ])
 Params.__str__ = to_str
 
