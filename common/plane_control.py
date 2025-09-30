@@ -260,7 +260,7 @@ class pc_right_brake_rh(FloatStepper):
 
 
 @add_to_panel
-class pc_total_brake_rh(FloatStepper):
+class pc_right_brake_total(FloatStepper):
     dataref = None
     logic_left = 0.0
     logic_right = 10.0
