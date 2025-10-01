@@ -3,6 +3,7 @@ import traceback
 import asyncio
 from collections import OrderedDict
 import math
+import time
 
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
@@ -453,21 +454,31 @@ async def receive_uso_task(udp_endpoint):
     global uso_bits_state
     global uso_floats_state
 
-    first_run = True
+    clear_uso_buffer = True
+    last_clear_time = time.time()
 
     while True:
         try:
             # new_state, (host, port) = await udp_endpoint.receive()
             new_state = None
 
-            if first_run == True:
+            elapsed_since_last_clear = time.time() - last_clear_time
+            if elapsed_since_last_clear > 5:
+                clear_uso_buffer = True
+
+            if clear_uso_buffer == True:
                 # receive all datagrams and continue with the last one
+                recv_count = 0
                 while True:
                     try:
                         new_state, (host, port) = udp_endpoint.receive_nowait()
+                        recv_count += 1 
                     except asyncio.QueueEmpty:
-                        first_run = False
+                        clear_uso_buffer = False
                         break
+
+                last_clear_time = time.time()
+                print(recv_count)
             else:
                 new_state, (host, port) = await udp_endpoint.receive()
 

@@ -196,6 +196,7 @@ class pc_right_brake_lh(FloatStepper):
 
 @add_to_panel
 class pc_left_brake_total(FloatStepper):
+    # total left pedal = left pilot left pedal + right pilot left pedal
     dataref = None
     
     logic_left = 0.0
@@ -261,6 +262,7 @@ class pc_right_brake_rh(FloatStepper):
 
 @add_to_panel
 class pc_right_brake_total(FloatStepper):
+    # total right pedal = left pilot right pedal + right pilot right pedal
     dataref = None
     logic_left = 0.0
     logic_right = 10.0
