@@ -153,7 +153,7 @@ uso_pushbuttons_receive_map = {
 	"rev_ra_rh": "I03_b25",	# RA > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
     "rev_ads_rh": "I03_b26", # ADS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
 	"rev_fms_rh": "I03_b27", # FMS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
-	"rev_ils_vor": "I03_b28", # ILS VOR > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_ils_vor_rh": "I03_b28", # ILS VOR > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
 	"rev_irs_lh": "I03_b18", # IRS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
 	"rev_ra_lh": "I03_b19",	# RA < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
     "rev_ads_lh": "I03_b20", # ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
