@@ -145,8 +145,6 @@ uso_pushbuttons_receive_map = {
     "ice_wings": "I07_b23", # WINGS [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "xtk_left": "I07_c22", # XTK LEFT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-    "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
-    "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "rev_ils_vor_lh": "I03_b22", # ILS VOR < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
 	"rev_pdu_mdu": "I03_b23", # PDU MDU [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
 	"rev_irs_rh": "I03_b24", # IRS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
@@ -232,6 +230,8 @@ uso_switches_receive_map = {
     "tb_reserv_rh": "I08_a21", # TrackBall io [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [07 Пульт трэкбола правый (Trackball)] 
     "wc_backup_slats": "I03_b02", # BACK-UP SLATS [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [06 Пульт управления механизацией крыла]
     "apu_master": "I07_a18", # APU Master [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
+    "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
+    "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
 } # switches
 
 
