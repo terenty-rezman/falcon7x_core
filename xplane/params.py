@@ -135,7 +135,8 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/indicators/N2_percent", # eng N2
     "sim/7x/choixtcas", # PDU show ENG TRM
 
-    "sim/cockpit2/autopilot/airspeed_dial_kts_mach", # front panel - airspeed val
+    "sim/cockpit2/autopilot/airspeed_dial_kts_mach", # front panel - airspeed val mach
+    "sim/cockpit2/autopilot/airspeed_dial_kts", # front panel - airspeed val
     "sim/cockpit/autopilot/airspeed_is_mach", # front panel - airspeed kts or mach
     "sim/cockpit2/autopilot/autothrottle_enabled", # front panel - AT auto throttle
     "sim/cockpit2/autopilot/approach_status", # front panel - approach
