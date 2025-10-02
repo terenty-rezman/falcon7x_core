@@ -478,7 +478,6 @@ async def receive_uso_task(udp_endpoint):
                         break
 
                 last_clear_time = time.time()
-                print(recv_count)
             else:
                 new_state, (host, port) = await udp_endpoint.receive()
 

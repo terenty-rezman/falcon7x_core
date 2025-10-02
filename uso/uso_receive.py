@@ -147,8 +147,17 @@ uso_pushbuttons_receive_map = {
     "xtk_right": "I07_c23", # XTK RIGHT 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
-    "rev_ads_lh": "I03_b20",	# ADS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
-    "rev_ads_rh": "I03_b26",	# ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
+    "rev_ils_vor_lh": "I03_b22", # ILS VOR < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_pdu_mdu": "I03_b23", # PDU MDU [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_irs_rh": "I03_b24", # IRS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_ra_rh": "I03_b25",	# RA > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+    "rev_ads_rh": "I03_b26", # ADS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
+	"rev_fms_rh": "I03_b27", # FMS > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_ils_vor": "I03_b28", # ILS VOR > [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_irs_lh": "I03_b18", # IRS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+	"rev_ra_lh": "I03_b19",	# RA < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+    "rev_ads_lh": "I03_b20", # ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
+	"rev_fms_lh": "I03_b21", # FMS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
 }
 
 
