@@ -141,7 +141,7 @@ class master_caution_rh(master_caution_lh):
 
 
 @add_to_panel
-class master_warning_rh(TwoStateButton):
+class master_warning_rh(master_warning_lh):
     pass
 
 
