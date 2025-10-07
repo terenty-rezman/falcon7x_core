@@ -235,6 +235,8 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/controls/elv_trim", # adi pitch indicator
     "sim/custom/7x/z_ads_pilot", # ads for pilot
     "sim/custom/7x/z_ads_copilot", # ads for copilot
+    "sim/custom/7x/z_irs_pilot", # irs for pilot
+    "sim/custom/7x/z_irs_copilot", # irs for copilot
 ])
 Params.__str__ = to_str
 

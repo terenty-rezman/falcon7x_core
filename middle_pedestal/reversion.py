@@ -28,18 +28,17 @@ class rev_ads_rh(NStateXPButton):
 
 
 @add_to_panel
-class rev_irs_lh(NLocalStateButton):
-    states = [0, 1, 2]
+class rev_irs_lh(NStateXPButton):
+    dataref = xp.Params["sim/custom/7x/z_irs_pilot"]
+    states = [1, 2, 3]
     state = 0
-
-    @classmethod
-    async def click(cls):
-        await super().click()
 
 
 @add_to_panel
-class rev_irs_rh(rev_irs_lh):
-    pass
+class rev_irs_rh(NStateXPButton):
+    dataref = xp.Params["sim/custom/7x/z_irs_pilot"]
+    states = [1, 2, 3]
+    state = 0
 
 
 @add_to_panel
