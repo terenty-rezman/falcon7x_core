@@ -156,8 +156,10 @@ uso_pushbuttons_receive_map = {
 	"rev_ra_lh": "I03_b19",	# RA < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
     "rev_ads_lh": "I03_b20", # ADS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]"
 	"rev_fms_lh": "I03_b21", # FMS < [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [18 (Reversion Panel)]
+    "mkb_a_rh": "I04_c16",	# A [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [13Многофункциональная клавиатура (MKB) правая]
+	"mkb_b_rh": "I04_c17",	# B [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [13Многофункциональная клавиатура (MKB) правая]
+	"mkb_c_rh": "I04_c18",	# C [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [13Многофункциональная клавиатура (MKB) правая]
 }
-
 
 uso_switches_receive_map = {
     "en_motor": "I03_c09", # Switch MOTOR [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [10 Пульт переключения резервных функций]

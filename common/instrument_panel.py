@@ -455,16 +455,10 @@ async def receive_uso_task(udp_endpoint):
     global uso_floats_state
 
     clear_uso_buffer = True
-    last_clear_time = time.time()
 
     while True:
         try:
-            # new_state, (host, port) = await udp_endpoint.receive()
             new_state = None
-
-            elapsed_since_last_clear = time.time() - last_clear_time
-            if elapsed_since_last_clear > 5:
-                clear_uso_buffer = True
 
             if clear_uso_buffer == True:
                 # receive all datagrams and continue with the last one
@@ -474,12 +468,10 @@ async def receive_uso_task(udp_endpoint):
                         new_state, (host, port) = udp_endpoint.receive_nowait()
                         recv_count += 1 
                     except asyncio.QueueEmpty:
-                        clear_uso_buffer = False
                         break
-
-                last_clear_time = time.time()
             else:
                 new_state, (host, port) = await udp_endpoint.receive()
+            
 
             if new_state is None:
                 new_state, (host, port) = await udp_endpoint.receive()
@@ -592,3 +584,4 @@ from middle_pedestal import trackball
 from middle_pedestal import engine
 import common.plane_control as plane_control
 from middle_pedestal import reversion
+from middle_pedestal import mkb
