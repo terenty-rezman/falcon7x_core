@@ -203,6 +203,9 @@ class Subscribe:
         (Params["sim/custom/7x/z_thrust_purple_max_deg_1"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
         (Params["sim/custom/7x/z_thrust_purple_max_deg_2"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
         (Params["sim/custom/7x/z_thrust_purple_max_deg_3"], None, "tcp"), #  # max thrust degree of purple circle on synoptic indicator
+
+        (Params["sim/custom/7x/z_ads_pilot"], None, "tcp"), #  # ads
+        (Params["sim/custom/7x/z_ads_copilot"], None, "tcp"), #  # ads
     ]
 
 

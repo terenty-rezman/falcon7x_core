@@ -1,19 +1,30 @@
-from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper
-        
+from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, NStateXPButton, NLocalStateButton, LocalStateIndicator, FloatStepper
+import xplane.master as xp
 
 @add_to_panel
 class rev_ads_lh(NLocalStateButton):
-    states = [0, 1, 2, 3]
+    dataref = xp.Params["sim/custom/7x/z_ads_pilot"]
+
+    states = [1, 2, 3]
     state = 0
 
     @classmethod
     async def click(cls):
-        await super().click()
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state == 0:
+            await cls.set_state(2) 
+        else:
+            await cls.set_state(state - 1)
 
 
 @add_to_panel
 class rev_ads_rh(rev_ads_lh):
-    pass
+    dataref = xp.Params["sim/custom/7x/z_ads_copilot"]
+    states = [1, 2, 3]
+    state = 0
 
 
 @add_to_panel
