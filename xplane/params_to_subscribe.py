@@ -99,7 +99,7 @@ class Subscribe:
         (Params["sim/weapons/targ_h"], None, "tcp"), # front panel - vs path
         (Params["sim/cockpit2/autopilot/vvi_status"], None, "tcp"), # front panel - vs mode
         (Params["sim/cockpit2/autopilot/fms_vnav"], None, "tcp"), #  front panel - vnav
-        (Params["sim/cockpit2/autopilot/altitude_dial_ft"], None, "tcp"), # front panel - asel
+        (Params["sim/cockpit2/autopilot/altitude_dial_ft"], 5, "udp"), # front panel - asel
         (Params["sim/cockpit2/autopilot/altitude_hold_armed"], None, "tcp"), # front panel - alt
         (Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"], None, "tcp"), # secondary flight display - std
         (Params["sim/multiplayer/controls/flap_request"], None, "tcp"), # pedestal - wings config - slats/flats sf
@@ -128,7 +128,7 @@ class Subscribe:
 
         (Params["sim/7x/choixtcas"], None, "tcp"), # PDU show ENG TRM
 
-        (Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"], None, "tcp"), # front panel - airspeed val
+        (Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"], 5, "udp"), # front panel - airspeed val
         (Params["sim/cockpit/autopilot/airspeed_is_mach"], None, "tcp"), # front panel - airspeed kts or mach
         (Params["sim/cockpit2/autopilot/autothrottle_enabled"], None, "tcp"), # front panel - AT auto throttle
         (Params["sim/cockpit2/autopilot/approach_status"], None, "tcp"), # front panel - approach

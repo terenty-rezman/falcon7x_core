@@ -2,11 +2,11 @@ from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, NSt
 import xplane.master as xp
 
 @add_to_panel
-class rev_ads_lh(NLocalStateButton):
+class rev_ads_lh(NStateXPButton):
     dataref = xp.Params["sim/custom/7x/z_ads_pilot"]
 
     states = [1, 2, 3]
-    state = 0
+    state = 1
 
     @classmethod
     async def click(cls):
@@ -21,10 +21,10 @@ class rev_ads_lh(NLocalStateButton):
 
 
 @add_to_panel
-class rev_ads_rh(rev_ads_lh):
+class rev_ads_rh(NStateXPButton):
     dataref = xp.Params["sim/custom/7x/z_ads_copilot"]
     states = [1, 2, 3]
-    state = 0
+    state = 1
 
 
 @add_to_panel
