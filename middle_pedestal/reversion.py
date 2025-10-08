@@ -36,7 +36,7 @@ class rev_irs_lh(NStateXPButton):
 
 @add_to_panel
 class rev_irs_rh(NStateXPButton):
-    dataref = xp.Params["sim/custom/7x/z_irs_pilot"]
+    dataref = xp.Params["sim/custom/7x/z_irs_copilot"]
     states = [1, 2, 3]
     state = 0
 
