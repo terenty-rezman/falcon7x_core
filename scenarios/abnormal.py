@@ -47,13 +47,22 @@ async def abnormal_start(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 FAIL")
 async def ads_1_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ADS_1_FAIL)
-    await rev.rev_ads_lh.get_state() == 2
+    try:
+        await cas.show_message(cas.ADS_1_FAIL)
+        await rev.rev_ads_lh.wait_state(2)
+        await rev.rev_irs_lh.wait_state(2)
+    finally:
+        await cas.remove_message(cas.ADS_1_FAIL)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 2 FAIL")
 async def ads_2_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ADS_2_FAIL)
+    try:
+        await cas.show_message(cas.ADS_2_FAIL)
+        await rev.rev_ads_rh.wait_state(2)
+        await rev.rev_irs_rh.wait_state(2)
+    finally:
+        await cas.remove_message(cas.ADS_2_FAIL)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 NO SLIP COMPL")
