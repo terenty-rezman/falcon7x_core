@@ -94,7 +94,7 @@ async def afcs_ap_fail(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_AP_FAIL)
         # autopilot voice warning
-        await sound.play_sound(sound.Sound.GONG, looped=False)
+        await sound.play_sound(sound.Sound.GONG, looped=True)
 
         await ap.fp_autopilot.wait_state(0)
     finally:
