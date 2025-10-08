@@ -63,8 +63,12 @@ async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 PROBE HEAT FAIL")
 async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
-    await rev.rev_irs_lh.get_state() == 2
+    try:
+        await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
+        await rev.rev_ads_lh.wait_state(2)
+        await rev.rev_irs_lh.wait_state(2)
+    finally:
+        await cas.remove_message(cas.ADS_1_PROBE_HEAT_FAIL)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: ADS ALL MISCOMPARE")
