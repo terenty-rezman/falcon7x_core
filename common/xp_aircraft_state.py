@@ -91,7 +91,7 @@ class ACState:
     
     @classmethod 
     def get_curr_param(cls, xp_param: Params) -> Optional[Any]:
-        return cls.curr_params.get(xp_param) or 0 # sometimes when param is overriden it is not read from xplane and doesnot exist in curr_params
+        return cls.curr_params.get(xp_param)
 
     @classmethod
     def set_curr_param(cls, xp_param: Params, value):
