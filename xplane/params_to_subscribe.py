@@ -208,6 +208,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_ads_copilot"], None, "tcp"), # ads
         (Params["sim/custom/7x/z_irs_pilot"], None, "tcp"), # irs
         (Params["sim/custom/7x/z_irs_copilot"], None, "tcp"), # irs
+        (Params["sim/custom/7x/z_ads_fail"], None, "tcp"), # failed ads id
     ]
 
 
