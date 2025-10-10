@@ -48,21 +48,25 @@ async def abnormal_start(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 FAIL")
 async def ads_1_fail(ac_state: xp_ac.ACState):
     try:
+        await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 1)
         await cas.show_message(cas.ADS_1_FAIL)
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
     finally:
+        await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 0)
         await cas.remove_message(cas.ADS_1_FAIL)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 2 FAIL")
 async def ads_2_fail(ac_state: xp_ac.ACState):
     try:
+        await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 2)
         await cas.show_message(cas.ADS_2_FAIL)
         await rev.rev_ads_rh.wait_state(2)
         await rev.rev_irs_rh.wait_state(2)
     finally:
         await cas.remove_message(cas.ADS_2_FAIL)
+        await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 0)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 NO SLIP COMPL")
