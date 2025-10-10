@@ -237,6 +237,7 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_ads_copilot", # ads for copilot
     "sim/custom/7x/z_irs_pilot", # irs for pilot
     "sim/custom/7x/z_irs_copilot", # irs for copilot
+    "sim/cockpit2/gauges/indicators/radio_altimeter_height_ft_pilot", # radio altitude above ground
 ])
 Params.__str__ = to_str
 
