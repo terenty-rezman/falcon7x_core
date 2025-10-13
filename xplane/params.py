@@ -233,12 +233,18 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel2/position/groundspeed", # ground speed
     "sim/cockpit2/gauges/indicators/mach_pilot", # mach value on pilot side
     "sim/flightmodel/controls/elv_trim", # adi pitch indicator
-    "sim/custom/7x/z_ads_pilot", # ads for pilot
-    "sim/custom/7x/z_ads_copilot", # ads for copilot
-    "sim/custom/7x/z_irs_pilot", # irs for pilot
-    "sim/custom/7x/z_irs_copilot", # irs for copilot
+    "sim/custom/7x/z_ads_pilot", # curr ads for pilot
+    "sim/custom/7x/z_ads_copilot", # curr ads for copilot
+    "sim/custom/7x/z_irs_pilot", # curr irs for pilot
+    "sim/custom/7x/z_irs_copilot", # curr irs for copilot
     "sim/cockpit2/gauges/indicators/radio_altimeter_height_ft_pilot", # radio altitude above ground
     "sim/custom/7x/z_ads_fail", # failed asd id
+    "sim/custom/7x/z_fms_pilot", # curr fms for pilot
+    "sim/custom/7x/z_fms_copilot", # curr fms for copilot
+    "sim/custom/7x/z_ra_pilot", # curr fms for pilot
+    "sim/custom/7x/z_ra_copilot", # curr fms for copilot
+    "sim/custom/7x/z_vor_pilot", # curr vor for pilot
+    "sim/custom/7x/z_vor_copilot", # curr vor for copilot
 ])
 Params.__str__ = to_str
 
