@@ -16,6 +16,7 @@ import front_panel.autopilot as ap
 import common.external_sound as sound
 import common.simulation as sim
 import overhead_panel.anti_ice as ai
+import synoptic_remote.param_overrides as synoptic_overrides
 
 
 @scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET")
@@ -107,9 +108,23 @@ async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: ADS ALL MISCOMPARE")
 async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
+    PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
+    COPILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"]
     try:
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
-        await sim.sleep(5)
+        async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED]):
+
+            async def wrong_speed_pilot():
+                modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed: origin_speed + 50)
+                await rev.rev_ads_lh.wait_state(2)
+                modify_speed_pilot_task.cancel()
+            
+            async def wrong_speed_copilot():
+                modify_speed_copilot_task = synoptic_overrides.modify_original_value(COPILOT_SPEED, lambda origin_speed: origin_speed - 50)
+                await rev.rev_ads_rh.wait_state(2)
+                modify_speed_copilot_task.cancel()
+            
+            await asyncio.gather(wrong_speed_pilot(), wrong_speed_copilot())
     finally:
         await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
 

@@ -130,6 +130,18 @@ def _1d_table_start_from_curr_val_anim(param: Params, t_values, y_values, sleep_
     return sane_tasks.spawn(_1d_table_anim_task())
 
 
+def modify_original_value(param: Params, modify_func, sleep_sec: float = 0.1):
+    async def modify_task():
+
+        while True: 
+            value = modify_func(xp_ac.ACState.get_original_param(param) or 0)
+            set_override_value(param, value)
+
+            await sim.sleep(sleep_sec)
+    
+    return sane_tasks.spawn(modify_task())
+
+
 def clear_override_values():
     global overrides_values
     overrides_values = dict()

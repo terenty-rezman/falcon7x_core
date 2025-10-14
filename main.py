@@ -47,6 +47,8 @@ def on_new_xp_data(type, dataref, value):
     # запомнить текущее состояние ЛА
     if dataref not in ACState.enabled_overrides:
         ACState.curr_params[dataref] = value
+    else:
+        ACState.original_params[dataref] = value
 
     # NOTE!: maybe creating task for every param update is a bad idea
     if dataref in xp_mfi.sync_params:
@@ -54,7 +56,7 @@ def on_new_xp_data(type, dataref, value):
 
     # send to synoptic qml UI
     if dataref in synoptic_remote.sync_params and \
-        dataref not in synoptic_remote.param_overrides.enabled_overrides: # synoptic_remote.update() will send overrides instead of xplane data ref value
+        dataref not in synoptic_remote.param_overrides.enabled_overrides: # synoptic_remote._updater() will send overrides instead of xplane data ref value
         synoptic_remote.update(dataref, value)
 
     ACState.update_data_callbacks()
@@ -82,6 +84,8 @@ def on_new_xp_data_udp(received_vals):
         # запомнить текущее состояние ЛА
         if param not in ACState.enabled_overrides:
             ACState.curr_params[param] = value
+        else:
+            ACState.original_params[param] = value
 
     ACState.data_updated = True
 
@@ -126,6 +130,7 @@ async def main_loop():
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
 
     import common.plane_control as pc
+    import middle_pedestal.reversion as rev
 
     while True:
         # x, y, z, rz = joystick.get_axes_values()
@@ -133,6 +138,11 @@ async def main_loop():
         #     await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
+
+        await rev.rev_ils_vor_lh.click()
+        await asyncio.sleep(3)
+        await rev.rev_ils_vor_rh.click()
+        await asyncio.sleep(3)
 
         await asyncio.sleep(0.1)
 

@@ -24,6 +24,9 @@ class ACState:
     # current values of xplane params
     curr_params = {}
 
+    # original values of xplane params if curr_params are overriden by core
+    original_params = {}
+
     # when any of params value updated
     data_updated = False
 
@@ -34,6 +37,7 @@ class ACState:
     @classmethod
     def clear_all(cls):
         cls.curr_params = {}
+        cls.original_params_params = {}
         cls.initial_params = {}
         cls._data_callbacks = []
 
@@ -92,6 +96,11 @@ class ACState:
     @classmethod 
     def get_curr_param(cls, xp_param: Params) -> Optional[Any]:
         return cls.curr_params.get(xp_param)
+
+    @classmethod 
+    def get_original_param(cls, xp_param: Params) -> Optional[Any]: 
+        """ in case curr params are overriden by core, original xplane values can be retrieved this way """
+        return cls.original_params.get(xp_param)
 
     @classmethod
     def set_curr_param(cls, xp_param: Params, value):
