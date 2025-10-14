@@ -188,6 +188,9 @@ class Subscribe:
         (Params["sim/custom/7x/z_oil_min_height_2"], 1, "udp"), # synoptic eng min oil level
         (Params["sim/custom/7x/z_oil_min_height_3"], 1, "udp"), # synoptic eng min oil level
 
+        (Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"], 12, "udp"), # synoptic airspeed
+        (Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"], 12, "udp"), # synoptic airspeed
+
         (Params["sim/custom/7x/z_left_black_screen"], None, "tcp"), # pdu left
         (Params["sim/custom/7x/z_right_black_screen"], None, "tcp"), # pdu right
         (Params["sim/custom/7x/z_middle_up_black_screen"], None, "tcp"), # mdu up 
