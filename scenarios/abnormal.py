@@ -51,12 +51,6 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 1)
         await cas.show_message(cas.ADS_1_FAIL)
-
-        await sim.sleep(3)
-        await rev.rev_ads_lh.set_state(2)
-        await sim.sleep(3)
-        await rev.rev_irs_lh.set_state(2)
-
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
         await sim.sleep(3)
@@ -74,14 +68,8 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 2)
         await cas.show_message(cas.ADS_2_FAIL)
-        await sim.sleep(3)
-        await rev.rev_ads_rh.set_state(2)
-        await sim.sleep(3)
-        await rev.rev_irs_rh.set_state(2)
         await rev.rev_ads_rh.wait_state(2)
-
         await rev.rev_irs_rh.wait_state(2)
-        await sim.sleep(3)
     finally:
         await cas.remove_message(cas.ADS_2_FAIL)
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 0)

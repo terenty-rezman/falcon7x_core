@@ -138,12 +138,6 @@ async def main_loop():
         #     await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
-
-        await rev.rev_ils_vor_lh.click()
-        await asyncio.sleep(3)
-        await rev.rev_ils_vor_rh.click()
-        await asyncio.sleep(3)
-
         await asyncio.sleep(0.1)
 
     
