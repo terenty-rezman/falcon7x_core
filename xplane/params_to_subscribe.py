@@ -218,6 +218,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_ra_copilot"], None, "tcp"), # ra
         (Params["sim/custom/7x/z_vor_pilot"], None, "tcp"), # vor
         (Params["sim/custom/7x/z_vor_copilot"], None, "tcp"), # vor
+        (Params["sim/custom/7x/z_no_slip_comp"], None, "tcp"), # no slip compensation
     ]
 
 

@@ -51,6 +51,7 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 1)
         await cas.show_message(cas.ADS_1_FAIL)
+        await sound.play_sound(sound.Sound.GONG)
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
         await sim.sleep(3)
@@ -68,6 +69,7 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 2)
         await cas.show_message(cas.ADS_2_FAIL)
+        await sound.play_sound(sound.Sound.GONG)
         await rev.rev_ads_rh.wait_state(2)
         await rev.rev_irs_rh.wait_state(2)
     finally:
@@ -81,13 +83,22 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 NO SLIP COMPL")
 async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ADS_1_NO_SLIP_COMP)
+    NO_SLIP_ADS_ID = xp.Params["sim/custom/7x/z_no_slip_comp"]
+    try:
+        await cas.show_message(cas.ADS_1_NO_SLIP_COMP)
+        await xp.set_param(NO_SLIP_ADS_ID, 1)
+        await sound.play_sound(sound.Sound.GONG)
+        await rev.rev_ads_lh.wait_state(2)
+    finally:
+        await cas.remove_message(cas.ADS_1_NO_SLIP_COMP)
+        await xp.set_param(NO_SLIP_ADS_ID, 0)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 PROBE HEAT FAIL")
 async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
+        await sound.play_sound(sound.Sound.GONG)
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
     finally:
