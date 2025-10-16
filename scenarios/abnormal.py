@@ -109,19 +109,26 @@ async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
 async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
     PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
     COPILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"]
+
+    PILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_pilot"]
+    COPILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_copilot"]
     try:
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
         async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED]):
 
             async def wrong_speed_pilot():
                 modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed: origin_speed + 50)
+                modify_alt_pilot_task = synoptic_overrides.modify_original_value(PILOT_ALT, lambda origin_alt: origin_alt + 500)
                 await rev.rev_ads_lh.wait_state(2)
                 modify_speed_pilot_task.cancel()
-            
+                modify_alt_pilot_task.cancel()
+
             async def wrong_speed_copilot():
-                modify_speed_copilot_task = synoptic_overrides.modify_original_value(COPILOT_SPEED, lambda origin_speed: origin_speed - 50)
+                modify_speed_copilot_task = synoptic_overrides.modify_original_value(COPILOT_SPEED, lambda origin_speed: origin_speed - 40)
+                modify_alt_copilot_task = synoptic_overrides.modify_original_value(COPILOT_ALT, lambda origin_alt: origin_alt - 400)
                 await rev.rev_ads_rh.wait_state(2)
                 modify_speed_copilot_task.cancel()
+                modify_alt_copilot_task.cancel()
             
             await asyncio.gather(wrong_speed_pilot(), wrong_speed_copilot())
     finally:
