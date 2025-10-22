@@ -19,18 +19,8 @@ import overhead_panel.engines_apu as overhead_engines
 import common.simulation as sim
 
 
-@scenario("NORMAL", None, "AFTER LANDING")
-async def after_landing(ac_state: xp_ac.ACState):
-    pass
-
-
-@scenario("NORMAL", None, "AFTER START")
-async def after_start(ac_state: xp_ac.ACState):
-    pass
-
-
-@scenario("NORMAL", None, "AT_RAMP")
-async def at_ramp(ac_state: xp_ac.ACState):
+@scenario("NORMAL", None, "COCKPIT PREPARATION")
+async def cockpit_preparation(ac_state: xp_ac.ACState):
     pass
 
 
@@ -39,8 +29,23 @@ async def before_start(ac_state: xp_ac.ACState):
     pass
 
 
-@scenario("NORMAL", None, "COCKPIT PREPARATION")
-async def cockpit_preparation(ac_state: xp_ac.ACState):
+@scenario("NORMAL", None, "AFTER START")
+async def after_start(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "TAXI")
+async def taxi(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "AFTER LANDING")
+async def after_landing(ac_state: xp_ac.ACState):
+    pass
+
+
+@scenario("NORMAL", None, "AT_RAMP")
+async def at_ramp(ac_state: xp_ac.ACState):
     pass
 
 
@@ -84,9 +89,4 @@ async def start(ac_state: xp_ac.ACState):
 
 @scenario("NORMAL", None, "TAKE-OFF")
 async def take_off(ac_state: xp_ac.ACState):
-    pass
-
-
-@scenario("NORMAL", None, "TAXI")
-async def taxi(ac_state: xp_ac.ACState):
     pass
