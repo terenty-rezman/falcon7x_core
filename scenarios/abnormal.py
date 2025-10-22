@@ -168,8 +168,8 @@ async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS ALL MISCOMPARE")
 async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
-    PILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
-    COPILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"]
+    PILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]
+    COPILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_copilot"]
 
     try:
         await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
