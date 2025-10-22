@@ -659,6 +659,19 @@ class AFCS_ADS_MISCOMPARE(CASmssg):
     TO = False
     land = False
 
+
+@register
+class AFCS_ADS_1_MISCOMPARE(CASmssg): 
+    isread = False
+    text = "AFCS: ADS 1 MISCCOMPARE"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+
 @register
 class AFCS_AP_FAIL(CASmssg): 
     isread = False
@@ -685,6 +698,17 @@ class AFCS_IRS_ALL_MISCOMPARE(CASmssg):
 class AFCS_IRS_MISCOMPARE(CASmssg): 
     isread = False
     text = "AFCS: IRS # MISCOMPARE"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class AFCS_IRS_2_MISCOMPARE(CASmssg): 
+    isread = False
+    text = "AFCS: IRS 2 MISCOMPARE"
     color = "A"
     park = True
     taxi = True

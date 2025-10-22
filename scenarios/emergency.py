@@ -23,6 +23,9 @@ from common import plane_control as pc
 from aircraft_systems import engine
 import common.util as util
 import common.simulation as sim
+import synoptic_remote.param_overrides as synoptic_overrides
+import middle_pedestal.reversion as rev
+
 
 APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
@@ -373,7 +376,35 @@ async def _90_press_cabin_alt_too_hi(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "SPECIFIC EMERGENCY SITUATIONS", "AFCS: ADS1 MISCOMPARE AND AFCS: IRS2 MISCOMPARE")
 async def afcs_ads1_miscompare_and_afcs_is2_miscompare(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AFCS_ADS_MISCOMPARE)
+    PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
+    PILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_pilot"]
+
+    COPILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_copilot"]
+
+    try:
+        await cas.show_message(cas.AFCS_ADS_1_MISCOMPARE)
+        await cas.show_message(cas.AFCS_IRS_2_MISCOMPARE)
+        await sounds.play_sound(sounds.Sound.GONG)
+
+        async with synoptic_overrides.override_params([PILOT_SPEED, PILOT_ALT, COPILOT_HEADING]):
+            async def pilot():
+                modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed, _: origin_speed + 40)
+                modify_alt_pilot_task = synoptic_overrides.modify_original_value(PILOT_ALT, lambda origin_speed, _: origin_speed - 600)
+                await rev.rev_ads_lh.wait_state(2)
+                modify_speed_pilot_task.cancel()
+                modify_alt_pilot_task.cancel()
+                await cas.remove_message(cas.AFCS_ADS_1_MISCOMPARE)
+
+            async def copilot():
+                modify_heading_copilot_task = synoptic_overrides.modify_original_value(COPILOT_HEADING, lambda origin_heading, _: origin_heading - 9)
+                await rev.rev_irs_rh.wait_state(2)
+                modify_heading_copilot_task.cancel()
+                await cas.remove_message(cas.AFCS_IRS_2_MISCOMPARE)
+            
+            await asyncio.gather(pilot(), copilot())
+    finally:
+        await cas.remove_message(cas.AFCS_ADS_1_MISCOMPARE)
+        await cas.remove_message(cas.AFCS_IRS_2_MISCOMPARE)
 
 
 @scenario("EMERGENCY", "OPERATING TECHNIQUES", "AIRBRAKE AUTO EXTEND FAIL")
