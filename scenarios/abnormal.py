@@ -123,7 +123,7 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
         await sound.play_sound(sound.Sound.GONG)
 
-        async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED]):
+        async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED, PILOT_ALT, COPILOT_ALT]):
 
             async def wrong_speed_pilot():
                 modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed, _: origin_speed + 50)
