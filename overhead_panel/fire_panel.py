@@ -4,6 +4,7 @@ import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
 from common import plane_control as pc
+from cas import cas
 
 
 @add_to_panel
@@ -247,6 +248,7 @@ class firebagcomp_indicator(Indicator):
 class fire_test(NLocalStateButton):
     states = [0, 1]
     state = 0
+    cas_shown = False
 
     @classmethod
     async def set_state(cls, state):
@@ -254,6 +256,16 @@ class fire_test(NLocalStateButton):
 
         if state == 0:
             state = None
+
+        if state and cls.cas_shown == False:
+            # show cas
+            cas.show_message(cas.FIRE_TEST_IN_PROGRESS)
+            cls.cas_shown = True
+        
+        if state == 0 and cls.cas_shown == True:
+            # hide cas
+            cas.remove_message(cas.FIRE_TEST_IN_PROGRESS)
+            cls.cas_shown = False
 
         fireindicator_1.set_override_indication(state)
         fireindicator_2.set_override_indication(state)
