@@ -159,11 +159,17 @@ async def afcs_ap_fail(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS .. MISCOMPARE")
 async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
+    PILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]
     try:
-        await cas.show_message(cas.AFCS_IRS_MISCOMPARE)
+        await cas.show_message(cas.AFCS_IRS_1_MISCOMPARE)
         await sound.play_sound(sound.Sound.GONG)
+        async with synoptic_overrides.override_params([PILOT_HEADING]):
+            modify_heading_pilot_task = synoptic_overrides.modify_original_value(PILOT_HEADING, lambda origin_heading, _: origin_heading - 8)
+            await rev.rev_irs_lh.wait_state(2)
+            modify_heading_pilot_task.cancel()
+            await cas.remove_message(cas.AFCS_IRS_1_MISCOMPARE)
     finally:
-        await cas.remove_message(cas.AFCS_IRS_MISCOMPARE)
+        await cas.remove_message(cas.AFCS_IRS_1_MISCOMPARE)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS ALL MISCOMPARE")

@@ -706,6 +706,17 @@ class AFCS_IRS_MISCOMPARE(CASmssg):
     land = False
 
 @register
+class AFCS_IRS_1_MISCOMPARE(CASmssg): 
+    isread = False
+    text = "AFCS: IRS 1 MISCOMPARE"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
 class AFCS_IRS_2_MISCOMPARE(CASmssg): 
     isread = False
     text = "AFCS: IRS 2 MISCOMPARE"
