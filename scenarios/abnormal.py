@@ -157,7 +157,7 @@ async def afcs_ap_fail(ac_state: xp_ac.ACState):
         await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
 
 
-@scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS .. MISCOMPARE")
+@scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS 1 MISCOMPARE")
 async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_IRS_MISCOMPARE)
