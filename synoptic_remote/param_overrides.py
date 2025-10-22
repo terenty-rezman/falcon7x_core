@@ -131,10 +131,14 @@ def _1d_table_start_from_curr_val_anim(param: Params, t_values, y_values, sleep_
 
 
 def modify_original_value(param: Params, modify_func, sleep_sec: float = 0.1):
+    start_time = sim.time()
     async def modify_task():
 
         while True: 
-            value = modify_func(xp_ac.ACState.get_original_param(param) or 0)
+            curr_time = sim.time()
+            dt = curr_time - start_time
+
+            value = modify_func(xp_ac.ACState.get_original_param(param) or 0, dt)
             set_override_value(param, value)
 
             await sim.sleep(sleep_sec)

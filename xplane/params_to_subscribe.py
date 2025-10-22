@@ -192,6 +192,8 @@ class Subscribe:
         (Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"], 12, "udp"), # synoptic airspeed
         (Params["sim/cockpit2/gauges/indicators/altitude_ft_pilot"], 12, "udp"), # synoptic alt
         (Params["sim/cockpit2/gauges/indicators/altitude_ft_copilot"], 12, "udp"), # synoptic alt
+        (Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"], 12, "udp"), # synoptic heading
+        (Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_copilot"], 12, "udp"), # synoptic heading
 
         (Params["sim/custom/7x/z_left_black_screen"], None, "tcp"), # pdu left
         (Params["sim/custom/7x/z_right_black_screen"], None, "tcp"), # pdu right

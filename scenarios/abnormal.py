@@ -96,10 +96,17 @@ async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 PROBE HEAT FAIL")
 async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
+    PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
     try:
         await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
         await sound.play_sound(sound.Sound.GONG)
-        await rev.rev_ads_lh.wait_state(2)
+
+        async with synoptic_overrides.override_params([PILOT_SPEED]):
+            speed_curr = xp_ac.ACState.get_curr_param(PILOT_SPEED)
+            speed_drop_task = synoptic_overrides.linear_anim(PILOT_SPEED, speed_curr, 60, 60)
+            await rev.rev_ads_lh.wait_state(2)
+            speed_drop_task.cancel()
+
         await rev.rev_irs_lh.wait_state(2)
     finally:
         await cas.remove_message(cas.ADS_1_PROBE_HEAT_FAIL)
@@ -117,15 +124,15 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
         async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED]):
 
             async def wrong_speed_pilot():
-                modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed: origin_speed + 50)
-                modify_alt_pilot_task = synoptic_overrides.modify_original_value(PILOT_ALT, lambda origin_alt: origin_alt + 500)
+                modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed, _: origin_speed + 50)
+                modify_alt_pilot_task = synoptic_overrides.modify_original_value(PILOT_ALT, lambda origin_alt, _: origin_alt + 500)
                 await rev.rev_ads_lh.wait_state(2)
                 modify_speed_pilot_task.cancel()
                 modify_alt_pilot_task.cancel()
 
             async def wrong_speed_copilot():
-                modify_speed_copilot_task = synoptic_overrides.modify_original_value(COPILOT_SPEED, lambda origin_speed: origin_speed - 40)
-                modify_alt_copilot_task = synoptic_overrides.modify_original_value(COPILOT_ALT, lambda origin_alt: origin_alt - 400)
+                modify_speed_copilot_task = synoptic_overrides.modify_original_value(COPILOT_SPEED, lambda origin_speed, _: origin_speed - 40)
+                modify_alt_copilot_task = synoptic_overrides.modify_original_value(COPILOT_ALT, lambda origin_alt, _: origin_alt - 400)
                 await rev.rev_ads_rh.wait_state(2)
                 modify_speed_copilot_task.cancel()
                 modify_alt_copilot_task.cancel()
@@ -158,7 +165,13 @@ async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS ALL MISCOMPARE")
 async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
+    PILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
+    COPILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"]
+
+    try:
+        await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
+    finally:
+        await cas.remove_message(cas.AFCS_IRS_ALL_MISCOMPARE)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "A/I: ENG.. RESID PRESS")
