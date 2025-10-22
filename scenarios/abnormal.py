@@ -121,6 +121,8 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
     COPILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_copilot"]
     try:
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
+        await sound.play_sound(sound.Sound.GONG)
+
         async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED]):
 
             async def wrong_speed_pilot():
@@ -159,8 +161,9 @@ async def afcs_ap_fail(ac_state: xp_ac.ACState):
 async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_IRS_MISCOMPARE)
+        await sound.play_sound(sound.Sound.GONG)
     finally:
-        pass
+        await cas.remove_message(cas.AFCS_IRS_MISCOMPARE)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS ALL MISCOMPARE")
@@ -170,6 +173,20 @@ async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
 
     try:
         await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
+        await sound.play_sound(sound.Sound.GONG)
+        async with synoptic_overrides.override_params([PILOT_HEADING, COPILOT_HEADING]):
+
+            async def wrong_heading_pilot():
+                modify_heading_pilot_task = synoptic_overrides.modify_original_value(PILOT_HEADING, lambda origin_heading, _: origin_heading + 10)
+                await rev.rev_irs_lh.wait_state(2)
+                modify_heading_pilot_task.cancel()
+
+            async def wrong_heading_copilot():
+                modify_heading_copilot_task = synoptic_overrides.modify_original_value(COPILOT_HEADING, lambda origin_heading, _: origin_heading - 5)
+                await rev.rev_irs_rh.wait_state(2)
+                modify_heading_copilot_task.cancel()
+            
+            await asyncio.gather(wrong_heading_pilot(), wrong_heading_copilot())
     finally:
         await cas.remove_message(cas.AFCS_IRS_ALL_MISCOMPARE)
 
