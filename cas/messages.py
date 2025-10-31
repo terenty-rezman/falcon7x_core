@@ -4475,6 +4475,17 @@ class ENG_1_2_3_FAIL(CASmssg):
     land = True
 
 @register
+class ENG_2_FAIL(CASmssg): 
+    isread = False
+    text = "52 ENG 2: FAIL"
+    color = "R"
+    park = False
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+
+@register
 class ENG_ALL_OUT(CASmssg): 
     isread = False
     text = "46 ENG: ALL OUT"
