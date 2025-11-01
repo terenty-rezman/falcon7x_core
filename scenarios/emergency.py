@@ -192,7 +192,16 @@ async def _40_elec_rat_gen_fault(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ENGINES", "52 ENG 2: FAIL")
 async def _52_eng_2_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ENG_1_2_3_FAIL)
+    try:
+        await cas.show_message(cas.ENG_2_FAIL)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+
+        await engine_panel.en_fuel_digital_2.set_state(0)
+
+        await engine_panel.en_fuel_2.wait_state(0)
+    finally:
+        await engine_panel.en_fuel_digital_2.set_state(1)
+        await cas.remove_message(cas.ENG_2_FAIL)
 
 
 @scenario("EMERGENCY", "FCS", "60 FCS: BACK-UP ACTIVE")

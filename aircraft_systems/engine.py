@@ -946,6 +946,7 @@ class Engine1ManualShutdown(System):
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab1"]
 
     fuel_flow_switch = engine_panel.en_fuel_1
+    fuel_digital = engine_panel.en_fuel_digital_1
     engine = EngineStart1
 
     logic_task = None
@@ -960,7 +961,7 @@ class Engine1ManualShutdown(System):
             return False
 
         cond = [
-            cls.fuel_flow_switch.get_state() == 0,
+            cls.fuel_flow_switch.get_state() == 0 or cls.fuel_digital.get_state() == 0,
             xp_ac.ACState.get_curr_param(cls.N2) > 0.5,
         ]
         return all(cond)
@@ -969,7 +970,7 @@ class Engine1ManualShutdown(System):
     def kill_condition(cls):
         cond = [
             cls.logic_task is not None,
-            cls.fuel_flow_switch.get_state() == 1,
+            cls.fuel_flow_switch.get_state() == 1 and cls.fuel_digital.get_state() == 1,
         ]
 
         return all(cond)
@@ -1017,6 +1018,7 @@ class Engine2ManualShutdown(Engine1ManualShutdown):
 
     fuel_flow_switch = engine_panel.en_fuel_2
     engine = EngineStart2
+    fuel_digital = engine_panel.en_fuel_digital_2
 
     logic_task = None
     is_killing = False
@@ -1035,6 +1037,7 @@ class Engine3ManualShutdown(Engine1ManualShutdown):
 
     fuel_flow_switch = engine_panel.en_fuel_3
     engine = EngineStart3
+    fuel_digital = engine_panel.en_fuel_digital_3
 
     logic_task = None
     is_killing = False

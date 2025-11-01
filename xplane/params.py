@@ -253,6 +253,7 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_no_slip_comp", # ads number with no slip comp
     "sim/flightmodel/controls/flaprat", # flaps position
     "sim/flightmodel/controls/sbrkrat", # speedbrake position
+    "sim/custom/7x/valeurstall", # vstall
 ])
 Params.__str__ = to_str
 
