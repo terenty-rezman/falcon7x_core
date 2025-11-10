@@ -108,25 +108,29 @@ async def _38_elec_gen_2_fault(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ENGINES", "54 ENG 1 OIL TOO LO PRESS")
 async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
-    await sim.sleep(5)
+    OIL_PSI = xp.Params["sim/cockpit2/engine/indicators/oil_pressure_psi[0]"] 
+    fuel_flow_switch = engine_panel.en_fuel_1
+    cas_too_low_press = cas.ENG_1_OIL_TOO_LO_PRESS
+    engine_custom_specs = engine.Engine1CustomSpecs
 
-    # RED CAS message + sound: 54 ENG 1 OIL TOO LOW PRESS
-    await cas.show_message_alarm(cas.ENG_1_OIL_TOO_LO_PRESS)
+    try:
+        async with synoptic_overrides.override_params([OIL_PSI]):
+            oil_psi_curr = xp_ac.ACState.get_curr_param(OIL_PSI)
+            engine_custom_specs.emulate_oil_psi = False
+            await synoptic_overrides.linear_anim(OIL_PSI, oil_psi_curr, 10, 20)
 
-    # PDU automatically shows ENG TRM
-    await xp.set_param(xp.Params["sim/7x/choixtcas"], 1)
-
-    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 1)
-    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press"], 0)
-
-    N2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
-    await xp_ac.ACState.wait_until_parameter_condition(N2, lambda p: p < 10)
-
-    # hide CAS msg ?
-    await cas.remove_message(cas.ENG_1_OIL_TOO_LO_PRESS)
-    
-    # restore original oil pressure
-    await xp.set_param(xp.Params["sim/custom/7x/z_eng1_oil_press_override"], 0)
+            if fuel_flow_switch.get_state() == 1:
+                await cas.show_message(cas_too_low_press)
+                await fpw.master_warning_lh.set_state(1)
+                await fpw.master_warning_rh.set_state(1)
+                await sounds.play_sound(sounds.Sound.GONG, looped=True)
+                await fuel_flow_switch.wait_state(0)
+    finally:
+        await cas.remove_message(cas_too_low_press)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        engine_custom_specs.emulate_oil_psi = True
 
 
 @scenario("EMERGENCY", "FCS", "66 FCS: DIRECT LAWS ACTIVE")
