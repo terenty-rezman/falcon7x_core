@@ -22,6 +22,8 @@ from cas import cas
 import common.external_sound as sounds
 import common.simulation as sim
 
+class MyCancelEngineStart(Exception):
+    pass
 
 class ApuStart(System):
     APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
@@ -130,7 +132,8 @@ class BrokenStart(enum.IntEnum):
     N1_BROKEN_START = 1
     N2_BROKEN_START = 2
     ITT_BROKEN_START = 3
-    ITT_BROKEN_START_AUTO_SHUTDOWN = 4
+    ITT_BROKEN_START_AUTO_SHUTDOWN = 4,
+    STARTER_BROKEN_START = 5
 
 
 class EngineStart1(System):
@@ -154,6 +157,7 @@ class EngineStart1(System):
     broken_start_finished = False
     cas_eng_shutdown_msg = cas.ENG_1_AUTO_SHUTDOWN
     cas_eng_param_exceed = cas.ENG_1_PARAM_EXCEED
+    engine_shutdown = None # setup below to Engine1ManualShutdown
 
     logic_task = None
     is_killing = False
@@ -230,6 +234,8 @@ class EngineStart1(System):
             await cls.run_broken_start_itt()
         elif cls.broken_start == BrokenStart.ITT_BROKEN_START_AUTO_SHUTDOWN:
             await cls.run_broken_start_itt_auto()
+        elif cls.broken_start == BrokenStart.STARTER_BROKEN_START:
+            await cls.run_starter_fail_start()
 
     @classmethod
     async def run_normal_start(cls):
@@ -305,6 +311,92 @@ class EngineStart1(System):
             await asyncio.gather(n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp())
             cls.status = EngineStatus.RUNNING
             # await sim.sleep(30)
+
+    @classmethod
+    async def run_starter_fail_start(cls):
+        async with synoptic_overrides.override_params([cls.ITT, cls.N1, cls.N2, cls.FF, cls.OIL_PSI, cls.OIL_TEMP, cls.N1_MAX, cls.APU_TEMP]):
+            async def n1():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N1, cls.TIME_SAMPLE, cls.N1_SAMPLE
+                )
+
+            async def n1_max():
+                synoptic_overrides.set_override_value(cls.N1_MAX, 90.8)
+
+            async def ff():
+                ff_sample = [0.00012589 * x for x in cls.FF_SAMPLE]
+                await synoptic_overrides._1d_table_anim(
+                    cls.FF, cls.TIME_SAMPLE, ff_sample
+                )
+
+            async def N2_anim():
+                await synoptic_overrides._1d_table_anim(
+                    cls.N2, cls.TIME_SAMPLE, cls.N2_SAMPLE
+                )
+
+            async def itt():
+                await synoptic_overrides._1d_table_anim(
+                    cls.ITT, cls.TIME_SAMPLE, cls.ITT_SAMPLE
+                )
+
+            async def oil_psi():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_PSI, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_PSI_SAMPLE
+                )
+
+            async def oil_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.OIL_TEMP, cls.TIME_OIL_TEMP_SAMPLE, cls.OIL_TEMP_SAMPLE
+                )
+            
+            async def ign():
+                # show ign
+                await sim.sleep(1)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 16)
+                await xp.set_param(cls.IGN, 1)
+                # hide ign
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 35, timeout=60)
+                await xp.set_param(cls.IGN, 0)
+            
+            async def start():
+                # show start
+                await xp.set_param(cls.MIN_OIL_LEVEL, 5)
+                await sim.sleep(1)
+
+                # amber start
+                await xp.set_param(cls.START, 1)
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 5, timeout=60)
+
+                # terminate start
+                cls.engine_shutdown.manual_disable = True
+                await cls.fuel_digital.set_state(0)
+
+                # amber start
+                await sim.sleep(0.1)
+                await xp.set_param(cls.START, 2)
+                raise MyCancelEngineStart
+            
+            async def ab():
+                await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 40)
+                await xp.set_param(cls.AB, 1)
+                await sim.sleep(2)
+                await xp.set_param(cls.AB, 0)
+
+            async def apu_temp():
+                await synoptic_overrides._1d_table_anim(
+                    cls.APU_TEMP, cls.APU_TEMP_TIME_SAMPLE, cls.APU_TEMP_SAMPLE
+                )
+            
+            cls.status = EngineStatus.STARTING
+            try: 
+                coros = [n1(), n1_max(), ff(), N2_anim(), oil_psi(), oil_temp(), itt(), start(), ign(), ab(), apu_temp()]
+                tasks = [sane_tasks.spawn(c) for c in coros]
+                await asyncio.gather(*tasks)
+            except MyCancelEngineStart:
+                for t in tasks:
+                    t.cancel()
+                cls.status = EngineStatus.STOPPED
+                cls.broken_start_finished = True
 
     TIME_BROKEN_N1_SAMPLE = [0, 1, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 56 ]
     N2_BROKEN_N1_SAMPLE = [0, 0, 3.6, 5.5, 9.2, 12.2, 14.3, 16.4, 17.7, 18.9, 19.5, 21.4, 22.8, 23.5, 24, 24.7, 27.8, 30.1, 30.8, 34.1, 34.8, 37.6, 39, 41.9, 44.5, 46.6, 49.1, 50.5, 50.1, 49.9, 50.3, 51.2, 51.5, 0]
@@ -952,6 +1044,8 @@ class Engine1ManualShutdown(System):
     logic_task = None
     is_killing = False
 
+    manual_disable = False
+
     @classmethod
     def start_condition(cls):
         avail = [
@@ -961,7 +1055,7 @@ class Engine1ManualShutdown(System):
             return False
 
         cond = [
-            cls.fuel_flow_switch.get_state() == 0 or cls.fuel_digital.get_state() == 0,
+            cls.fuel_flow_switch.get_state() == 0 or cls.manual_disable == True,
             xp_ac.ACState.get_curr_param(cls.N2) > 0.5,
         ]
         return all(cond)
@@ -970,7 +1064,7 @@ class Engine1ManualShutdown(System):
     def kill_condition(cls):
         cond = [
             cls.logic_task is not None,
-            cls.fuel_flow_switch.get_state() == 1 and cls.fuel_digital.get_state() == 1,
+            cls.fuel_flow_switch.get_state() == 1 and cls.manual_disable == False,
         ]
 
         return all(cond)
@@ -1020,6 +1114,8 @@ class Engine2ManualShutdown(Engine1ManualShutdown):
     engine = EngineStart2
     fuel_digital = engine_panel.en_fuel_digital_2
 
+    manual_disable = False
+
     logic_task = None
     is_killing = False
 
@@ -1039,5 +1135,12 @@ class Engine3ManualShutdown(Engine1ManualShutdown):
     engine = EngineStart3
     fuel_digital = engine_panel.en_fuel_digital_3
 
+    manual_disable = False
+
     logic_task = None
     is_killing = False
+
+
+EngineStart1.engine_shutdown = Engine1ManualShutdown
+EngineStart2.engine_shutdown = Engine2ManualShutdown
+EngineStart3.engine_shutdown = Engine3ManualShutdown

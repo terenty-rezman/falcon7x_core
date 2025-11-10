@@ -26,6 +26,8 @@ import common.simulation as sim
 import synoptic_remote.param_overrides as synoptic_overrides
 import middle_pedestal.reversion as rev
 
+import aircraft_systems.engine as engine_sys
+
 
 APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
@@ -196,10 +198,15 @@ async def _52_eng_2_fail(ac_state: xp_ac.ACState):
         await cas.show_message(cas.ENG_2_FAIL)
         await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
+        # disable xplane engine
         await engine_panel.en_fuel_digital_2.set_state(0)
+
+        # run our engine shutdown proc
+        engine_sys.Engine2ManualShutdown.manual_disable = True
 
         await engine_panel.en_fuel_2.wait_state(0)
     finally:
+        engine_sys.Engine2ManualShutdown.manual_disable = False
         await engine_panel.en_fuel_digital_2.set_state(1)
         await cas.remove_message(cas.ENG_2_FAIL)
 

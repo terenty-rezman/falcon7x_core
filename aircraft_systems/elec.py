@@ -7,11 +7,12 @@ import xplane.master as xp
 import common.sane_tasks as sane_tasks
 import overhead_panel.dc_supply as dc
 import overhead_panel.engines_apu as eng_apu
+import overhead_panel.fuel as fuel_overhead
 
 from aircraft_systems.system_base import System
 
 
-class GenPowerStatus(enum.IntEnum):
+class PowerStatus(enum.IntEnum):
     NO_POWER = 0
     POWER_ON = 1
 
@@ -20,16 +21,16 @@ class Gen1(System):
     WORKING_THRESHOLD_N1 = 51.9
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
 
-    power_state = GenPowerStatus.POWER_ON
+    power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen1
 
     @classmethod
     def start_condition(cls):
         eng_n1 = xp_ac.ACState.get_curr_param(cls.N1) or 0
         if cls.gen_switch.get_state() == 1 and eng_n1 >= cls.WORKING_THRESHOLD_N1:
-            cls.power_state = GenPowerStatus.POWER_ON
+            cls.power_state = PowerStatus.POWER_ON
         else:
-            cls.power_state = GenPowerStatus.NO_POWER
+            cls.power_state = PowerStatus.NO_POWER
 
         return False
 
@@ -41,27 +42,27 @@ class Gen1(System):
 class Gen2(Gen1):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[1]"]
 
-    power_state = GenPowerStatus.POWER_ON
+    power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen2
 
 
 class Gen3(Gen1):
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[2]"]
 
-    power_state = GenPowerStatus.POWER_ON
+    power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen3
 
 
 class Apu(System):
-    state = GenPowerStatus.POWER_ON
+    state = PowerStatus.POWER_ON
 
     @classmethod
     def start_condition(cls):
         apu_n1 = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/electrical/APU_N1_percent"]) or 0
         if eng_apu.apu_master.get_state() == 1 and apu_n1 > 50:
-            cls.state = GenPowerStatus.POWER_ON
+            cls.state = PowerStatus.POWER_ON
         else:
-            cls.state = GenPowerStatus.NO_POWER
+            cls.state = PowerStatus.NO_POWER
 
         return False
 
@@ -80,7 +81,7 @@ class ElecLinePower(System):
     async def system_logic_task(cls):
         line_gen2_on = False
 
-        if Gen2.power_state == GenPowerStatus.POWER_ON:
+        if Gen2.power_state == PowerStatus.POWER_ON:
             line_gen2_on |= True
 
         line_bat2_ratgen_on = False
@@ -88,11 +89,11 @@ class ElecLinePower(System):
             line_bat2_ratgen_on |= True
 
         line_apu_bat1_on = False
-        if dc.bat1.get_state() == 1 or Apu.state == GenPowerStatus.POWER_ON:
+        if dc.bat1.get_state() == 1 or Apu.state == PowerStatus.POWER_ON:
             line_apu_bat1_on |= True
         
         line_gen1_gen3_on = False
-        if Gen1.power_state == GenPowerStatus.POWER_ON or Gen3.power_state == GenPowerStatus.POWER_ON:
+        if Gen1.power_state == PowerStatus.POWER_ON or Gen3.power_state == PowerStatus.POWER_ON:
             line_gen1_gen3_on |= True
         
         if dc.rh_isol.get_state() == 0:

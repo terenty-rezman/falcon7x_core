@@ -7,6 +7,7 @@ from aircraft_systems.engine import (
 from aircraft_systems.elec import Gen1, Gen2, Gen3, Apu, ElecLinePower
 from aircraft_systems.black_screens import LeftBlackScreen, RightBlackScreen, MiddleUpBlackScreen, MiddleDownBlackScreen, MiniBlackScreen
 from aircraft_systems.misc import FlightRegime
+from aircraft_systems.fuel import BoostStart2
 
 
 class Systems:
@@ -19,7 +20,7 @@ class Systems:
         Gen1, Gen2, Gen3, Apu, ElecLinePower,
         LeftBlackScreen, RightBlackScreen, MiddleUpBlackScreen, MiddleDownBlackScreen, MiniBlackScreen,
         Engine1CustomSpecs, Engine2CustomSpecs, Engine3CustomSpecs,
-        FlightRegime
+        FlightRegime, BoostStart2
     ]
 
     @classmethod

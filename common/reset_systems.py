@@ -15,6 +15,10 @@ async def reset_all_systems():
     engine_system.EngineStart2.broken_start = engine_system.BrokenStart.NORMAL_START
     engine_system.EngineStart3.broken_start = engine_system.BrokenStart.NORMAL_START
 
+    engine_system.Engine1ManualShutdown.manual_disable = False
+    engine_system.Engine2ManualShutdown.manual_disable = False
+    engine_system.Engine3ManualShutdown.manual_disable = False
+
     await engine_panel.en_fuel_digital_1.set_state(1)
     await engine_panel.en_fuel_digital_2.set_state(1)
     await engine_panel.en_fuel_digital_3.set_state(1)

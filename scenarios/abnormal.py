@@ -17,6 +17,9 @@ import common.external_sound as sound
 import common.simulation as sim
 import overhead_panel.anti_ice as ai
 import synoptic_remote.param_overrides as synoptic_overrides
+import aircraft_systems.engine as engine_system
+import middle_pedestal.engine as engine_panel
+import common.util as util
 
 
 @scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET")
@@ -316,7 +319,23 @@ async def eng_2_out(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ENGINES", "ENG 2: STARTER FAIL")
 async def eng_2_starter_fail(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ENG_2_STARTER_FAIL)
+    engine = engine_system.EngineStart2 
+    fuel_digital = engine_panel.en_fuel_digital_2
+    fuel_switch = engine_panel.en_fuel_2
+    START = xp.Params["sim/custom/7x/z_syn_eng_start2"]
+
+    try:
+        engine.broken_start = engine_system.BrokenStart.STARTER_BROKEN_START
+
+        await sound.play_sound(sound.Sound.GONG)
+        await cas.show_message(cas.ENG_2_STARTER_FAIL)
+        await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
+        await fuel_switch.wait_state(0)
+    finally:
+        await cas.remove_message(cas.ENG_2_STARTER_FAIL)
+        await fuel_digital.set_state(1)
+        await xp.set_param(START, 0)
+        engine.broken_start = engine_system.BrokenStart.NORMAL_START
 
 
 @scenario("ABNORMAL", "ENGINES", "ENGINE 1 SHUTDOWN")
