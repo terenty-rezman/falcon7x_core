@@ -27,6 +27,7 @@ import synoptic_remote.param_overrides as synoptic_overrides
 import middle_pedestal.reversion as rev
 
 import aircraft_systems.engine as engine_sys
+import aircraft_systems.elec as elec_sys
 
 
 APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
@@ -37,7 +38,7 @@ async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
     await sim.sleep(5)
 
     # RED CAS message + sound
-    await cas.show_message_alarm(cas.ELEC_AFT_DIST_BOX_OVHT)
+    await cas.show_message(cas.ELEC_AFT_DIST_BOX_OVHT)
 
     await emergency.ep_elec_rh_ess.wait_state(1)
 
@@ -62,25 +63,78 @@ async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO")
 async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
-    await sim.sleep(5)
+    BAT_1_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[0]"]
+    BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
 
+    try:
     # red cas message + sound
-    await cas.show_message_alarm(cas.ELEC_LH_RH_ESS_PWR_LO)
+        await cas.show_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
-    # set elec rh + lh to isol
-    await elec.lh_isol.set_state(1)
-    await elec.rh_isol.set_state(1)
-    # light gen2 off
-    await elec.gen2.set_state(1)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
 
-    # wait for rh + lh tied
-    await elec.lh_isol.wait_state(0)
-    await elec.rh_isol.wait_state(0)
+        # set elec rh + lh to isol
+        await elec.lh_isol.set_state(2)
+        await elec.rh_isol.set_state(2)
 
-    # wait gen2 on
-    await elec.gen2.wait_state(0)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 6)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
 
-    await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+        elec_sys.Gen1.fail = True
+        elec_sys.Gen2.fail = True
+        # elec_sys.gen3.fail = True
+
+        async with synoptic_overrides.override_params([BAT_1_AMPS, BAT_2_AMPS]):
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_1_AMPS) or 0
+            bat_1_amps = synoptic_overrides.linear_anim(BAT_1_AMPS, cur_amps, -32, 3)
+
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_2_AMPS) or 0
+            bat_2_amps = synoptic_overrides.linear_anim(BAT_2_AMPS, cur_amps, -32, 3)
+
+            # wait for rh + lh tied
+            await elec.lh_isol.wait_state(0)
+            await elec.rh_isol.wait_state(0)
+
+            await fpw.master_warning_lh.set_state(0)
+            await fpw.master_warning_rh.set_state(0)
+
+            await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+            await sounds.stop_sound(sounds.Sound.GONG)
+
+            await sounds.play_sound(sounds.Sound.GONG)
+            await cas.show_message(cas.ELEC_GEN_1_FAULT)
+            await cas.show_message(cas.ELEC_GEN_2_FAULT)
+            await fpw.master_caution_lh.set_state(1)
+            await fpw.master_caution_rh.set_state(1)
+
+            await elec.gen1.set_state(0)
+            await elec.gen1.wait_state(0)
+            await elec.gen2.set_state(0)
+            await elec.gen2.wait_state(0)
+
+            await elec.gen1.wait_state(1)
+            await elec.gen2.wait_state(1)
+
+            await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
+            await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+
+            bat_1_amps.cancel()
+            bat_2_amps.cancel()
+            # await synoptic_overrides.disable_param_overrides([BAT_2_AMPS])
+
+    finally:
+        await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+        await cas.remove_message(cas.ELEC_GEN_1_FAULT)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
+        elec_sys.gen1.fail = False
+        elec_sys.gen2.fail = False
+        elec_sys.gen3.fail = False
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "38 ELEC GEN 1+2+3 FAULT")
@@ -88,7 +142,7 @@ async def _38_elec_gen_2_fault(ac_state: xp_ac.ACState):
     await sim.sleep(5)
 
     # YELLOW CAS message
-    await cas.show_message_alarm(cas.ELEC_GEN_1_2_3_FAULT)
+    await cas.show_message(cas.ELEC_GEN_1_2_3_FAULT)
 
     # light gen2 off
     await elec.gen2.set_state(1)
@@ -479,7 +533,7 @@ async def oxy_pax_supply_fail(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "OPERATING TECHNIQUES", "SIDESTICK PRIORITY")
 async def sidestick_priority(ac_state: xp_ac.ACState):
-    await cas.show_message_alarm(cas.FCS_LH_SIDESTICKS_FAIL)
+    await cas.show_message(cas.FCS_LH_SIDESTICKS_FAIL)
 
 
 @scenario("EMERGENCY", "OPERATING TECHNIQUES", "TCAS ALERT")

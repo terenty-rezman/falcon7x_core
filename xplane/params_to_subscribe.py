@@ -124,6 +124,7 @@ class Subscribe:
         (Params["sim/operation/failures/rel_engfla0"], None, "tcp"),
         (Params["sim/operation/failures/rel_apu_fire"], None, "tcp"), # apu fire
 
+        (Params["sim/operation/failures/rel_genera0"], None, "tcp"), # gen 2 fault
         (Params["sim/operation/failures/rel_genera1"], None, "tcp"), # gen 2 fault
 
         (Params["sim/7x/choixtcas"], None, "tcp"), # PDU show ENG TRM

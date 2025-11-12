@@ -34,11 +34,6 @@ async def show_message(cas_message: CASmssg):
     print("show", cas_message)
 
 
-async def show_message_alarm(cas_message: CASmssg):
-    await post_to_all_cas("/api/show_message", {"message": str(cas_message)})
-    print("show + alarm", cas_message)
-
-
 async def remove_message(cas_message: CASmssg):
     await post_to_all_cas("/api/remove_message", {"message": str(cas_message)})
     print("remove", cas_message)

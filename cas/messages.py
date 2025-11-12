@@ -1686,6 +1686,17 @@ class ELEC_GEN_1_2_3_FAULT(CASmssg):
     land = True
 
 @register
+class ELEC_GEN_1_FAULT(CASmssg): 
+    isread = False
+    text = "38 ELEC: GEN 1 FAULT"
+    color = "R"
+    park = False
+    taxi = True
+    cruise = True
+    TO = True
+    land = True
+
+@register
 class ELEC_GEN_2_FAULT(CASmssg): 
     isread = False
     text = "38 ELEC: GEN 2 FAULT"

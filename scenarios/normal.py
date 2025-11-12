@@ -69,10 +69,10 @@ async def power_on(ac_state: xp_ac.ACState):
     await cas.set_regime(cas.Regimes.PARK)
     await cas.remove_all_messages()
     await sim.sleep(2)
-    await cas.show_message_alarm(cas.NWS_OFF)
-    await cas.show_message_alarm(cas.PARK_BRAKE_ON)
-    await cas.show_message_alarm(cas.DOOR_PAX_NOT_SECURED_W)
-    await cas.show_message_alarm(cas.CHECK_STATUS_A)
+    await cas.show_message(cas.NWS_OFF)
+    await cas.show_message(cas.PARK_BRAKE_ON)
+    await cas.show_message(cas.DOOR_PAX_NOT_SECURED_W)
+    await cas.show_message(cas.CHECK_STATUS_A)
 
     print("done")
 

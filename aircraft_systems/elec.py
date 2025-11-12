@@ -24,10 +24,12 @@ class Gen1(System):
     power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen1
 
+    fail = False
+
     @classmethod
     def start_condition(cls):
         eng_n1 = xp_ac.ACState.get_curr_param(cls.N1) or 0
-        if cls.gen_switch.get_state() == 1 and eng_n1 >= cls.WORKING_THRESHOLD_N1:
+        if cls.gen_switch.get_state() == 1 and eng_n1 >= cls.WORKING_THRESHOLD_N1 and cls.fail == False:
             cls.power_state = PowerStatus.POWER_ON
         else:
             cls.power_state = PowerStatus.NO_POWER
@@ -44,6 +46,7 @@ class Gen2(Gen1):
 
     power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen2
+    fail = False
 
 
 class Gen3(Gen1):
@@ -51,6 +54,7 @@ class Gen3(Gen1):
 
     power_state = PowerStatus.POWER_ON
     gen_switch = dc.gen3
+    fail = False
 
 
 class Apu(System):
