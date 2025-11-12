@@ -13,6 +13,7 @@ class pax_oxygen(DiscreteSwitch):
     states = [1, 2, 3, 0]
 
 
+@add_to_panel
 class pax_oxygen_closed(pax_oxygen):
     @classmethod
     async def set_state(cls, state):
@@ -20,6 +21,7 @@ class pax_oxygen_closed(pax_oxygen):
             await super().set_state(3)
 
 
+@add_to_panel
 class pax_oxygen_firstaid(pax_oxygen):
     @classmethod
     async def set_state(cls, state):
@@ -27,6 +29,7 @@ class pax_oxygen_firstaid(pax_oxygen):
             await super().set_state(1)
 
 
+@add_to_panel
 class pax_oxygen_normal(pax_oxygen):
     @classmethod
     async def set_state(cls, state):
@@ -34,6 +37,7 @@ class pax_oxygen_normal(pax_oxygen):
             await super().set_state(0)
 
 
+@add_to_panel
 class pax_oxygen_oride(pax_oxygen):
     @classmethod
     async def set_state(cls, state):
