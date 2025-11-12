@@ -72,7 +72,7 @@ class il_emerge_lights_arm():
     @classmethod
     async def set_state(cls, state):
         il_emerge_lights.arm_digit = state
-        await super().set_state(None)
+        await il_emerge_lights.set_state(None)
 
 
 @add_to_panel
@@ -80,7 +80,7 @@ class il_emerge_lights_off():
     @classmethod
     async def set_state(cls, state):
         il_emerge_lights.off_digit = state
-        await super().set_state(None)
+        await il_emerge_lights.set_state(None)
 
 
 # @add_to_panel
