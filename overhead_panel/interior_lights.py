@@ -13,6 +13,9 @@ class il_emerge_lights(DiscreteSwitch):
     states = [2, 1, 0, 3]
     index = 7
 
+    off_digit = 0
+    arm_digit = 0
+
     @classmethod
     def get_state(cls):
         state = super().get_state()
@@ -27,10 +30,18 @@ class il_emerge_lights(DiscreteSwitch):
 
     @classmethod
     async def set_state(cls, state):
+        if state is None:
+            if cls.arm_digit == 1 and cls.off_digit == 0:
+                state = 0
+            if cls.arm_digit == 0 and cls.off_digit == 1:
+                state = 2
+            else:
+                state = 1
+
         if state > 2:
-            await super().set_state(0)
-        else:
-            await super().set_state(state)
+            state = 0
+
+        await super().set_state(state)
 
     @classmethod
     async def click(cls):
@@ -57,38 +68,38 @@ class il_emerge_lights(DiscreteSwitch):
 
 
 @add_to_panel
-class il_emerge_lights_arm(il_emerge_lights):
+class il_emerge_lights_arm():
     @classmethod
     async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(0)
+        il_emerge_lights.arm_digit = state
+        await super().set_state(None)
 
 
 @add_to_panel
-class il_emerge_lights_off(il_emerge_lights):
+class il_emerge_lights_off():
     @classmethod
     async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(2)
+        il_emerge_lights.off_digit = state
+        await super().set_state(None)
 
 
-@add_to_panel
-class il_emerge_lights_on(il_emerge_lights):
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(1)
+# @add_to_panel
+# class il_emerge_lights_on(il_emerge_lights):
+#     @classmethod
+#     async def set_state(cls, state):
+#         if state == 1:
+#             await super().set_state(1)
 
-    @classmethod
-    def get_indication(cls):
-        if cls.override_indication is not None:
-            return cls.override_indication
+#     @classmethod
+#     def get_indication(cls):
+#         if cls.override_indication is not None:
+#             return cls.override_indication
 
-        state = cls.get_state()
-        if state == 1:
-            return 1
+#         state = cls.get_state()
+#         if state == 1:
+#             return 1
 
-        return 0
+#         return 0
 
 
 @add_to_panel

@@ -144,7 +144,7 @@ uso_lamp_send_map = {
 	"O11_b03": "il_fasten",	# FASTEN BELT <ON> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b04": "il_smoking",	# NO SMOKING <ON> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b05": "il_cabin_off",	# CABIN <OFF> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
-	"O11_b06": "il_emerge_lights_on",	# SWITCH <EMERG LIGHTS> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"O11_b06": "il_emerge_lights",	# SWITCH <EMERG LIGHTS> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
     "O11_b07": "fireindicator_1",	# engine 1 shut off FIRE <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b08": "fire_apu_indicator",	# FIRE APU <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b09": "fireindicator_2",	# engine 2 shut off FIRE 2 <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
