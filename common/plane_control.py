@@ -446,8 +446,8 @@ class pc_thrust_reverse(FloatStepper):
             return
 
         xp_state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
-        cls.state = True if xp_state == 7 else False
-        new_state = cls.state
+        xp_state = True if xp_state == 7 else False
+        new_state = None
 
         # гистерезис
         if cls.filter_sum > 25:
@@ -456,7 +456,7 @@ class pc_thrust_reverse(FloatStepper):
         if cls.filter_sum < 15:
             new_state = False
 
-        if new_state == cls.state:
+        if new_state is None or new_state == xp_state:
             return
 
         print(cls, new_state)
