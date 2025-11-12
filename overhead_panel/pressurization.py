@@ -47,6 +47,8 @@ class cabin_alt(DiscreteSwitch):
                 state = 1
             elif cls.descend_digit == 1:
                 state = 2
+            else:
+                state = 0
             
         await super().set_state(state)
 
@@ -57,20 +59,20 @@ class cabin_alt(DiscreteSwitch):
 
 
 @add_to_panel
-class cabin_alt_climb(cabin_alt):
+class cabin_alt_climb():
     @classmethod
     async def set_state(cls, state):
-        super().climb_digit = state 
-        await super().set_state(None)
+        cabin_alt.climb_digit = state 
+        await cabin_alt.set_state(None)
 
 
 @add_to_panel
-class cabin_alt_descent(cabin_alt):
+class cabin_alt_descent():
     @classmethod
     async def set_state(cls, state):
-        super().descend_digit = state 
+        cabin_alt.descend_digit = state 
         if state == 1:
-            await super().set_state(None)
+            await cabin_alt.set_state(None)
 
 
 @add_to_panel
