@@ -61,8 +61,7 @@ class cabin_alt_climb(cabin_alt):
     @classmethod
     async def set_state(cls, state):
         super().climb_digit = state 
-        if state == 0:
-            await super().set_state(None)
+        await super().set_state(None)
 
 
 @add_to_panel
