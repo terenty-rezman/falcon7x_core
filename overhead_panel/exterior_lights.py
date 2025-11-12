@@ -68,6 +68,9 @@ class el_landing_lh(DiscreteSwitch):
 
     blink = util.blink_anim(0.5)
 
+    on_digit = 0
+    off_digit = 0
+
     @classmethod
     def get_state(cls):
         state = super().get_state()
@@ -83,10 +86,18 @@ class el_landing_lh(DiscreteSwitch):
 
     @classmethod
     async def set_state(cls, state):
+        if state is None:
+            if cls.off_digit == 1 and cls.on_digit == 0:
+                state = 2
+            elif cls.off_digit == 0 and cls.on_digit == 1:
+                state = 1
+            else:
+                state = 0
+
         if state > 2:
-            await super().set_state(0)
-        else:
-            await super().set_state(state)
+            state = 0
+
+        await super().set_state(state)
 
 
     @classmethod
@@ -114,56 +125,61 @@ class el_landing_lh(DiscreteSwitch):
 
 
 @add_to_panel
-class el_landing_lh_off(el_landing_lh):
+class el_landing_lh_off():
     @classmethod
     async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(2)
+        el_landing_lh.off_digit = state
+        await el_landing_lh.set_state(None)
 
 
 @add_to_panel
-class el_landing_lh_on(el_landing_lh):
+class el_landing_lh_on():
     @classmethod
     async def set_state(cls, state):
+        el_landing_lh.on_digit = state
         if state == 1:
-            await super().set_state(0)
+            await el_landing_lh.set_state(None)
 
 
-@add_to_panel
-class el_landing_lh_pulse(el_landing_lh):
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(1)
+# @add_to_panel
+# class el_landing_lh_pulse(el_landing_lh):
+#     @classmethod
+#     async def set_state(cls, state):
+#         if state == 1:
+#             await super().set_state(1)
 
 
 @add_to_panel
 class el_landing_rh(el_landing_lh):
     index = 10
 
-
-@add_to_panel
-class el_landing_rh_off(el_landing_rh):
-    @classmethod
-    async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(2)
+    on_digit = 0
+    off_digit = 0
 
 
 @add_to_panel
-class el_landing_rh_on(el_landing_rh):
+class el_landing_rh_off():
     @classmethod
     async def set_state(cls, state):
-        if state == 1:
-            await super().set_state(0)
+        el_landing_rh.off_digit = state
+        await el_landing_rh.set_state(None)
 
 
 @add_to_panel
-class el_landing_rh_pulse(el_landing_rh):
+class el_landing_rh_on():
     @classmethod
     async def set_state(cls, state):
+        el_landing_rh.off_digit = state
         if state == 1:
-            await super().set_state(1)
+            await el_landing_rh.set_state(None)
+
+
+# @add_to_panel
+# class el_landing_rh_pulse(el_landing_rh):
+#     @classmethod
+#     async def set_state(cls, state):
+#         if state == 1:
+#             await super().set_state(1)
 
 
 @add_to_panel
