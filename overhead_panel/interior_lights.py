@@ -33,7 +33,7 @@ class il_emerge_lights(DiscreteSwitch):
         if state is None:
             if cls.arm_digit == 1 and cls.off_digit == 0:
                 state = 0
-            if cls.arm_digit == 0 and cls.off_digit == 1:
+            elif cls.arm_digit == 0 and cls.off_digit == 1:
                 state = 2
             else:
                 state = 1
