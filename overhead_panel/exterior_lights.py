@@ -90,9 +90,9 @@ class el_landing_lh(DiscreteSwitch):
             if cls.off_digit == 1 and cls.on_digit == 0:
                 state = 2
             elif cls.off_digit == 0 and cls.on_digit == 1:
-                state = 1
-            else:
                 state = 0
+            else:
+                state = 1
 
         if state > 2:
             state = 0
@@ -137,8 +137,7 @@ class el_landing_lh_on():
     @classmethod
     async def set_state(cls, state):
         el_landing_lh.on_digit = state
-        if state == 1:
-            await el_landing_lh.set_state(None)
+        await el_landing_lh.set_state(None)
 
 
 # @add_to_panel
@@ -169,9 +168,8 @@ class el_landing_rh_off():
 class el_landing_rh_on():
     @classmethod
     async def set_state(cls, state):
-        el_landing_rh.off_digit = state
-        if state == 1:
-            await el_landing_rh.set_state(None)
+        el_landing_rh.on_digit = state
+        await el_landing_rh.set_state(None)
 
 
 # @add_to_panel
