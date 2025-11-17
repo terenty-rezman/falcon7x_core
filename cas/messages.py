@@ -1807,6 +1807,28 @@ class ELEC_GEN_FAULT(CASmssg):
     land = False
 
 @register
+class ELEC_GEN_1_FAULT_A(CASmssg): 
+    isread = False
+    text = "ELEC: GEN 1 FAULT"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class ELEC_GEN_2_FAULT_A(CASmssg): 
+    isread = False
+    text = "ELEC: GEN 2 FAULT"
+    color = "A"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
 class ELEC_LH_AUTO_SHED_ACTIVE(CASmssg): 
     isread = False
     text = "ELEC: LH AUTO SHED ACTIVE"
