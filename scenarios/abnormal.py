@@ -329,7 +329,7 @@ async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
                 await elec.gen1.wait_state(1)
                 await cas.remove_message(cas.ELEC_GEN_1_FAULT_A)
                 bat_1_amps.cancel()
-                synoptic_overrides.linear_anim(BAT_1_AMPS, 32, 0, 2)
+                await synoptic_overrides.linear_anim(BAT_1_AMPS, 32, 0, 2)
             
             await elec.lh_isol.wait_state(0)
             await cas.remove_message(cas.ELEC_LH_ESS_PWR_LO)
@@ -382,7 +382,7 @@ async def elec_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
                 await elec.gen2.wait_state(1)
                 await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
                 bat_2_amps.cancel()
-                synoptic_overrides.linear_anim(BAT_2_AMPS, 32, 0, 2)
+                await synoptic_overrides.linear_anim(BAT_2_AMPS, 32, 0, 2)
             
             await elec.rh_isol.wait_state(0)
             await cas.remove_message(cas.ELEC_RH_ESS_PWR_LO)
