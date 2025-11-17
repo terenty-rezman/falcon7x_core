@@ -74,9 +74,15 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
 
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
         # set elec rh + lh to isol
-        await elec.lh_isol.set_state(2)
-        await elec.rh_isol.set_state(2)
+        await elec.lh_isol.set_state(3)
+        await elec.rh_isol.set_state(3)
+
+        await cas.show_message(cas.ELEC_GEN_1_FAULT_A)
+        await cas.show_message(cas.ELEC_GEN_2_FAULT_A)
 
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 6)
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
@@ -92,35 +98,35 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
             cur_amps = xp_ac.ACState.get_curr_param(BAT_2_AMPS) or 0
             bat_2_amps = synoptic_overrides.linear_anim(BAT_2_AMPS, cur_amps, -32, 3)
 
-            # wait for rh + lh tied
+            async def left():
+                await elec.gen1.wait_state(0)
+                elec_sys.Gen1.fail = False
+                await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
+                await elec.gen1.wait_state(1)
+                await cas.remove_message(cas.ELEC_GEN_1_FAULT_A)
+                bat_1_amps.cancel()
+                synoptic_overrides.linear_anim(BAT_1_AMPS, 32, 0, 2)
+
+            async def right():
+                await elec.gen2.wait_state(0)
+                elec_sys.Gen2.fail = False
+                await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+                await elec.gen2.wait_state(1)
+                await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
+                bat_2_amps.cancel()
+                synoptic_overrides.linear_anim(BAT_2_AMPS, 32, 0, 2)
+            
             await elec.lh_isol.wait_state(0)
             await elec.rh_isol.wait_state(0)
-
+            await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
+            await sounds.stop_sound(sounds.Sound.GONG)
             await fpw.master_warning_lh.set_state(0)
             await fpw.master_warning_rh.set_state(0)
 
-            await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
-            await sounds.stop_sound(sounds.Sound.GONG)
+            await asyncio.gather(left(), right())
+            await fpw.master_caution_lh.set_state(0)
+            await fpw.master_caution_rh.set_state(0)
 
-            await sounds.play_sound(sounds.Sound.GONG)
-            await cas.show_message(cas.ELEC_GEN_1_FAULT)
-            await cas.show_message(cas.ELEC_GEN_2_FAULT)
-            await fpw.master_caution_lh.set_state(1)
-            await fpw.master_caution_rh.set_state(1)
-
-            await elec.gen1.set_state(0)
-            await elec.gen1.wait_state(0)
-            await elec.gen2.set_state(0)
-            await elec.gen2.wait_state(0)
-
-            await elec.gen1.wait_state(1)
-            await elec.gen2.wait_state(1)
-
-            await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
-            await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
-
-            bat_1_amps.cancel()
-            bat_2_amps.cancel()
             # await synoptic_overrides.disable_param_overrides([BAT_2_AMPS])
 
     finally:
@@ -130,9 +136,9 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
         await fpw.master_warning_rh.set_state(0)
         await fpw.master_caution_lh.set_state(0)
         await fpw.master_caution_rh.set_state(0)
-        elec_sys.gen1.fail = False
-        elec_sys.gen2.fail = False
-        elec_sys.gen3.fail = False
+        elec_sys.Gen1.fail = False
+        elec_sys.Gen2.fail = False
+        elec_sys.Gen3.fail = False
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
 

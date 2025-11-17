@@ -122,7 +122,7 @@ class gen1(TwoStateButton):
 @add_to_panel
 class lh_isol(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/lhisol"]
-    states = [1, 0, 2]
+    states = [1, 0, 2, 3]
 
 
 @add_to_panel
@@ -134,7 +134,7 @@ class rat_reset(TwoStateButton):
 @add_to_panel
 class rh_isol(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/rhisol"]
-    states = [1, 0, 2]
+    states = [1, 0, 2, 3]
 
 
 @add_to_panel

@@ -18,7 +18,7 @@ class PowerStatus(enum.IntEnum):
 
 
 class Gen1(System):
-    WORKING_THRESHOLD_N1 = 51.9
+    WORKING_THRESHOLD_N1 = 21
     N1 = xp.Params["sim/cockpit2/engine/indicators/N1_percent[0]"]
 
     power_state = PowerStatus.POWER_ON
@@ -75,6 +75,28 @@ class Apu(System):
         pass
 
 
+class LineColor(enum.IntEnum):
+    BLACK = 1,
+    YELLOW = 2,
+    GREEN = 3
+
+    def __add__(self, other):
+        if self == LineColor.BLACK:
+            return other
+        
+        if other == LineColor.BLACK:
+            return self
+        
+        if self == other:
+            return self
+
+        if self == LineColor.GREEN:
+            return self
+        
+        if self == LineColor.YELLOW and other == LineColor.GREEN:
+            return other
+
+
 class ElecLinePower(System):
     @classmethod
     def start_condition(cls):
@@ -83,36 +105,42 @@ class ElecLinePower(System):
 
     @classmethod
     async def system_logic_task(cls):
-        line_gen2_on = False
+        line_gen2_color = LineColor.BLACK 
+
+        if Gen2.fail:
+            line_gen2_color += LineColor.YELLOW 
 
         if Gen2.power_state == PowerStatus.POWER_ON:
-            line_gen2_on |= True
+            line_gen2_color += LineColor.GREEN
 
-        line_bat2_ratgen_on = False
+        line_bat2_ratgen_color = LineColor.BLACK
         if dc.bat2.get_state() == 1: # or dc.rat_get.get_state() == 1
-            line_bat2_ratgen_on |= True
+            line_bat2_ratgen_color += LineColor.GREEN
 
-        line_apu_bat1_on = False
+        line_apu_bat1_color = LineColor.BLACK
         if dc.bat1.get_state() == 1 or Apu.state == PowerStatus.POWER_ON:
-            line_apu_bat1_on |= True
+            line_apu_bat1_color += LineColor.GREEN
         
-        line_gen1_gen3_on = False
+        line_gen1_gen3_color = LineColor.BLACK
+        if Gen1.fail or Gen3.fail:
+            line_gen1_gen3_color += LineColor.YELLOW
+
         if Gen1.power_state == PowerStatus.POWER_ON or Gen3.power_state == PowerStatus.POWER_ON:
-            line_gen1_gen3_on |= True
+            line_gen1_gen3_color += LineColor.GREEN
         
         if dc.rh_isol.get_state() == 0:
-            line_gen2_on |= line_bat2_ratgen_on
-            line_bat2_ratgen_on |= line_gen2_on
+            line_gen2_color += line_bat2_ratgen_color
+            line_bat2_ratgen_color += line_gen2_color
 
         if dc.bus_tie.get_state() == 1:
-            line_bat2_ratgen_on |= line_apu_bat1_on 
-            line_apu_bat1_on |= line_bat2_ratgen_on
+            line_bat2_ratgen_color += line_apu_bat1_color 
+            line_apu_bat1_color += line_bat2_ratgen_color
         
         if dc.lh_isol.get_state() == 0:
-            line_apu_bat1_on |= line_gen1_gen3_on
-            line_gen1_gen3_on |= line_apu_bat1_on
+            line_apu_bat1_color += line_gen1_gen3_color
+            line_gen1_gen3_color += line_apu_bat1_color
         
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen2_on"], int(line_gen2_on))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_bat2_ratgen_on"], int(line_bat2_ratgen_on))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_apu_bat1_on"], int(line_apu_bat1_on))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen1_gen3_on"], int(line_gen1_gen3_on))
+        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen2_on"], int(line_gen2_color))
+        await xp.set_param(xp.Params["sim/custom/7x/z_line_bat2_ratgen_on"], int(line_bat2_ratgen_color))
+        await xp.set_param(xp.Params["sim/custom/7x/z_line_apu_bat1_on"], int(line_apu_bat1_color))
+        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen1_gen3_on"], int(line_gen1_gen3_color))

@@ -6,7 +6,7 @@ import xplane.master as xp
 from xplane.params import Params, Commands
 import common.xp_aircraft_state as xp_ac
 import common.util as util
-import common.external_sound as sound
+import common.external_sound as sounds
         
 
 # F7X_SDD_Avionics_Vol1 31-11 front panel warnings
@@ -87,7 +87,7 @@ class master_caution_lh(TwoStateButton):
 class sil_aural_alarm_lh(PushButton):
     @classmethod
     async def click(cls):
-        await sound.stop_all_sounds()
+        await sounds.stop_all_sounds()
 
 
 @add_to_panel

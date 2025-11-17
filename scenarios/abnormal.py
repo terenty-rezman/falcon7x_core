@@ -13,13 +13,15 @@ import overhead_panel.windshield_heat as windshield
 import middle_pedestal.wings_config as wc
 import middle_pedestal.reversion as rev
 import front_panel.autopilot as ap
-import common.external_sound as sound
+import common.external_sound as sounds
 import common.simulation as sim
 import overhead_panel.anti_ice as ai
 import synoptic_remote.param_overrides as synoptic_overrides
 import aircraft_systems.engine as engine_system
 import middle_pedestal.engine as engine_panel
 import common.util as util
+import front_panel.warning as fpw
+import aircraft_systems.elec as elec_sys
 
 
 @scenario("ABNORMAL", "ICE AND RAIN PROTECTION", "A/I: STALL WARNING OFFSET")
@@ -54,7 +56,7 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 1)
         await cas.show_message(cas.ADS_1_FAIL)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
         await sim.sleep(3)
@@ -72,7 +74,7 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 2)
         await cas.show_message(cas.ADS_2_FAIL)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         await rev.rev_ads_rh.wait_state(2)
         await rev.rev_irs_rh.wait_state(2)
     finally:
@@ -90,7 +92,7 @@ async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.ADS_1_NO_SLIP_COMP)
         await xp.set_param(NO_SLIP_ADS_ID, 1)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         await rev.rev_ads_lh.wait_state(2)
     finally:
         await cas.remove_message(cas.ADS_1_NO_SLIP_COMP)
@@ -102,7 +104,7 @@ async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
     PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
     try:
         await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
 
         async with synoptic_overrides.override_params([PILOT_SPEED]):
             speed_curr = xp_ac.ACState.get_curr_param(PILOT_SPEED)
@@ -124,7 +126,7 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
     COPILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_copilot"]
     try:
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
 
         async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED, PILOT_ALT, COPILOT_ALT]):
 
@@ -152,11 +154,11 @@ async def afcs_ap_fail(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_AP_FAIL)
         # autopilot voice warning
-        await sound.play_sound(sound.Sound.GONG, looped=True)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
         await ap.fp_autopilot.wait_state(0)
     finally:
-        await sound.stop_all_sounds()
+        await sounds.stop_all_sounds()
         await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
 
 
@@ -165,7 +167,7 @@ async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
     PILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]
     try:
         await cas.show_message(cas.AFCS_IRS_1_MISCOMPARE)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         async with synoptic_overrides.override_params([PILOT_HEADING]):
             modify_heading_pilot_task = synoptic_overrides.modify_original_value(PILOT_HEADING, lambda origin_heading, _: origin_heading - 8)
             await rev.rev_irs_lh.wait_state(2)
@@ -182,7 +184,7 @@ async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
 
     try:
         await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         async with synoptic_overrides.override_params([PILOT_HEADING, COPILOT_HEADING]):
 
             async def wrong_heading_pilot():
@@ -282,7 +284,7 @@ async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: GEN 2 FAULT")
 async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     try:
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         await cas.show_message(cas.ELEC_GEN_2_FAULT)
 
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
@@ -299,7 +301,50 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH ESS PWR LO")
 async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ELEC_LH_ESS_PWR_LO)
+    BAT_1_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[0]"]
+
+    try:
+        await cas.show_message(cas.ELEC_LH_ESS_PWR_LO)
+        await sounds.play_sound(sounds.Sound.GONG)
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await elec.lh_isol.set_state(3)
+
+        await cas.show_message(cas.ELEC_GEN_1_FAULT_A)
+
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 6)
+
+        elec_sys.Gen1.fail = True
+
+        async with synoptic_overrides.override_params([BAT_1_AMPS]):
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_1_AMPS) or 0
+            bat_1_amps = synoptic_overrides.linear_anim(BAT_1_AMPS, cur_amps, -32, 3)
+
+            async def left():
+                await elec.gen1.wait_state(0)
+                elec_sys.Gen1.fail = False
+                await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
+                await elec.gen1.wait_state(1)
+                await cas.remove_message(cas.ELEC_GEN_1_FAULT_A)
+                bat_1_amps.cancel()
+                synoptic_overrides.linear_anim(BAT_1_AMPS, 32, 0, 2)
+            
+            await elec.lh_isol.wait_state(0)
+            await cas.remove_message(cas.ELEC_LH_ESS_PWR_LO)
+
+            await left()
+            await fpw.master_caution_lh.set_state(0)
+            await fpw.master_caution_rh.set_state(0)
+
+    finally:
+        await cas.remove_message(cas.ELEC_LH_ESS_PWR_LO)
+        await cas.remove_message(cas.ELEC_GEN_1_FAULT)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
+        elec_sys.Gen1.fail = False
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
 
 
 @scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH MAIN FAULT")
@@ -309,7 +354,50 @@ async def elec_lh_main_fault(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ELECTRICAL POWER RH SIDE", "ELEC: RH ESS PWR LO")
 async def elec_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ELEC_RH_ESS_PWR_LO)
+    BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
+
+    try:
+        await cas.show_message(cas.ELEC_RH_ESS_PWR_LO)
+        await sounds.play_sound(sounds.Sound.GONG)
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await elec.rh_isol.set_state(3)
+
+        await cas.show_message(cas.ELEC_GEN_2_FAULT_A)
+
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
+
+        elec_sys.Gen2.fail = True
+
+        async with synoptic_overrides.override_params([BAT_2_AMPS]):
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_2_AMPS) or 0
+            bat_2_amps = synoptic_overrides.linear_anim(BAT_2_AMPS, cur_amps, -32, 3)
+
+            async def right():
+                await elec.gen2.wait_state(0)
+                elec_sys.Gen2.fail = False
+                await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+                await elec.gen2.wait_state(1)
+                await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
+                bat_2_amps.cancel()
+                synoptic_overrides.linear_anim(BAT_2_AMPS, 32, 0, 2)
+            
+            await elec.rh_isol.wait_state(0)
+            await cas.remove_message(cas.ELEC_RH_ESS_PWR_LO)
+
+            await right()
+            await fpw.master_caution_lh.set_state(0)
+            await fpw.master_caution_rh.set_state(0)
+
+    finally:
+        await cas.remove_message(cas.ELEC_RH_ESS_PWR_LO)
+        await cas.remove_message(cas.ELEC_GEN_2_FAULT)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
+        elec_sys.Gen2.fail = False
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
 
 
 @scenario("ABNORMAL", "ENGINES", "ENG 2: OUT")
@@ -327,7 +415,7 @@ async def eng_2_starter_fail(ac_state: xp_ac.ACState):
     try:
         engine.broken_start = engine_system.BrokenStart.STARTER_BROKEN_START
 
-        await sound.play_sound(sound.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG)
         await cas.show_message(cas.ENG_2_STARTER_FAIL)
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
         await fuel_switch.wait_state(0)
