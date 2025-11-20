@@ -67,6 +67,17 @@ class AllValves(System):
     VALVE_XBP_13 = xp.Params["sim/custom/7x/z_fuel_xbp_13"]
     VALVE_XBP_23 = xp.Params["sim/custom/7x/z_fuel_xbp_23"]
 
+    PIPE_t1t3 = xp.Params["sim/custom/7x/z_fuel_pipe_t1t3"]
+    PIPE_t1t2 = xp.Params["sim/custom/7x/z_fuel_pipe_t1t2"]
+    PIPE_t2t3 = xp.Params["sim/custom/7x/z_fuel_pipe_t2t3"]
+    PIPE_t2apu = xp.Params["sim/custom/7x/z_fuel_pipe_t2apu"]
+    PIPE_xpb12 = xp.Params["sim/custom/7x/z_fuel_pipe_xbp12"]
+    PIPE_xbp23 = xp.Params["sim/custom/7x/z_fuel_pipe_xbp23"]
+    PIPE_xpb13 = xp.Params["sim/custom/7x/z_fuel_pipe_xbp13"]
+    PIPE_t1e1 = xp.Params["sim/custom/7x/z_fuel_pipe_t1e1"]
+    PIPE_t2e2 = xp.Params["sim/custom/7x/z_fuel_pipe_t2e2"]
+    PIPE_t3e3 = xp.Params["sim/custom/7x/z_fuel_pipe_t3e3"]
+
     @classmethod
     def start_condition(cls):
         return True
@@ -74,11 +85,37 @@ class AllValves(System):
     @classmethod
     async def system_logic_task(cls):
         xtk_13_state = 0 
-
         if fuel_overhead.xtk_right.get_state():
             xtk_13_state = 1
 
         if fuel_overhead.xtk_left.get_state():
             xtk_13_state = 2
         
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen2_on"], int(xtk_13_state))
+        xtk_12_state = 0
+        if fuel_overhead.xtk_down_1.get_state():
+            xtk_12_state = 1
+        
+        if fuel_overhead.xtk_up_1.get_state():
+            xtk_12_state = 2
+
+        xtk_23_state = 0
+        if fuel_overhead.xtk_down_2.get_state():
+            xtk_23_state = 2
+        
+        if fuel_overhead.xtk_up_2.get_state():
+            xtk_23_state = 1
+        
+        pipe_t1t3 = 0
+        if xtk_13_state:
+            pipe_t1t3 = 1
+
+        pipe_t1t2 = 0
+        if xtk_12_state:
+            pipe_t1t2 = 1
+        
+        await xp.set_param(cls.VALVE_XTK_13, int(xtk_13_state))
+        await xp.set_param(cls.VALVE_XTK_12, int(xtk_12_state))
+        await xp.set_param(cls.VALVE_XTK_23, int(xtk_23_state))
+
+        await xp.set_param(cls.PIPE_t1t3, int(pipe_t1t3))
+        await xp.set_param(cls.PIPE_t1t2, int(pipe_t1t2))
