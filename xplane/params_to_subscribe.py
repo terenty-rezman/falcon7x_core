@@ -224,6 +224,29 @@ class Subscribe:
         (Params["sim/custom/7x/z_vor_pilot"], None, "tcp"), # vor
         (Params["sim/custom/7x/z_vor_copilot"], None, "tcp"), # vor
         (Params["sim/custom/7x/z_no_slip_comp"], None, "tcp"), # no slip compensation
+
+        (Params["sim/custom/7x/z_fuel_xtk_13"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_xtk_23"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_xtk_12"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_xbp_12"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_xbp_13"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_xbp_23"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_boost1"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_boost2"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_boost3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t1t3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t2t3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t2apu"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_xbp12"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_xbp23"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_xbp13"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t1e1"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t2e2"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t3e3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_eng1"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_eng2"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_eng3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_apu"], None, "tcp"),
     ]
 
 

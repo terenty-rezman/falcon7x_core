@@ -254,6 +254,30 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/controls/flaprat", # flaps position
     "sim/flightmodel/controls/sbrkrat", # speedbrake position
     "sim/custom/7x/valeurstall", # vstall
+
+    # fuel tab systems 
+    "sim/custom/7x/z_fuel_xtk_13",
+    "sim/custom/7x/z_fuel_xtk_23",
+    "sim/custom/7x/z_fuel_xtk_12",
+    "sim/custom/7x/z_fuel_xbp_12",
+    "sim/custom/7x/z_fuel_xbp_13",
+    "sim/custom/7x/z_fuel_xbp_23",
+    "sim/custom/7x/z_fuel_boost1",
+    "sim/custom/7x/z_fuel_boost2",
+    "sim/custom/7x/z_fuel_boost3",
+    "sim/custom/7x/z_fuel_pipe_t1t3",
+    "sim/custom/7x/z_fuel_pipe_t2t3",
+    "sim/custom/7x/z_fuel_pipe_t2apu",
+    "sim/custom/7x/z_fuel_pipe_xbp12",
+    "sim/custom/7x/z_fuel_pipe_xbp23",
+    "sim/custom/7x/z_fuel_pipe_xbp13",
+    "sim/custom/7x/z_fuel_pipe_t1e1",
+    "sim/custom/7x/z_fuel_pipe_t2e2",
+    "sim/custom/7x/z_fuel_pipe_t3e3",
+    "sim/custom/7x/z_fuel_eng1",
+    "sim/custom/7x/z_fuel_eng2",
+    "sim/custom/7x/z_fuel_eng3",
+    "sim/custom/7x/z_fuel_apu",
 ])
 Params.__str__ = to_str
 
