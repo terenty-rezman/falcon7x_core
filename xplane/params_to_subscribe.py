@@ -235,6 +235,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_fuel_boost2"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_boost3"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_pipe_t1t3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fuel_pipe_t1t2"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_pipe_t2t3"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_pipe_t2apu"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_pipe_xbp12"], None, "tcp"),
@@ -247,6 +248,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_fuel_eng2"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_eng3"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_apu"], None, "tcp"),
+        (Params["sim/custom/7x/z_rat_auto"], None, "tcp"),
     ]
 
 
