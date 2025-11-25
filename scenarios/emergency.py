@@ -35,30 +35,40 @@ APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "26 ELEC: AFT DIST BOX OVHT")
 async def _26_elec_aft_dist_box_ovht(ac_state: xp_ac.ACState):
-    await sim.sleep(5)
+    RAT_MANUAL = xp.Params["sim/custom/7x/z_rat_manual"]
 
-    # RED CAS message + sound
-    await cas.show_message(cas.ELEC_AFT_DIST_BOX_OVHT)
+    try:
+        await cas.show_message(cas.ELEC_AFT_DIST_BOX_OVHT)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
-    await emergency.ep_elec_rh_ess.wait_state(1)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
 
-    await elec.bus_tie.wait_state(0)
+        await emergency.ep_elec_rh_ess.wait_state(1)
 
-    await elec.rh_isol.wait_state(1)
+        await elec.rh_isol.set_state(1)
+        await sim.sleep(10)
 
-    await elec.cabin_master.wait_state(1)
+        await xp.set_param(RAT_MANUAL, 1)
 
-    # OFF
-    await exterior_lights.el_landing_lh.wait_state(0)
-    await exterior_lights.el_landing_rh.wait_state(0)
+        # OFF
+        await exterior_lights.el_landing_lh.wait_state(0)
+        await exterior_lights.el_landing_rh.wait_state(0)
 
-    # OFF
-    await exterior_lights.el_taxi.wait_state(0)
-    await exterior_lights.el_wing.wait_state(0)
+        # OFF
+        await exterior_lights.el_taxi.wait_state(0)
+        await exterior_lights.el_wing.wait_state(0)
 
-    # OFF
-    await windshield.windshield_lh.wait_state(1)
-    await windshield.windshield_rh.wait_state(1)
+        # OFF
+        await windshield.windshield_lh.wait_state(1)
+        await windshield.windshield_rh.wait_state(1)
+
+    finally: 
+        await cas.remove_message(cas.ELEC_AFT_DIST_BOX_OVHT)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        await xp.set_param(RAT_MANUAL, 0)
 
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO")

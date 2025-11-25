@@ -76,7 +76,7 @@ class Apu(System):
 
 
 class LineColor(enum.IntEnum):
-    BLACK = 1,
+    BLACK = 0,
     YELLOW = 2,
     GREEN = 3
 
@@ -98,6 +98,8 @@ class LineColor(enum.IntEnum):
 
 
 class ElecLinePower(System):
+    old_state = []
+
     @classmethod
     def start_condition(cls):
         # run every time
@@ -139,8 +141,18 @@ class ElecLinePower(System):
         if dc.lh_isol.get_state() == 0:
             line_apu_bat1_color += line_gen1_gen3_color
             line_gen1_gen3_color += line_apu_bat1_color
-        
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen2_on"], int(line_gen2_color))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_bat2_ratgen_on"], int(line_bat2_ratgen_color))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_apu_bat1_on"], int(line_apu_bat1_color))
-        await xp.set_param(xp.Params["sim/custom/7x/z_line_gen1_gen3_on"], int(line_gen1_gen3_color))
+
+        new_state = [
+            int(line_gen2_color),
+            int(line_bat2_ratgen_color),
+            int(line_apu_bat1_color),
+            int(line_gen1_gen3_color),
+        ]
+
+        if new_state != cls.old_state:
+            cls.old_state = new_state
+
+            await xp.set_param(xp.Params["sim/custom/7x/z_line_gen2_on"], int(line_gen2_color))
+            await xp.set_param(xp.Params["sim/custom/7x/z_line_bat2_ratgen_on"], int(line_bat2_ratgen_color))
+            await xp.set_param(xp.Params["sim/custom/7x/z_line_apu_bat1_on"], int(line_apu_bat1_color))
+            await xp.set_param(xp.Params["sim/custom/7x/z_line_gen1_gen3_on"], int(line_gen1_gen3_color))
