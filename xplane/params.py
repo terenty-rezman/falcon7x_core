@@ -283,6 +283,11 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/weight/m_fuel1", # fuel tab tank 1
     "sim/flightmodel/weight/m_fuel2", # fuel tab tank fill 2
     "sim/flightmodel/weight/m_fuel3", # fuel tab tank 3
+    "sim/cockpit2/fuel/fuel_quantity[0]", # fuel tab tank 1 number
+    "sim/cockpit2/fuel/fuel_quantity[1]", # fuel tab tank 2 number
+    "sim/cockpit2/fuel/fuel_quantity[2]", # fuel tab tank 3 number
+    "sim/flightmodel/weight/m_fuel_total", 
+    "sim/custom/7x/fuel_used",
 ])
 Params.__str__ = to_str
 
