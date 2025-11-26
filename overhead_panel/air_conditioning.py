@@ -31,8 +31,8 @@ class fwd_temp(FloatStepper):
     logic_left = 0
     logic_right = 1
 
-    float_left_most_value = 0
-    float_right_most_value = -3
+    left_most_value = 0
+    right_most_value = -3
 
     state = 0
     step = 0.01
@@ -51,8 +51,8 @@ class crew_temp(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 11
 
-    float_left_most_value = 0
-    float_right_most_value = -3
+    left_most_value = 0
+    right_most_value = -3
 
     logic_left = 0
     logic_right = 1
@@ -73,8 +73,8 @@ class crew_temp_push(TwoStateButton):
 class crew_ratio(FloatStepper):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust3"]
     index = 20
-    float_left_most_value = 0
-    float_right_most_value = -3
+    left_most_value = 0
+    right_most_value = -3
 
     logic_left = 0
     logic_right = 1

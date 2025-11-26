@@ -99,6 +99,8 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
 
         elec_sys.Gen1.fail = True
         elec_sys.Gen2.fail = True
+
+        await cas.show_message(cas.ELEC_RH_MAIN_NO_PWR)
         # elec_sys.gen3.fail = True
 
         async with synoptic_overrides.override_params([BAT_1_AMPS, BAT_2_AMPS]):
@@ -123,6 +125,7 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
                 await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
                 await elec.gen2.wait_state(1)
                 await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
+                await cas.remove_message(cas.ELEC_RH_MAIN_NO_PWR)
                 bat_2_amps.cancel()
                 synoptic_overrides.linear_anim(BAT_2_AMPS, 32, 0, 2)
             
@@ -142,6 +145,7 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
     finally:
         await cas.remove_message(cas.ELEC_LH_RH_ESS_PWR_LO)
         await cas.remove_message(cas.ELEC_GEN_1_FAULT)
+        await cas.remove_message(cas.ELEC_RH_MAIN_NO_PWR)
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await fpw.master_caution_lh.set_state(0)

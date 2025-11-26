@@ -10,6 +10,7 @@ import overhead_panel.dc_supply as elec
 import middle_pedestal.emergency as emergency
 import overhead_panel.exterior_lights as exterior_lights
 import overhead_panel.windshield_heat as windshield
+import overhead_panel.air_conditioning as air_condition
 import middle_pedestal.wings_config as wc
 import middle_pedestal.reversion as rev
 import front_panel.autopilot as ap
@@ -278,7 +279,29 @@ async def cond_emerg_pack_hi_temp(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: AFT DIST BOX HI TEMP")
 async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ELEC_AFT_DIST_BOX_HI_TEMP)
+    try:
+        await cas.show_message(cas.ELEC_AFT_DIST_BOX_HI_TEMP)
+        await sounds.play_sound(sounds.Sound.GONG)
+
+        air_condition.crew_temp.get_state()
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await emergency.ep_bag_fan.wait_state(1)
+
+        await elec.cabin_master.wait_state(1)
+
+        await windshield.windshield_lh.wait_state(2)
+        await windshield.windshield_rh.wait_state(2)
+
+        await air_condition.crew_temp.wait_state(lambda v: v < 0.05)
+        await air_condition.fwd_temp.wait_state(lambda v: v < 0.05)
+    finally: 
+        await cas.remove_message(cas.ELEC_AFT_DIST_BOX_HI_TEMP)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
+        await sounds.stop_sound(sounds.Sound.GONG)
 
 
 @scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: GEN 2 FAULT")
