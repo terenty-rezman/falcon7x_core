@@ -293,6 +293,7 @@ class fire_test(NLocalStateButton):
         fire_apu_indicator.set_override_indication(state)
         fire_apu_indicator.set_override_indication(state)
         fire_apu_closed_indicator.set_override_indication(state)
+        apu_disch.set_override_indication(state)
         firebagcomp_indicator.set_override_indication(state)
         firebagcomp_button.set_override_indication(state)
         firerearcomp_button.set_override_indication(state)
