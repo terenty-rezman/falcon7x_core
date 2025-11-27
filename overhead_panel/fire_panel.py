@@ -267,21 +267,36 @@ class fire_test(NLocalStateButton):
             cas.remove_message(cas.FIRE_TEST_IN_PROGRESS)
             cls.cas_shown = False
 
+        firebutton_1.set_override_indication(state)
+        firebutton_2.set_override_indication(state)
+        firebutton_3.set_override_indication(state)
+
         fireindicator_1.set_override_indication(state)
         fireindicator_2.set_override_indication(state)
         fireindicator_3.set_override_indication(state)
 
         disch1_eng1.set_override_indication(state)
+        disch1_eng1_1.set_override_indication(state)
         disch2_eng1.set_override_indication(state)
+        disch2_eng1_1.set_override_indication(state)
 
         disch1_eng2.set_override_indication(state)
+        disch1_eng2_1.set_override_indication(state)
         disch2_eng2.set_override_indication(state)
+        disch2_eng2_1.set_override_indication(state)
 
         disch1_eng3.set_override_indication(state)
+        disch1_eng3_1.set_override_indication(state)
         disch2_eng3.set_override_indication(state)
+        disch2_eng3_1.set_override_indication(state)
 
         fire_apu_indicator.set_override_indication(state)
+        fire_apu_indicator.set_override_indication(state)
+        fire_apu_closed_indicator.set_override_indication(state)
         firebagcomp_indicator.set_override_indication(state)
+        firebagcomp_button.set_override_indication(state)
+        firerearcomp_button.set_override_indication(state)
+        firerearcomp_indicator.set_override_indication(state)
 
         pc.pc_thrust_red_light_1.set_override_indication(state)
         pc.pc_thrust_red_light_2.set_override_indication(state)
