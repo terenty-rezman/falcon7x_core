@@ -159,25 +159,33 @@ async def _36_elec_lh_rh_ess_pwr_lo(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ELECTRICAL POWER", "38 ELEC GEN 1+2+3 FAULT")
 async def _38_elec_gen_2_fault(ac_state: xp_ac.ACState):
-    await sim.sleep(5)
+    try:
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
-    # YELLOW CAS message
-    await cas.show_message(cas.ELEC_GEN_1_2_3_FAULT)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
 
-    # light gen2 off
-    await elec.gen2.set_state(1)
+        # YELLOW CAS message
+        await cas.show_message(cas.ELEC_GEN_1_2_3_FAULT)
 
-    # wait gen2 on
-    await elec.gen2.wait_state(0)
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
 
-    # light gen2 on unsuccessfull - light gen2 off again
-    await elec.gen2.set_state(1)
+        # light gen2 off
+        await elec.gen2.set_state(0)
+        await elec.gen2.wait_state(0)
 
-    await elec.bus_tie.wait_state(1)
+        await elec.gen2.wait_state(1)
 
-    # wind shield AUTO
-    await windshield.windshield_lh.wait_state(0)
-    await windshield.windshield_rh.wait_state(0)
+        await elec.bus_tie.wait_state(1)
+
+        # wind shield AUTO
+        await windshield.windshield_lh.wait_state(0)
+        await windshield.windshield_rh.wait_state(0)
+    finally:
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "ENGINES", "54 ENG 1 OIL TOO LO PRESS")
@@ -276,6 +284,9 @@ async def _52_eng_2_fail(ac_state: xp_ac.ACState):
         await cas.show_message(cas.ENG_2_FAIL)
         await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+
         # disable xplane engine
         await engine_panel.en_fuel_digital_2.set_state(0)
 
@@ -287,6 +298,9 @@ async def _52_eng_2_fail(ac_state: xp_ac.ACState):
         engine_sys.Engine2ManualShutdown.manual_disable = False
         await engine_panel.en_fuel_digital_2.set_state(1)
         await cas.remove_message(cas.ENG_2_FAIL)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "FCS", "60 FCS: BACK-UP ACTIVE")
@@ -311,6 +325,7 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
         await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
         await sim.sleep(5)
         await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
         await cas.show_message(cas.FIRE_APU)
@@ -340,6 +355,7 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
     finally:
         # fire has been succesfully extinguished
         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
         await xp.set_param(failure, 0)
         await cas.remove_message(cas.FIRE_APU)
         await fpw.master_warning_lh.set_state(0)
@@ -358,6 +374,7 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
 
         await cas.show_message(cas.FIRE_ENG_1)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
 
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
@@ -372,6 +389,7 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
         await pc.pc_thrust_red_light_1.set_state(0)
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_1)
@@ -388,6 +406,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await sim.sleep(3)
 
         await cas.show_message(cas.FIRE_ENG_2)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
 
         await fpw.master_warning_lh.set_state(1)
@@ -403,6 +422,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
         await pc.pc_thrust_red_light_2.set_state(0)
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_2)
@@ -420,6 +440,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
 
         await cas.show_message(cas.FIRE_ENG_3)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
 
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
@@ -433,6 +454,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fp.disch1_eng3.wait_state(1)
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
+        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
         await pc.pc_thrust_red_light_3.set_state(0)
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
@@ -445,10 +467,14 @@ async def _78_fire_rear_comp(ac_state: xp_ac.ACState):
         await cas.show_message(cas.FIRE_REAR_COMP)
         await cas.show_message(cas.FIRE_REAR_COMP_DETECT_FAIL)
         await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
         await fp.firerearcomp_button.wait_state(1)
         await sim.sleep(3)
     finally:
         await sounds.stop_sound(sounds.Sound.FIRE_BELL)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_REAR_COMP)
         await cas.remove_message(cas.FIRE_REAR_COMP_DETECT_FAIL)
 
@@ -478,7 +504,9 @@ async def afcs_ads1_miscompare_and_afcs_is2_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_ADS_1_MISCOMPARE)
         await cas.show_message(cas.AFCS_IRS_2_MISCOMPARE)
-        await sounds.play_sound(sounds.Sound.GONG)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
 
         async with synoptic_overrides.override_params([PILOT_SPEED, PILOT_ALT, COPILOT_HEADING]):
             async def pilot():
@@ -497,8 +525,11 @@ async def afcs_ads1_miscompare_and_afcs_is2_miscompare(ac_state: xp_ac.ACState):
             
             await asyncio.gather(pilot(), copilot())
     finally:
+        await sounds.stop_sound(sounds.Sound.GONG)
         await cas.remove_message(cas.AFCS_ADS_1_MISCOMPARE)
         await cas.remove_message(cas.AFCS_IRS_2_MISCOMPARE)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "OPERATING TECHNIQUES", "AIRBRAKE AUTO EXTEND FAIL")

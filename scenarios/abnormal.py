@@ -58,6 +58,8 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 1)
         await cas.show_message(cas.ADS_1_FAIL)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         await rev.rev_ads_lh.wait_state(2)
         await rev.rev_irs_lh.wait_state(2)
         await sim.sleep(3)
@@ -67,6 +69,8 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
         await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
         await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
         await cas.remove_message(cas.ADS_1_FAIL)
 
 
@@ -76,6 +80,8 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 2)
         await cas.show_message(cas.ADS_2_FAIL)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         await rev.rev_ads_rh.wait_state(2)
         await rev.rev_irs_rh.wait_state(2)
     finally:
@@ -85,6 +91,8 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
         await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
         await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 NO SLIP COMPL")
@@ -92,12 +100,16 @@ async def ads_1_no_slip_comp(ac_state: xp_ac.ACState):
     NO_SLIP_ADS_ID = xp.Params["sim/custom/7x/z_no_slip_comp"]
     try:
         await cas.show_message(cas.ADS_1_NO_SLIP_COMP)
-        await xp.set_param(NO_SLIP_ADS_ID, 1)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         await sounds.play_sound(sounds.Sound.GONG)
+        await xp.set_param(NO_SLIP_ADS_ID, 1)
         await rev.rev_ads_lh.wait_state(2)
     finally:
         await cas.remove_message(cas.ADS_1_NO_SLIP_COMP)
         await xp.set_param(NO_SLIP_ADS_ID, 0)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "NAVIGATION", "ADS: 1 PROBE HEAT FAIL")
@@ -106,6 +118,8 @@ async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.ADS_1_PROBE_HEAT_FAIL)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
 
         async with synoptic_overrides.override_params([PILOT_SPEED]):
             speed_curr = xp_ac.ACState.get_curr_param(PILOT_SPEED)
@@ -116,6 +130,8 @@ async def ads_1_probe_heat_fail(ac_state: xp_ac.ACState):
         await rev.rev_irs_lh.wait_state(2)
     finally:
         await cas.remove_message(cas.ADS_1_PROBE_HEAT_FAIL)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: ADS ALL MISCOMPARE")
@@ -128,6 +144,8 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_ADS_ALL_MISCOMPARE)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
 
         async with synoptic_overrides.override_params([PILOT_SPEED, COPILOT_SPEED, PILOT_ALT, COPILOT_ALT]):
 
@@ -148,19 +166,26 @@ async def afcs_ads_all_miscompare(ac_state: xp_ac.ACState):
             await asyncio.gather(wrong_speed_pilot(), wrong_speed_copilot())
     finally:
         await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: AP FAIL")
 async def afcs_ap_fail(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_AP_FAIL)
+
         # autopilot voice warning
-        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+        await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
 
         await ap.fp_autopilot.wait_state(0)
     finally:
         await sounds.stop_all_sounds()
         await cas.remove_message(cas.AFCS_ADS_ALL_MISCOMPARE)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "AFCS: IRS .. MISCOMPARE")
@@ -169,12 +194,16 @@ async def afcs_irs_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_IRS_1_MISCOMPARE)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         async with synoptic_overrides.override_params([PILOT_HEADING]):
             modify_heading_pilot_task = synoptic_overrides.modify_original_value(PILOT_HEADING, lambda origin_heading, _: origin_heading - 8)
             await rev.rev_irs_lh.wait_state(2)
             modify_heading_pilot_task.cancel()
             await cas.remove_message(cas.AFCS_IRS_1_MISCOMPARE)
     finally:
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
         await cas.remove_message(cas.AFCS_IRS_1_MISCOMPARE)
 
 
@@ -186,6 +215,8 @@ async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.AFCS_IRS_ALL_MISCOMPARE)
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         async with synoptic_overrides.override_params([PILOT_HEADING, COPILOT_HEADING]):
 
             async def wrong_heading_pilot():
@@ -201,6 +232,8 @@ async def afcs_irs_all_miscompare(ac_state: xp_ac.ACState):
             await asyncio.gather(wrong_heading_pilot(), wrong_heading_copilot())
     finally:
         await cas.remove_message(cas.AFCS_IRS_ALL_MISCOMPARE)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "AUTOFLIGHT", "A/I: ENG.. RESID PRESS")
@@ -219,12 +252,36 @@ async def apu_auto_shutdown(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "INDICATING AND RECORDING SYSTEM", "AVC: DU LH HI TEMP")
 async def avc_du_lh_hi_temp(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AVC_DU_LH_HI_TEMP)
+    try:
+        await cas.show_message(cas.AVC_DU_LH_HI_TEMP)
+        await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await elec.gen2.wait_state(0)
+        await elec.rh_isol.wait_state(1)
+        await elec.bus_tie.wait_state(1)
+    finally:
+        await cas.remove_message(cas.AVC_DU_LH_HI_TEMP)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "INDICATING AND RECORDING SYSTEM", "AVC: DU LW HI TEMP")
 async def avc_du_lw_hi_temp(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.AVC_DU_LW_HI_TEMP)
+    try:
+        await cas.show_message(cas.AVC_DU_LW_HI_TEMP)
+        await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await elec.gen2.wait_state(0)
+        await elec.rh_isol.wait_state(1)
+        await elec.bus_tie.wait_state(1)
+    finally:
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
+        await cas.remove_message(cas.AVC_DU_LW_HI_TEMP)
 
 
 @scenario("ABNORMAL", "INDICATING AND RECORDING SYSTEM", "AVC: MAU 1A FAIL")
@@ -309,6 +366,8 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     try:
         await sounds.play_sound(sounds.Sound.GONG)
         await cas.show_message(cas.ELEC_GEN_2_FAULT)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
 
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
 
@@ -320,6 +379,8 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
         await cas.remove_message(cas.ELEC_GEN_2_FAULT)
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH ESS PWR LO")
@@ -358,9 +419,6 @@ async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
             await cas.remove_message(cas.ELEC_LH_ESS_PWR_LO)
 
             await left()
-            await fpw.master_caution_lh.set_state(0)
-            await fpw.master_caution_rh.set_state(0)
-
     finally:
         await cas.remove_message(cas.ELEC_LH_ESS_PWR_LO)
         await cas.remove_message(cas.ELEC_GEN_1_FAULT)
@@ -439,6 +497,8 @@ async def eng_2_starter_fail(ac_state: xp_ac.ACState):
         engine.broken_start = engine_system.BrokenStart.STARTER_BROKEN_START
 
         await sounds.play_sound(sounds.Sound.GONG)
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
         await cas.show_message(cas.ENG_2_STARTER_FAIL)
         await util.wait_condition(lambda: engine.broken_start_finished == True, timeout=60)
         await fuel_switch.wait_state(0)
@@ -447,6 +507,8 @@ async def eng_2_starter_fail(ac_state: xp_ac.ACState):
         await fuel_digital.set_state(1)
         await xp.set_param(START, 0)
         engine.broken_start = engine_system.BrokenStart.NORMAL_START
+        await fpw.master_caution_lh.set_state(0)
+        await fpw.master_caution_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "ENGINES", "ENGINE 1 SHUTDOWN")
@@ -456,7 +518,27 @@ async def engine_1_shutdown(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ENGINES", "ENGINE 2 SHUTDOWN")
 async def engine_2_shutdown(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ENGINE_2_SHUTDOWN)
+    try:
+        await cas.show_message(cas.ENGINE_2_SHUTDOWN)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        # disable xplane engine
+        await engine_panel.en_fuel_digital_2.set_state(0)
+
+        # run our engine shutdown proc
+        engine_system.Engine2ManualShutdown.manual_disable = True
+
+        await engine_panel.en_fuel_2.wait_state(0)
+    finally:
+        engine_system.Engine2ManualShutdown.manual_disable = False
+        await engine_panel.en_fuel_digital_2.set_state(1)
+        await cas.remove_message(cas.ENGINE_2_SHUTDOWN)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "FLIGHT CONTROL: AILERONS", "FCS: AILERON DEGRAD")
@@ -517,6 +599,8 @@ async def some_function(ac_state: xp_ac.ACState):
 @scenario("ABNORMAL", "ELECTRICAL POWER INOPERATIVE BUSES", "LH MAIN + RH MAIN BUSES INOPERATIVE")
 async def avc_mau_1a_2b_fail(ac_state: xp_ac.ACState):
     await cas.show_message(cas.AVC_MAU_1A_2B_FAIL)
+
+
 async def fuel_eng_1_3_lo_press(ac_state: xp_ac.ACState):
     await cas.show_message(cas.FUEL_ENG_1_3_LO_PRESS)
 
