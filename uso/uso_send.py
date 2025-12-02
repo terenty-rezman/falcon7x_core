@@ -112,7 +112,7 @@ uso_lamp_send_map = {
 	"O11_a12": "boost2_off",	# BOOST 2 <OFF> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 	"O11_a13": "boost2_stby",	# BOOST 2 <ST-BY> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 	"O11_a14": "boost3_off",	# BOOST 3 <OFF> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-	"O11_a15": "rh_master",	# RH MASTER <OFF> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+	"O11_a15": "backup_13",     # BACK UP 1<ON>3 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 	"O11_a16": "boost3_stby",	# BOOST 3 <ST-BY> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 	"O11_a17": "xbp_12",	# X-BP 1<-->2  <ON> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
 	"O11_a18": "xbp_13",	# X-BP 1<-->3  <ON> [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
