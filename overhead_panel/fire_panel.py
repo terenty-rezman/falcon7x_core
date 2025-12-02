@@ -74,13 +74,23 @@ class disch1_eng1_1(Indicator):
 
 
 @add_to_panel
-class disch2_eng1(disch1_eng1):
-    pass
+class disch2_eng1(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 
 @add_to_panel
-class disch2_eng1_1(disch1_eng1_1):
-    pass
+class disch2_eng1_1(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 
 @add_to_panel
@@ -155,13 +165,23 @@ class disch1_eng2_1(Indicator):
 
 
 @add_to_panel
-class disch2_eng2(disch1_eng2):
-    pass
+class disch2_eng2(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 
 @add_to_panel
-class disch2_eng2_1(disch1_eng2_1):
-    pass
+class disch2_eng2_1(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 
 @add_to_panel
@@ -199,14 +219,23 @@ class disch1_eng3_1(Indicator):
 
 
 @add_to_panel
-class disch2_eng3(disch1_eng3):
-    pass
+class disch2_eng3(NLocalStateButton):
+    states = [0, 1]
+    state = 0
+
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 
 @add_to_panel
-class disch2_eng3_1(disch1_eng3_1):
-    pass
+class disch2_eng3_1(NLocalStateButton):
+    states = [0, 1]
+    state = 0
 
+    @classmethod
+    async def click(cls):
+        await super().click()
 
 @add_to_panel
 class firerearcomp_button(TwoStateButton):
