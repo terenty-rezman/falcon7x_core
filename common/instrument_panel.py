@@ -524,21 +524,30 @@ async def receive_uso_task(udp_endpoint):
 
 import uso.uso_send as uso_send
 
-uso_send_lamps = [0] * len(uso_send.uso_bitfield_names)
+uso_send_lamps = np.zeros(len(uso_send.uso_bitfield_names), dtype=int)
+
+# zero lamps packet when bat1 is off
+uso_send_lamps_zero_packet = uso_send.create_packet(np.zeros(len(uso_send.uso_bitfield_names), dtype=int))
 
 
 async def send_uso_task(remote):
+    global uso_send_lamps
+    uso_packet = None
+
     while True:
-        for bit_idx, lamp_id in uso_send.uso_lamp_send_map.items():
-            item = CockpitPanel.buttons.get(lamp_id)
-            if item is None:
-                print("X")
+        if dc_supply.bat1.get_state() == 0:
+            uso_packet = uso_send_lamps_zero_packet
+        else:
+            for bit_idx, lamp_id in uso_send.uso_lamp_send_map.items():
+                item = CockpitPanel.buttons.get(lamp_id)
+                if item is None:
+                    print("X")
 
-            state = item.get_indication() or 0
-            state = min(max(state, 0), 1) 
-            uso_send_lamps[bit_idx] = state
+                state = item.get_indication() or 0
+                state = min(max(state, 0), 1) 
+                uso_send_lamps[bit_idx] = state
 
-        uso_packet = uso_send.create_packet(uso_send_lamps)
+                uso_packet = uso_send.create_packet(uso_send_lamps)
 
         remote.send(uso_packet.tobytes())
 
@@ -585,3 +594,4 @@ from middle_pedestal import engine
 import common.plane_control as plane_control
 from middle_pedestal import reversion
 from middle_pedestal import mkb
+import common.misc_panel as misc_panel

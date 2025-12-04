@@ -200,6 +200,25 @@ async def light_lamps():
     return {"result": "ok"}
 
 
+@app.post("/api/set_button_state")
+async def set_button_state():
+    data = await request.json
+
+    button_id = data.get("button_id")
+    state = data.get("state")
+
+    print(data)
+
+    button = instrument_panel.CockpitPanel.buttons.get(button_id)
+
+    if button:
+        await button.set_state(state) 
+    else:
+        return {"result": "error", "msg": f"no such button {button_id}"}
+
+    return {"result": "ok"}
+
+
 async def run_server_task(listen_host, listen_port):
     global quart_task
 

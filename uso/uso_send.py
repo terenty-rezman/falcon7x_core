@@ -151,6 +151,9 @@ uso_lamp_send_map = {
 	"O11_b10": "firerearcomp_indicator",	# FIRE REAR COMP DISCH <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b11": "firebagcomp_indicator",	# FIRE BAG COMP DISCH <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
 	"O11_b12": "fireindicator_3",	# engine 3 shut off FIRE 3 <red light> [K4 Верхний пульт] [Верхний пульт] [16 - 17 COCKPIT LIGHTS - INTERIOR LIGHTS + RAIN RPLNT RH]
+	"O12_c29": "misc_supply",  # Подача [K4 Верхний пульт] [Зона освещения] [Пульт инструктора]
+	"O12_c30": "misc_extract",  # Вытяжка [K4 Верхний пульт] [Зона освещения] [Пульт инструктора]
+	"O12_c31": "misc_smoke",  # Дым [K4 Верхний пульт] [Зона освещения] [Пульт инструктора]
 }
 
 
