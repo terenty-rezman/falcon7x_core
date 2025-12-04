@@ -104,8 +104,6 @@ uso_pushbuttons_receive_map = {
     "rh_isol": "I07_b14", # RH ISOL [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "gen2": "I07_b15", # GEN 2 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "gen3": "I07_b16", # GEN 3 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
-    "crew_temp_push": "I07_a27", # CREW TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
-    "fwd_temp_push": "I07_a26", # PAX FWD TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "gnd_vent": "I07_b01", # GND VENT [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "xbleed_ecs": "I07_b03", # XBLEED ECS [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "bleed1": "I07_b24", # BLEED 1 [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
@@ -341,6 +339,8 @@ uso_switches_receive_map = {
     "apu_master": "I07_a18", # APU Master [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "ep_aural_warn_1": "I03_a22", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
     "ep_aural_warn_2": "I03_a23", # AURAL WARN 1 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [12  (Emergency Panel)]
+    "crew_temp_push": "I07_a27", # CREW TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
+    "fwd_temp_push": "I07_a26", # PAX FWD TEMP PUSH [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
 } # switches
 
 
