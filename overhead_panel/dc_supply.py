@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, NLocalStateButton, array_str
 import xplane.master as xp
 
 
@@ -105,18 +105,18 @@ class ext_power(TwoStateButton):
 
 
 @add_to_panel
-class gen1(TwoStateButton):
+class gen1(NLocalStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
     states = [0, 1]
     index = 0
 
     @classmethod
-    def get_indication(cls):
-        if cls.override_indication is not None:
-            return cls.override_indication
+    async def set_state(cls, state):
+        if state == 1:
+            val = array_str(cls.index, 0)
+            await xp.set_param(cls.dataref, val)
 
-        state = cls.get_state()
-        return 0 if state == 1 else 1
+        return await super().set_state(state)
 
 
 @add_to_panel
@@ -138,33 +138,13 @@ class rh_isol(TwoStateButton):
 
 
 @add_to_panel
-class gen2(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
-    states = [0, 1]
+class gen2(gen1):
     index = 1
-
-    @classmethod
-    def get_indication(cls):
-        if cls.override_indication is not None:
-            return cls.override_indication
-
-        state = cls.get_state()
-        return 0 if state == 1 else 1
 
 
 @add_to_panel
-class gen3(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/electrical/generator_on"]
-    states = [0, 1]
+class gen3(gen1):
     index = 2
-
-    @classmethod
-    def get_indication(cls):
-        if cls.override_indication is not None:
-            return cls.override_indication
-
-        state = cls.get_state()
-        return 0 if state == 1 else 1
 
 
 @add_to_panel
