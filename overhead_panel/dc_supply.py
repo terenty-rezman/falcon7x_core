@@ -124,6 +124,14 @@ class lh_isol(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/lhisol"]
     states = [1, 0, 2, 3]
 
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        state = (cls.get_state() or 0) > 0
+        return state
+
 
 @add_to_panel
 class rat_reset(TwoStateButton):
@@ -135,6 +143,14 @@ class rat_reset(TwoStateButton):
 class rh_isol(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/rhisol"]
     states = [1, 0, 2, 3]
+
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        state = (cls.get_state() or 0) > 0
+        return state
 
 
 @add_to_panel
