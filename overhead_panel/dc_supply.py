@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, Indicator
 import xplane.master as xp
 
 
@@ -124,6 +124,16 @@ class lh_isol(TwoStateButton):
 
         state = (cls.get_state() or 0) > 0
         return state
+    
+
+@add_to_panel
+class lh_isol_line(Indicator):
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+        
+        return not lh_isol.get_state()
 
 
 @add_to_panel
@@ -144,6 +154,16 @@ class rh_isol(TwoStateButton):
 
         state = (cls.get_state() or 0) > 0
         return state
+
+
+@add_to_panel
+class rh_isol_line(Indicator):
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+        
+        return not rh_isol.get_state()
 
 
 @add_to_panel
