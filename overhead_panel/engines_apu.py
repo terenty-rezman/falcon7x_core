@@ -92,9 +92,9 @@ class apu_start_stop(TwoStateButton):
         if (val := xp_ac.ACState.get_curr_param(param)) is None:
             return
 
-        if val < 5:
+        if val < 1:
             return 0 
-        elif val > 98:
+        elif val > 99:
             return 1
         # blink animation
         elif next(cls.blink):
