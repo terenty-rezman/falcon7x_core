@@ -7,6 +7,9 @@ import common.sane_tasks as sane_tasks
 import common.plane_control as pc
 from front_panel import autopilot as at
 
+import xplane.master as xp
+import common.xp_aircraft_state as xp_ac
+
 
 AUTOTHROTTLE_SEND_DELAY = 0.1
 
@@ -20,6 +23,9 @@ at_struct_dtype = np.dtype([
     ('uso_throttle_2', 'f4'),
     ('uso_throttle_3', 'f4'),
     ('auto_throttle_enabled', 'f4'),
+    ('speed_kts', 'f4'),
+    ('heading_deg', 'f4'),
+    ('asel_ft', 'f4')
 ])
 
 at_struct = np.zeros(1, dtype=at_struct_dtype)
@@ -35,12 +41,21 @@ async def run_send_to_autothrottle_task(at_host, at_send_port):
 async def send_autothrottle_task(remote):
     while True:
         at_struct["xplane_throttle_1"] = pc.pc_throttle_1.get_state() or 0 # [0; 10]
-        at_struct["xplane_throttle_2"] = pc.pc_throttle_1.get_state() or 0 # [0; 10]
-        at_struct["xplane_throttle_3"] = pc.pc_throttle_1.get_state() or 0 # [0; 10]
+        at_struct["xplane_throttle_2"] = pc.pc_throttle_2.get_state() or 0 # [0; 10]
+        at_struct["xplane_throttle_3"] = pc.pc_throttle_3.get_state() or 0 # [0; 10]
         at_struct["uso_throttle_1"] = pc.pc_throttle_1.get_uso_state() or 0 # [0; 10]
-        at_struct["uso_throttle_2"] = pc.pc_throttle_1.get_uso_state() or 0 # [0; 10]
-        at_struct["uso_throttle_3"] = pc.pc_throttle_1.get_uso_state() or 0 # [0; 10]
+        at_struct["uso_throttle_2"] = pc.pc_throttle_2.get_uso_state() or 0 # [0; 10]
+        at_struct["uso_throttle_3"] = pc.pc_throttle_3.get_uso_state() or 0 # [0; 10]
         at_struct["auto_throttle_enabled"] = at.fp_autothrottle.get_state() or 0 # [0; 10]
+
+        speed = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/autopilot/airspeed_dial_kts_mach"]) or 0
+        at_struct["speed_kts"] = speed
+
+        heading = xp.ACState.get_curr_param(xp.Params["sim/cockpit/autopilot/heading_mag"]) or 0
+        at_struct['heading_deg'] = heading
+
+        asel = xp_ac.ACState.get_curr_param(xp.Params["sim/cockpit2/autopilot/altitude_dial_ft"]) or 0
+        at_struct['asel_ft'] = asel
 
         remote.send(at_struct.tobytes())
 

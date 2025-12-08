@@ -152,6 +152,7 @@ class EngineStart1(System):
     MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_1"]
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_digital = engine_panel.en_fuel_digital_1
+    boost = fuel.boost1
 
     broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
@@ -290,10 +291,13 @@ class EngineStart1(System):
                 await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
+                
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
             async def ab():
@@ -365,6 +369,7 @@ class EngineStart1(System):
 
                 # amber start
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p > 5, timeout=60)
 
                 # terminate start
@@ -374,6 +379,7 @@ class EngineStart1(System):
                 # amber start
                 await sim.sleep(0.1)
                 await xp.set_param(cls.START, 2)
+                await cls.boost.set_state(0)
                 raise MyCancelEngineStart
             
             async def ab():
@@ -456,10 +462,12 @@ class EngineStart1(System):
                 await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
             async def ab():
@@ -531,9 +539,11 @@ class EngineStart1(System):
                 await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 5, timeout=60)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
 
@@ -616,10 +626,12 @@ class EngineStart1(System):
                 await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
 
             async def itt_500():
@@ -711,16 +723,19 @@ class EngineStart1(System):
                 await xp.set_param(cls.MIN_OIL_LEVEL, 5)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 1)
+                await cls.boost.set_state(2)
                 # hide start
                 await xp_ac.ACState.wait_until_parameter_condition(cls.N2, lambda p: p > 51, timeout=60)
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
 
             async def itt_1010():
                 await cls.fuel_digital.set_state(0)
                 await xp_ac.ACState.wait_until_parameter_condition(cls.ITT, lambda p: p > 1000, timeout=60)
                 await xp.set_param(cls.START, 0)
+                await cls.boost.set_state(0)
                 await cas.show_message(cls.cas_eng_param_exceed)
                 await cas.show_message(cls.cas_eng_shutdown_msg)
                 await warning.master_caution_lh.set_state(1)
@@ -748,6 +763,7 @@ class EngineStart1(System):
     @classmethod
     async def killing_task(cls):
         await xp.set_param(cls.START, 0)
+        await cls.boost.set_state(0)
         await xp.set_param(cls.MIN_OIL_LEVEL, 5)
         await xp.set_param(cls.IGN, 0)
         await xp.set_param(cls.AB, 0)
@@ -768,6 +784,7 @@ class EngineStart2(EngineStart1):
     MIN_OIL_LEVEL = Params["sim/custom/7x/z_oil_min_height_2"]
     fuel_flow_switch = engine_panel.en_fuel_2
     fuel_digital = engine_panel.en_fuel_digital_2
+    boost = fuel.boost2
 
     broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
@@ -795,6 +812,7 @@ class EngineStart3(EngineStart1):
     MIN_OIL_LEVEL = Params["sim/custom/7x/z_oil_min_height_3"]
     fuel_flow_switch = engine_panel.en_fuel_3
     fuel_digital = engine_panel.en_fuel_digital_3
+    boost = fuel.boost3
 
     broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
@@ -1040,6 +1058,7 @@ class Engine1ManualShutdown(System):
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_digital = engine_panel.en_fuel_digital_1
     engine = EngineStart1
+    boost = fuel.boost1
 
     logic_task = None
     is_killing = False
@@ -1075,6 +1094,7 @@ class Engine1ManualShutdown(System):
             await xp.set_param(cls.AB, 0)
             await xp.set_param(cls.START, 0)
             await xp.set_param(cls.IGN, 0)
+            await cls.boost.set_state(0)
 
             n1_curr = xp_ac.ACState.get_curr_param(cls.N1)
             n1_coro = synoptic_overrides.linear_anim(cls.N1, n1_curr, 0, 10)
@@ -1113,6 +1133,7 @@ class Engine2ManualShutdown(Engine1ManualShutdown):
     fuel_flow_switch = engine_panel.en_fuel_2
     engine = EngineStart2
     fuel_digital = engine_panel.en_fuel_digital_2
+    boost = fuel.boost2
 
     manual_disable = False
 
@@ -1130,6 +1151,7 @@ class Engine3ManualShutdown(Engine1ManualShutdown):
     FF = Params["sim/cockpit2/engine/indicators/fuel_flow_kg_sec[2]"]
     START = xp.Params["sim/custom/7x/z_syn_eng_start3"]
     AB = xp.Params["sim/custom/7x/z_syn_eng_ab3"]
+    boost = fuel.boost3
 
     fuel_flow_switch = engine_panel.en_fuel_3
     engine = EngineStart3

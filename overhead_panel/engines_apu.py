@@ -33,6 +33,32 @@ class eng_3(PushButton):
 class apu_master(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/electrical/APU_generator_on"]
 
+    blink = util.blink_anim(0.5)
+    blink_timer = None
+
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            cls.blink_timer = util.Timer()
+            cls.blink_timer.start()
+        else:
+            cls.blink_timer = None
+            
+        return await super().set_state(state)
+
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        if cls.blink_timer:
+            if cls.blink_timer.elapsed() < 4:
+                return next(cls.blink)
+            else:
+                cls.blink_timer = None
+            
+        return cls.state 
+
 
 @add_to_panel
 class apu_start_stop(TwoStateButton):
