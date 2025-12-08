@@ -60,7 +60,7 @@ class Timer():
         self.started = None
     
     def elapsed(self):
-        return self.started - time.time()
+        return time.time() - self.started
 
 
 def blink_anim(every_period_sec: float):
