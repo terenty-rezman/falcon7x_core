@@ -547,7 +547,7 @@ async def send_uso_task(remote):
                 state = min(max(state, 0), 1) 
                 uso_send_lamps[bit_idx] = state
 
-                uso_packet = uso_send.create_packet(uso_send_lamps)
+            uso_packet = uso_send.create_packet(uso_send_lamps)
 
         remote.send(uso_packet.tobytes())
 

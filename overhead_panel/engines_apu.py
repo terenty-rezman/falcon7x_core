@@ -57,7 +57,7 @@ class apu_master(TwoStateButton):
             else:
                 cls.blink_timer = None
             
-        return cls.state 
+        return cls.get_state() or 0
 
 
 @add_to_panel
