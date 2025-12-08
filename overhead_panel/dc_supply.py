@@ -13,27 +13,25 @@ class galley_master(ThreeStateButton):
 
     @classmethod
     def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
         state = cls.get_state()
-        if state == 0:
-            return 0
-        if state == 1:
-            return 2
-        if state == 2:
-            return 1
+        return state
 
 
 @add_to_panel
 class galley_master_on(ThreeStateButton):
     @classmethod
     def get_state(cls):
-        return galley_master.get_state() == 2
+        return galley_master.get_state() == 1
 
 
 @add_to_panel
 class galley_master_off(ThreeStateButton):
     @classmethod
     def get_state(cls):
-        return galley_master.get_state() == 1
+        return galley_master.get_state() == 2
 
 
 @add_to_panel
@@ -77,26 +75,21 @@ class cabin_master(ThreeStateButton):
             return cls.override_indication
 
         state = cls.get_state()
-        if state == 0:
-            return 0
-        if state == 1:
-            return 2
-        if state == 2:
-            return 1
+        return state
 
 
 @add_to_panel
 class cabin_master_on(cabin_master):
     @classmethod
     def get_state(cls):
-        return super().get_state() == 2
+        return super().get_state() == 1
 
 
 @add_to_panel
 class cabin_master_off(cabin_master):
     @classmethod
     def get_state(cls):
-        return super().get_state() == 1
+        return super().get_state() == 2
 
 
 @add_to_panel
