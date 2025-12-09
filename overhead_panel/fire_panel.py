@@ -131,7 +131,7 @@ class fire_apu_closed_indicator(Indicator):
 
 
 @add_to_panel
-class firebutton_2(TwoStateButton):
+class firebutton_2(firebutton_1):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 5
 
@@ -190,7 +190,7 @@ class disch2_eng2_1(NLocalStateButton):
 
 
 @add_to_panel
-class firebutton_3(TwoStateButton):
+class firebutton_3(firebutton_1):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 6
 
@@ -198,6 +198,7 @@ class firebutton_3(TwoStateButton):
 
     blink = util.blink_anim(0.5)
     blink_timer = None
+
 
 @add_to_panel
 class fireindicator_3(fireindicator_1):
