@@ -32,7 +32,7 @@ class firebutton_1(TwoStateButton):
             return cls.override_indication
 
         if cls.blink_timer:
-            if cls.blink_timer.elapsed() < 3:
+            if cls.blink_timer.elapsed() < 4:
                 return next(cls.blink)
             else:
                 cls.blink_timer = None
@@ -135,6 +135,11 @@ class firebutton_2(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 5
 
+    states = [0, 1]
+
+    blink = util.blink_anim(0.5)
+    blink_timer = None
+
 
 @add_to_panel
 class fireindicator_2(fireindicator_1):
@@ -189,6 +194,10 @@ class firebutton_3(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/warhead_type"]
     index = 6
 
+    states = [0, 1]
+
+    blink = util.blink_anim(0.5)
+    blink_timer = None
 
 @add_to_panel
 class fireindicator_3(fireindicator_1):
