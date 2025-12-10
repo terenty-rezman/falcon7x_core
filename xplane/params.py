@@ -291,6 +291,8 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/fuel_used1",
     "sim/custom/7x/fuel_used2",
     "sim/custom/7x/fuel_used3"
+    "sim/custom/7x/z_et_timer_left", # timer secs
+    "sim/custom/7x/z_et_timer_right", # timer secs
 
 ])
 Params.__str__ = to_str

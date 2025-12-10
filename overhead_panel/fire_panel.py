@@ -92,6 +92,16 @@ class disch2_eng1_1(NLocalStateButton):
     async def click(cls):
         await super().click()
 
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        # fireindicator_1 instead of fireindicator_1 ?? 
+        if firebutton_1.get_state() == 1:
+            return 1
+
+        return 0
 
 @add_to_panel
 class fire_apu_indicator(Indicator):
@@ -188,6 +198,16 @@ class disch2_eng2_1(NLocalStateButton):
     async def click(cls):
         await super().click()
 
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        if firebutton_2.get_state() == 1:
+            return 1
+
+        return 0
+
 
 @add_to_panel
 class firebutton_3(firebutton_1):
@@ -247,6 +267,17 @@ class disch2_eng3_1(NLocalStateButton):
     async def click(cls):
         await super().click()
 
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        if firebutton_3.get_state() == 1:
+            return 1
+
+        return 0
+
+
 @add_to_panel
 class firerearcomp_button(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"] 
@@ -298,12 +329,12 @@ class fire_test(NLocalStateButton):
 
         if state and cls.cas_shown == False:
             # show cas
-            cas.show_message(cas.FIRE_TEST_IN_PROGRESS)
+            await cas.show_message(cas.FIRE_TEST_IN_PROGRESS)
             cls.cas_shown = True
         
         if state == 0 and cls.cas_shown == True:
             # hide cas
-            cas.remove_message(cas.FIRE_TEST_IN_PROGRESS)
+            await cas.remove_message(cas.FIRE_TEST_IN_PROGRESS)
             cls.cas_shown = False
 
         firebutton_1.set_override_indication(state)

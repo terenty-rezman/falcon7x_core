@@ -249,6 +249,8 @@ class Subscribe:
         (Params["sim/custom/7x/z_fuel_eng3"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_apu"], None, "tcp"),
         (Params["sim/custom/7x/z_rat_manual"], None, "tcp"),
+        (Params["sim/custom/7x/z_et_timer_left"], None, "tcp"),
+        (Params["sim/custom/7x/z_et_timer_right"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol

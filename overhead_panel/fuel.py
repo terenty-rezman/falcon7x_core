@@ -10,6 +10,11 @@ class boost1(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump0"]
     states = [2, 0, 1]
 
+    @classmethod
+    async def set_state(cls, state):
+        pass
+        return await super().set_state(state)
+
 
 @add_to_panel
 class boost1_off(boost1):
@@ -39,6 +44,11 @@ class xtk_right(TwoStateButton):
 class boost3(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump2"]
     states = [2, 0, 1]
+
+    @classmethod
+    async def set_state(cls, state):
+        pass
+        return await super().set_state(state)
 
 
 @add_to_panel
@@ -79,6 +89,11 @@ class xtk_down_1(TwoStateButton):
 class boost2(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump1"]
     states = [2, 0, 1]
+
+    @classmethod
+    async def set_state(cls, state):
+        pass
+        return await super().set_state(state)
 
 
 @add_to_panel

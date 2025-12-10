@@ -124,6 +124,17 @@ class lh_isol(TwoStateButton):
 
         state = (cls.get_state() or 0) > 0
         return state
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state == 1:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(1)
     
 
 @add_to_panel
@@ -153,7 +164,18 @@ class rh_isol(TwoStateButton):
             return cls.override_indication
 
         state = (cls.get_state() or 0) > 0
-        return state
+        return state 
+
+    @classmethod
+    async def click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        if state == 1:
+            await cls.set_state(0) 
+        else:
+            await cls.set_state(1)
 
 
 @add_to_panel

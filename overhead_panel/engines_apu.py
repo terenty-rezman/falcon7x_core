@@ -31,7 +31,7 @@ class eng_3(PushButton):
 
 @add_to_panel
 class apu_master(TwoStateButton):
-    dataref: xp.Params = xp.Params["sim/cockpit2/electrical/APU_generator_on"]
+    dataref = xp.Params["sim/cockpit2/electrical/APU_generator_on"]
 
     blink = util.blink_anim(0.5)
     blink_timer = None
