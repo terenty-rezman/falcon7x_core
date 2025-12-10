@@ -327,7 +327,7 @@ Commands = Enum('XplaneCommands', [
     "sim/flight_controls/aileron_trim_right",
     "sim/flight_controls/aileron_trim_left",
     "sim/flight_controls/pitch_trim_down",
-    "sim/engines/thrust_reverse_toggle",
+    "sim/engines/thrust_reverse_toggle_2",
     "sim/engines/thrust_reverse_hold",
     "sim/flight_controls/right_brake",
     "sim/flight_controls/left_brake",

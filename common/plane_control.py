@@ -446,7 +446,7 @@ class pc_thrust_reverse(FloatStepper):
             return
 
         xp_state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
-        xp_state = True if xp_state == 7 else False
+        xp_state = True if xp_state == 2 else False
         new_state = None
 
         # гистерезис
@@ -462,13 +462,13 @@ class pc_thrust_reverse(FloatStepper):
         print(cls, new_state)
 
         cls.skip_steps = 80
-        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle"])
+        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle_2"])
 
 
     @classmethod
     async def get_state(cls):
         state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
-        cls.state = 1 if state == 7 else 0
+        cls.state = 1 if state == 2 else 0
         return cls.state
 
 @add_to_panel
