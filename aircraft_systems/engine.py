@@ -1094,7 +1094,7 @@ class Engine1ManualShutdown(System):
             await xp.set_param(cls.AB, 0)
             await xp.set_param(cls.START, 0)
             await xp.set_param(cls.IGN, 0)
-            await cls.boost.set_state(0)
+            # await cls.boost.set_state(0)
 
             n1_curr = xp_ac.ACState.get_curr_param(cls.N1)
             n1_coro = synoptic_overrides.linear_anim(cls.N1, n1_curr, 0, 10)
