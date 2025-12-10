@@ -365,13 +365,6 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
 @scenario("EMERGENCY", "FIRE", "74 FIRE: ENG 1")
 async def _74_fire_eng_1(ac_state: xp_ac.ACState):
     try:
-        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
-
-        await engine_panel.en_fuel_1.wait_state(1)
-        await sim.sleep(3)
-
         await cas.show_message(cas.FIRE_ENG_1)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 6)
         await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
@@ -385,7 +378,22 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
         # pilot clicks shut off
         await fp.firebutton_1.wait_state(1)
 
-        await fp.disch1_eng1.wait_state(1)
+        async def disch_1_press():
+            await fp.disch1_eng1.wait_state(1)
+            await fp.disch2_eng3.set_state(1)
+
+        async def disch_2_press():
+            await fp.disch2_eng1.wait_state(1)
+            await fp.disch1_eng2.set_state(1)
+            await fp.firerearcomp_button.set_state(1)
+
+        one, pending = await asyncio.wait([
+            asyncio.create_task(disch_1_press()), 
+            asyncio.create_task(disch_2_press())
+        ], return_when=asyncio.FIRST_COMPLETED)
+
+        # cancel pending tasks
+        [p.cancel() for p in pending]
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
         await pc.pc_thrust_red_light_1.set_state(0)
@@ -393,18 +401,16 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_1)
+        await fp.disch1_eng1.set_state(0)
+        await fp.disch2_eng1.set_state(0)
+        await fp.disch2_eng3.set_state(0)
+        await fp.disch1_eng2.set_state(0)
+        await fp.firerearcomp_button.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
 async def _75_fire_eng_2(ac_state: xp_ac.ACState):
     try:
-        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
-
-        await engine_panel.en_fuel_2.wait_state(1)
-        await sim.sleep(3)
-
         await cas.show_message(cas.FIRE_ENG_2)
         await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 6)
@@ -418,7 +424,22 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         # pilot clicks shut off
         await fp.firebutton_2.wait_state(1)
 
-        await fp.disch1_eng2.wait_state(1)
+        async def disch_1_press():
+            await fp.disch1_eng2.wait_state(1)
+            await fp.disch2_eng1.set_state(1)
+            await fp.firerearcomp_button.set_state(1)
+
+        async def disch_2_press():
+            await fp.disch2_eng2.wait_state(1)
+            await fp.firebagcomp_button.set_state(1)
+
+        one, pending = await asyncio.wait([
+            asyncio.create_task(disch_1_press()), 
+            asyncio.create_task(disch_2_press())
+        ], return_when=asyncio.FIRST_COMPLETED)
+
+        # cancel pending tasks
+        [p.cancel() for p in pending]
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
         await pc.pc_thrust_red_light_2.set_state(0)
@@ -426,18 +447,16 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_2)
+        await fp.disch1_eng2.set_state(0)
+        await fp.disch2_eng1.set_state(0)
+        await fp.firerearcomp_button.set_state(0)
+        await fp.disch2_eng2.set_state(0)
+        await fp.firebagcomp_button.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "76 FIRE: ENG 3")
-async def _75_fire_eng_2(ac_state: xp_ac.ACState):
+async def _75_fire_eng_3(ac_state: xp_ac.ACState):
     try:
-        await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
-
-        await engine_panel.en_fuel_3.wait_state(1)
-        await sim.sleep(3)
-
         await cas.show_message(cas.FIRE_ENG_3)
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 6)
         await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
@@ -451,7 +470,21 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         # pilot clicks shut off
         await fp.firebutton_3.wait_state(1)
 
-        await fp.disch1_eng3.wait_state(1)
+        async def disch_1_press():
+            await fp.disch1_eng3.wait_state(1)
+            await fp.apu_disch.set_state(1)
+
+        async def disch_2_press():
+            await fp.disch2_eng3.wait_state(1)
+            await fp.disch1_eng1.set_state(1)
+
+        one, pending = await asyncio.wait([
+            asyncio.create_task(disch_1_press()), 
+            asyncio.create_task(disch_2_press())
+        ], return_when=asyncio.FIRST_COMPLETED)
+
+        # cancel pending tasks
+        [p.cancel() for p in pending]
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
         await sounds.stop_sound(sounds.Sound.FIRE_BELL)
@@ -459,6 +492,10 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_3)
+        await fp.disch1_eng3.set_state(0)
+        await fp.apu_disch.set_state(0)
+        await fp.disch2_eng3.set_state(0)
+        await fp.disch1_eng1.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")

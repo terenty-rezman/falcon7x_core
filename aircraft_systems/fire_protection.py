@@ -71,3 +71,4 @@ class BagCompFireProtection(System):
         failure = xp.Params["sim/operation/failures/rel_engfir4"]
         await xp.set_param(failure, 0)
         await xp_ac.ACState.wait_until_parameter_condition(failure, lambda p: p == 0)
+
