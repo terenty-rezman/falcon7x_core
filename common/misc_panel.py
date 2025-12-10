@@ -43,7 +43,7 @@ class misc_et_timer_left(NLocalStateButton):
     @classmethod
     async def timer_task_fcn(cls):
         while not cls.timer_stop:
-            curr_secs = xp.ACState.get_curr_param(cls.dataref)
+            curr_secs = xp.ACState.get_curr_param(cls.dataref) or 0
             curr_secs += 1
             await xp.set_param(cls.dataref, curr_secs)
             await sim.sleep(1)
@@ -56,7 +56,7 @@ class misc_et_timer_left(NLocalStateButton):
         elif state == 1:
             await xp.set_param(cls.dataref, 0)
             cls.timer_stop = False
-            cls.timer_task = sane_tasks.spawn(cls.timer_task_fcn)
+            cls.timer_task = sane_tasks.spawn(cls.timer_task_fcn())
         elif state == 2:
             cls.timer_stop = True
             
