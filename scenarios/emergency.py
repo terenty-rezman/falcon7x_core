@@ -253,7 +253,16 @@ async def _09_bleed_2_ovht(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "ENGINE", "50 ENG 2 DUCT DOOR OPEN")
 async def _50_eng_2_duct_door_open(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ENG_2_DUCT_DOOR_OPEN)
+    try:
+        await cas.show_message(cas.ENG_2_DUCT_DOOR_OPEN)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+    finally:
+        pass
+        # await sounds.stop_sound(sounds.Sound.GONG)
+        # await fpw.master_warning_lh.set_state(0)
+        # await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("EMERGENCY", "AIR CONDITIONING", "15 COND: AFT FCS BOX OVHT")
