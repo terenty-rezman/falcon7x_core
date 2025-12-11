@@ -410,11 +410,11 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_1)
-        await fp.disch1_eng1.set_state(0)
-        await fp.disch2_eng1.set_state(0)
-        await fp.disch2_eng3.set_state(0)
-        await fp.disch1_eng2.set_state(0)
-        await fp.firerearcomp_button.set_state(0)
+        # await fp.disch1_eng1.set_state(0)
+        # await fp.disch2_eng1.set_state(0)
+        # await fp.disch2_eng3.set_state(0)
+        # await fp.disch1_eng2.set_state(0)
+        # await fp.firerearcomp_button.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
@@ -456,11 +456,11 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_2)
-        await fp.disch1_eng2.set_state(0)
-        await fp.disch2_eng1.set_state(0)
-        await fp.firerearcomp_button.set_state(0)
-        await fp.disch2_eng2.set_state(0)
-        await fp.firebagcomp_button.set_state(0)
+        # await fp.disch1_eng2.set_state(0)
+        # await fp.disch2_eng1.set_state(0)
+        # await fp.firerearcomp_button.set_state(0)
+        # await fp.disch2_eng2.set_state(0)
+        # await fp.firebagcomp_button.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "76 FIRE: ENG 3")
@@ -501,10 +501,10 @@ async def _75_fire_eng_3(ac_state: xp_ac.ACState):
         await fpw.master_warning_lh.set_state(0)
         await fpw.master_warning_rh.set_state(0)
         await cas.remove_message(cas.FIRE_ENG_3)
-        await fp.disch1_eng3.set_state(0)
-        await fp.apu_disch.set_state(0)
-        await fp.disch2_eng3.set_state(0)
-        await fp.disch1_eng1.set_state(0)
+        # await fp.disch1_eng3.set_state(0)
+        # await fp.apu_disch.set_state(0)
+        # await fp.disch2_eng3.set_state(0)
+        # await fp.disch1_eng1.set_state(0)
 
 
 @scenario("EMERGENCY", "FIRE", "78 FIRE: REAR COMP")

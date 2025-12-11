@@ -365,7 +365,7 @@ async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
 async def elec_gen_2_fault(ac_state: xp_ac.ACState):
     try:
         await sounds.play_sound(sounds.Sound.GONG)
-        await cas.show_message(cas.ELEC_GEN_2_FAULT)
+        await cas.show_message(cas.ELEC_GEN_2_FAULT_A)
         await fpw.master_caution_lh.set_state(1)
         await fpw.master_caution_rh.set_state(1)
 
@@ -378,7 +378,7 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
         await elec.gen2.wait_state(1)
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
-        await cas.remove_message(cas.ELEC_GEN_2_FAULT)
+        await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
         await fpw.master_caution_lh.set_state(0)
         await fpw.master_caution_rh.set_state(0)
 
