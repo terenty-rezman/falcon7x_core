@@ -274,7 +274,7 @@ class NStateXPLongPressButton(NStateXPButton):
         else:
             cur_idx += 1
 
-        await cls.set_state(cur_idx)
+        await cls.set_state(cls.short_states_idxs[cur_idx])
 
     @classmethod
     async def long_click(cls):
@@ -289,7 +289,7 @@ class NStateXPLongPressButton(NStateXPButton):
         else:
             cur_idx += 1
 
-        await cls.set_state(cur_idx)
+        await cls.set_state(cls.long_states_idxs[cur_idx])
 
 
 class TwoStateButton(NStateXPButton):
