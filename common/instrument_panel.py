@@ -517,7 +517,7 @@ async def handle_uso_longpress_button_state(button_id, state):
                     await item.long_click()
         else:
             if press_state.click_started and press_state.already_clicked == False:
-                await item.click()
+                await item.short_click()
                 print(button_id, "released")
 
             press_state.click_started = False
