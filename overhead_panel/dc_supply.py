@@ -11,6 +11,9 @@ class galley_master(NStateXPLongPressButton):
     index = 5
     states = [2, 0, 1]
 
+    long_states_idxs = [0, 2]
+    short_states_idxs = [0, 1]
+
     @classmethod
     def get_indication(cls):
         if cls.override_indication is not None:
