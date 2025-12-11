@@ -612,7 +612,7 @@ async def receive_uso_task(udp_endpoint):
             new_floats_state = new_state["floats"]
 
             # long press push buttons
-            for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
+            for button_id, bit_idx in uso_receive.uso_longpress_pushbuttons_receive_map.items():
                 old_state = uso_bits_state[bit_idx]
                 new_state = new_bit_state[bit_idx]
                 # if new_state != old_state:
