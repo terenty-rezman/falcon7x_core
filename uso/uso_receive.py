@@ -411,3 +411,7 @@ for button_id, bit_id in uso_rotate_switch_receive_map.items():
 for float_id, bit_id in uso_floats_receive_map.items():
     idx = uso_float_field_names.index(bit_id)
     uso_floats_receive_map[float_id] = idx
+
+for float_id, bit_id in uso_longpress_pushbuttons_receive_map.items():
+    idx = uso_float_field_names.index(bit_id)
+    uso_longpress_pushbuttons_receive_map[float_id] = idx
