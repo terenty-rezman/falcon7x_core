@@ -90,14 +90,11 @@ uso_pushbuttons_receive_map = {
     "wc_trim_yaw_up_rh": "I03_b16", # yaw right + [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "wc_trim_yaw_down_rh": "I03_b17", # yaw right - [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [09 Пульт ручного триммирования (Manual trims)]
     "apu_start_stop": "I07_a19", # APU Start / Stop [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
-    "backup_pump": "I07_a20", # BACK UP PUMP [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
-    "cabin_master": "I07_b04", # CABIN MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "rh_master": "I07_b05", # RH MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "rh_init": "I07_b06", # RH INIT [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "bus_tie": "I07_b07", # BUS TIE [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "lh_init": "I07_b08", # LH INIT [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "lh_master": "I07_b09", # LH MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
-    "galley_master": "I07_b10", # GALLEY MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "gen1": "I07_b11", # GEN 1 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "lh_isol": "I07_b12", # LH ISOL [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "rat_reset": "I07_b13", # RAT RESET [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
@@ -113,15 +110,10 @@ uso_pushbuttons_receive_map = {
     "bleed_apu": "I07_b28", # BLEED APU [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "bleed2": "I07_b29", # BLEED 2 [K4 Верхний пульт] [Верхний пульт] [08 AIR CONDITION - BLEED - Pressurization   Bleed control panel Pressurization control panel]
     "bag_vent": "I07_b31", # BAG VENT [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN BLEED - Pressurization]
-    "boost1": "I07_c14", # BOOST 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-    "boost2": "I07_c15", # BOOST 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
-    "boost3": "I07_c16", # BOOST 3 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
     "probe_12": "I07_c03", # PROBE 1+2 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
     "probe_3": "I07_c04", # PROBE 4 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
     "probe_4": "I07_c05", # PROBE 4 [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
     "windshield_backup": "I07_c06", # BACK UP [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
-    "windshield_lh": "I07_c07", # LH [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
-    "windshield_rh": "I07_c08", # RH [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
     "el_anticol": "I07_c26", # ANTICOL [K4 Верхний пульт] [Верхний пульт] [15 EXTERIOR LIGHTS + RAIN RPLNT LH]
     "el_nav": "I07_c27", # NAV [K4 Верхний пульт] [Верхний пульт] [15 EXTERIOR LIGHTS + RAIN RPLNT LH]
     "el_taxi": "I08_a02", # TAXI [K4 Верхний пульт] [Верхний пульт] [15 EXTERIOR LIGHTS + RAIN RPLNT LH]
@@ -137,7 +129,6 @@ uso_pushbuttons_receive_map = {
     "eng_2": "I07_a16", # man start eng 2 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "eng_3": "I07_a17", # man start eng 3 [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
     "ice_eng1": "I07_b20", # ENG 1 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
-    "ice_eng2": "I07_b21", # ENG 2 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "ice_eng3": "I07_b22", # ENG 3 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "ice_brake": "I07_b19", # BRAKE [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
     "ice_wings": "I07_b23", # WINGS [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
@@ -265,6 +256,19 @@ uso_pushbuttons_receive_map = {
 	"mkb_0_lh": "I05_b10",	# 0 [K2 Средний пульт (Pedestal)] [Средний пульт (Pedestal)] [14 Многофункциональная клавиатура (MKB) левая]
 	"misc_et_timer_right": "I03_a19", # E.T. PUSH [K2 Средний пульт (Pedestal)] [Приборная доска] [31 Кнопка E.T.  Правая]
 	"misc_et_timer_left": "I03_a07", # E.T. PUSH [K2 Средний пульт (Pedestal)] [Приборная доска] [32 Кнопка E.T. левая]
+} # push buttons
+
+
+uso_longpress_pushbuttons_receive_map = {
+    "backup_pump": "I07_a20", # BACK UP PUMP [K4 Верхний пульт] [Верхний пульт] [04 - 05 - 06 Engines Manual Start - APU control panel - HYDROLYCS]
+    "cabin_master": "I07_b04", # CABIN MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
+    "galley_master": "I07_b10", # GALLEY MASTER [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
+    "boost1": "I07_c14", # BOOST 1 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+    "boost2": "I07_c15", # BOOST 2 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+    "boost3": "I07_c16", # BOOST 3 [K4 Верхний пульт] [Верхний пульт] [10 Fuel System control panel]
+    "ice_eng2": "I07_b21", # ENG 2 [K4 Верхний пульт] [Верхний пульт] [07 - 09 DC SUPPLY (Electrical System control panel) - ANTI-ICE]
+    "windshield_lh": "I07_c07", # LH [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
+    "windshield_rh": "I07_c08", # RH [K4 Верхний пульт] [Верхний пульт] [11 - 12 - 13 WINDSHEILD HEAT - PILOT HEAT - PAX OXYGEN]
 }
 
 

@@ -2,8 +2,10 @@ import array
 import traceback
 import asyncio
 from collections import OrderedDict
+from dataclasses import dataclass
 import math
 import time
+from collections import defaultdict
 
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
@@ -16,7 +18,10 @@ from settings import USO_SEND_DELAY
 always_handle = {
     "pc_parkbrake_half",
     "pc_parkbrake_full",
-    "pc_thrust_reverse"
+    "pc_thrust_reverse",
+    "pc_bank_rh",
+    "pc_pitch_rh",
+    "pc_heading_rh"
 }
 
 
@@ -198,6 +203,93 @@ class NStateXPButton:
             return curr_state == state
 
         await xp_ac.ACState.wait_until_parameter_condition(cls.dataref, condition)
+
+
+class NStateXPLongPressButton(NStateXPButton):
+    """ N states are logical states: 0, 1, 2, 3, ..., N """
+
+    dataref = None
+    states = [] # this values are sent to x plane dref;
+    index = None
+
+    override_indication = None
+
+    long_states_idxs = [0, 1]
+    short_states_idxs = [1, 2]
+
+    @classmethod
+    async def set_state(cls, state):
+        """ set logical state """
+
+        val = cls.states[state]
+
+        # use "set value in array" syntax if needed; see ExtPlane plugin array syntax
+        if cls.index is not None:
+            val = array_str(cls.index, val)
+        else:
+            val = val
+
+        await xp.set_param(cls.dataref, val)
+    
+    @classmethod
+    def set_override_indication(cls, value):
+        cls.override_indication = value
+    
+    @classmethod 
+    def get_state(cls):
+        """ get logical state """
+
+        val = xp_ac.ACState.get_curr_param(cls.dataref)
+        if val is None or val == []:
+            return
+
+        if cls.index is not None:
+            val = val[cls.index]
+
+        try:
+            state = cls.states.index(val)
+        except ValueError:
+            print(f"Error: no valid state for value {val} in {cls} !")
+            state = 0      
+        
+        return state
+    
+    @classmethod
+    def get_indication(cls):
+        if cls.override_indication is not None:
+            return cls.override_indication
+
+        return cls.get_state()
+
+    @classmethod
+    async def short_click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        cur_idx = cls.short_states_idxs.find(state)
+
+        if cur_idx >= len(cls.short_states_idxs) - 1:
+            cur_idx = 0
+        else:
+            cur_idx += 1
+
+        await cls.set_state(cur_idx)
+
+    @classmethod
+    async def long_click(cls):
+        state = cls.get_state()
+        if state is None:
+            return
+
+        cur_idx = cls.long_states_idxs.find(state)
+
+        if cur_idx >= len(cls.long_states_idxs) - 1:
+            cur_idx = 0
+        else:
+            cur_idx += 1
+
+        await cls.set_state(cur_idx)
 
 
 class TwoStateButton(NStateXPButton):
@@ -394,6 +486,45 @@ async def handle_uso_button_state(button_id, state):
             print(button_id, "released")
 
 
+@dataclass
+class LongPressState:
+    click_start_time = None
+    was_clicked = False
+    ignore_next_release = False
+
+    def __init__(self):
+        self.click_start_time = time.time()
+        self.was_clicked = False
+        self.ignore_next_release = False
+
+
+long_press_time_start = defaultdict(LongPressState)
+
+
+async def handle_uso_longpress_button_state(button_id, state):
+    item = CockpitPanel.buttons.get(button_id)
+    if item:
+        press_state = long_press_time_start[button_id]
+
+        if state:
+            if press_state.was_clicked == False:
+                press_state.was_clicked = True
+                press_state.click_start_time = time.time()
+                print(button_id, "pressed")
+            else: 
+                if time.time() > press_state.click_start_time > 2:
+                    press_state.ignore_next_release = True
+                    await item.long_click()
+        else:
+            if press_state.was_clicked and press_state.ignore_next_release == False:
+                await item.click()
+
+            press_state.was_clicked = False
+            press_state.ignore_next_release = False
+
+            print(button_id, "released")
+
+
 async def handle_uso_switch_state(switch_id, state):
     item = CockpitPanel.buttons.get(switch_id)
     if item:
@@ -479,6 +610,14 @@ async def receive_uso_task(udp_endpoint):
             new_state = uso_receive.unpack_packet(new_state)
             new_bit_state = new_state["bits"]
             new_floats_state = new_state["floats"]
+
+            # long press push buttons
+            for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
+                old_state = uso_bits_state[bit_idx]
+                new_state = new_bit_state[bit_idx]
+                # if new_state != old_state:
+
+                await handle_uso_longpress_button_state(button_id, new_state)
 
             # push buttons
             for button_id, bit_idx in uso_receive.uso_pushbuttons_receive_map.items():
