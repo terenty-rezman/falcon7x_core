@@ -267,7 +267,7 @@ class NStateXPLongPressButton(NStateXPButton):
         if state is None:
             return
 
-        cur_idx = cls.short_states_idxs.find(state)
+        cur_idx = cls.short_states_idxs.index(state)
 
         if cur_idx >= len(cls.short_states_idxs) - 1:
             cur_idx = 0
@@ -282,7 +282,7 @@ class NStateXPLongPressButton(NStateXPButton):
         if state is None:
             return
 
-        cur_idx = cls.long_states_idxs.find(state)
+        cur_idx = cls.long_states_idxs.index(state)
 
         if cur_idx >= len(cls.long_states_idxs) - 1:
             cur_idx = 0
