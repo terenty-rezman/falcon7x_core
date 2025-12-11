@@ -269,7 +269,7 @@ class NStateXPLongPressButton(NStateXPButton):
 
         try:  
             cur_idx = cls.short_states_idxs.index(state)
-        except IndexError:
+        except ValueError:
             cur_idx = 0
 
         if cur_idx >= len(cls.short_states_idxs) - 1:
@@ -287,7 +287,7 @@ class NStateXPLongPressButton(NStateXPButton):
 
         try:
             cur_idx = cls.long_states_idxs.index(state)
-        except IndexError:
+        except ValueError:
             cur_idx = 0
 
         if cur_idx >= len(cls.long_states_idxs) - 1:

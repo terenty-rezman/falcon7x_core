@@ -67,7 +67,11 @@ class rh_master(TwoStateButton):
 class cabin_master(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 4
-    states = [2, 0, 1]
+    states = [2, 0, 1]    
+
+    long_states_idxs = [0, 2]
+    short_states_idxs = [0, 1]
+
 
     @classmethod
     def get_indication(cls):
