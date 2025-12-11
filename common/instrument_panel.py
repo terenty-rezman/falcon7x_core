@@ -518,11 +518,11 @@ async def handle_uso_longpress_button_state(button_id, state):
         else:
             if press_state.was_clicked and press_state.ignore_next_release == False:
                 await item.click()
+                print(button_id, "released")
 
             press_state.was_clicked = False
             press_state.ignore_next_release = False
 
-            print(button_id, "released")
 
 
 async def handle_uso_switch_state(switch_id, state):
