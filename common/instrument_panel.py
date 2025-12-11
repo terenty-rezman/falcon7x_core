@@ -489,13 +489,13 @@ async def handle_uso_button_state(button_id, state):
 @dataclass
 class LongPressState:
     click_start_time = None
-    was_clicked = False
-    ignore_next_release = False
+    click_started = False
+    already_clicked = False
 
     def __init__(self):
         self.click_start_time = time.time()
-        self.was_clicked = False
-        self.ignore_next_release = False
+        self.click_started = False
+        self.already_clicked = False
 
 
 long_press_time_start = defaultdict(LongPressState)
@@ -507,22 +507,21 @@ async def handle_uso_longpress_button_state(button_id, state):
         press_state = long_press_time_start[button_id]
 
         if state:
-            if press_state.was_clicked == False:
-                press_state.was_clicked = True
+            if press_state.click_started == False:
+                press_state.click_started = True
                 press_state.click_start_time = time.time()
                 print(button_id, "pressed")
             else: 
-                if time.time() > press_state.click_start_time > 2:
-                    press_state.ignore_next_release = True
+                if press_state.already_clicked == False and time.time() - press_state.click_start_time > 2:
+                    press_state.already_clicked = True
                     await item.long_click()
         else:
-            if press_state.was_clicked and press_state.ignore_next_release == False:
+            if press_state.click_started and press_state.already_clicked == False:
                 await item.click()
                 print(button_id, "released")
 
-            press_state.was_clicked = False
-            press_state.ignore_next_release = False
-
+            press_state.click_started = False
+            press_state.already_clicked = False
 
 
 async def handle_uso_switch_state(switch_id, state):
