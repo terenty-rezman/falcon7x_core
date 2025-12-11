@@ -1,12 +1,12 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, NStateXPLongPressButton
 import xplane.master as xp
 
 
 @add_to_panel
-class windshield_lh(ThreeStateButton):
+class windshield_lh(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_AOA_heat_on_copilot"]
     states = [1, 2, 0]
 
@@ -26,7 +26,7 @@ class windshield_lh_max(windshield_lh):
 
 
 @add_to_panel
-class windshield_rh(ThreeStateButton):
+class windshield_rh(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_window_heat_on"]
     states = [1, 2, 0]
 

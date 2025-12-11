@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, NStateXPLongPressButton
 import xplane.master as xp
 
 
@@ -37,8 +37,10 @@ class ice_eng1(TwoStateButton):
 
 
 @add_to_panel
-class ice_eng2(ThreeStateButton):
+class ice_eng2(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/AIengcentre"]
+
+    states = [0, 1, 2]
 
 
 @add_to_panel

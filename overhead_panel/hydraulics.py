@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, NStateXPLongPressButton
 import xplane.master as xp
 import common.xp_aircraft_state as xp_ac
 import common.util as util
@@ -20,7 +20,7 @@ class shutoff_a3(TwoStateButton):
 
 
 @add_to_panel
-class backup_pump(ThreeStateButton):
+class backup_pump(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/selecthyd"]
     states = [1, 2, 0]
 

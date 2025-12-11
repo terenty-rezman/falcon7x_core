@@ -1,12 +1,12 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, FloatSwitch, DiscreteSwitch, NStateXPLongPressButton
 import xplane.master as xp
 
 
 @add_to_panel
-class boost1(ThreeStateButton):
+class boost1(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump0"]
     states = [2, 0, 1]
 
@@ -41,7 +41,7 @@ class xtk_right(TwoStateButton):
 
 
 @add_to_panel
-class boost3(ThreeStateButton):
+class boost3(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump2"]
     states = [2, 0, 1]
 
@@ -86,7 +86,7 @@ class xtk_down_1(TwoStateButton):
 
 
 @add_to_panel
-class boost2(ThreeStateButton):
+class boost2(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump1"]
     states = [2, 0, 1]
 

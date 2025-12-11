@@ -1,12 +1,12 @@
 import asyncio
 import time
 
-from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, Indicator
+from common.instrument_panel import add_to_panel, TwoStateButton, ThreeStateButton, Indicator, NStateXPLongPressButton
 import xplane.master as xp
 
 
 @add_to_panel
-class galley_master(ThreeStateButton):
+class galley_master(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 5
     states = [2, 0, 1]
@@ -64,7 +64,7 @@ class rh_master(TwoStateButton):
 
 
 @add_to_panel
-class cabin_master(ThreeStateButton):
+class cabin_master(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/weapons/mis_thrust2"]
     index = 4
     states = [2, 0, 1]
