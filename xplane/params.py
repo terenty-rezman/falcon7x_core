@@ -294,6 +294,28 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_et_timer_left", # timer secs
     "sim/custom/7x/z_et_timer_right", # timer secs
 
+    "sim/custom/7x/z_hyd_pump_a1",
+    "sim/custom/7x/z_hyd_pump_a3",
+    "sim/custom/7x/z_hyd_pump_bu",
+    "sim/custom/7x/z_hyd_pump_b2",
+    "sim/custom/7x/z_hyd_pump_b3",
+    "sim/custom/7x/z_hyd_pump_c2",
+    "sim/custom/7x/z_hyd_pump_a1_text",
+    "sim/custom/7x/z_hyd_pump_a3_text",
+    "sim/custom/7x/z_hyd_pump_bu_text",
+    "sim/custom/7x/z_hyd_pump_b2_text",
+    "sim/custom/7x/z_hyd_pump_b3_text",
+    "sim/custom/7x/z_hyd_pump_c2_text",
+    "sim/custom/7x/z_hyd_pipe_a1",
+    "sim/custom/7x/z_hyd_pipe_a3",
+    "sim/custom/7x/z_hyd_pipe_a1a3",
+    "sim/custom/7x/z_hyd_pipe_b2",
+    "sim/custom/7x/z_hyd_pipe_b3",
+    "sim/custom/7x/z_hyd_pipe_b2b3",
+    "sim/custom/7x/z_hyd_pipe_c2",
+    "sim/custom/7x/z_hyd_pipe_ebha",
+    "sim/custom/7x/z_hyd_pipe_brake2",
+    "sim/custom/7x/z_hyd_pipe_bu",
 ])
 Params.__str__ = to_str
 
