@@ -5,6 +5,7 @@ import common.xp_aircraft_state as xp_ac
 import common.util as util
 from common import plane_control as pc
 from cas import cas
+import overhead_panel.hydraulics as hyd
 
 
 @add_to_panel
@@ -23,6 +24,7 @@ class firebutton_1(TwoStateButton):
             cls.blink_timer.start()
         else:
             cls.blink_timer = None
+            await hyd.shutoff_a1.set_state(0)
             
         return await super().set_state(state)
 
@@ -150,6 +152,18 @@ class firebutton_2(firebutton_1):
     blink = util.blink_anim(0.5)
     blink_timer = None
 
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            cls.blink_timer = util.Timer()
+            cls.blink_timer.start()
+        else:
+            cls.blink_timer = None
+            await hyd.shutoff_b2.set_state(0)
+            await hyd.shutoff_c2.set_state(0)
+            
+        return await super().set_state(state)
+
 
 @add_to_panel
 class fireindicator_2(fireindicator_1):
@@ -218,6 +232,18 @@ class firebutton_3(firebutton_1):
 
     blink = util.blink_anim(0.5)
     blink_timer = None
+
+    @classmethod
+    async def set_state(cls, state):
+        if state == 1:
+            cls.blink_timer = util.Timer()
+            cls.blink_timer.start()
+        else:
+            cls.blink_timer = None
+            await hyd.shutoff_a3.set_state(0)
+            await hyd.shutoff_b3.set_state(0)
+            
+        return await super().set_state(state)
 
 
 @add_to_panel
@@ -324,9 +350,6 @@ class fire_test(NLocalStateButton):
     async def set_state(cls, state):
         await super().set_state(state)
 
-        if state == 0:
-            state = None
-
         if state and cls.cas_shown == False:
             # show cas
             await cas.show_message(cas.FIRE_TEST_IN_PROGRESS)
@@ -336,6 +359,9 @@ class fire_test(NLocalStateButton):
             # hide cas
             await cas.remove_message(cas.FIRE_TEST_IN_PROGRESS)
             cls.cas_shown = False
+
+        if state == 0:
+            state = None
 
         firebutton_1.set_override_indication(state)
         firebutton_2.set_override_indication(state)

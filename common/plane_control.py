@@ -319,6 +319,15 @@ class pc_throttle_2(pc_throttle_1):
     dataref = Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"]
     last_uso_state = None
 
+    disable_uso_input = False
+
+    @classmethod
+    async def set_state(cls, state: float):
+        if cls.disable_uso_input == True:
+            return
+
+        return await super().set_state(state)
+
 
 @add_to_panel
 class pc_throttle_3(pc_throttle_1):
@@ -460,6 +469,11 @@ class pc_thrust_reverse(FloatStepper):
             return
 
         print(cls, new_state)
+
+        if new_state == True:
+            pc_throttle_2.disable_uso_input = True
+        else:
+            pc_throttle_2.disable_uso_input = False
 
         cls.skip_steps = 80
         await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle_2"])

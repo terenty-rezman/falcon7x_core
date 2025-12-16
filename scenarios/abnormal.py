@@ -65,10 +65,10 @@ async def ads_1_fail(ac_state: xp_ac.ACState):
         await sim.sleep(3)
     finally:
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 0)
-        await xp.set_param(xp.Params["sim/custom/7x/z_ads_pilot"], 1)
-        await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
-        await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
-        await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_ads_pilot"], 1)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
         await fpw.master_caution_lh.set_state(0)
         await fpw.master_caution_rh.set_state(0)
         await cas.remove_message(cas.ADS_1_FAIL)
@@ -87,10 +87,10 @@ async def ads_2_fail(ac_state: xp_ac.ACState):
     finally:
         await cas.remove_message(cas.ADS_2_FAIL)
         await xp.set_param(xp.Params["sim/custom/7x/z_ads_fail"], 0)
-        await xp.set_param(xp.Params["sim/custom/7x/z_ads_pilot"], 1)
-        await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
-        await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
-        await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_ads_pilot"], 1)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_ads_copilot"], 2)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_irs_pilot"], 1)
+        # await xp.set_param(xp.Params["sim/custom/7x/z_irs_copilot"], 2)
         await fpw.master_caution_lh.set_state(0)
         await fpw.master_caution_rh.set_state(0)
 
@@ -363,6 +363,8 @@ async def elec_aft_dist_box_hi_temp(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ELECTRICAL POWER", "ELEC: GEN 2 FAULT")
 async def elec_gen_2_fault(ac_state: xp_ac.ACState):
+    BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
+
     try:
         await sounds.play_sound(sounds.Sound.GONG)
         await cas.show_message(cas.ELEC_GEN_2_FAULT_A)
@@ -370,12 +372,16 @@ async def elec_gen_2_fault(ac_state: xp_ac.ACState):
         await fpw.master_caution_rh.set_state(1)
 
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
+        async with synoptic_overrides.override_params([BAT_2_AMPS]):
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_2_AMPS) or 0
+            bat_2_amps = synoptic_overrides.linear_anim(BAT_2_AMPS, cur_amps, -32, 3)
 
-        # light gen2 off
-        await elec.gen2.set_state(0)
-        await elec.gen2.wait_state(0)
+            # light gen2 off
+            await elec.gen2.set_state(0)
+            await elec.gen2.wait_state(0)
 
-        await elec.gen2.wait_state(1)
+            await elec.gen2.wait_state(1)
+            bat_2_amps.cancel()
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
         await cas.remove_message(cas.ELEC_GEN_2_FAULT_A)
@@ -513,7 +519,27 @@ async def eng_2_starter_fail(ac_state: xp_ac.ACState):
 
 @scenario("ABNORMAL", "ENGINES", "ENGINE 1 SHUTDOWN")
 async def engine_1_shutdown(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ENGINE_1_SHUTDOWN)
+    try:
+        await cas.show_message(cas.ENGINE_1_SHUTDOWN)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        # disable xplane engine
+        await engine_panel.en_fuel_digital_1.set_state(0)
+
+        # run our engine shutdown proc
+        engine_system.Engine1ManualShutdown.manual_disable = True
+
+        await engine_panel.en_fuel_1.wait_state(0)
+    finally:
+        engine_system.Engine1ManualShutdown.manual_disable = False
+        await engine_panel.en_fuel_digital_1.set_state(1)
+        await cas.remove_message(cas.ENGINE_1_SHUTDOWN)
+        await sounds.stop_sound(sounds.Sound.GONG)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
 
 
 @scenario("ABNORMAL", "ENGINES", "ENGINE 2 SHUTDOWN")

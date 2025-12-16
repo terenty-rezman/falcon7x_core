@@ -10,6 +10,9 @@ class boost1(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump0"]
     states = [2, 0, 1]
 
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
+
     @classmethod
     async def set_state(cls, state):
         pass
@@ -44,6 +47,9 @@ class xtk_right(TwoStateButton):
 class boost3(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump2"]
     states = [2, 0, 1]
+
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
 
     @classmethod
     async def set_state(cls, state):
@@ -89,6 +95,9 @@ class xtk_down_1(TwoStateButton):
 class boost2(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/fpump1"]
     states = [2, 0, 1]
+
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
 
     @classmethod
     async def set_state(cls, state):

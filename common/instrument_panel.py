@@ -214,8 +214,8 @@ class NStateXPLongPressButton(NStateXPButton):
 
     override_indication = None
 
-    long_states_idxs = [0, 1]
-    short_states_idxs = [1, 2]
+    long_states_idxs = [2, 1]
+    short_states_idxs = [0, 1]
 
     @classmethod
     async def set_state(cls, state):
@@ -270,7 +270,7 @@ class NStateXPLongPressButton(NStateXPButton):
         try:  
             cur_idx = cls.short_states_idxs.index(state)
         except ValueError:
-            cur_idx = 0
+            return await cls.long_click()
 
         if cur_idx >= len(cls.short_states_idxs) - 1:
             cur_idx = 0
@@ -289,11 +289,11 @@ class NStateXPLongPressButton(NStateXPButton):
             cur_idx = cls.long_states_idxs.index(state)
         except ValueError:
             cur_idx = 0
-
-        if cur_idx >= len(cls.long_states_idxs) - 1:
-            cur_idx = 0
         else:
-            cur_idx += 1
+            if cur_idx >= len(cls.long_states_idxs) - 1:
+                cur_idx = 0
+            else:
+                cur_idx += 1
 
         await cls.set_state(cls.long_states_idxs[cur_idx])
 

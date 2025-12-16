@@ -58,7 +58,7 @@ class BoostStart2(System):
                     await fuel_overhead.boost2.set_state(0)
 
 
-class AllValves(System):
+class FuelAllValves(System):
     next_wake_sleep_delay = 0.5
 
     VALVE_XTK_13 = xp.Params["sim/custom/7x/z_fuel_xtk_13"]

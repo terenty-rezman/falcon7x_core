@@ -8,7 +8,7 @@ import common.external_sound as sounds
 
 
 async def reset_all_systems():
-    await cas.remove_all_messages()
+    # await cas.remove_all_messages()
     await xp.run_command_once(Commands["sim/operation/fix_all_systems"])
 
     engine_system.EngineStart1.broken_start = engine_system.BrokenStart.NORMAL_START

@@ -225,6 +225,7 @@ class Subscribe:
         (Params["sim/custom/7x/z_vor_copilot"], None, "tcp"), # vor
         (Params["sim/custom/7x/z_no_slip_comp"], None, "tcp"), # no slip compensation
 
+        # fuel tab
         (Params["sim/custom/7x/z_fuel_xtk_13"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_xtk_23"], None, "tcp"),
         (Params["sim/custom/7x/z_fuel_xtk_12"], None, "tcp"),
@@ -251,6 +252,30 @@ class Subscribe:
         (Params["sim/custom/7x/z_rat_manual"], None, "tcp"),
         (Params["sim/custom/7x/z_et_timer_left"], None, "tcp"),
         (Params["sim/custom/7x/z_et_timer_right"], None, "tcp"),
+
+        # hyd tab
+        (Params["sim/custom/7x/z_hyd_pump_a1"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_a3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_bu"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_b2"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_b3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_c2"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_a1_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_a3_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_bu_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_b2_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_b3_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pump_c2_text"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_a1"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_a3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_a1a3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_b2"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_b3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_b2b3"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_c2"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_ebha"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_brake2"], None, "tcp"),
+        (Params["sim/custom/7x/z_hyd_pipe_bu"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol

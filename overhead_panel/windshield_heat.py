@@ -10,6 +10,9 @@ class windshield_lh(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_AOA_heat_on_copilot"]
     states = [1, 2, 0]
 
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
+
 
 @add_to_panel
 class windshield_lh_off(windshield_lh):
@@ -29,6 +32,9 @@ class windshield_lh_max(windshield_lh):
 class windshield_rh(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/ice/ice_window_heat_on"]
     states = [1, 2, 0]
+
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
 
 
 @add_to_panel

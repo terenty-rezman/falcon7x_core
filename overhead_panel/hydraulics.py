@@ -24,6 +24,9 @@ class backup_pump(NStateXPLongPressButton):
     dataref: xp.Params = xp.Params["sim/custom/7x/selecthyd"]
     states = [1, 2, 0]
 
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
+
 
 @add_to_panel
 class backup_pump_on(backup_pump):

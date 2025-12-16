@@ -11,7 +11,7 @@ class galley_master(NStateXPLongPressButton):
     index = 5
     states = [2, 0, 1]
 
-    long_states_idxs = [0, 2]
+    long_states_idxs = [2, 1]
     short_states_idxs = [0, 1]
 
     @classmethod
@@ -72,7 +72,7 @@ class cabin_master(NStateXPLongPressButton):
     index = 4
     states = [2, 0, 1]    
 
-    long_states_idxs = [0, 2]
+    long_states_idxs = [2, 1]
     short_states_idxs = [0, 1]
 
 

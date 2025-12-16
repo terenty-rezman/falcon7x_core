@@ -679,37 +679,10 @@ async def unwanted_disconnection_of_autothrottle(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "EMERGENCY SITUATIION", "SMOKE REMOVAL")
 async def smoke(ac_state: xp_ac.ACState):
-    PILOT_SPEED = xp.Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"]
-    PILOT_ALT = xp.Params["sim/cockpit2/gauges/indicators/altitude_ft_pilot"]
-
-    COPILOT_HEADING = xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_copilot"]
-
     try:
-        await cas.show_message(cas.AFCS_ADS_1_MISCOMPARE)
-        await cas.show_message(cas.AFCS_IRS_2_MISCOMPARE)
-        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
+
         await fpw.master_warning_lh.set_state(1)
         await fpw.master_warning_rh.set_state(1)
-
-        async with synoptic_overrides.override_params([PILOT_SPEED, PILOT_ALT, COPILOT_HEADING]):
-            async def pilot():
-                modify_speed_pilot_task = synoptic_overrides.modify_original_value(PILOT_SPEED, lambda origin_speed, _: origin_speed + 40)
-                modify_alt_pilot_task = synoptic_overrides.modify_original_value(PILOT_ALT, lambda origin_speed, _: origin_speed - 600)
-                await rev.rev_ads_lh.wait_state(2)
-                modify_speed_pilot_task.cancel()
-                modify_alt_pilot_task.cancel()
-                await cas.remove_message(cas.AFCS_ADS_1_MISCOMPARE)
-
-            async def copilot():
-                modify_heading_copilot_task = synoptic_overrides.modify_original_value(COPILOT_HEADING, lambda origin_heading, _: origin_heading - 9)
-                await rev.rev_irs_rh.wait_state(2)
-                modify_heading_copilot_task.cancel()
-                await cas.remove_message(cas.AFCS_IRS_2_MISCOMPARE)
-            
-            await asyncio.gather(pilot(), copilot())
     finally:
-        await sounds.stop_sound(sounds.Sound.GONG)
-        await cas.remove_message(cas.AFCS_ADS_1_MISCOMPARE)
-        await cas.remove_message(cas.AFCS_IRS_2_MISCOMPARE)
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
+        pass

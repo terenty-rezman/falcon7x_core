@@ -42,6 +42,9 @@ class ice_eng2(NStateXPLongPressButton):
 
     states = [0, 1, 2]
 
+    long_states_idxs = [1, 2]
+    short_states_idxs = [0, 2]
+
 
 @add_to_panel
 class ice_eng2_on(ice_eng2):

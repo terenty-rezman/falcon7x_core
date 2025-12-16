@@ -15,6 +15,9 @@ from aircraft_systems.system_base import System
 from xplane.params import Params
 import middle_pedestal.engine as engine_panel
 import overhead_panel.engines_apu as overhead_engines
+import overhead_panel.pitot_heat as pitot_heat
+import overhead_panel.windshield_heat as windshield_heat
+import overhead_panel.fuel as fuel
 import overhead_panel.fuel as fuel
 import synoptic_remote.param_overrides as synoptic_overrides
 import front_panel.warning as warning
@@ -153,6 +156,9 @@ class EngineStart1(System):
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_digital = engine_panel.en_fuel_digital_1
     boost = fuel.boost1
+
+    other_engine_1 = None
+    other_engine_2 = None
 
     broken_start = BrokenStart.NORMAL_START
     broken_start_finished = False
@@ -297,6 +303,17 @@ class EngineStart1(System):
                 await sim.sleep(1)
                 await xp.set_param(cls.START, 0)
                 await cls.boost.set_state(0)
+                
+                running_engines = 0
+                running_engines += int(cls.other_engine_1.status == EngineStatus.RUNNING)
+                running_engines += int(cls.other_engine_2.status == EngineStatus.RUNNING)
+
+                if running_engines == 1:
+                    await windshield_heat.windshield_lh.set_state(0)
+                    await windshield_heat.windshield_rh.set_state(0)
+                    await pitot_heat.probe_12.set_state(1)
+                    await pitot_heat.probe_3.set_state(1)
+                    await pitot_heat.probe_4.set_state(1)
                 
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
@@ -1166,3 +1183,12 @@ class Engine3ManualShutdown(Engine1ManualShutdown):
 EngineStart1.engine_shutdown = Engine1ManualShutdown
 EngineStart2.engine_shutdown = Engine2ManualShutdown
 EngineStart3.engine_shutdown = Engine3ManualShutdown
+
+EngineStart1.other_engine_1 = EngineStart2
+EngineStart1.other_engine_2 = EngineStart3
+
+EngineStart1.other_engine_1 = EngineStart1
+EngineStart2.other_engine_2 = EngineStart3
+
+EngineStart3.other_engine_1 = EngineStart1
+EngineStart3.other_engine_2 = EngineStart2

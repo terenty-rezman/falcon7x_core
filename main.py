@@ -129,8 +129,12 @@ async def main_loop():
     # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)
 
-    import common.plane_control as pc
-    import middle_pedestal.reversion as rev
+    import common.misc_panel as misc_panel
+    import overhead_panel.fire_panel as fire_panel
+    import overhead_panel.dc_supply as dc_supply
+    import overhead_panel.hydraulics as hyd
+    import overhead_panel.fuel as fuel
+    import common.plane_control as plane_control
 
     while True:
         # x, y, z, rz = joystick.get_axes_values()
@@ -138,7 +142,7 @@ async def main_loop():
         #     await xp.set_param(xp.Params["sim/joystick/yoke_roll_ratio"], x)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_pitch_ratio"], -y)
         #     await xp.set_param(xp.Params["sim/joystick/yoke_heading_ratio"], rz - z)
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(1)
 
     
 async def connect_to_mfi():
