@@ -63,7 +63,8 @@ class cabin_alt_climb():
     @classmethod
     async def set_state(cls, state):
         cabin_alt.climb_digit = state 
-        await cabin_alt.set_state(None)
+        # await cabin_alt.set_state(None)
+        # handle state at cabin_alt_descent as it goes last in uso signal handling
 
 
 @add_to_panel

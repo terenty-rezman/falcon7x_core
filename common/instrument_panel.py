@@ -16,12 +16,17 @@ from settings import USO_SEND_DELAY
 
 
 always_handle = {
+    # floats
     "pc_parkbrake_half",
     "pc_parkbrake_full",
     "pc_thrust_reverse",
     "pc_bank_rh",
     "pc_pitch_rh",
-    "pc_heading_rh"
+    "pc_heading_rh",
+
+    # switches
+    "cabin_alt_climb",
+    "cabin_alt_descent",
 }
 
 
@@ -635,7 +640,7 @@ async def receive_uso_task(udp_endpoint):
             for switch_id, bit_idx in uso_receive.uso_switches_receive_map.items():
                 old_state = uso_bits_state[bit_idx]
                 new_state = new_bit_state[bit_idx]
-                if new_state != old_state:
+                if new_state != old_state or switch_id in always_handle:
                     await handle_uso_switch_state(switch_id, new_state)
 
             # rotate switches
