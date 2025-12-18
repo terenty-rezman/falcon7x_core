@@ -19,6 +19,8 @@ import overhead_panel.pitot_heat as pitot_heat
 import overhead_panel.windshield_heat as windshield_heat
 import overhead_panel.fuel as fuel
 import overhead_panel.fuel as fuel
+import overhead_panel.flight_control as fcs
+import overhead_panel.hydraulics as hyd
 import synoptic_remote.param_overrides as synoptic_overrides
 import front_panel.warning as warning
 from cas import cas
@@ -314,6 +316,8 @@ class EngineStart1(System):
                     await pitot_heat.probe_12.set_state(1)
                     await pitot_heat.probe_3.set_state(1)
                     await pitot_heat.probe_4.set_state(1)
+                    await fcs.fcs_steering.set_state(0)
+                    await hyd.backup_pump.set_state(0)
                 
                 await xp.set_param(cls.MIN_OIL_LEVEL, 24)
             
