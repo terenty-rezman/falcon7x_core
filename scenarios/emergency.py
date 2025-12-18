@@ -217,20 +217,33 @@ async def _54_eng1_oil_too_low_press(ac_state: xp_ac.ACState):
 
 @scenario("EMERGENCY", "FCS", "66 FCS: DIRECT LAWS ACTIVE")
 async def _66_fcs_direct_laws_active(ac_state: xp_ac.ACState):
-    await sim.sleep(5)
+    try:
+        await cas.show_message(cas.FCS_DIRECT_LAWS_ACTIVE)
+        await sounds.play_sound(sounds.Sound.GONG, looped=True)
+        await fpw.master_warning_lh.set_state(1)
+        await fpw.master_warning_rh.set_state(1)
+        await sim.sleep(15)
 
-    # RED CAS message: FCS: DIRECT LAWS ACTIVE
-    await cas.show_message(cas.FCS_DIRECT_LAWS_ACTIVE)
+    finally: 
+        await cas.remove_message(cas.FCS_DIRECT_LAWS_ACTIVE)
+        await fpw.master_warning_lh.set_state(0)
+        await fpw.master_warning_rh.set_state(0)
+        await sounds.stop_sound(sounds.Sound.GONG)
 
-    await fc.airbrake_auto.wait_state(1)
+    # await sim.sleep(5)
 
-    # YELLOW CAS message: FCS: MFCC FAULT
-    await cas.show_message(cas.FCS_MFCC_FAULT)
+    # # RED CAS message: FCS: DIRECT LAWS ACTIVE
+    # await cas.show_message(cas.FCS_DIRECT_LAWS_ACTIVE)
 
-    await fc.fcs_engage_stby.wait_state(1)
+    # await fc.airbrake_auto.wait_state(1)
 
-    # hide RED CAS message: FCS: DIRECT LAWS ACTIVE
-    await cas.remove_message(cas.FCS_DIRECT_LAWS_ACTIVE)
+    # # YELLOW CAS message: FCS: MFCC FAULT
+    # await cas.show_message(cas.FCS_MFCC_FAULT)
+
+    # await fc.fcs_engage_stby.wait_state(1)
+
+    # # hide RED CAS message: FCS: DIRECT LAWS ACTIVE
+    # await cas.remove_message(cas.FCS_DIRECT_LAWS_ACTIVE)
 
 
 async def fcs_direct_laws_active_2(ac_state: xp_ac.ACState):

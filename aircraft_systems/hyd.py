@@ -14,12 +14,14 @@ import aircraft_systems.engine as engine_sys
 import xplane.master as xp
 import aircraft_systems.elec as elec_sys
 
+from common.util import LineColor
+
 
 class HydAllValves(System):
     next_wake_sleep_delay = 0.5
 
     PUMP_A1 = xp.Params["sim/custom/7x/z_hyd_pump_a1"]
-    PUMP_A1 = xp.Params["sim/custom/7x/z_hyd_pump_a3"]
+    PUMP_A3 = xp.Params["sim/custom/7x/z_hyd_pump_a3"]
     PUMP_BU = xp.Params["sim/custom/7x/z_hyd_pump_bu"]
     PUMP_B2 = xp.Params["sim/custom/7x/z_hyd_pump_b2"]
     PUMP_B3 = xp.Params["sim/custom/7x/z_hyd_pump_b3"]
@@ -42,6 +44,14 @@ class HydAllValves(System):
     PIPE_EBHA = xp.Params["sim/custom/7x/z_hyd_pipe_ebha"]
     PIPE_BRAKE2 = xp.Params["sim/custom/7x/z_hyd_pipe_brake2"]
     PIPE_BU = xp.Params["sim/custom/7x/z_hyd_pipe_bu"]
+
+    N2_ENG1 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[0]"]
+    N2_ENG2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[1]"]
+    N2_ENG3 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[2]"]
+
+    ENG_WORKING_THRESHOLD_N2 = 45
+
+    BU_PUMP_XP = xp.Params["sim/cockpit2/switches/electric_hydraulic_pump_on"]
 
     old_state = []
 
@@ -79,7 +89,48 @@ class HydAllValves(System):
                 bu_state_text = 2
             case 2:
                 bu_state_text = 0
+
+        pump_a1_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.N2_ENG1) or 0) > cls.ENG_WORKING_THRESHOLD_N2: 
+            pump_a1_state = 1
+
+        pump_a3_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.N2_ENG3) or 0) > cls.ENG_WORKING_THRESHOLD_N2: 
+            pump_a3_state = 1
+
+        pump_b2_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.N2_ENG2) or 0) > cls.ENG_WORKING_THRESHOLD_N2:
+            pump_b2_state = 1
+
+        pump_b3_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.N2_ENG3) or 0) > cls.ENG_WORKING_THRESHOLD_N2: 
+            pump_b3_state = 1
+
+        pump_c2_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.N2_ENG2) or 0) > 14: 
+            pump_c2_state = 1
+
+        pump_bu_state = 0
+        if (xp_ac.ACState.get_curr_param(cls.BU_PUMP_XP) or 0) == 1: 
+            pump_bu_state = 1
         
+        pipe_a1_state = LineColor.BLACK
+        if pump_a1_state == 1:
+            pipe_a1_state = LineColor.YELLOW
+
+            if shutoff_a1_state == 1:
+                pipe_a1_state = LineColor.GREEN
+
+        pipe_a3_state = LineColor.BLACK
+        if pump_a3_state == 1:
+                pipe_a3_state = LineColor.YELLOW
+
+                if shutoff_a3_state == 1:
+                    pipe_a3_state = LineColor.GREEN
+        
+        pipe_a1a3_state = LineColor.BLACK
+        pipe_a1a3_state = pipe_a1_state + pipe_a3_state
+
         new_state = [
             shutoff_a1_state,
             shutoff_a3_state,
@@ -87,6 +138,15 @@ class HydAllValves(System):
             shutoff_b3_state,
             shutoff_c2_state,
             bu_state_text,
+            pump_a1_state,
+            pump_a3_state,
+            pump_b2_state,
+            pump_b3_state,
+            pump_c2_state,
+            pump_bu_state,
+            pipe_a1_state,
+            pipe_a3_state,
+            pipe_a1a3_state,
         ]
 
         if new_state != cls.old_state:
@@ -98,3 +158,14 @@ class HydAllValves(System):
             await xp.set_param(cls.PUMP_B3_TEXT, int(shutoff_b3_state))
             await xp.set_param(cls.PUMP_C2_TEXT, int(shutoff_c2_state))
             await xp.set_param(cls.PUMP_BU_TEXT, int(bu_state_text))
+
+            await xp.set_param(cls.PUMP_A1, int(pump_a1_state))
+            await xp.set_param(cls.PUMP_A3, int(pump_a3_state))
+            await xp.set_param(cls.PUMP_B2, int(pump_b2_state))
+            await xp.set_param(cls.PUMP_B3, int(pump_b3_state))
+            await xp.set_param(cls.PUMP_C2, int(pump_c2_state))
+            await xp.set_param(cls.PUMP_BU, int(pump_bu_state))
+
+            await xp.set_param(cls.PIPE_A1, int(pipe_a1_state))
+            await xp.set_param(cls.PIPE_A3, int(pipe_a3_state))
+            await xp.set_param(cls.PIPE_A1A3, int(pipe_a1a3_state))

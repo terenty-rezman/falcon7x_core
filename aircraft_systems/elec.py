@@ -9,6 +9,8 @@ import overhead_panel.dc_supply as dc
 import overhead_panel.engines_apu as eng_apu
 import overhead_panel.fuel as fuel_overhead
 
+from common.util import LineColor
+
 from aircraft_systems.system_base import System
 
 
@@ -75,26 +77,6 @@ class Apu(System):
         pass
 
 
-class LineColor(enum.IntEnum):
-    BLACK = 0,
-    YELLOW = 2,
-    GREEN = 3
-
-    def __add__(self, other):
-        if self == LineColor.BLACK:
-            return other
-        
-        if other == LineColor.BLACK:
-            return self
-        
-        if self == other:
-            return self
-
-        if self == LineColor.GREEN:
-            return self
-        
-        if self == LineColor.YELLOW and other == LineColor.GREEN:
-            return other
 
 
 class ElecLinePower(System):

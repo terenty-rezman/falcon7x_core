@@ -2,11 +2,34 @@ import time
 import asyncio
 import inspect
 import math
+import enum
 
 from common.xp_aircraft_state import ACState
 import xplane.master as xp
 from xplane.params import Params, Commands
 import common.simulation as sim
+
+
+class LineColor(enum.IntEnum):
+    BLACK = 0,
+    YELLOW = 2,
+    GREEN = 3
+
+    def __add__(self, other):
+        if self == LineColor.BLACK:
+            return other
+        
+        if other == LineColor.BLACK:
+            return self
+        
+        if self == other:
+            return self
+
+        if self == LineColor.GREEN:
+            return self
+        
+        if self == LineColor.YELLOW and other == LineColor.GREEN:
+            return other
 
 
 async def load_sit(sit_name: str):

@@ -276,6 +276,8 @@ class Subscribe:
         (Params["sim/custom/7x/z_hyd_pipe_ebha"], None, "tcp"),
         (Params["sim/custom/7x/z_hyd_pipe_brake2"], None, "tcp"),
         (Params["sim/custom/7x/z_hyd_pipe_bu"], None, "tcp"),
+
+        (Params["sim/cockpit2/switches/electric_hydraulic_pump_on"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol
