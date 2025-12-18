@@ -12,9 +12,9 @@ import common.external_sound as sounds
 # F7X_SDD_Avionics_Vol1 31-11 front panel warnings
 
 @add_to_panel
-class pty_lh(Indicator):
-    dataref: Params = Params["sim/weapons/mis_thrust2"]
-    index = 15
+class pty_lh(LocalStateIndicator):
+    states = [0, 1]
+    state = 0
 
 
 @add_to_panel

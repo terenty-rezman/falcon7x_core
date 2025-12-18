@@ -82,8 +82,10 @@ class cabin_alt_descent():
     @classmethod
     async def set_state(cls, state):
         cabin_alt.descend_digit = state 
-        if state == 1:
-            await cabin_alt.set_state(None)
+        await cabin_alt.set_state(None)
+        # # if state == 1:
+        # # if state == 1:
+        #     await cabin_alt.set_state(None)
 
 
 @add_to_panel
