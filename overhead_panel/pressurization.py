@@ -37,10 +37,18 @@ class cabin_alt(DiscreteSwitch):
     climb_digit = 0
     descend_digit = 0
 
+    old_state = []
+
     @classmethod
     async def set_state(cls, state):
         if pressu_man.get_state() == 0: 
             return 
+
+        new_state = [cls.climb_digit, cls.descend_digit]
+        if cls.old_state == new_state:
+            return
+        
+        cls.old_state = new_state
         
         if state is None:
             if cls.climb_digit == 0 and cls.descend_digit == 0:
@@ -54,8 +62,10 @@ class cabin_alt(DiscreteSwitch):
 
         if state == 1:
             await xp.run_command_once(xp.Commands["sim/pressurization/vvi_up"])
+            print(cls, "up")
         elif state == 2:
             await xp.run_command_once(xp.Commands["sim/pressurization/vvi_down"])
+            print(cls, "down")
 
 
 @add_to_panel

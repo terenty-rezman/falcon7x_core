@@ -539,7 +539,6 @@ async def handle_uso_switch_state(switch_id, state):
     item = CockpitPanel.buttons.get(switch_id)
     if item:
         await item.set_state(state)
-        print(switch_id, "state", state)
 
 
 async def handle_uso_rotate_switch_state(rotate_id, new_state, old_state):
@@ -642,6 +641,9 @@ async def receive_uso_task(udp_endpoint):
                 new_state = new_bit_state[bit_idx]
                 if new_state != old_state or switch_id in always_handle:
                     await handle_uso_switch_state(switch_id, new_state)
+
+                    if switch_id not in always_handle:
+                        print(switch_id, "state", new_state)
 
             # rotate switches
             for rotate_id, bit_idx in uso_receive.uso_rotate_switch_receive_map.items():
