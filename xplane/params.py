@@ -318,6 +318,7 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_hyd_pipe_ebha",
     "sim/custom/7x/z_hyd_pipe_brake2",
     "sim/custom/7x/z_hyd_pipe_bu",
+    "sim/custom/7x/z_flight_regime",
 
     "sim/cockpit2/switches/electric_hydraulic_pump_on",
 ])

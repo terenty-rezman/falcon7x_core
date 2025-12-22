@@ -345,12 +345,23 @@ class FuelCasMessages(System):
         if fuel_q2 < 250 / 2.2:
             cas_fuel_2_lvl = 0
             cas_fuel_2_lo = 1
+
+        cas_fuel_3_lvl = 0
+        if fuel_q3 < 1000 / 2.2:
+            cas_fuel_3_lvl = 1
+        
+        cas_fuel_3_lo = 0
+        if fuel_q3 < 250 / 2.2:
+            cas_fuel_3_lvl = 0
+            cas_fuel_3_lo = 1
         
         new_state = [
             cas_fuel_1_lvl,
             cas_fuel_1_lo,
             cas_fuel_2_lvl,
             cas_fuel_2_lo,
+            cas_fuel_3_lvl,
+            cas_fuel_3_lo,
         ]
 
         if new_state != cls.old_state:
@@ -375,4 +386,15 @@ class FuelCasMessages(System):
                 await cas.show_message(cas.FUEL_TK_2_LO_LVL)
             else:
                 await cas.remove_message(cas.FUEL_TK_2_LO_LVL)
+
+            if cas_fuel_3_lvl:
+                await cas.show_message(cas.FUEL_TK_3_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_3_LVL)
+
+            if cas_fuel_3_lo:
+                await cas.show_message(cas.FUEL_TK_3_LO_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_3_LO_LVL)
+
 
