@@ -142,7 +142,7 @@ class pc_steer_rh(FloatStepper):
 
 @add_to_panel
 class pc_steer_total(FloatStepper):
-    dataref = Params["sim/operation/override/override_wheel_steer"]
+    dataref = Params["sim/flightmodel2/gear/tire_steer_command_deg[0]"]
 
     logic_left = -10.0
     logic_right = 10.0
