@@ -119,6 +119,7 @@ async def main_loop():
 
     await xp.set_param(xp.Params["sim/operation/override/override_joystick"], 1)
     await xp.set_param(xp.Params["sim/operation/override/override_gearbrake"], 1)
+    await xp.set_param(xp.Params["sim/operation/override/override_wheel_steer"], 1)
 
     await Scenario.kill_current_scenario()
     await ACSystems.reset()

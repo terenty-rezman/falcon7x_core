@@ -3206,9 +3206,75 @@ class FUEL_TK_1_2_3_LO_LVL(CASmssg):
     land = False
 
 @register
+class FUEL_TK_1_LO_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 1 LO LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class FUEL_TK_2_LO_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 2 LO LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
+class FUEL_TK_3_LO_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 3 LO LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = True
+    TO = False
+    land = False
+
+@register
 class FUEL_TK_1_2_3_LVL(CASmssg): 
     isread = False
     text = "FUEL: TK 1+2+3 LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = False
+    TO = True
+    land = False
+
+@register
+class FUEL_TK_1_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 1 LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = False
+    TO = True
+    land = False
+
+@register
+class FUEL_TK_2_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 2 LVL"
+    color = "W"
+    park = True
+    taxi = True
+    cruise = False
+    TO = True
+    land = False
+
+@register
+class FUEL_TK_3_LVL(CASmssg): 
+    isread = False
+    text = "FUEL: TK 3 LVL"
     color = "W"
     park = True
     taxi = True

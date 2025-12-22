@@ -14,6 +14,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit/electrical/night_vision_on",
     "sim/operation/override/override_joystick",
     "sim/operation/override/override_gearbrake",
+    "sim/operation/override/override_wheel_steer",
     "sim/joystick/yoke_pitch_ratio",
     "sim/joystick/yoke_pitch_ratio_copilot",
     "sim/joystick/yoke_roll_ratio",
@@ -118,6 +119,7 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/engine/actuators/throttle_ratio[0]", # synoptic indicator - eng - throttle
     "sim/cockpit2/engine/actuators/throttle_ratio[1]",
     "sim/cockpit2/engine/actuators/throttle_ratio[2]",
+    "sim/flightmodel2/gear/tire_steer_command_deg[0]",
 
     # Failures
     "sim/operation/failures/rel_engfir0", # engine 1 fire

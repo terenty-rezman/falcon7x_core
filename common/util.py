@@ -12,8 +12,8 @@ import common.simulation as sim
 
 class LineColor(enum.IntEnum):
     BLACK = 0,
+    GREEN = 1
     YELLOW = 2,
-    GREEN = 3
 
     def __add__(self, other):
         if self == LineColor.BLACK:

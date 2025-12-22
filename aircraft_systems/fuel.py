@@ -13,6 +13,7 @@ from aircraft_systems.system_base import System
 import aircraft_systems.engine as engine_sys
 import xplane.master as xp
 import aircraft_systems.elec as elec_sys
+from cas import cas
 
 
 class BoostStatus(enum.IntEnum):
@@ -306,3 +307,72 @@ class FuelAllValves(System):
             await xp.set_param(cls.ENG1, int(eng1_state))
             await xp.set_param(cls.ENG2, int(eng2_state))
             await xp.set_param(cls.ENG3, int(eng3_state))
+
+
+class FuelCasMessages(System):
+    next_wake_sleep_delay = 1
+
+    FUEL_Q1 = xp.Params["sim/cockpit2/fuel/fuel_quantity[0]"]
+    FUEL_Q2 = xp.Params["sim/cockpit2/fuel/fuel_quantity[1]"]
+    FUEL_Q3 = xp.Params["sim/cockpit2/fuel/fuel_quantity[2]"]
+
+    old_state = []
+
+    @classmethod
+    def start_condition(cls):
+        return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        fuel_q1 = xp.ACState.get_curr_param(cls.FUEL_Q1) or 0
+        fuel_q2 = xp.ACState.get_curr_param(cls.FUEL_Q2) or 0
+        fuel_q3 = xp.ACState.get_curr_param(cls.FUEL_Q3) or 0
+
+        cas_fuel_1_lvl = 0
+        if fuel_q1 < 1000 / 2.2:
+            cas_fuel_1_lvl = 1
+        
+        cas_fuel_1_lo = 0
+        if fuel_q1 < 250 / 2.2:
+            cas_fuel_1_lvl = 0
+            cas_fuel_1_lo = 1
+
+        cas_fuel_2_lvl = 0
+        if fuel_q2 < 1000 / 2.2:
+            cas_fuel_2_lvl = 1
+        
+        cas_fuel_2_lo = 0
+        if fuel_q2 < 250 / 2.2:
+            cas_fuel_2_lvl = 0
+            cas_fuel_2_lo = 1
+        
+        new_state = [
+            cas_fuel_1_lvl,
+            cas_fuel_1_lo,
+            cas_fuel_2_lvl,
+            cas_fuel_2_lo,
+        ]
+
+        if new_state != cls.old_state:
+            cls.old_state = new_state
+
+            if cas_fuel_1_lvl:
+                await cas.show_message(cas.FUEL_TK_1_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_1_LVL)
+
+            if cas_fuel_1_lo:
+                await cas.show_message(cas.FUEL_TK_1_LO_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_1_LO_LVL)
+
+            if cas_fuel_2_lvl:
+                await cas.show_message(cas.FUEL_TK_2_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_2_LVL)
+
+            if cas_fuel_2_lo:
+                await cas.show_message(cas.FUEL_TK_2_LO_LVL)
+            else:
+                await cas.remove_message(cas.FUEL_TK_2_LO_LVL)
+

@@ -103,6 +103,57 @@ class pc_pitch_total(FloatStepper):
 
 
 @add_to_panel
+class pc_steer_lh(FloatStepper):
+    dataref = None
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -55.0 
+    right_most_value = 55.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
+class pc_steer_rh(FloatStepper):
+    dataref = None
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -55.0
+    right_most_value = 55.0
+    step = 0.01
+
+    val_type = float
+
+    @classmethod
+    async def set_state(cls, state: float):
+        await super().set_state(state)
+        total = cls.state
+
+        total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
+        if total < 5:
+            k = math.fabs(total / 5)
+            total *= k
+
+        await pc_steer_total.set_state(total)
+
+
+@add_to_panel
+class pc_steer_total(FloatStepper):
+    dataref = Params["sim/operation/override/override_wheel_steer"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+    left_most_value = -55.0
+    right_most_value = 55.0
+    step = 0.01
+
+    val_type = float
+
+
+@add_to_panel
 class pc_heading_lh(FloatStepper):
     dataref = None
 
