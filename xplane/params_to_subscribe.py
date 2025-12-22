@@ -192,6 +192,10 @@ class Subscribe:
         (Params["sim/custom/7x/z_oil_min_height_2"], 1, "udp"), # synoptic eng min oil level
         (Params["sim/custom/7x/z_oil_min_height_3"], 1, "udp"), # synoptic eng min oil level
 
+        (Params["sim/cockpit2/fuel/fuel_quantity[0]"], 1, "udp"), # fq 1 
+        (Params["sim/cockpit2/fuel/fuel_quantity[1]"], 1, "udp"), # fq 2
+        (Params["sim/cockpit2/fuel/fuel_quantity[2]"], 1, "udp"), # fq 3
+
         (Params["sim/cockpit2/gauges/indicators/airspeed_kts_pilot"], 12, "udp"), # synoptic airspeed
         (Params["sim/cockpit2/gauges/indicators/airspeed_kts_copilot"], 12, "udp"), # synoptic airspeed
         (Params["sim/cockpit2/gauges/indicators/altitude_ft_pilot"], 12, "udp"), # synoptic alt
