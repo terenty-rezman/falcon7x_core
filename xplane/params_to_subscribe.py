@@ -203,6 +203,12 @@ class Subscribe:
         (Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"], 12, "udp"), # synoptic heading
         (Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_copilot"], 12, "udp"), # synoptic heading
 
+        (Params["sim/cockpit2/hydraulics/indicators/hydraulic_fluid_ratio_1"], 2, "udp"), # hyd tab 
+        (Params["sim/cockpit2/hydraulics/indicators/hydraulic_fluid_ratio_2"], 2, "udp"), # hyd tab 
+        (Params["sim/custom/7x/hyd11"], 2, "udp"), # hyd tab
+        (Params["sim/custom/7x/hyd22"], 2, "udp"), # hyd tab
+        (Params["sim/custom/7x/hyd3"], 2, "udp"), # hyd tab
+
         (Params["sim/custom/7x/z_left_black_screen"], None, "tcp"), # pdu left
         (Params["sim/custom/7x/z_right_black_screen"], None, "tcp"), # pdu right
         (Params["sim/custom/7x/z_middle_up_black_screen"], None, "tcp"), # mdu up 

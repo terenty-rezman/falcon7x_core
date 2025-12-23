@@ -207,6 +207,12 @@ Params = Enum('XplaneParams', [
     "sim/cockpit2/annunciators/gear_unsafe", # gear in transition
     "sim/cockpit2/electrical/APU_generator_amps", # synoptic elec apu amps
 
+    "sim/cockpit2/hydraulics/indicators/hydraulic_fluid_ratio_1", 
+    "sim/cockpit2/hydraulics/indicators/hydraulic_fluid_ratio_2", 
+    "sim/custom/7x/hyd11",
+    "sim/custom/7x/hyd22",
+    "sim/custom/7x/hyd3",
+
     "sim/custom/7x/z_oil_min_height_1", # synoptic eng oil min level
     "sim/custom/7x/z_oil_min_height_2", # synoptic eng oil min level
     "sim/custom/7x/z_oil_min_height_3", # synoptic eng oil min level

@@ -18,7 +18,7 @@ from common.util import LineColor
 
 
 class HydAllValves(System):
-    next_wake_sleep_delay = 0.5
+    next_wake_sleep_delay = 1
 
     PUMP_A1 = xp.Params["sim/custom/7x/z_hyd_pump_a1"]
     PUMP_A3 = xp.Params["sim/custom/7x/z_hyd_pump_a3"]
@@ -168,7 +168,18 @@ class HydAllValves(System):
         pipe_brake2 = LineColor.BLACK
         pipe_brake2 = hyd_accum_state + pipe_b2b3_state
 
-        
+        om_slats_text_state = LineColor.BLACK
+        om_slats_text_state = pipe_a1a3_state + pipe_b2b3_state
+
+        rh_ail_text_state = LineColor.BLACK
+        rh_ail_text_state = pipe_b2b3_state + pipe_c2_state
+
+        rh_elev_text_state = LineColor.BLACK
+        rh_elev_text_state = pipe_a1a3_state + pipe_c2_state
+
+        ebha_pump_state = LineColor.BLACK
+        spoilers_text_state = LineColor.BLACK
+        spoilers_text_state = ebha_pump_state + pipe_c2_state
 
         new_state = [
             shutoff_a1_state,
@@ -192,6 +203,10 @@ class HydAllValves(System):
             pipe_b2b3_state,
             pipe_c2_state,
             pipe_brake2,
+            om_slats_text_state,
+            rh_ail_text_state,
+            rh_elev_text_state,
+            spoilers_text_state
         ]
 
         if new_state != cls.old_state:
@@ -220,3 +235,8 @@ class HydAllValves(System):
             await xp.set_param(cls.PIPE_B2B3, int(pipe_b2b3_state))
             await xp.set_param(cls.PIPE_C2, int(pipe_c2_state))
             await xp.set_param(cls.PIPE_BRAKE2, int(pipe_brake2))
+
+            await xp.set_param(cls.OM_SLATS_TEXT, int(om_slats_text_state))
+            await xp.set_param(cls.RH_AIL_TEXT, int(rh_ail_text_state))
+            await xp.set_param(cls.RH_ELEV_TEXT, int(rh_elev_text_state))
+            await xp.set_param(cls.SPOILERS_TEXT, int(spoilers_text_state))
