@@ -49,6 +49,11 @@ class HydAllValves(System):
     N2_ENG2 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[1]"]
     N2_ENG3 = xp.Params["sim/cockpit2/engine/indicators/N2_percent[2]"]
 
+    OM_SLATS_TEXT = xp.Params["sim/custom/7x/z_hyd_text_om_slats"]
+    RH_AIL_TEXT = xp.Params["sim/custom/7x/z_hyd_text_rh_ail"]
+    RH_ELEV_TEXT = xp.Params["sim/custom/7x/z_hyd_text_rh_elev"]
+    SPOILERS_TEXT = xp.Params["sim/custom/7x/z_hyd_text_spoilers"]
+
     ENG_WORKING_THRESHOLD_N2 = 45
 
     BU_PUMP_XP = xp.Params["sim/cockpit2/switches/electric_hydraulic_pump_on"]
@@ -131,6 +136,40 @@ class HydAllValves(System):
         pipe_a1a3_state = LineColor.BLACK
         pipe_a1a3_state = pipe_a1_state + pipe_a3_state
 
+        pipe_b2_state = LineColor.BLACK
+        if pump_b2_state == 1:
+            pipe_b2_state = LineColor.YELLOW
+
+            if shutoff_b2_state == 1:
+                pipe_b2_state = LineColor.GREEN
+        
+        pipe_b3_state = LineColor.BLACK
+        if pump_b3_state == 1:
+            pipe_b3_state = LineColor.YELLOW
+
+            if shutoff_b3_state == 1:
+                pipe_b3_state = LineColor.GREEN
+        
+        pipe_bu_state = LineColor.BLACK
+        if pump_bu_state == 1:
+            pipe_bu_state = LineColor.GREEN
+        
+        pipe_b2b3_state = LineColor.BLACK
+        pipe_b2b3_state = pipe_bu_state + pipe_b2_state + pipe_b3_state
+    
+        pipe_c2_state = LineColor.BLACK
+        if pump_c2_state == 1:
+            pipe_c2_state = LineColor.YELLOW
+            
+            if shutoff_c2_state == 1:
+                pipe_c2_state = LineColor.GREEN
+        
+        hyd_accum_state = LineColor.GREEN
+        pipe_brake2 = LineColor.BLACK
+        pipe_brake2 = hyd_accum_state + pipe_b2b3_state
+
+        
+
         new_state = [
             shutoff_a1_state,
             shutoff_a3_state,
@@ -147,6 +186,12 @@ class HydAllValves(System):
             pipe_a1_state,
             pipe_a3_state,
             pipe_a1a3_state,
+            pipe_b2_state,
+            pipe_b3_state,
+            pipe_bu_state,
+            pipe_b2b3_state,
+            pipe_c2_state,
+            pipe_brake2,
         ]
 
         if new_state != cls.old_state:
@@ -169,3 +214,9 @@ class HydAllValves(System):
             await xp.set_param(cls.PIPE_A1, int(pipe_a1_state))
             await xp.set_param(cls.PIPE_A3, int(pipe_a3_state))
             await xp.set_param(cls.PIPE_A1A3, int(pipe_a1a3_state))
+            await xp.set_param(cls.PIPE_B2, int(pipe_b2_state))
+            await xp.set_param(cls.PIPE_B3, int(pipe_b3_state))
+            await xp.set_param(cls.PIPE_BU, int(pipe_bu_state))
+            await xp.set_param(cls.PIPE_B2B3, int(pipe_b2b3_state))
+            await xp.set_param(cls.PIPE_C2, int(pipe_c2_state))
+            await xp.set_param(cls.PIPE_BRAKE2, int(pipe_brake2))

@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import StrEnum, IntEnum
 
 all_mssgs = {
     
@@ -32,6 +32,21 @@ class Regimes(StrEnum):
     CRUISE = "cruise"
     TO = "to"
     LAND = "land"
+
+    def __int__(self):
+        i = 0
+        match self:
+            case Regimes.PARK:
+                i = 0
+            case Regimes.TAXI:
+                i = 1
+            case Regimes.CRUISE:
+                i = 2
+            case Regimes.TO:
+                i = 3
+            case Regimes.LAND:
+                i = 4
+        return i
 
 
 @register

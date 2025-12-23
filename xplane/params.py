@@ -319,6 +319,10 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_hyd_pipe_brake2",
     "sim/custom/7x/z_hyd_pipe_bu",
     "sim/custom/7x/z_flight_regime",
+    "sim/custom/7x/z_hyd_text_om_slats",
+    "sim/custom/7x/z_hyd_text_rh_ail",
+    "sim/custom/7x/z_hyd_text_rh_elev",
+    "sim/custom/7x/z_hyd_text_spoilers",
 
     "sim/cockpit2/switches/electric_hydraulic_pump_on",
 ])

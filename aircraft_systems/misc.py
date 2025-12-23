@@ -14,6 +14,8 @@ from aircraft_systems.system_base import System
 
 
 class FlightRegime(System):
+    FLIGHT_REGIME = xp.Params["sim/custom/7x/z_flight_regime"]
+
     regime = None
     next_wake_sleep_delay = 1
 
@@ -46,6 +48,8 @@ class FlightRegime(System):
         
         if regime != cls.regime:
             cls.regime = regime
+            await xp.set_param(cls.FLIGHT_REGIME, int(regime))
 
         # send regime to cas all the time
         await cas.set_regime(cls.regime) 
+
