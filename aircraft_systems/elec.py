@@ -82,6 +82,8 @@ class Apu(System):
 class ElecLinePower(System):
     old_state = []
 
+    line_bat2_ratgen_color_override = None
+
     @classmethod
     def start_condition(cls):
         # run every time
@@ -100,6 +102,9 @@ class ElecLinePower(System):
         line_bat2_ratgen_color = LineColor.BLACK
         if dc.bat2.get_state() == 1: # or dc.rat_get.get_state() == 1
             line_bat2_ratgen_color += LineColor.GREEN
+        
+        if cls.line_bat2_ratgen_color_override:
+            line_bat2_ratgen_color = cls.line_bat2_ratgen_color_override
 
         line_apu_bat1_color = LineColor.BLACK
         if dc.bat1.get_state() == 1 or Apu.state == PowerStatus.POWER_ON:

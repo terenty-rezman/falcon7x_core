@@ -434,9 +434,57 @@ async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera0"], 0)
 
 
-@scenario("ABNORMAL", "ELECTRICAL POWER LH SIDE", "ELEC: LH MAIN FAULT")
-async def elec_lh_main_fault(ac_state: xp_ac.ACState):
-    await cas.show_message(cas.ELEC_LH_MAIN_FAULT)
+@scenario("ABNORMAL", "ELECTRICAL POWER RH SIDE", "ELEC: RH MAIN FAULT")
+async def elec_rh_main_fault(ac_state: xp_ac.ACState):
+    BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
+
+    try:
+        async def show_cas():
+            await cas.show_message(cas.ELEC_RH_ESS_PWR_LO)
+            elec_sys.ElecLinePower.line_bat2_ratgen_color_override = util.LineColor.YELLOW 
+
+        cas_msg_task = util.do_in_N_seconds(30, show_cas)
+
+        await cas.show_message(cas.ELEC_RH_MAIN_FAULT)
+        await sounds.play_sound(sounds.Sound.GONG)
+
+        await fpw.master_caution_lh.set_state(1)
+        await fpw.master_caution_rh.set_state(1)
+
+        await elec.rh_isol.set_state(3)
+        await elec.rh_isol.wait_state(3)
+
+        await cas.show_message(cas.ELEC_GEN_2_FAULT_A)
+
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 6)
+
+        elec_sys.Gen2.fail = True
+
+        async with synoptic_overrides.override_params([BAT_2_AMPS]):
+            cur_amps = xp_ac.ACState.get_curr_param(BAT_2_AMPS) or 0
+            bat_2_amps = synoptic_overrides.linear_anim(BAT_2_AMPS, cur_amps, -80, 3)
+
+            await elec.rh_isol.wait_state(1)
+            await elec.bus_tie.wait_state(1)
+
+            bat_2_amps_1 = synoptic_overrides.linear_anim(BAT_2_AMPS, -80, 30, 3)
+            await cas.remove_message(cas.ELEC_RH_ESS_PWR_LO)
+
+            await elec.gen2.wait_state(0)
+
+            await cas.remove_message(cas.ELEC_RH_MAIN_FAULT)
+
+            await fpw.master_caution_lh.set_state(0)
+            await fpw.master_caution_rh.set_state(0)
+    finally:
+        cas_msg_task.cancel()
+        bat_2_amps.cancel()
+        bat_2_amps_1.cancel()
+        elec_sys.ElecLinePower.line_bat2_ratgen_color_override = None
+        elec_sys.Gen2.fail = False
+        await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)
+        await cas.remove_message(cas.ELEC_RH_MAIN_FAULT)
+        await cas.remove_message(cas.ELEC_RH_ESS_PWR_LO)
 
 
 @scenario("ABNORMAL", "ELECTRICAL POWER RH SIDE", "ELEC: RH ESS PWR LO")

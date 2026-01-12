@@ -8,6 +8,7 @@ from common.xp_aircraft_state import ACState
 import xplane.master as xp
 from xplane.params import Params, Commands
 import common.simulation as sim
+import common.sane_tasks as sane_tasks
 
 
 class LineColor(enum.IntEnum):
@@ -135,3 +136,12 @@ def linear_map(val, left_min, left_max, right_min, right_max):
     # map [0, 1] -> [right_min, right_max]
     val_r = right_min + (right_max - right_min) * val_10
     return val_r
+
+
+def do_in_N_seconds(seconds: int, callback):
+    async def do():
+        await sim.sleep(seconds)
+        await callback()
+
+    return sane_tasks.spawn(do())
+
