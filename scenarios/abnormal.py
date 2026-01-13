@@ -276,6 +276,7 @@ async def avc_du_lw_hi_temp(ac_state: xp_ac.ACState):
         await fpw.master_caution_rh.set_state(1)
 
         await elec.gen2.wait_state(0)
+
         await elec.rh_isol.wait_state(1)
         await elec.bus_tie.wait_state(1)
     finally:

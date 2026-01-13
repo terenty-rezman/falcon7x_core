@@ -103,3 +103,87 @@ class rev_pdu_mdu(NLocalStateButton):
     @classmethod
     async def click(cls):
         await super().click()
+
+
+@add_to_panel
+class rev_dim_1(FloatStepper):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_left_screen_brightness"]
+
+    logic_left = -10.0
+    logic_right = 10.0
+
+    left_most_value = 0
+    right_most_value = 100
+
+    step = 0.01
+    state = 0
+
+    OUTPUT = None
+    uso_receive_dt = 0.01
+    T = 0.5
+
+    @classmethod
+    async def set_state(cls, state: float):
+
+        x_i = cls.OUTPUT
+        y = state
+        x_i_1 = x_i + (y - x_i) / cls.T * cls.uso_receive_dt
+
+        if x_i_1 != cls.OUTPUT:
+            cls.OUTPUT = x_i_1
+
+            state = min(max(cls.logic_left, state), cls.logic_right)
+
+            cls.state = state
+
+            # from [logic_left logic_right] to [0 1]
+            val_01 = (state - cls.logic_left) / (cls.logic_right - cls.logic_left)
+
+            xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
+            xp_val = int(xp_val)
+
+            await xp.set_param(cls.dataref, xp_val)
+
+
+@add_to_panel
+class rev_dim_2(rev_dim_1):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_up_screen_brightness"]
+
+    state = 0
+
+    OUTPUT = None
+    uso_receive_dt = 0.01
+    T = 0.5
+
+
+@add_to_panel
+class rev_dim_3(rev_dim_1):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_right_screen_brightness"]
+
+    state = 0
+
+    OUTPUT = None
+    uso_receive_dt = 0.01
+    T = 0.5
+
+
+@add_to_panel
+class rev_dim_4(rev_dim_1):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_down_screen_brightness"]
+
+    state = 0
+
+    OUTPUT = None
+    uso_receive_dt = 0.01
+    T = 0.5
+
+
+@add_to_panel
+class rev_dim_4(rev_dim_1):
+    dataref: xp.Params = xp.Params["sim/custom/7x/z_mini_screen_brightness"]
+
+    state = 0
+
+    OUTPUT = None
+    uso_receive_dt = 0.01
+    T = 0.5

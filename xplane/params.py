@@ -331,6 +331,12 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_hyd_text_spoilers",
 
     "sim/cockpit2/switches/electric_hydraulic_pump_on",
+
+    "sim/custom/7x/z_left_screen_brightness",
+    "sim/custom/7x/z_up_screen_brightness",
+    "sim/custom/7x/z_down_screen_brightness",
+    "sim/custom/7x/z_right_screen_brightness",
+    "sim/custom/7x/z_mini_screen_brightness",
 ])
 Params.__str__ = to_str
 

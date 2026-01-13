@@ -297,6 +297,12 @@ class Subscribe:
         (Params["sim/cockpit2/switches/electric_hydraulic_pump_on"], None, "tcp"),
 
         (Params["sim/custom/7x/z_flight_regime"], None, "tcp"),
+
+        (Params["sim/custom/7x/z_left_screen_brightness"], 1, "udp"),
+        (Params["sim/custom/7x/z_right_screen_brightness"], 1, "udp"),
+        (Params["sim/custom/7x/z_up_screen_brightness"], 1, "udp"),
+        (Params["sim/custom/7x/z_down_screen_brightness"], 1, "udp"),
+        (Params["sim/custom/7x/z_mini_screen_brightness"], 1, "udp"),
     ]
 
     # get name by index for native xplane udp protocol
