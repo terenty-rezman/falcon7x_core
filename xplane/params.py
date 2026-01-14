@@ -337,7 +337,29 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_down_screen_brightness",
     "sim/custom/7x/z_right_screen_brightness",
     "sim/custom/7x/z_mini_screen_brightness",
+
+    # fcs synoptic page
+    "sim/flightmodel/controls/wing1l_ail1def",
+    "sim/flightmodel/controls/lsplrdef",
+    "sim/flightmodel/controls/wing1r_ail1def",
+    "sim/flightmodel/controls/wing1r_spo1def",
+    "sim/flightmodel/controls/hstab1_elv1def",
+    "sim/flightmodel/controls/vstab1_rud1def",
+    "sim/flightmodel/controls/slatrat",
+    "sim/cockpit2/controls/aileron_trim",
+    "sim/cockpit2/controls/rudder_trim",
+    "sim/cockpit2/controls/elevator_trim",
+
+    "sim/custom/7x/z_fcs_mfcc_1",
+    "sim/custom/7x/z_fcs_mfcc_2",
+    "sim/custom/7x/z_fcs_mfcc_3",
+    "sim/custom/7x/z_fcs_mfcc",
+    "sim/custom/7x/z_fcs_sfcc_1",
+    "sim/custom/7x/z_fcs_sfcc_2",
+    "sim/custom/7x/z_fcs_sfcc_3",
+    "sim/custom/7x/z_fcs_sfcc",
 ])
+
 Params.__str__ = to_str
 
 

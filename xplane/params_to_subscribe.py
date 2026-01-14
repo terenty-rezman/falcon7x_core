@@ -303,6 +303,15 @@ class Subscribe:
         (Params["sim/custom/7x/z_up_screen_brightness"], 1, "udp"),
         (Params["sim/custom/7x/z_down_screen_brightness"], 1, "udp"),
         (Params["sim/custom/7x/z_mini_screen_brightness"], 1, "udp"),
+
+        (Params["sim/custom/7x/z_fcs_mfcc_1"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_mfcc_2"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_mfcc_3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_mfcc"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_sfcc_1"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_sfcc_2"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_sfcc_3"], None, "tcp"),
+        (Params["sim/custom/7x/z_fcs_sfcc"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol
