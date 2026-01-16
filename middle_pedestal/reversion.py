@@ -118,7 +118,7 @@ class rev_dim_1(FloatStepper):
     step = 0.01
     state = 0
 
-    OUTPUT = None
+    OUTPUT = 0
     uso_receive_dt = 0.01
     T = 0.5
 
