@@ -109,7 +109,7 @@ class rev_pdu_mdu(NLocalStateButton):
 class rev_dim_1(FloatStepper):
     dataref: xp.Params = xp.Params["sim/custom/7x/z_left_screen_brightness"]
 
-    logic_left = -10.0
+    logic_left = 0
     logic_right = 10.0
 
     left_most_value = 0
