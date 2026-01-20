@@ -1,3 +1,5 @@
+import math
+
 from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, NStateXPButton, NLocalStateButton, LocalStateIndicator, FloatStepper
 import xplane.master as xp
 
@@ -129,7 +131,7 @@ class rev_dim_1(FloatStepper):
         y = state
         x_i_1 = x_i + (y - x_i) / cls.T * cls.uso_receive_dt
 
-        if x_i_1 != cls.OUTPUT:
+        if math.isclose(x_i_1, cls.OUTPUT, rel_tol=0.05):
             cls.OUTPUT = x_i_1
 
             state = min(max(cls.logic_left, state), cls.logic_right)
