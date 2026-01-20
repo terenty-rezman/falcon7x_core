@@ -6,10 +6,9 @@ import common.external_sound as soundplayer
 # mfi slave xplane
 MFI_XP_HOST = "192.168.32.252"
 
-# cas displays
+# cas displays (integrated with synoptic)
 cas.CAS_HOST = "127.0.0.1"
-cas.CAS_PORT_LEFT = 8881
-cas.CAS_PORT_RIGHT = 8882
+cas.CAS_PORT = 8800
 
 # connect to master xplane plugin
 XP_MASTER_HOST = "127.0.0.1"

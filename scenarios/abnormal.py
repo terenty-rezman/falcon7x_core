@@ -439,6 +439,9 @@ async def elec_lh_ess_pwr_lo(ac_state: xp_ac.ACState):
 async def elec_rh_main_fault(ac_state: xp_ac.ACState):
     BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
 
+    bat_2_amps = None
+    bat_2_amps_1 = None
+
     try:
         async def show_cas():
             await cas.show_message(cas.ELEC_RH_ESS_PWR_LO)
@@ -479,8 +482,10 @@ async def elec_rh_main_fault(ac_state: xp_ac.ACState):
             await fpw.master_caution_rh.set_state(0)
     finally:
         cas_msg_task.cancel()
-        bat_2_amps.cancel()
-        bat_2_amps_1.cancel()
+        if bat_2_amps:
+            bat_2_amps.cancel()
+        if bat_2_amps_1:
+            bat_2_amps_1.cancel()
         elec_sys.ElecLinePower.line_bat2_ratgen_color_override = None
         elec_sys.Gen2.fail = False
         await xp.set_param(xp.Params["sim/operation/failures/rel_genera1"], 0)

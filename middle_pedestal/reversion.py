@@ -151,7 +151,7 @@ class rev_dim_2(rev_dim_1):
 
     state = 0
 
-    OUTPUT = None
+    OUTPUT = 0
     uso_receive_dt = 0.01
     T = 0.5
 
@@ -162,7 +162,7 @@ class rev_dim_3(rev_dim_1):
 
     state = 0
 
-    OUTPUT = None
+    OUTPUT = 0
     uso_receive_dt = 0.01
     T = 0.5
 
@@ -173,7 +173,7 @@ class rev_dim_4(rev_dim_1):
 
     state = 0
 
-    OUTPUT = None
+    OUTPUT = 0
     uso_receive_dt = 0.01
     T = 0.5
 
@@ -184,6 +184,6 @@ class rev_dim_4(rev_dim_1):
 
     state = 0
 
-    OUTPUT = None
+    OUTPUT = 0
     uso_receive_dt = 0.01
     T = 0.5
