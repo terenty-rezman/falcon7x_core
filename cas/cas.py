@@ -42,3 +42,7 @@ async def set_regime(cas_regime: Regimes):
 
 async def remove_all_messages():
     await post_to_all_cas("/api/cas/remove_all_messages", None)
+
+
+async def read_messages():
+    await post_to_all_cas("/api/cas/read_message", {})

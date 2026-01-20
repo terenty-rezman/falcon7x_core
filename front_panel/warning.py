@@ -7,6 +7,7 @@ from xplane.params import Params, Commands
 import common.xp_aircraft_state as xp_ac
 import common.util as util
 import common.external_sound as sounds
+from cas import cas
         
 
 # F7X_SDD_Avionics_Vol1 31-11 front panel warnings
@@ -40,6 +41,8 @@ class master_warning_lh(TwoStateButton):
             await xp.set_param(param, 0)
         else:
             await xp.set_param(param, 1)
+        
+        await cas.read_messages()
 
 
     @classmethod
@@ -69,6 +72,7 @@ class master_caution_lh(TwoStateButton):
         else:
             await xp.set_param(cls.dataref, 1)
 
+        await cas.read_messages()
 
     @classmethod
     def get_indication(cls):
