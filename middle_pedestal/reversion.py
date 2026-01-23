@@ -126,13 +126,8 @@ class rev_dim_1(FloatStepper):
 
     @classmethod
     async def set_state(cls, state: float):
-
-        x_i = cls.OUTPUT
-        y = state
-        x_i_1 = x_i + (y - x_i) / cls.T * cls.uso_receive_dt
-
-        if math.isclose(x_i_1, cls.OUTPUT, rel_tol=0.05):
-            cls.OUTPUT = x_i_1
+        if not math.isclose(state, cls.OUTPUT, abs_tol=0.1):
+            cls.OUTPUT = state
 
             state = min(max(cls.logic_left, state), cls.logic_right)
 
@@ -145,6 +140,25 @@ class rev_dim_1(FloatStepper):
             xp_val = int(xp_val)
 
             await xp.set_param(cls.dataref, xp_val)
+
+        # x_i = cls.OUTPUT
+        # y = state
+        # x_i_1 = x_i + (y - x_i) / cls.T * cls.uso_receive_dt
+
+        # if not math.isclose(x_i_1, cls.OUTPUT, abs_tol=0.1):
+        #     cls.OUTPUT = x_i_1
+
+        #     state = min(max(cls.logic_left, state), cls.logic_right)
+
+        #     cls.state = state
+
+        #     # from [logic_left logic_right] to [0 1]
+        #     val_01 = (state - cls.logic_left) / (cls.logic_right - cls.logic_left)
+
+        #     xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
+        #     xp_val = int(xp_val)
+
+        #     await xp.set_param(cls.dataref, xp_val)
 
 
 @add_to_panel
