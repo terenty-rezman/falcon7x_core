@@ -398,6 +398,7 @@ uso_floats_receive_map = {
    "rev_dim_2": "A026",	# DIM 2 ADC
    "rev_dim_3": "A027",	# DIM 3 ADC
    "rev_dim_4": "A028",	# DIM 4 ADC
+   "sfd_brt": "A014", #	BRT ADC=
 }
 
 
