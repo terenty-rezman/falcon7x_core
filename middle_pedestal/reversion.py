@@ -124,6 +124,8 @@ class rev_dim_1(FloatStepper):
     uso_receive_dt = 0.01
     T = 0.5
 
+    last_xp_val = -1
+
     @classmethod
     async def set_state(cls, state: float):
         if not math.isclose(state, cls.OUTPUT, abs_tol=0.1):
@@ -139,8 +141,10 @@ class rev_dim_1(FloatStepper):
             xp_val = (cls.right_most_value - cls.left_most_value) * val_01 + cls.left_most_value
             xp_val = int(xp_val)
 
-            await xp.set_param(cls.dataref, xp_val)
-            print(xp_val)
+            if cls.last_xp_val != xp_val:
+                cls.last_xp_val = xp_val
+                await xp.set_param(cls.dataref, xp_val)
+                print(xp_val)
 
         # x_i = cls.OUTPUT
         # y = state
