@@ -140,6 +140,7 @@ class rev_dim_1(FloatStepper):
             xp_val = int(xp_val)
 
             await xp.set_param(cls.dataref, xp_val)
+            print(xp_val)
 
         # x_i = cls.OUTPUT
         # y = state
