@@ -26,6 +26,14 @@ class vhf_control_lh(FloatStepper):
 
     val_type = int
 
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
+
 
 @add_to_panel
 class vhf_push_lh(PushButton):
@@ -50,6 +58,14 @@ class baro_rot_lh(FloatStepper):
     step = 0.01
 
     val_type = float
+
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
 
 
 @add_to_panel
@@ -173,12 +189,28 @@ class fp_hdg_trk(FloatStepper):
 
     val_type = float
 
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
+
 
 @add_to_panel
 class fp_hdg_trk_push(PushButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/autopilot/heading_sync"])
+
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
 
 
 @add_to_panel
