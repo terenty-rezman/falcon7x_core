@@ -358,6 +358,27 @@ Params = Enum('XplaneParams', [
     "sim/custom/7x/z_fcs_sfcc_2",
     "sim/custom/7x/z_fcs_sfcc_3",
     "sim/custom/7x/z_fcs_sfcc",
+
+    "sim/weather/wind_altitude_msl_m[0]",
+    "sim/weather/wind_direction_degt[0]",
+    "sim/weather/wind_speed_kt[0]",
+    "sim/weather/shear_speed_kt[0]",
+    "sim/weather/shear_direction_degt[0]",
+    "sim/weather/turbulence[0]",
+
+    "sim/weather/wind_altitude_msl_m[1]",
+    "sim/weather/wind_direction_degt[1]",
+    "sim/weather/wind_speed_kt[1]",
+    "sim/weather/shear_speed_kt[1]",
+    "sim/weather/shear_direction_degt[1]",
+    "sim/weather/turbulence[1]",
+
+    "sim/weather/wind_altitude_msl_m[2]",
+    "sim/weather/wind_direction_degt[2]",
+    "sim/weather/wind_speed_kt[2]",
+    "sim/weather/shear_speed_kt[2]",
+    "sim/weather/shear_direction_degt[2]",
+    "sim/weather/turbulence[2]",
 ])
 
 Params.__str__ = to_str
@@ -396,6 +417,7 @@ Commands = Enum('XplaneCommands', [
     "sim/engines/thrust_reverse_hold",
     "sim/flight_controls/right_brake",
     "sim/flight_controls/left_brake",
+    "sim/flightmodel/weight/m_total",
 ])
 
 Commands.__str__ = to_str

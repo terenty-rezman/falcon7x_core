@@ -312,6 +312,28 @@ class Subscribe:
         (Params["sim/custom/7x/z_fcs_sfcc_2"], None, "tcp"),
         (Params["sim/custom/7x/z_fcs_sfcc_3"], None, "tcp"),
         (Params["sim/custom/7x/z_fcs_sfcc"], None, "tcp"),
+
+        # wind
+        (Params["sim/weather/wind_altitude_msl_m[0]"], 1, "udp"),
+        (Params["sim/weather/wind_direction_degt[0]"], 1, "udp"),
+        (Params["sim/weather/wind_speed_kt[0]"], 1, "udp"),
+        (Params["sim/weather/shear_speed_kt[0]"], 1, "udp"),
+        (Params["sim/weather/shear_direction_degt[0]"], 1, "udp"),
+        (Params["sim/weather/turbulence[0]"], 1, "udp"),
+
+        (Params["sim/weather/wind_altitude_msl_m[1]"], 1, "udp"),
+        (Params["sim/weather/wind_direction_degt[1]"], 1, "udp"),
+        (Params["sim/weather/wind_speed_kt[1]"], 1, "udp"),
+        (Params["sim/weather/shear_speed_kt[1]"], 1, "udp"),
+        (Params["sim/weather/shear_direction_degt[1]"], 1, "udp"),
+        (Params["sim/weather/turbulence[1]"], 1, "udp"),
+
+        (Params["sim/weather/wind_altitude_msl_m[2]"], 1, "udp"),
+        (Params["sim/weather/wind_direction_degt[2]"], 1, "udp"),
+        (Params["sim/weather/wind_speed_kt[2]"], 1, "udp"),
+        (Params["sim/weather/shear_speed_kt[2]"], 1, "udp"),
+        (Params["sim/weather/shear_direction_degt[2]"], 1, "udp"),
+        (Params["sim/weather/turbulence[2]"], 1, "udp"),
     ]
 
     # get name by index for native xplane udp protocol

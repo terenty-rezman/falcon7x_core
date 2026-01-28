@@ -6,6 +6,7 @@ import common.xp_aircraft_state as xp_ac
 import common.sane_tasks as sane_tasks
 from common.reset_systems import reset_all_systems
 import common.simulation as sim
+import xplane.master as xp
 
 
 scenarios = {}
@@ -75,9 +76,26 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
 
     await sim.sleep(5)
 
-    await fire_test.set_state(1)
-    await sim.sleep(5)
-    await fire_test.set_state(0)
+    await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 1000)
+    await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 250)
+    await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
+
+    await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 2000)
+    await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+    await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
+
+    await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 3000)
+    await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+    await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], 0)
+    await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
     # def fly_height_200m(ac_state: xp_ac.ACState):
     #     elevation = "sim/flightmodel/position/elevation"
