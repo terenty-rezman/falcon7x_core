@@ -379,6 +379,8 @@ Params = Enum('XplaneParams', [
     "sim/weather/shear_speed_kt[2]",
     "sim/weather/shear_direction_degt[2]",
     "sim/weather/turbulence[2]",
+
+    "sim/flightmodel/weight/m_total",
 ])
 
 Params.__str__ = to_str
