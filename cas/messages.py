@@ -38,7 +38,7 @@ class Regimes(StrEnum):
         en = None
         match i:
             case 0:
-                en = Regimes.Park
+                en = Regimes.PARK
             case 1:
                 en = Regimes.TAXI
             case 2:
