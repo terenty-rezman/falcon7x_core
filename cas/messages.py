@@ -33,6 +33,22 @@ class Regimes(StrEnum):
     TO = "to"
     LAND = "land"
 
+    @staticmethod
+    def from_int(i: int):
+        en = None
+        match i:
+            case 0:
+                en = Regimes.Park
+            case 1:
+                en = Regimes.TAXI
+            case 2:
+                en = Regimes.CRUISE
+            case 3:
+                en = Regimes.TO
+            case 4:
+                en = Regimes.LAND
+        return en
+
     def __int__(self):
         i = 0
         match self:
