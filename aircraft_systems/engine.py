@@ -957,7 +957,7 @@ class Engine1CustomSpecs(System):
         dt = sim.time() - cls.last_step_time
         cls.last_step_time = sim.time() 
 
-        throttle_ratio = xp_ac.ACState.get_curr_param(cls.TRHOTTLE_RATIO)
+        throttle_ratio = xp_ac.ACState.get_curr_param(cls.TRHOTTLE_RATIO) or 0
 
         throttle_real = util.linear_map(throttle_ratio, 0, 1, 0, 40)
 

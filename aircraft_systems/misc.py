@@ -49,7 +49,8 @@ class FlightRegime(System):
         if regime != cls.regime:
             cls.regime = regime
             await xp.set_param(cls.FLIGHT_REGIME, int(regime))
+            print(regime)
 
         # send regime to cas all the time
-        await cas.set_regime(cls.regime) 
+        # await cas.set_regime(cls.regime) 
 

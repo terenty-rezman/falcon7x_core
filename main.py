@@ -111,7 +111,7 @@ def add_remote_synoptic_ui_sync_list():
 
 
 async def main_loop():
-    ACState.clear_all()
+    # ACState.clear_all()
 
     # await util.subscribe_to_time_param() # we need time param to load situation correctly 
 
@@ -121,11 +121,11 @@ async def main_loop():
     await xp.set_param(xp.Params["sim/operation/override/override_gearbrake"], 1)
     await xp.set_param(xp.Params["sim/operation/override/override_wheel_steer"], 1)
 
-    await Scenario.kill_current_scenario()
-    await ACSystems.reset()
-    ACState.clear_all()
+    # await Scenario.kill_current_scenario()
+    # await ACSystems.reset()
+    # ACState.clear_all()
 
-    await CockpitPanel.reset_to_default_state()
+    # await CockpitPanel.reset_to_default_state()
 
     # await Scenario.run_scenario_task(("EMERGENCY", "ELECTRICAL POWER", "36 ELEC: LH+RH ESS PWR LO"), ACState)
     # await Scenario.run_scenario_task(("TEST", "TEST", "test_scenario_1"), ACState)

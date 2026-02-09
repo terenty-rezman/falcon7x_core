@@ -9,6 +9,7 @@ from aircraft_systems.black_screens import LeftBlackScreen, RightBlackScreen, Mi
 from aircraft_systems.misc import FlightRegime
 from aircraft_systems.fuel import BoostStart2, FuelAllValves, FuelCasMessages
 from aircraft_systems.hyd import HydAllValves
+from aircraft_systems.fcs import FCScomputers
 
 
 class Systems:
@@ -21,7 +22,8 @@ class Systems:
         Gen1, Gen2, Gen3, Apu, ElecLinePower,
         LeftBlackScreen, RightBlackScreen, MiddleUpBlackScreen, MiddleDownBlackScreen, MiniBlackScreen,
         Engine1CustomSpecs, Engine2CustomSpecs, Engine3CustomSpecs,
-        FlightRegime, BoostStart2, FuelAllValves, HydAllValves, FuelCasMessages
+        FlightRegime, BoostStart2, FuelAllValves, HydAllValves, FuelCasMessages,
+        FCScomputers
     ]
 
     @classmethod
