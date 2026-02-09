@@ -334,6 +334,9 @@ class Subscribe:
         (Params["sim/weather/shear_speed_kt[2]"], 1, "udp"),
         (Params["sim/weather/shear_direction_degt[2]"], 1, "udp"),
         (Params["sim/weather/turbulence[2]"], 1, "udp"),
+
+        (Params["sim/cockpit2/pressurization/indicators/cabin_altitude_ft"], 1, "udp"),
+        (Params["sim/cockpit2/oxygen/indicators/o2_bottle_rem_liter"], 1, "udp"),
     ]
 
     # get name by index for native xplane udp protocol
