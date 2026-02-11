@@ -331,11 +331,14 @@ class fp_alt(TwoStateButton):
 
 @add_to_panel
 class baro_push_rh(baro_push_lh):
-    pass
+    @classmethod
+    async def click(cls):
+        await xp.set_param(xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"], 29.92)
 
 
 @add_to_panel
 class baro_rot_rh(baro_rot_lh):
+    dataref = xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"]
     pass
 
 
