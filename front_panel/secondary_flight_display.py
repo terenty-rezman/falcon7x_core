@@ -19,12 +19,13 @@ class sfd_menu(TwoStateButton):
 class sfd_std(PushButton):
     @classmethod
     async def click(cls):
-        await xp.set_param(xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"], 29.90)
+        # await xp.set_param(xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"], 29.90)
+        pass
 
 
 @add_to_panel
 class sfd_set(FloatStepper):
-    dataref = xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"]
+    # dataref = xp.Params["sim/cockpit2/gauges/actuators/barometer_setting_in_hg_copilot"]
 
     left_most_value = 28
     right_most_value = 32
