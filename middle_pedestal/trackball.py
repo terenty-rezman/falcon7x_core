@@ -1,4 +1,5 @@
 from common.instrument_panel import add_to_panel, TwoStateButton, Indicator, PushButton, NLocalStateButton, LocalStateIndicator, FloatStepper
+import synoptic_remote.synoptic_connection as synoptic
         
 # F7X_SDD_Avionics_Vol1.pdf
 
@@ -41,7 +42,7 @@ class tb_disp_down_lh(PushButton):
 class tb_menu_lh(PushButton):
     @classmethod
     async def click(cls):
-        pass
+        await synoptic.send_button_click("tb_menu_lh")
 
 
 @add_to_panel
@@ -70,8 +71,10 @@ class tb_disp_down_rh(tb_disp_down_lh):
 
 
 @add_to_panel
-class tb_menu_rh(tb_menu_lh):
-    pass
+class tb_menu_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        await synoptic.send_button_click("tb_menu_rh")
 
 
 @add_to_panel

@@ -6,6 +6,7 @@ import common.util as util
 import math
 
 import cas.cas as cas
+from aircraft_systems.misc import FlightRegime
 
 
 @add_to_panel
@@ -133,9 +134,9 @@ class pc_steer_rh(FloatStepper):
         total = cls.state
 
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
-        if total < 5:
-            k = math.fabs(total / 5)
-            total *= k
+
+        if FlightRegime.regime in [cas.Regimes.TAXI, cas.Regimes.PARK]:
+            total /= 2
 
         await pc_steer_total.set_state(total)
 

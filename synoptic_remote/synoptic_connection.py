@@ -64,3 +64,11 @@ async def set_page(page_name: str):
         Settings.QML_SYNOPTIC_HOST, 
         Settings.QML_SYNOPTIC_PORT
     )
+
+
+async def send_button_click(button_name: str):
+    await _make_post_to_synoptic(
+        "/api/button_click", {"button": button_name}, 
+        Settings.QML_SYNOPTIC_HOST, 
+        Settings.QML_SYNOPTIC_PORT
+    )
