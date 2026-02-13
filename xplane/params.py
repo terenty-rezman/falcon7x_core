@@ -383,6 +383,10 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/weight/m_total",
     "sim/cockpit2/pressurization/indicators/cabin_altitude_ft",
     "sim/cockpit2/oxygen/indicators/o2_bottle_rem_liter",
+
+    "sim/flightmodel/position/true_psi",
+    "sim/flightmodel2/position/hpath",
+    "sim/flightmodel2/position/vpath",
 ])
 
 Params.__str__ = to_str
