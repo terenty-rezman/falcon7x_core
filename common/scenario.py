@@ -128,7 +128,7 @@ async def test_wind_windshear(ac_state: xp_ac.ACState):
         # degrees
         wind_direction = 0 
         shear_direction = 0
-        wind_speed_kts = 30
+        wind_speed_kts = 25
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
@@ -187,7 +187,7 @@ async def test_wind_head(ac_state: xp_ac.ACState):
         # degrees
         wind_direction = 0 
         shear_direction = 0
-        wind_speed_kts = 30
+        wind_speed_kts = 25
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
@@ -246,7 +246,7 @@ async def test_wind_windshear(ac_state: xp_ac.ACState):
         # degrees
         wind_direction = 0 
         shear_direction = 0
-        wind_speed_kts = 30
+        wind_speed_kts = 25
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
