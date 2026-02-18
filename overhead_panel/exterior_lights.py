@@ -120,7 +120,8 @@ class el_landing_lh(DiscreteSwitch):
             return 1
         elif state == 1:
             if el_anticol.get_state() == 0:
-                return next(cls.blink)
+                # return next(cls.blink)
+                return 1
         return 0
 
 
