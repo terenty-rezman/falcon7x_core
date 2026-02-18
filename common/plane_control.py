@@ -136,7 +136,7 @@ class pc_steer_rh(FloatStepper):
         total = util.dead_zone(total, cls.logic_left, cls.logic_right, 1)
 
         if FlightRegime.regime in [cas.Regimes.TAXI, cas.Regimes.PARK]:
-            total /= 2
+            total /= 2.2
 
         await pc_steer_total.set_state(total)
 
