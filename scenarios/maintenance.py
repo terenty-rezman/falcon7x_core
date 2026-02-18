@@ -115,7 +115,6 @@ async def m_72_fire_apu(ac_state: xp_ac.ACState):
 
 
 @scenario("MAINTENANCE", "FIRE", "74 FIRE: ENG 1")
-@scenario("MAINTENANCE", "TAXI", "74 FIRE: ENG 1")
 class m_fire_eng_1:
     fire_failure = xp.Params["sim/operation/failures/rel_engfir0"]
     engine_fuel_switch = engine_panel.en_fuel_1
@@ -159,7 +158,6 @@ class m_fire_eng_1:
 
 
 @scenario("MAINTENANCE", "FIRE", "75 FIRE: ENG 2")
-@scenario("MAINTENANCE", "TAXI", "75 FIRE: ENG 2")
 class m_fire_eng_2(m_fire_eng_1):
     fire_failure = xp.Params["sim/operation/failures/rel_engfir1"]
     engine_fuel_switch = engine_panel.en_fuel_2
@@ -170,7 +168,6 @@ class m_fire_eng_2(m_fire_eng_1):
 
 
 @scenario("MAINTENANCE", "FIRE", "76 FIRE: ENG 3")
-@scenario("MAINTENANCE", "TAXI", "76 FIRE: ENG 3")
 class m_fire_eng_3(m_fire_eng_1):
     fire_failure = xp.Params["sim/operation/failures/rel_engfir2"]
     engine_fuel_switch = engine_panel.en_fuel_3
