@@ -122,12 +122,13 @@ async def test_scenario_1(ac_state: xp_ac.ACState):
     # await xp.set_param(xp.Failures["sim/operation/failures/rel_ail_L_jam"], 6)
 
 
-@scenario("TEST", "WIND", "TAIL WIND")
+@scenario("TEST", "WIND", "TAILWIND")
 async def test_wind_windshear(ac_state: xp_ac.ACState):
     try:
         # degrees
         wind_direction = 0 
         shear_direction = 0
+        wind_speed_kts = 30
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
@@ -137,21 +138,21 @@ async def test_wind_windshear(ac_state: xp_ac.ACState):
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 1000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 250)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 2000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 3000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
@@ -180,12 +181,13 @@ async def test_wind_windshear(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0)
 
 
-@scenario("TEST", "WIND", "HEAD WIND")
+@scenario("TEST", "WIND", "HEADWIND")
 async def test_wind_head(ac_state: xp_ac.ACState):
     try:
         # degrees
         wind_direction = 0 
         shear_direction = 0
+        wind_speed_kts = 30
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
@@ -195,21 +197,21 @@ async def test_wind_head(ac_state: xp_ac.ACState):
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 1000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 250)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 2000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 3000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
@@ -238,12 +240,13 @@ async def test_wind_head(ac_state: xp_ac.ACState):
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0)
 
 
-@scenario("TEST", "WIND", "CROSS WIND")
+@scenario("TEST", "WIND", "CROSSWIND")
 async def test_wind_windshear(ac_state: xp_ac.ACState):
     try:
         # degrees
         wind_direction = 0 
         shear_direction = 0
+        wind_speed_kts = 30
 
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
@@ -253,21 +256,21 @@ async def test_wind_windshear(ac_state: xp_ac.ACState):
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 1000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 250)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 2000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 3000)
         await xp.set_param(xp.Params["sim/weather/wind_direction_degt[0]"], wind_direction)
-        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], 200)
+        await xp.set_param(xp.Params["sim/weather/wind_speed_kt[0]"], wind_speed_kts)
         await xp.set_param(xp.Params["sim/weather/shear_speed_kt[0]"], 0)
         await xp.set_param(xp.Params["sim/weather/shear_direction_degt[0]"], shear_direction)
         await xp.set_param(xp.Params["sim/weather/turbulence[0]"], 0.5)
