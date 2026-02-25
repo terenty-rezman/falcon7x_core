@@ -426,6 +426,8 @@ Commands = Enum('XplaneCommands', [
     "sim/flight_controls/right_brake",
     "sim/flight_controls/left_brake",
     "sim/flightmodel/weight/m_total",
+    "sim/flightmodel/position/latitude",
+    "sim/flightmodel/position/longitude",
 ])
 
 Commands.__str__ = to_str

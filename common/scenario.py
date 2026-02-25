@@ -192,7 +192,6 @@ async def test_wind_head(ac_state: xp_ac.ACState):
         my_direction = xp.ACState.get_curr_param(xp.Params["sim/cockpit2/gauges/indicators/heading_AHARS_deg_mag_pilot"]) or 0
 
         # встречный ветер
-        # tail wind
         wind_direction = my_direction
 
         await xp.set_param(xp.Params["sim/weather/wind_altitude_msl_m[0]"], 1000)
