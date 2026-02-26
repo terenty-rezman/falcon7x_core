@@ -387,6 +387,9 @@ Params = Enum('XplaneParams', [
     "sim/flightmodel/position/true_psi",
     "sim/flightmodel2/position/hpath",
     "sim/flightmodel2/position/vpath",
+
+    "sim/flightmodel/position/latitude",
+    "sim/flightmodel/position/longitude",
 ])
 
 Params.__str__ = to_str
@@ -426,8 +429,6 @@ Commands = Enum('XplaneCommands', [
     "sim/flight_controls/right_brake",
     "sim/flight_controls/left_brake",
     "sim/flightmodel/weight/m_total",
-    "sim/flightmodel/position/latitude",
-    "sim/flightmodel/position/longitude",
 ])
 
 Commands.__str__ = to_str
