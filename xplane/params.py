@@ -390,6 +390,8 @@ Params = Enum('XplaneParams', [
 
     "sim/flightmodel/position/latitude",
     "sim/flightmodel/position/longitude",
+
+    "sim/7x/autoclimb",
 ])
 
 Params.__str__ = to_str

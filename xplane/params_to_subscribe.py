@@ -337,6 +337,8 @@ class Subscribe:
 
         (Params["sim/cockpit2/pressurization/indicators/cabin_altitude_ft"], 1, "udp"),
         (Params["sim/cockpit2/oxygen/indicators/o2_bottle_rem_liter"], 1, "udp"),
+
+        (Params["sim/7x/autoclimb"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol

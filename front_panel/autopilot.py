@@ -164,6 +164,20 @@ class fp_approach(ThreeStateButton):
 
 
 @add_to_panel
+class fp_approach_blue(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_approach.get_state() or 0) == 1
+
+
+@add_to_panel
+class fp_approach_green(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_approach.get_state() or 0) == 2
+
+
+@add_to_panel
 class fp_lnav(ThreeStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit2/autopilot/nav_status"]
     states = [0, 1, 2]
@@ -171,6 +185,20 @@ class fp_lnav(ThreeStateButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/autopilot/NAV"])
+
+
+@add_to_panel
+class fp_lnav_blue(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_lnav.get_state() or 0) == 1
+
+
+@add_to_panel
+class fp_lnav_green(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_lnav.get_state() or 0) == 2
 
 
 @add_to_panel
@@ -235,6 +263,20 @@ class fp_pilot_side(TwoStateButton):
 
 
 @add_to_panel
+class fp_pilot_side_left(TwoStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_pilot_side.get_state() or 0) == 0
+
+
+@add_to_panel
+class fp_pilot_side_right(TwoStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_pilot_side.get_state() or 0) == 1
+
+
+@add_to_panel
 class fp_autopilot(TwoStateButton):
     dataref: xp.Params = xp.Params["sim/cockpit/autopilot/autopilot_mode"]
     states = [1, 2, 0]
@@ -264,13 +306,9 @@ class fp_vs_path(FloatStepper):
 
 
 @add_to_panel
-class fp_clb(NLocalStateButton):
+class fp_clb(TwoStateButton):
+    dataref: xp.Params = xp.Params["sim/7x/autoclimb"]
     states = [0, 1]
-    state = 0
-
-    @classmethod
-    async def click(cls):
-        await super().click()
 
 
 @add_to_panel
@@ -291,6 +329,20 @@ class fp_vnav(ThreeStateButton):
     @classmethod
     async def click(cls):
         await xp.run_command_once(xp.Commands["sim/autopilot/FMS"])
+
+
+@add_to_panel
+class fp_vnav_blue(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_vnav.get_state() or 0) == 2
+
+
+@add_to_panel
+class fp_vnav_green(ThreeStateButton):
+    @classmethod
+    def get_indication(cls):
+        return (fp_vnav.get_state() or 0) == 1
 
 
 @add_to_panel
