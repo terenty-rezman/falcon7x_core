@@ -26,6 +26,14 @@ class vhf_control_lh(FloatStepper):
 
     val_type = int
 
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
+
 
 @add_to_panel
 class vhf_push_lh(PushButton):
