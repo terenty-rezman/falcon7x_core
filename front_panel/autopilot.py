@@ -304,6 +304,14 @@ class fp_vs_path(FloatStepper):
 
     val_type = float
 
+    @classmethod
+    async def inc(cls):
+        await super().dec()
+
+    @classmethod
+    async def dec(cls):
+        await super().inc()
+
 
 @add_to_panel
 class fp_clb(TwoStateButton):
