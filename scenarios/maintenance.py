@@ -460,6 +460,7 @@ class m_oil_param_abnorm_press_eng1:
                     await fpw.master_caution_rh.set_state(1)
                     await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
+                    oil_psi_curr = xp_ac.ACState.get_curr_param(cls.OIL_PSI)
                     await synoptic_overrides.linear_anim(cls.OIL_PSI, oil_psi_curr, 15, 15)
                     await cls.engine_fuel_switch.wait_state(0)
                 else:
