@@ -13,6 +13,7 @@ import overhead_panel.engines_apu as overhead_engines
 import synoptic_remote.param_overrides as synoptic_overrides
 
 import overhead_panel.dc_supply as dc
+from aircraft_systems.engine import EngineStart1, EngineStart2, EngineStart3, EngineStatus, ApuStart
 
 
 class LeftBlackScreen(System):

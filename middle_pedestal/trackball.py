@@ -14,28 +14,28 @@ class tb_mic_lh(PushButton):
 class tb_disp_left_lh(PushButton):
     @classmethod
     async def click(cls):
-        pass
+        await synoptic.send_button_click("tb_disp_left_lh")
 
 
 @add_to_panel
 class tb_disp_right_lh(PushButton):
     @classmethod
     async def click(cls):
-        pass
+        await synoptic.send_button_click("tb_disp_right_lh")
 
 
 @add_to_panel
 class tb_disp_up_lh(PushButton):
     @classmethod
     async def click(cls):
-        pass
+        await synoptic.send_button_click("tb_disp_up_lh")
 
 
 @add_to_panel
 class tb_disp_down_lh(PushButton):
     @classmethod
     async def click(cls):
-        pass
+        await synoptic.send_button_click("tb_disp_down_lh")
 
 
 @add_to_panel
@@ -51,23 +51,31 @@ class tb_mic_rh(tb_mic_lh):
 
 
 @add_to_panel
-class tb_disp_left_rh(tb_disp_left_lh):
-    pass
+class tb_disp_left_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        await synoptic.send_button_click("tb_disp_left_rh")
 
 
 @add_to_panel
-class tb_disp_right_rh(tb_disp_right_lh):
-    pass
+class tb_disp_right_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        await synoptic.send_button_click("tb_disp_right_rh")
 
 
 @add_to_panel
-class tb_disp_up_rh(tb_disp_up_lh):
-    pass
+class tb_disp_up_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        await synoptic.send_button_click("tb_disp_up_rh")
 
 
 @add_to_panel
-class tb_disp_down_rh(tb_disp_down_lh):
-    pass
+class tb_disp_down_rh(PushButton):
+    @classmethod
+    async def click(cls):
+        await synoptic.send_button_click("tb_disp_down_rh")
 
 
 @add_to_panel
