@@ -13,7 +13,7 @@ import overhead_panel.engines_apu as overhead_engines
 import synoptic_remote.param_overrides as synoptic_overrides
 
 import overhead_panel.dc_supply as dc
-from aircraft_systems.engine import EngineStart1, EngineStart2, EngineStart3, EngineStatus, ApuStart
+from aircraft_systems.engine import EngineStart1, EngineStart2, EngineStart3, EngineStatus, ApuStart, ApuStatusWatcher
 
 
 class LeftBlackScreen(System):
@@ -74,6 +74,12 @@ class MiddleUpBlackScreen(System):
                 new_state = 2
             else:
                 new_state = 0
+
+        if ApuStatusWatcher.status in [EngineStatus.STOPPED, EngineStatus.STOPPING]:
+            if EngineStart1.status == EngineStatus.STOPPED and \
+                EngineStart2.status == EngineStatus.STOPPED and \
+                EngineStart3.status == EngineStatus.STOPPED:
+                    new_state = 2
 
         if new_state != cls.prev_state:
             cls.prev_state = new_state
@@ -138,6 +144,12 @@ class MiddleDownBlackScreen(System):
                 new_state = 2
             else:
                 new_state = 1
+
+        if ApuStatusWatcher.status in [EngineStatus.STOPPED, EngineStatus.STOPPING]:
+            if EngineStart1.status == EngineStatus.STOPPED and \
+                EngineStart2.status == EngineStatus.STOPPED and \
+                EngineStart3.status == EngineStatus.STOPPED:
+                    new_state = 1
 
         if new_state != cls.prev_state:
             cls.prev_state = new_state

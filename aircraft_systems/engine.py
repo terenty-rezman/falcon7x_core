@@ -59,11 +59,9 @@ class ApuStart(System):
 
     logic_task = None
 
-    status = EngineStatus.UNDEFINED
-
     @classmethod
     async def killing_task(cls):
-        cls.status = EngineStatus.STOPPED
+        pass
 
     @classmethod
     def start_condition(cls):
@@ -80,11 +78,6 @@ class ApuStart(System):
             xp_ac.ACState.get_curr_param(cls.APU_N1) < 15,
             overhead_engines.apu_start_stop.get_state() == 1
         ]
-
-        if cls.status == EngineStatus.UNDEFINED: 
-            apu_xp_running = xp_ac.ACState.get_curr_param(cls.APU_RUNNING)
-            if apu_xp_running is not None:
-                cls.status = EngineStatus.RUNNING if apu_xp_running == 1 else EngineStatus.STOPPED
 
         return all(cond)
 
@@ -142,10 +135,45 @@ class ApuStart(System):
                     cls.BAT_2_AMPS, cls.TIME_SAMPLE, amps
                 )
             
-            cls.status = EngineStatus.STARTING
             await asyncio.gather(n1(), temp(), elec_tab(), bat1(), apu_amps(), bat_1_amps(), bat_2_amps())
-            cls.status = EngineStatus.RUNNING
             # await sim.sleep(30)
+
+
+class ApuStatusWatcher(System):
+    APU_N1 = xp.Params["sim/cockpit2/electrical/APU_N1_percent"]
+    APU_RUNNING = xp.Params["sim/cockpit2/electrical/APU_running"]
+
+    logic_task = None
+    next_wake_sleep_delay = 0.4
+
+    status = EngineStatus.UNDEFINED
+    last_n1 = None
+
+    @classmethod
+    def start_condition(cls):
+        return True
+
+    @classmethod
+    async def system_logic_task(cls):
+        xp_apu_n1 = xp_ac.ACState.get_curr_param(cls.APU_N1)
+        if xp_apu_n1 is not None:
+            if cls.last_n1 is not None:
+                curr_n1 = int(xp_apu_n1 * 10)
+                last_n1 = int(cls.last_n1 * 10)
+                if  curr_n1 > last_n1 :
+                    cls.status = EngineStatus.STARTING
+                elif curr_n1 < last_n1:
+                    cls.status = EngineStatus.STOPPING
+                else: 
+                    xp_apu_running = xp_ac.ACState.get_curr_param(cls.APU_RUNNING)
+                    if xp_apu_running == 1:
+                        if curr_n1 > 90:
+                            cls.status = EngineStatus.RUNNING
+                    elif xp_apu_running == 0:
+                        if curr_n1 < 2:
+                            cls.status = EngineStatus.STOPPED
+        
+        cls.last_n1 = xp_apu_n1
 
 
 class BrokenStart(enum.IntEnum):
@@ -893,7 +921,7 @@ class Engine1CustomSpecs(System):
     N2_OUTPUT = None
 
     THROTTLE_OIL_PRESS_MAP_ARGS = [0, 5, 15, 25, 31.85, 40]
-    THROTTLE_OIL_PRESS_MAP_VALUES = [43, 44, 68, 98, 110, 111]
+    THROTTLE_OIL_PRESS_MAP_VALUES = [63, 64, 68, 98, 110, 111]
 
     OIL_PSI_T = 4
     OIL_PSI_OUTPUT = None

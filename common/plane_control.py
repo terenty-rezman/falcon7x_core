@@ -524,11 +524,12 @@ class pc_thrust_reverse(FloatStepper):
 
         if new_state == True:
             pc_throttle_2.disable_uso_input = True
+            await xp.set_param(xp.Params["sim/cockpit2/engine/actuators/throttle_ratio[1]"], 1)
         else:
             pc_throttle_2.disable_uso_input = False
 
         cls.skip_steps = 80
-        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle_2"])
+        await xp.run_command_once(Commands["sim/engines/thrust_reverse_toggle"])
 
 
     @classmethod

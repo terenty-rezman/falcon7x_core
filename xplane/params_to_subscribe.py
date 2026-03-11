@@ -31,7 +31,7 @@ class Subscribe:
         (Params["sim/cockpit2/controls/nosewheel_steer_on"], None, "tcp"), # fcs steering
 
         (Params["sim/cockpit2/electrical/APU_generator_on"], None, "tcp"), # apu master
-        (Params["sim/cockpit2/electrical/APU_N1_percent"], 2, "udp"), # apu start stop
+        (Params["sim/cockpit2/electrical/APU_N1_percent"], 10, "udp"), # apu start stop
         (Params["sim/cockpit2/electrical/APU_starter_switch"], None, "tcp"), # apu start stop
         (Params["sim/cockpit2/controls/gear_handle_down"], None, "tcp"), # gear
 
