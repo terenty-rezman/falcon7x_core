@@ -339,6 +339,14 @@ class Subscribe:
         (Params["sim/cockpit2/oxygen/indicators/o2_bottle_rem_liter"], 1, "udp"),
 
         (Params["sim/7x/autoclimb"], None, "tcp"),
+
+        (Params["sim/custom/7x/z_eng_status_1"], None, "tcp"),
+        (Params["sim/custom/7x/z_eng_status_2"], None, "tcp"),
+        (Params["sim/custom/7x/z_eng_status_3"], None, "tcp"),
+
+        (Params["sim/flightmodel/engine/ENGN_running[0]"], None, "tcp"),
+        (Params["sim/flightmodel/engine/ENGN_running[1]"], None, "tcp"),
+        (Params["sim/flightmodel/engine/ENGN_running[2]"], None, "tcp"),
     ]
 
     # get name by index for native xplane udp protocol

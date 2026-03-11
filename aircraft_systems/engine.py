@@ -48,6 +48,7 @@ class ApuStart(System):
     BAT_1_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[0]"]
     BAT_2_AMPS = xp.Params["sim/cockpit2/electrical/battery_amps[1]"]
     APU_AMPS = xp.Params["sim/cockpit2/electrical/APU_generator_amps"]
+    APU_RUNNING = xp.Params["sim/cockpit2/electrical/APU_running"]
 
     TIME_SAMPLE = [0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 37, 40, 43, 44, 45, 46, 47, 48, 49, 30] # time
     N1_SAMPLE = [0, 3, 6, 17, 26, 30, 37, 39, 44, 47, 53, 57, 63, 68, 71, 78, 82, 90, 93, 95, 96, 97, 98, 99, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100] # n1
@@ -80,10 +81,10 @@ class ApuStart(System):
             overhead_engines.apu_start_stop.get_state() == 1
         ]
 
-        if (xp_ac.ACState.get_curr_param(cls.APU_N1) or 0) < 15:
-            cls.status = EngineStatus.STOPPED
-        else:
-            cls.status = EngineStatus.RUNNING
+        if cls.status == EngineStatus.UNDEFINED: 
+            apu_xp_running = xp_ac.ACState.get_curr_param(cls.APU_RUNNING)
+            if apu_xp_running is not None:
+                cls.status = EngineStatus.RUNNING if apu_xp_running == 1 else EngineStatus.STOPPED
 
         return all(cond)
 
@@ -170,6 +171,8 @@ class EngineStart1(System):
     N1_MAX = xp.Params["sim/custom/xap/maxin1"]
     APU_TEMP = xp.Params["sim/cockpit2/electrical/APU_EGT_c"]
     MIN_OIL_LEVEL = xp.Params["sim/custom/7x/z_oil_min_height_1"]
+    ENGINE_RUNNING = xp.Params["sim/flightmodel/engine/ENGN_running[0]"]
+
     fuel_flow_switch = engine_panel.en_fuel_1
     fuel_digital = engine_panel.en_fuel_digital_1
     boost = fuel.boost1
@@ -227,11 +230,10 @@ class EngineStart1(System):
             engine_panel.en_start.get_state() == 1
         ]
 
+        xp_eng_running = xp_ac.ACState.get_curr_param(cls.engine_shutdown)
         if cls.status == EngineStatus.UNDEFINED: 
-            if xp_ac.ACState.get_curr_param(cls.N1) < 10:
-                cls.status = EngineStatus.STOPPED
-            else:
-                cls.status = EngineStatus.RUNNING
+            if xp_eng_running is not None: 
+                cls.status = EngineStatus.RUNNING if xp_eng_running else EngineStatus.STOPPED
 
         return all(cond)
 
@@ -818,6 +820,8 @@ class EngineStart2(EngineStart1):
     AB = Params["sim/custom/7x/z_syn_eng_ab2"]
     APU_N1 = Params["sim/cockpit2/electrical/APU_N1_percent"]
     MIN_OIL_LEVEL = Params["sim/custom/7x/z_oil_min_height_2"]
+    ENGINE_RUNNING = xp.Params["sim/flightmodel/engine/ENGN_running[1]"]
+
     fuel_flow_switch = engine_panel.en_fuel_2
     fuel_digital = engine_panel.en_fuel_digital_2
     boost = fuel.boost2
@@ -846,8 +850,10 @@ class EngineStart3(EngineStart1):
     AB = Params["sim/custom/7x/z_syn_eng_ab3"]
     APU_N1 = Params["sim/cockpit2/electrical/APU_N1_percent"]
     MIN_OIL_LEVEL = Params["sim/custom/7x/z_oil_min_height_3"]
+    ENGINE_RUNNING = xp.Params["sim/flightmodel/engine/ENGN_running[2]"]
+
     fuel_flow_switch = engine_panel.en_fuel_3
-    fuel_digital = engine_panel.en_fuel_digital_3
+    fuel_digital = engine_panel.en_fuel_digital_4
     boost = fuel.boost3
 
     broken_start = BrokenStart.NORMAL_START
@@ -1197,6 +1203,38 @@ class Engine3ManualShutdown(Engine1ManualShutdown):
 
     logic_task = None
     is_killing = False
+
+
+class EngRunningWatcher(System):
+    ENG_STATUS_1 = xp.Params["sim/custom/7x/z_eng_status_1"]
+    ENG_STATUS_2 = xp.Params["sim/custom/7x/z_eng_status_2"]
+    ENG_STATUS_3 = xp.Params["sim/custom/7x/z_eng_status_3"]
+
+    eng_status_1 = EngineStatus.UNDEFINED
+    eng_status_2 = EngineStatus.UNDEFINED
+    eng_status_3 = EngineStatus.UNDEFINED
+
+    logic_task = None
+    is_killing = False
+
+    @classmethod
+    def start_condition(cls):
+        return True
+
+    @classmethod
+    async def system_logic_task(cls):
+
+        if cls.eng_status_1 != EngineStart1.status:
+            cls.eng_status_1 = EngineStart1.status
+            await xp.set_param(cls.ENG_STATUS_1, cls.eng_status_1)
+
+        if cls.eng_status_2 != EngineStart2.status:
+            cls.eng_status_2 = EngineStart2.status
+            await xp.set_param(cls.ENG_STATUS_2, cls.eng_status_2)
+
+        if cls.eng_status_3 != EngineStart3.status:
+            cls.eng_status_3 = EngineStart3.status
+            await xp.set_param(cls.ENG_STATUS_3, cls.eng_status_3)
 
 
 EngineStart1.engine_shutdown = Engine1ManualShutdown
