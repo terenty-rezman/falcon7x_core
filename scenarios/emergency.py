@@ -336,6 +336,7 @@ async def _69_fcs_ths_prot_fail(ac_state: xp_ac.ACState):
 
 
 @scenario("EMERGENCY", "FIRE", "72 FIRE: APU")
+@scenario("MAINTENANCE", "FIRE", "72 FIRE: APU")
 async def _72_fire_apu(ac_state: xp_ac.ACState):
     try:
         await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
@@ -385,6 +386,7 @@ async def _72_fire_apu(ac_state: xp_ac.ACState):
 
 
 @scenario("EMERGENCY", "FIRE", "74 FIRE: ENG 1")
+@scenario("MAINTENANCE", "FIRE", "74 FIRE: ENG 1")
 async def _74_fire_eng_1(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.FIRE_ENG_1)
@@ -416,6 +418,8 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
 
         # cancel pending tasks
         [p.cancel() for p in pending]
+
+        await sim.sleep(5)
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir0"], 0)
         await pc.pc_thrust_red_light_1.set_state(0)
@@ -431,6 +435,7 @@ async def _74_fire_eng_1(ac_state: xp_ac.ACState):
 
 
 @scenario("EMERGENCY", "FIRE", "75 FIRE: ENG 2")
+@scenario("MAINTENANCE", "FIRE", "75 FIRE: ENG 2")
 async def _75_fire_eng_2(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.FIRE_ENG_2)
@@ -462,6 +467,8 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
 
         # cancel pending tasks
         [p.cancel() for p in pending]
+
+        await sim.sleep(5)
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir1"], 0)
         await pc.pc_thrust_red_light_2.set_state(0)
@@ -477,6 +484,7 @@ async def _75_fire_eng_2(ac_state: xp_ac.ACState):
 
 
 @scenario("EMERGENCY", "FIRE", "76 FIRE: ENG 3")
+@scenario("MAINTENANCE", "FIRE", "76 FIRE: ENG 3")
 async def _75_fire_eng_3(ac_state: xp_ac.ACState):
     try:
         await cas.show_message(cas.FIRE_ENG_3)
@@ -507,6 +515,8 @@ async def _75_fire_eng_3(ac_state: xp_ac.ACState):
 
         # cancel pending tasks
         [p.cancel() for p in pending]
+
+        await sim.sleep(5)
     finally:
         await xp.set_param(xp.Params["sim/operation/failures/rel_engfir2"], 0)
         await sounds.stop_sound(sounds.Sound.FIRE_BELL)

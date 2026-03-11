@@ -344,9 +344,9 @@ class Subscribe:
         (Params["sim/custom/7x/z_eng_status_2"], None, "tcp"),
         (Params["sim/custom/7x/z_eng_status_3"], None, "tcp"),
 
-        (Params["sim/flightmodel/engine/ENGN_running[0]"], None, "tcp"),
-        (Params["sim/flightmodel/engine/ENGN_running[1]"], None, "tcp"),
-        (Params["sim/flightmodel/engine/ENGN_running[2]"], None, "tcp"),
+        (Params["sim/flightmodel/engine/ENGN_running[0]"], 1, "udp"),
+        (Params["sim/flightmodel/engine/ENGN_running[1]"], 1, "udp"),
+        (Params["sim/flightmodel/engine/ENGN_running[2]"], 1, "udp"),
     ]
 
     # get name by index for native xplane udp protocol

@@ -64,117 +64,117 @@ async def m_normal_eng_start_run_shutdown(ac_state: xp_ac.ACState):
             await sim.sleep(2)
 
 
-@scenario("MAINTENANCE", "FIRE", "72 FIRE: APU")
-async def m_72_fire_apu(ac_state: xp_ac.ACState):
-    try:
-        await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
-        await fp.apu_disch.set_state(0)
-        # await overhead_engines.apu_start_stop.set_state(0)
+# @scenario("MAINTENANCE", "FIRE", "72 FIRE: APU")
+# async def m_72_fire_apu(ac_state: xp_ac.ACState):
+#     try:
+#         await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 0)
+#         await fpw.master_warning_lh.set_state(0)
+#         await fpw.master_warning_rh.set_state(0)
+#         await fp.apu_disch.set_state(0)
+#         # await overhead_engines.apu_start_stop.set_state(0)
 
-        await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
-        await sim.sleep(5)
-        await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
-        await fpw.master_warning_lh.set_state(1)
-        await fpw.master_warning_rh.set_state(1)
-        await cas.show_message(cas.FIRE_APU)
-        await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
+#         await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: p > 99)
+#         await sim.sleep(5)
+#         await xp.set_param(xp.Params["sim/operation/failures/rel_apu_fire"], 6)
+#         await fpw.master_warning_lh.set_state(1)
+#         await fpw.master_warning_rh.set_state(1)
+#         await cas.show_message(cas.FIRE_APU)
+#         await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
 
-        await overhead_engines.apu_start_stop.set_state(0)
-        await sim.sleep(1)
-        engine.ApuStart.kill_self()
+#         await overhead_engines.apu_start_stop.set_state(0)
+#         await sim.sleep(1)
+#         engine.ApuStart.kill_self()
 
-        # Apu fire protection system automatically closes apu fsov
-        await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 0)
+#         # Apu fire protection system automatically closes apu fsov
+#         await xp.set_param(xp.Params["sim/cockpit/engine/APU_switch"], 0)
 
-        blink = util.blink_anim(0.5)
-        def blink_master(n1):
-            if n1 > 1 and n1 < 6: 
-                overhead_engines.apu_master.set_override_indication(next(blink))
+#         blink = util.blink_anim(0.5)
+#         def blink_master(n1):
+#             if n1 > 1 and n1 < 6: 
+#                 overhead_engines.apu_master.set_override_indication(next(blink))
             
-            if n1 < 1:
-                return True
+#             if n1 < 1:
+#                 return True
 
-            return False
+#             return False
             
-        await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
+#         await xp_ac.ACState.wait_until_parameter_condition(APU_N1, lambda p: blink_master(p), timeout=60)
 
-        await fp.apu_disch.wait_state(1)
+#         await fp.apu_disch.wait_state(1)
 
-        await sim.sleep(3)
-    finally:
-        # fire has been succesfully extinguished
-        failure = xp.Params["sim/operation/failures/rel_apu_fire"]
-        await xp.set_param(failure, 0)
-        await cas.remove_message(cas.FIRE_APU)
-        await sounds.stop_sound(sounds.Sound.FIRE_BELL)
+#         await sim.sleep(3)
+#     finally:
+#         # fire has been succesfully extinguished
+#         failure = xp.Params["sim/operation/failures/rel_apu_fire"]
+#         await xp.set_param(failure, 0)
+#         await cas.remove_message(cas.FIRE_APU)
+#         await sounds.stop_sound(sounds.Sound.FIRE_BELL)
 
-        await fpw.master_warning_lh.set_state(0)
-        await fpw.master_warning_rh.set_state(0)
-
-
-@scenario("MAINTENANCE", "FIRE", "74 FIRE: ENG 1")
-class m_fire_eng_1:
-    fire_failure = xp.Params["sim/operation/failures/rel_engfir0"]
-    engine_fuel_switch = engine_panel.en_fuel_1
-    cas_fire_msg = cas.FIRE_ENG_1 
-    thrust_red_light = pc.pc_thrust_red_light_1
-    firebutton = fp.firebutton_1
-    disch = fp.disch1_eng1
-
-    @classmethod
-    async def procedure(cls, ac_state: xp_ac.ACState):
-        try:
-            await xp.set_param(cls.fire_failure, 0)
-            await fpw.master_warning_lh.set_state(0)
-            await fpw.master_warning_rh.set_state(0)
-
-            await cls.engine_fuel_switch.wait_state(1)
-            await sim.sleep(3)
-
-            await cas.show_message(cls.cas_fire_msg)
-            await xp.set_param(cls.fire_failure, 6)
-
-            await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
-
-            await fpw.master_warning_lh.set_state(1)
-            await fpw.master_warning_rh.set_state(1)
-            await cls.thrust_red_light.set_state(1)
-
-            await cls.engine_fuel_switch.wait_state(0)
-
-            # pilot clicks shut off
-            await cls.firebutton.wait_state(1)
-
-            await cls.disch.wait_state(1)
-        finally:
-            await xp.set_param(cls.fire_failure, 0)
-            await sounds.stop_sound(sounds.Sound.FIRE_BELL)
-            await cls.thrust_red_light.set_state(0)
-            await fpw.master_warning_lh.set_state(0)
-            await fpw.master_warning_rh.set_state(0)
-            await cas.remove_message(cls.cas_fire_msg)
+#         await fpw.master_warning_lh.set_state(0)
+#         await fpw.master_warning_rh.set_state(0)
 
 
-@scenario("MAINTENANCE", "FIRE", "75 FIRE: ENG 2")
-class m_fire_eng_2(m_fire_eng_1):
-    fire_failure = xp.Params["sim/operation/failures/rel_engfir1"]
-    engine_fuel_switch = engine_panel.en_fuel_2
-    cas_fire_msg = cas.FIRE_ENG_2 
-    thrust_red_light = pc.pc_thrust_red_light_2
-    firebutton = fp.firebutton_2
-    disch = fp.disch1_eng2
+# @scenario("MAINTENANCE", "FIRE", "74 FIRE: ENG 1")
+# class m_fire_eng_1:
+#     fire_failure = xp.Params["sim/operation/failures/rel_engfir0"]
+#     engine_fuel_switch = engine_panel.en_fuel_1
+#     cas_fire_msg = cas.FIRE_ENG_1 
+#     thrust_red_light = pc.pc_thrust_red_light_1
+#     firebutton = fp.firebutton_1
+#     disch = fp.disch1_eng1
+
+#     @classmethod
+#     async def procedure(cls, ac_state: xp_ac.ACState):
+#         try:
+#             await xp.set_param(cls.fire_failure, 0)
+#             await fpw.master_warning_lh.set_state(0)
+#             await fpw.master_warning_rh.set_state(0)
+
+#             await cls.engine_fuel_switch.wait_state(1)
+#             await sim.sleep(3)
+
+#             await cas.show_message(cls.cas_fire_msg)
+#             await xp.set_param(cls.fire_failure, 6)
+
+#             await sounds.play_sound(sounds.Sound.FIRE_BELL, looped=True)
+
+#             await fpw.master_warning_lh.set_state(1)
+#             await fpw.master_warning_rh.set_state(1)
+#             await cls.thrust_red_light.set_state(1)
+
+#             await cls.engine_fuel_switch.wait_state(0)
+
+#             # pilot clicks shut off
+#             await cls.firebutton.wait_state(1)
+
+#             await cls.disch.wait_state(1)
+#         finally:
+#             await xp.set_param(cls.fire_failure, 0)
+#             await sounds.stop_sound(sounds.Sound.FIRE_BELL)
+#             await cls.thrust_red_light.set_state(0)
+#             await fpw.master_warning_lh.set_state(0)
+#             await fpw.master_warning_rh.set_state(0)
+#             await cas.remove_message(cls.cas_fire_msg)
 
 
-@scenario("MAINTENANCE", "FIRE", "76 FIRE: ENG 3")
-class m_fire_eng_3(m_fire_eng_1):
-    fire_failure = xp.Params["sim/operation/failures/rel_engfir2"]
-    engine_fuel_switch = engine_panel.en_fuel_3
-    cas_fire_msg = cas.FIRE_ENG_3 
-    thrust_red_light = pc.pc_thrust_red_light_3
-    firebutton = fp.firebutton_3
-    disch = fp.disch1_eng3
+# @scenario("MAINTENANCE", "FIRE", "75 FIRE: ENG 2")
+# class m_fire_eng_2(m_fire_eng_1):
+#     fire_failure = xp.Params["sim/operation/failures/rel_engfir1"]
+#     engine_fuel_switch = engine_panel.en_fuel_2
+#     cas_fire_msg = cas.FIRE_ENG_2 
+#     thrust_red_light = pc.pc_thrust_red_light_2
+#     firebutton = fp.firebutton_2
+#     disch = fp.disch1_eng2
+
+
+# @scenario("MAINTENANCE", "FIRE", "76 FIRE: ENG 3")
+# class m_fire_eng_3(m_fire_eng_1):
+#     fire_failure = xp.Params["sim/operation/failures/rel_engfir2"]
+#     engine_fuel_switch = engine_panel.en_fuel_3
+#     cas_fire_msg = cas.FIRE_ENG_3 
+#     thrust_red_light = pc.pc_thrust_red_light_3
+#     firebutton = fp.firebutton_3
+#     disch = fp.disch1_eng3
 
 
 @scenario("MAINTENANCE", "N2/N1", "ENG 1: AUTO SHUTDOWN N1")
@@ -376,7 +376,7 @@ class m_oil_param_abnorm_temp_eng1:
             async with synoptic_overrides.override_params([cls.OIL_TEMP]):
                 oil_temp_curr = xp_ac.ACState.get_curr_param(cls.OIL_TEMP)
                 cls.engine_custom_specs.emulate_oil_temp = False
-                temp_grow_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, oil_temp_curr, 147, 60)
+                temp_grow_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, oil_temp_curr, 147, 30)
                 n1_pilot_decrease = xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p < 40, timeout=60)
 
                 done, pending = await asyncio.wait([temp_grow_coro, n1_pilot_decrease], return_when=asyncio.FIRST_COMPLETED)
@@ -391,7 +391,7 @@ class m_oil_param_abnorm_temp_eng1:
                     await sounds.play_sound(sounds.Sound.GONG, looped=True)
 
                     await xp_ac.ACState.wait_until_parameter_condition(cls.N1, lambda p: p < 67, timeout=60)
-                    temp_drop_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, 147, 95, 180)
+                    temp_drop_coro = synoptic_overrides.linear_anim(cls.OIL_TEMP, 147, 95, 120)
 
                     async def on_temp_drop():
                         await xp_ac.ACState.wait_until_parameter_condition(cls.OIL_TEMP, lambda p: p < 145, timeout=60)
