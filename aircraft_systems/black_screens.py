@@ -72,7 +72,7 @@ class MiddleUpBlackScreen(System):
                 new_state = 2
             elif dc.rh_init.get_state() == 0 and dc.lh_master.get_state() == 0 and dc.rh_master.get_state() == 1: 
                 new_state = 2
-            elif ApuStatusWatcher.status in [EngineStatus.STOPPED, EngineStatus.STOPPING]:
+            elif ApuStatusWatcher.status in [EngineStatus.STOPPING]:
                 if EngineStart1.status == EngineStatus.STOPPED and \
                     EngineStart2.status == EngineStatus.STOPPED and \
                     EngineStart3.status == EngineStatus.STOPPED:
