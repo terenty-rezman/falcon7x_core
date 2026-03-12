@@ -507,7 +507,7 @@ class pc_thrust_reverse(FloatStepper):
             return
 
         xp_state = xp.ACState.get_curr_param(cls.dataref_xp) or 0
-        xp_state = True if xp_state == 2 else False
+        xp_state = True if xp_state == 7 else False
         new_state = None
 
         # гистерезис
